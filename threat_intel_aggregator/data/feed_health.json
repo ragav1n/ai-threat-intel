@@ -1,122 +1,122 @@
 {
   "MISP Issues": {
     "success": 0,
-    "failure": 2,
-    "total": 2,
+    "failure": 4,
+    "total": 4,
     "last_response_time": null
   },
   "CISA Alerts": {
     "success": 0,
-    "failure": 2,
-    "total": 2,
+    "failure": 3,
+    "total": 3,
     "last_response_time": null
   },
   "MISP Releases": {
-    "success": 2,
+    "success": 4,
     "failure": 0,
-    "total": 2,
-    "last_response_time": 0.410791
+    "total": 4,
+    "last_response_time": 0.460548
   },
   "attack-stix-data Issues": {
     "success": 0,
-    "failure": 2,
-    "total": 2,
+    "failure": 4,
+    "total": 4,
     "last_response_time": null
   },
   "massive-octo-nemesis Commits": {
     "success": 0,
-    "failure": 2,
-    "total": 2,
+    "failure": 4,
+    "total": 4,
     "last_response_time": null
   },
   "attack-stix-data Commits": {
-    "success": 2,
+    "success": 4,
     "failure": 0,
-    "total": 2,
-    "last_response_time": 0.368177
+    "total": 4,
+    "last_response_time": 0.446641
   },
   "atomic-red-team Releases": {
-    "success": 2,
+    "success": 4,
     "failure": 0,
-    "total": 2,
-    "last_response_time": 0.351475
+    "total": 4,
+    "last_response_time": 0.340735
   },
   "atomic-red-team Issues": {
     "success": 0,
-    "failure": 2,
-    "total": 2,
+    "failure": 4,
+    "total": 4,
     "last_response_time": null
   },
   "attack-stix-data Releases": {
-    "success": 2,
+    "success": 4,
     "failure": 0,
-    "total": 2,
-    "last_response_time": 0.376738
+    "total": 4,
+    "last_response_time": 0.379095
   },
   "atomic-red-team Commits": {
-    "success": 2,
+    "success": 4,
     "failure": 0,
-    "total": 2,
-    "last_response_time": 0.378339
+    "total": 4,
+    "last_response_time": 0.398202
   },
   "massive-octo-nemesis Issues": {
     "success": 0,
-    "failure": 2,
-    "total": 2,
+    "failure": 4,
+    "total": 4,
     "last_response_time": null
   },
   "massive-octo-nemesis Releases": {
     "success": 0,
-    "failure": 2,
-    "total": 2,
+    "failure": 4,
+    "total": 4,
     "last_response_time": null
   },
   "The Hacker News": {
-    "success": 2,
+    "success": 4,
     "failure": 0,
-    "total": 2,
-    "last_response_time": 0.951962
+    "total": 4,
+    "last_response_time": 0.835682
   },
   "Cisco Talos": {
-    "success": 1,
+    "success": 3,
     "failure": 0,
-    "total": 1,
-    "last_response_time": 0.115637
+    "total": 3,
+    "last_response_time": 0.204827
   },
   "theZoo Issues": {
     "success": 0,
-    "failure": 1,
-    "total": 1,
+    "failure": 3,
+    "total": 3,
     "last_response_time": null
   },
   "theZoo Releases": {
-    "success": 1,
+    "success": 3,
     "failure": 0,
-    "total": 1,
-    "last_response_time": 0.388859
+    "total": 3,
+    "last_response_time": 0.375773
   },
   "MISP Commits": {
     "success": 0,
-    "failure": 1,
-    "total": 1,
+    "failure": 3,
+    "total": 3,
     "last_response_time": null
   },
   "theZoo Commits": {
-    "success": 1,
+    "success": 3,
     "failure": 0,
-    "total": 1,
-    "last_response_time": 0.411455
+    "total": 3,
+    "last_response_time": 0.396886
   },
   "GitHub Malware Zoo": {
-    "success": 1,
+    "success": 3,
     "failure": 0,
-    "total": 1,
-    "last_response_time": 0.414226
+    "total": 3,
+    "last_response_time": 0.387563
   },
   "Dark Reading": {
-    "success": 1,
+    "success": 2,
     "failure": 0,
-    "total": 1,
-    "last_response_time": 0.457093
+    "total": 2,
+    "last_response_time": 0.451972
   }
 }
