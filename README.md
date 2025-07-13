@@ -1,8 +1,3 @@
-# ai-threat-intel
-The existing README only contains a title (`# ai-threat-intel`). Let's now create a **comprehensive and hackathon-winning `README.md`** from scratch based on your project structure and functionality.
-
----
-
 ## 🛡️ AI-Powered Threat Intelligence Aggregator
 
 ![Python](https://img.shields.io/badge/python-3.8%2B-blue)
