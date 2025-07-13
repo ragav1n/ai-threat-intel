@@ -13,18 +13,30 @@ The existing README only contains a title (`# ai-threat-intel`). Let's now creat
 
 ### 📌 Table of Contents
 
-* [Overview](#overview)
-* [Features](#features)
-* [Architecture](#architecture)
-* [How It Works](#how-it-works)
-* [Feed Configuration](#feed-configuration)
-* [AI Summarization](#ai-summarization)
-* [Setup & Installation](#setup--installation)
-* [Usage](#usage)
-* [Data Flow](#data-flow)
-* [Sample Output](#sample-output)
-* [Contributors](#contributors)
-* [License](#license)
+## Overview
+
+## Features
+
+## Architecture
+
+## How It Works
+
+## Feed Configuration
+
+## AI Summarization
+
+## Setup & Installation
+
+## Usage
+
+## Data Flow
+
+## Sample Output
+
+## Contributors
+
+## License
+
 
 ---
 
