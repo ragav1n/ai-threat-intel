@@ -12,35 +12,21 @@ The existing README only contains a title (`# ai-threat-intel`). Let's now creat
 ---
 
 ### 📌 Table of Contents
-
-## Overview
-
-## Features
-
-## Architecture
-
-## How It Works
-
-## Feed Configuration
-
-## AI Summarization
-
-## Setup & Installation
-
-## Usage
-
-## Data Flow
-
-## Sample Output
-
-## Contributors
-
-## License
-
+- [Overview](#overview)
+- [Features](#features)
+- [Architecture](#architecture)
+- [How It Works](#how-it-works)
+- [Feed Configuration](#feed-configuration)
+- [AI Summarization](#ai-summarization)
+- [Setup & Installation](#setup--installation)
+- [Usage](#usage)
+- [Data Flow](#data-flow)
+- [Sample Output](#sample-output)
+- [Contributors](#contributors)
 
 ---
 
-## 📖 Overview
+## Overview
 
 This project is a **modular, AI-powered Threat Intelligence Feed Aggregator** that:
 
@@ -53,7 +39,7 @@ This project is a **modular, AI-powered Threat Intelligence Feed Aggregator** th
 
 ---
 
-## 🚀 Features
+## Features
 
 ✅ Feed ingestion from blogs, GitHub, and government alerts
 ✅ Regex-powered IOC extraction (IP, domain, URL, hash, etc.)
@@ -66,14 +52,14 @@ This project is a **modular, AI-powered Threat Intelligence Feed Aggregator** th
 
 ---
 
-## 🧠 Architecture
+## Architecture
 
 <img width="1414" height="1475" alt="_- visual selection" src="https://github.com/user-attachments/assets/ca88e1b3-4a1a-4ee9-8c74-5de9f176165e" />
 
 
 ---
 
-## 🔁 How It Works
+## How It Works
 
 1. **Feeds** configured in `feeds.yaml`
 2. `main.py` schedules periodic collection
@@ -86,7 +72,7 @@ This project is a **modular, AI-powered Threat Intelligence Feed Aggregator** th
 
 ---
 
-## ⚙️ Feed Configuration
+## Feed Configuration
 
 ```yaml
 feeds:
@@ -103,7 +89,7 @@ feeds:
 
 ---
 
-## 🧠 AI Summarization
+## AI Summarization
 
 * IOCs are exported to `input.txt`
 * A local LLM (via Ollama or Claude) reads the file
@@ -112,7 +98,7 @@ feeds:
 
 ---
 
-## 💻 Setup & Installation
+## Setup & Installation
 
 ```bash
 # Clone the repo
@@ -132,7 +118,7 @@ EMAIL_RECIPIENT=recipient@gmail.com
 
 ---
 
-## ▶️ Usage
+## Usage
 
 ```bash
 # Run the main pipeline
@@ -144,7 +130,7 @@ python watch_and_run.py
 
 ---
 
-## 📊 Data Flow
+## Data Flow
 
 * IOC Types Extracted: IP, IPv6, Domain, URL, MD5, SHA1, SHA256
 * Stored in MongoDB in `threat_intel_db.iocs`
@@ -154,7 +140,7 @@ python watch_and_run.py
 
 ---
 
-## 🧪 Sample Output
+## Sample Output
 
 ```
 IOC Summary:
@@ -169,7 +155,7 @@ Feed Health: All green ✅
 
 ---
 
-## 🙋 Contributors
+## Contributors
 
 * Saara Unnathi R — Feed Collection · IOC Parsing
 * N Ragavenderan — IOC Parsing · AI Summarization · Pipeline Orchestration
