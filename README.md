@@ -5,7 +5,6 @@ The existing README only contains a title (`# ai-threat-intel`). Let's now creat
 
 ## 🛡️ AI-Powered Threat Intelligence Aggregator
 
-![MIT License](https://img.shields.io/badge/license-MIT-green)
 ![Python](https://img.shields.io/badge/python-3.8%2B-blue)
 ![MongoDB](https://img.shields.io/badge/Database-MongoDB-success)
 ![Ollama](https://img.shields.io/badge/LLM-Ollama%20%7C%20LLaMA2-critical)
