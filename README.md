@@ -56,21 +56,8 @@ This project is a **modular, AI-powered Threat Intelligence Feed Aggregator** th
 
 ## 🧠 Architecture
 
-```mermaid
-graph TD
-  A[feeds.yaml] --> B[collector.py]
-  B --> C[ioc_extractor.py]
-  C --> D[mongo_writer.py]
-  D --> E[MongoDB]
+<img width="1414" height="1475" alt="_- visual selection" src="https://github.com/user-attachments/assets/ca88e1b3-4a1a-4ee9-8c74-5de9f176165e" />
 
-  B --> F[health.py]
-  F --> G[feed_health.json + CSV]
-
-  D --> H[input.txt]
-  H --> I[watch_and_run.py (Ollama LLM)]
-
-  E --> J[Email Alert System]
-```
 
 ---
 
@@ -173,7 +160,7 @@ Feed Health: All green ✅
 ## 🙋 Contributors
 
 * Saara Unnathi R — Feed Collection · IOC Parsing
-* Ragavendaran K — IOC Parsing · AI Summarization · Pipeline Orchestration
+* N Ragavenderan — IOC Parsing · AI Summarization · Pipeline Orchestration
 * Jahnavi Rai — AI Summarization · UI Rendering
 * Khushi Gupta — UI Rendering · Pipeline Orchestration
 
