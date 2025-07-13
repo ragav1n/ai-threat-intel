@@ -1,0 +1,8 @@
+feedparser
+pyyaml
+requests
+python-dotenv
+schedule
+tenacity
+tabulate
+pymongo

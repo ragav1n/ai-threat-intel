@@ -1,0 +1,122 @@
+{
+  "MISP Issues": {
+    "success": 0,
+    "failure": 2,
+    "total": 2,
+    "last_response_time": null
+  },
+  "CISA Alerts": {
+    "success": 0,
+    "failure": 2,
+    "total": 2,
+    "last_response_time": null
+  },
+  "MISP Releases": {
+    "success": 2,
+    "failure": 0,
+    "total": 2,
+    "last_response_time": 0.410791
+  },
+  "attack-stix-data Issues": {
+    "success": 0,
+    "failure": 2,
+    "total": 2,
+    "last_response_time": null
+  },
+  "massive-octo-nemesis Commits": {
+    "success": 0,
+    "failure": 2,
+    "total": 2,
+    "last_response_time": null
+  },
+  "attack-stix-data Commits": {
+    "success": 2,
+    "failure": 0,
+    "total": 2,
+    "last_response_time": 0.368177
+  },
+  "atomic-red-team Releases": {
+    "success": 2,
+    "failure": 0,
+    "total": 2,
+    "last_response_time": 0.351475
+  },
+  "atomic-red-team Issues": {
+    "success": 0,
+    "failure": 2,
+    "total": 2,
+    "last_response_time": null
+  },
+  "attack-stix-data Releases": {
+    "success": 2,
+    "failure": 0,
+    "total": 2,
+    "last_response_time": 0.376738
+  },
+  "atomic-red-team Commits": {
+    "success": 2,
+    "failure": 0,
+    "total": 2,
+    "last_response_time": 0.378339
+  },
+  "massive-octo-nemesis Issues": {
+    "success": 0,
+    "failure": 2,
+    "total": 2,
+    "last_response_time": null
+  },
+  "massive-octo-nemesis Releases": {
+    "success": 0,
+    "failure": 2,
+    "total": 2,
+    "last_response_time": null
+  },
+  "The Hacker News": {
+    "success": 2,
+    "failure": 0,
+    "total": 2,
+    "last_response_time": 0.951962
+  },
+  "Cisco Talos": {
+    "success": 1,
+    "failure": 0,
+    "total": 1,
+    "last_response_time": 0.115637
+  },
+  "theZoo Issues": {
+    "success": 0,
+    "failure": 1,
+    "total": 1,
+    "last_response_time": null
+  },
+  "theZoo Releases": {
+    "success": 1,
+    "failure": 0,
+    "total": 1,
+    "last_response_time": 0.388859
+  },
+  "MISP Commits": {
+    "success": 0,
+    "failure": 1,
+    "total": 1,
+    "last_response_time": null
+  },
+  "theZoo Commits": {
+    "success": 1,
+    "failure": 0,
+    "total": 1,
+    "last_response_time": 0.411455
+  },
+  "GitHub Malware Zoo": {
+    "success": 1,
+    "failure": 0,
+    "total": 1,
+    "last_response_time": 0.414226
+  },
+  "Dark Reading": {
+    "success": 1,
+    "failure": 0,
+    "total": 1,
+    "last_response_time": 0.457093
+  }
+}
