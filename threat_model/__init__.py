@@ -1,1 +1,1 @@
-from .summarizer import summarize_threat
+from .threat_summarizer.summarizer import summarize_threat

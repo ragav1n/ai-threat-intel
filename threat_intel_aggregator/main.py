@@ -2,8 +2,9 @@ import time
 import logging
 import schedule
 import traceback
-from feed_collection.collector import collect_feeds_concurrently
-from feed_collection.parser import normalize_parsed_results
+from threat_intel_aggregator.feed_collection.collector import collect_feeds_concurrently
+from threat_intel_aggregator.feed_collection.parser import normalize_parsed_results
+from threat_intel_aggregator.feed_collection.mongo_writer import write_iocs_to_mongo, export_iocs_to_summarizer_input
 import smtplib
 from email.mime.text import MIMEText
 import json
@@ -13,7 +14,6 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.application import MIMEApplication
 import os
 from pymongo import MongoClient
-from feed_collection.mongo_writer import write_iocs_to_mongo, export_iocs_to_summarizer_input
 
 # Connect to MongoDB
 client = MongoClient("mongodb://localhost:27017/")
@@ -154,7 +154,7 @@ def scheduled_job():
 
     normalize_parsed_results()
     write_iocs_to_mongo()
-    export_iocs_to_summarizer_input(output_txt_path="../threat_model/input.txt") # <- this line pushes IOCs to input.txt
+    export_iocs_to_summarizer_input()  # <- this line pushes IOCs to input.txt
 
 def start_scheduler():
     # 🔁 Immediate first run

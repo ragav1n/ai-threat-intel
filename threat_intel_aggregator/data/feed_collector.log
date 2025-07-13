@@ -5165,3 +5165,1132 @@ RuntimeError: 🔥 Simulated feed collection failure for testing
 2025-07-13 14:17:07,112 [INFO] 📦 Saved 20 total entries to /Users/ragav/Projects/Threat-Intel/threat_intel_aggregator/data/raw_feeds.json
 2025-07-13 14:17:07,112 [INFO] 🧪 Running IOC Parser
 2025-07-13 14:17:07,197 [INFO] ✅ Feed Collection Complete
+2025-07-13 14:28:30,436 [INFO] 📥 Feed Collection Started
+2025-07-13 14:28:30,440 [INFO] 🚀 Starting concurrent fetch of 20 feeds...
+2025-07-13 14:28:30,441 [INFO] 🔄 Trying to fetch: https://blog.talosintelligence.com/rss/
+2025-07-13 14:28:30,441 [INFO] 🔄 Trying to fetch: https://feeds.feedburner.com/TheHackersNews
+2025-07-13 14:28:30,442 [INFO] 🔄 Trying to fetch: https://www.darkreading.com/rss.xml
+2025-07-13 14:28:30,442 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-07-13 14:28:30,442 [INFO] 🔄 Trying to fetch: https://us-cert.cisa.gov/ncas/all.xml
+2025-07-13 14:28:30,442 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-07-13 14:28:30,444 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/issues.atom
+2025-07-13 14:28:30,445 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/releases.atom
+2025-07-13 14:28:30,445 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/commits/master.atom
+2025-07-13 14:28:30,446 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/issues.atom
+2025-07-13 14:28:30,628 [INFO] ✅ Success: [Cisco Talos] (120 lines)
+2025-07-13 14:28:30,631 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/releases.atom
+2025-07-13 14:28:30,815 [INFO] ✅ Success: [theZoo Releases] (45 lines)
+2025-07-13 14:28:30,818 [ERROR] ❌ Retry failed: [theZoo Issues] - 406 Client Error: Not Acceptable for url: https://github.com/ytisf/theZoo/issues.atom
+2025-07-13 14:28:30,821 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/commits/master.atom
+2025-07-13 14:28:30,822 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-07-13 14:28:30,828 [ERROR] ❌ Retry failed: [MISP Commits] - 404 Client Error: Not Found for url: https://github.com/MISP/MISP/commits/master.atom
+2025-07-13 14:28:30,829 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/releases.atom
+2025-07-13 14:28:30,846 [ERROR] ❌ Retry failed: [CISA Alerts] - 404 Client Error: Not Found for url: https://www.cisa.gov/ncas/all.xml
+2025-07-13 14:28:30,849 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/commits/master.atom
+2025-07-13 14:28:30,873 [INFO] ✅ Success: [theZoo Commits] (371 lines)
+2025-07-13 14:28:30,873 [INFO] ✅ Success: [GitHub Malware Zoo] (371 lines)
+2025-07-13 14:28:30,876 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-07-13 14:28:30,877 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/releases.atom
+2025-07-13 14:28:30,886 [ERROR] ❌ Retry failed: [MISP Issues] - 406 Client Error: Not Acceptable for url: https://github.com/MISP/MISP/issues.atom
+2025-07-13 14:28:30,889 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-07-13 14:28:31,006 [INFO] ✅ Success: [Dark Reading] (614 lines)
+2025-07-13 14:28:31,009 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-07-13 14:28:31,077 [INFO] ✅ Success: [The Hacker News] (65 lines)
+2025-07-13 14:28:31,080 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-07-13 14:28:31,114 [INFO] ✅ Success: [MISP Releases] (477 lines)
+2025-07-13 14:28:31,191 [ERROR] ❌ Retry failed: [attack-stix-data Issues] - 406 Client Error: Not Acceptable for url: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-07-13 14:28:31,220 [ERROR] ❌ Retry failed: [massive-octo-nemesis Commits] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-07-13 14:28:31,233 [INFO] ✅ Success: [attack-stix-data Commits] (332 lines)
+2025-07-13 14:28:31,241 [ERROR] ❌ Retry failed: [atomic-red-team Issues] - 406 Client Error: Not Acceptable for url: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-07-13 14:28:31,247 [INFO] ✅ Success: [atomic-red-team Releases] (8 lines)
+2025-07-13 14:28:31,248 [INFO] ✅ Success: [attack-stix-data Releases] (85 lines)
+2025-07-13 14:28:31,258 [INFO] ✅ Success: [atomic-red-team Commits] (370 lines)
+2025-07-13 14:28:31,320 [ERROR] ❌ Retry failed: [massive-octo-nemesis Issues] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-07-13 14:28:31,401 [ERROR] ❌ Retry failed: [massive-octo-nemesis Releases] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-07-13 14:28:31,411 [INFO] 📦 Saved 20 total entries to /Users/ragav/Projects/Threat-Intel/threat_intel_aggregator/data/raw_feeds.json
+2025-07-13 14:28:31,411 [INFO] 🧪 Running IOC Parser
+2025-07-13 14:28:31,510 [INFO] ✅ Feed Collection Complete
+2025-07-13 14:39:46,445 [INFO] 📥 Feed Collection Started
+2025-07-13 14:39:46,450 [INFO] 🚀 Starting concurrent fetch of 20 feeds...
+2025-07-13 14:39:46,451 [INFO] 🔄 Trying to fetch: https://blog.talosintelligence.com/rss/
+2025-07-13 14:39:46,451 [INFO] 🔄 Trying to fetch: https://feeds.feedburner.com/TheHackersNews
+2025-07-13 14:39:46,453 [INFO] 🔄 Trying to fetch: https://www.darkreading.com/rss.xml
+2025-07-13 14:39:46,453 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-07-13 14:39:46,454 [INFO] 🔄 Trying to fetch: https://us-cert.cisa.gov/ncas/all.xml
+2025-07-13 14:39:46,455 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-07-13 14:39:46,456 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/issues.atom
+2025-07-13 14:39:46,456 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/releases.atom
+2025-07-13 14:39:46,456 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/commits/master.atom
+2025-07-13 14:39:46,457 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/issues.atom
+2025-07-13 14:39:46,661 [INFO] ✅ Success: [Cisco Talos] (120 lines)
+2025-07-13 14:39:46,663 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/releases.atom
+2025-07-13 14:39:46,813 [ERROR] ❌ Retry failed: [theZoo Issues] - 406 Client Error: Not Acceptable for url: https://github.com/ytisf/theZoo/issues.atom
+2025-07-13 14:39:46,815 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/commits/master.atom
+2025-07-13 14:39:46,818 [INFO] ✅ Success: [theZoo Releases] (45 lines)
+2025-07-13 14:39:46,819 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-07-13 14:39:46,822 [ERROR] ❌ Retry failed: [MISP Commits] - 404 Client Error: Not Found for url: https://github.com/MISP/MISP/commits/master.atom
+2025-07-13 14:39:46,823 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/releases.atom
+2025-07-13 14:39:46,891 [INFO] ✅ Success: [GitHub Malware Zoo] (371 lines)
+2025-07-13 14:39:46,892 [INFO] ✅ Success: [theZoo Commits] (371 lines)
+2025-07-13 14:39:46,894 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/commits/master.atom
+2025-07-13 14:39:46,896 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-07-13 14:39:46,903 [ERROR] ❌ Retry failed: [MISP Issues] - 406 Client Error: Not Acceptable for url: https://github.com/MISP/MISP/issues.atom
+2025-07-13 14:39:46,904 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/releases.atom
+2025-07-13 14:39:46,937 [INFO] ✅ Success: [Dark Reading] (614 lines)
+2025-07-13 14:39:46,939 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-07-13 14:39:47,089 [ERROR] ❌ Retry failed: [CISA Alerts] - 404 Client Error: Not Found for url: https://www.cisa.gov/ncas/all.xml
+2025-07-13 14:39:47,093 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-07-13 14:39:47,150 [ERROR] ❌ Retry failed: [attack-stix-data Issues] - 406 Client Error: Not Acceptable for url: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-07-13 14:39:47,153 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-07-13 14:39:47,170 [INFO] ✅ Success: [MISP Releases] (477 lines)
+2025-07-13 14:39:47,193 [INFO] ✅ Success: [attack-stix-data Releases] (85 lines)
+2025-07-13 14:39:47,234 [INFO] ✅ Success: [attack-stix-data Commits] (332 lines)
+2025-07-13 14:39:47,239 [ERROR] ❌ Retry failed: [atomic-red-team Issues] - 406 Client Error: Not Acceptable for url: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-07-13 14:39:47,243 [INFO] ✅ Success: [atomic-red-team Releases] (8 lines)
+2025-07-13 14:39:47,245 [ERROR] ❌ Retry failed: [massive-octo-nemesis Commits] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-07-13 14:39:47,307 [INFO] ✅ Success: [atomic-red-team Commits] (370 lines)
+2025-07-13 14:39:47,420 [ERROR] ❌ Retry failed: [massive-octo-nemesis Issues] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-07-13 14:39:47,470 [ERROR] ❌ Retry failed: [massive-octo-nemesis Releases] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-07-13 14:39:47,497 [INFO] ✅ Success: [The Hacker News] (65 lines)
+2025-07-13 14:39:47,501 [INFO] 📦 Saved 20 total entries to /Users/ragav/Projects/Threat-Intel/threat_intel_aggregator/data/raw_feeds.json
+2025-07-13 14:39:47,501 [INFO] 🧪 Running IOC Parser
+2025-07-13 14:39:47,585 [INFO] ✅ Feed Collection Complete
+2025-07-13 14:51:01,951 [INFO] 📥 Feed Collection Started
+2025-07-13 14:51:01,956 [INFO] 🚀 Starting concurrent fetch of 20 feeds...
+2025-07-13 14:51:01,957 [INFO] 🔄 Trying to fetch: https://blog.talosintelligence.com/rss/
+2025-07-13 14:51:01,957 [INFO] 🔄 Trying to fetch: https://feeds.feedburner.com/TheHackersNews
+2025-07-13 14:51:01,957 [INFO] 🔄 Trying to fetch: https://www.darkreading.com/rss.xml
+2025-07-13 14:51:01,958 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-07-13 14:51:01,958 [INFO] 🔄 Trying to fetch: https://us-cert.cisa.gov/ncas/all.xml
+2025-07-13 14:51:01,959 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-07-13 14:51:01,959 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/issues.atom
+2025-07-13 14:51:01,960 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/releases.atom
+2025-07-13 14:51:01,961 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/commits/master.atom
+2025-07-13 14:51:01,962 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/issues.atom
+2025-07-13 14:51:02,122 [INFO] ✅ Success: [Cisco Talos] (120 lines)
+2025-07-13 14:51:02,125 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/releases.atom
+2025-07-13 14:51:02,321 [ERROR] ❌ Retry failed: [MISP Commits] - 404 Client Error: Not Found for url: https://github.com/MISP/MISP/commits/master.atom
+2025-07-13 14:51:02,324 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/commits/master.atom
+2025-07-13 14:51:02,364 [ERROR] ❌ Retry failed: [theZoo Issues] - 406 Client Error: Not Acceptable for url: https://github.com/ytisf/theZoo/issues.atom
+2025-07-13 14:51:02,367 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-07-13 14:51:02,372 [INFO] ✅ Success: [theZoo Releases] (45 lines)
+2025-07-13 14:51:02,374 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/releases.atom
+2025-07-13 14:51:02,414 [INFO] ✅ Success: [GitHub Malware Zoo] (371 lines)
+2025-07-13 14:51:02,417 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/commits/master.atom
+2025-07-13 14:51:02,419 [INFO] ✅ Success: [Dark Reading] (614 lines)
+2025-07-13 14:51:02,421 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-07-13 14:51:02,431 [INFO] ✅ Success: [theZoo Commits] (371 lines)
+2025-07-13 14:51:02,433 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/releases.atom
+2025-07-13 14:51:02,438 [ERROR] ❌ Retry failed: [MISP Issues] - 406 Client Error: Not Acceptable for url: https://github.com/MISP/MISP/issues.atom
+2025-07-13 14:51:02,439 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-07-13 14:51:02,629 [INFO] ✅ Success: [MISP Releases] (477 lines)
+2025-07-13 14:51:02,632 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-07-13 14:51:02,745 [ERROR] ❌ Retry failed: [massive-octo-nemesis Commits] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-07-13 14:51:02,748 [ERROR] ❌ Retry failed: [attack-stix-data Issues] - 406 Client Error: Not Acceptable for url: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-07-13 14:51:02,748 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-07-13 14:51:02,779 [ERROR] ❌ Retry failed: [atomic-red-team Issues] - 406 Client Error: Not Acceptable for url: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-07-13 14:51:02,811 [INFO] ✅ Success: [atomic-red-team Releases] (8 lines)
+2025-07-13 14:51:02,812 [INFO] ✅ Success: [attack-stix-data Commits] (332 lines)
+2025-07-13 14:51:02,820 [INFO] ✅ Success: [atomic-red-team Commits] (370 lines)
+2025-07-13 14:51:02,865 [INFO] ✅ Success: [attack-stix-data Releases] (85 lines)
+2025-07-13 14:51:02,974 [ERROR] ❌ Retry failed: [massive-octo-nemesis Issues] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-07-13 14:51:03,081 [ERROR] ❌ Retry failed: [massive-octo-nemesis Releases] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-07-13 14:51:03,128 [ERROR] ❌ Retry failed: [CISA Alerts] - 404 Client Error: Not Found for url: https://www.cisa.gov/ncas/all.xml
+2025-07-13 14:51:03,160 [INFO] ✅ Success: [The Hacker News] (65 lines)
+2025-07-13 14:51:03,169 [INFO] 📦 Saved 20 total entries to /Users/ragav/Projects/Threat-Intel/threat_intel_aggregator/data/raw_feeds.json
+2025-07-13 14:51:03,169 [INFO] 🧪 Running IOC Parser
+2025-07-13 14:51:03,268 [INFO] ✅ Feed Collection Complete
+2025-07-13 15:02:28,120 [INFO] 📥 Feed Collection Started
+2025-07-13 15:02:28,126 [INFO] 🚀 Starting concurrent fetch of 20 feeds...
+2025-07-13 15:02:28,127 [INFO] 🔄 Trying to fetch: https://blog.talosintelligence.com/rss/
+2025-07-13 15:02:28,127 [INFO] 🔄 Trying to fetch: https://feeds.feedburner.com/TheHackersNews
+2025-07-13 15:02:28,127 [INFO] 🔄 Trying to fetch: https://www.darkreading.com/rss.xml
+2025-07-13 15:02:28,128 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-07-13 15:02:28,129 [INFO] 🔄 Trying to fetch: https://us-cert.cisa.gov/ncas/all.xml
+2025-07-13 15:02:28,130 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-07-13 15:02:28,131 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/issues.atom
+2025-07-13 15:02:28,132 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/releases.atom
+2025-07-13 15:02:28,132 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/commits/master.atom
+2025-07-13 15:02:28,133 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/issues.atom
+2025-07-13 15:02:28,514 [INFO] ✅ Success: [Cisco Talos] (120 lines)
+2025-07-13 15:02:28,517 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/releases.atom
+2025-07-13 15:02:28,872 [ERROR] ❌ Retry failed: [theZoo Issues] - 406 Client Error: Not Acceptable for url: https://github.com/ytisf/theZoo/issues.atom
+2025-07-13 15:02:28,874 [ERROR] ❌ Retry failed: [MISP Commits] - 404 Client Error: Not Found for url: https://github.com/MISP/MISP/commits/master.atom
+2025-07-13 15:02:28,878 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/commits/master.atom
+2025-07-13 15:02:28,880 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-07-13 15:02:28,881 [INFO] ✅ Success: [Dark Reading] (614 lines)
+2025-07-13 15:02:28,881 [INFO] ✅ Success: [theZoo Releases] (45 lines)
+2025-07-13 15:02:28,882 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/releases.atom
+2025-07-13 15:02:28,883 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/commits/master.atom
+2025-07-13 15:02:28,887 [ERROR] ❌ Retry failed: [MISP Issues] - 406 Client Error: Not Acceptable for url: https://github.com/MISP/MISP/issues.atom
+2025-07-13 15:02:28,888 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-07-13 15:02:29,038 [INFO] ✅ Success: [GitHub Malware Zoo] (371 lines)
+2025-07-13 15:02:29,043 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/releases.atom
+2025-07-13 15:02:29,045 [INFO] ✅ Success: [theZoo Commits] (371 lines)
+2025-07-13 15:02:29,047 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-07-13 15:02:29,260 [INFO] ✅ Success: [MISP Releases] (477 lines)
+2025-07-13 15:02:29,262 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-07-13 15:02:29,403 [ERROR] ❌ Retry failed: [attack-stix-data Issues] - 406 Client Error: Not Acceptable for url: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-07-13 15:02:29,408 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-07-13 15:02:29,411 [INFO] ✅ Success: [The Hacker News] (65 lines)
+2025-07-13 15:02:29,576 [ERROR] ❌ Retry failed: [massive-octo-nemesis Commits] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-07-13 15:02:29,581 [ERROR] ❌ Retry failed: [CISA Alerts] - 404 Client Error: Not Found for url: https://www.cisa.gov/ncas/all.xml
+2025-07-13 15:02:29,592 [ERROR] ❌ Retry failed: [atomic-red-team Issues] - 406 Client Error: Not Acceptable for url: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-07-13 15:02:29,593 [INFO] ✅ Success: [attack-stix-data Releases] (85 lines)
+2025-07-13 15:02:29,603 [INFO] ✅ Success: [attack-stix-data Commits] (332 lines)
+2025-07-13 15:02:29,747 [INFO] ✅ Success: [atomic-red-team Commits] (370 lines)
+2025-07-13 15:02:29,781 [INFO] ✅ Success: [atomic-red-team Releases] (8 lines)
+2025-07-13 15:02:29,957 [ERROR] ❌ Retry failed: [massive-octo-nemesis Issues] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-07-13 15:02:30,101 [ERROR] ❌ Retry failed: [massive-octo-nemesis Releases] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-07-13 15:02:30,111 [INFO] 📦 Saved 20 total entries to /Users/ragav/Projects/Threat-Intel/threat_intel_aggregator/data/raw_feeds.json
+2025-07-13 15:02:30,111 [INFO] 🧪 Running IOC Parser
+2025-07-13 15:02:30,211 [INFO] ✅ Feed Collection Complete
+2025-07-13 15:13:53,302 [INFO] 📥 Feed Collection Started
+2025-07-13 15:13:53,307 [INFO] 🚀 Starting concurrent fetch of 20 feeds...
+2025-07-13 15:13:53,307 [INFO] 🔄 Trying to fetch: https://blog.talosintelligence.com/rss/
+2025-07-13 15:13:53,307 [INFO] 🔄 Trying to fetch: https://feeds.feedburner.com/TheHackersNews
+2025-07-13 15:13:53,308 [INFO] 🔄 Trying to fetch: https://www.darkreading.com/rss.xml
+2025-07-13 15:13:53,308 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-07-13 15:13:53,310 [INFO] 🔄 Trying to fetch: https://us-cert.cisa.gov/ncas/all.xml
+2025-07-13 15:13:53,311 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-07-13 15:13:53,311 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/issues.atom
+2025-07-13 15:13:53,311 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/releases.atom
+2025-07-13 15:13:53,312 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/commits/master.atom
+2025-07-13 15:13:53,312 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/issues.atom
+2025-07-13 15:13:53,601 [INFO] ✅ Success: [Cisco Talos] (120 lines)
+2025-07-13 15:13:53,604 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/releases.atom
+2025-07-13 15:13:53,709 [ERROR] ❌ Retry failed: [theZoo Issues] - 406 Client Error: Not Acceptable for url: https://github.com/ytisf/theZoo/issues.atom
+2025-07-13 15:13:53,714 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/commits/master.atom
+2025-07-13 15:13:53,718 [INFO] ✅ Success: [theZoo Releases] (45 lines)
+2025-07-13 15:13:53,720 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-07-13 15:13:53,737 [ERROR] ❌ Retry failed: [MISP Commits] - 404 Client Error: Not Found for url: https://github.com/MISP/MISP/commits/master.atom
+2025-07-13 15:13:53,740 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/releases.atom
+2025-07-13 15:13:53,751 [ERROR] ❌ Retry failed: [MISP Issues] - 406 Client Error: Not Acceptable for url: https://github.com/MISP/MISP/issues.atom
+2025-07-13 15:13:53,751 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/commits/master.atom
+2025-07-13 15:13:53,772 [INFO] ✅ Success: [GitHub Malware Zoo] (371 lines)
+2025-07-13 15:13:53,774 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-07-13 15:13:53,774 [INFO] ✅ Success: [theZoo Commits] (371 lines)
+2025-07-13 15:13:53,776 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/releases.atom
+2025-07-13 15:13:53,777 [INFO] ✅ Success: [Dark Reading] (614 lines)
+2025-07-13 15:13:53,779 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-07-13 15:13:54,069 [ERROR] ❌ Retry failed: [CISA Alerts] - 404 Client Error: Not Found for url: https://www.cisa.gov/ncas/all.xml
+2025-07-13 15:13:54,075 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-07-13 15:13:54,080 [ERROR] ❌ Retry failed: [attack-stix-data Issues] - 406 Client Error: Not Acceptable for url: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-07-13 15:13:54,082 [ERROR] ❌ Retry failed: [massive-octo-nemesis Commits] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-07-13 15:13:54,082 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-07-13 15:13:54,088 [INFO] ✅ Success: [MISP Releases] (477 lines)
+2025-07-13 15:13:54,102 [INFO] ✅ Success: [attack-stix-data Commits] (332 lines)
+2025-07-13 15:13:54,132 [ERROR] ❌ Retry failed: [atomic-red-team Issues] - 406 Client Error: Not Acceptable for url: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-07-13 15:13:54,155 [INFO] ✅ Success: [atomic-red-team Releases] (8 lines)
+2025-07-13 15:13:54,156 [INFO] ✅ Success: [attack-stix-data Releases] (85 lines)
+2025-07-13 15:13:54,189 [INFO] ✅ Success: [atomic-red-team Commits] (370 lines)
+2025-07-13 15:13:54,392 [ERROR] ❌ Retry failed: [massive-octo-nemesis Releases] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-07-13 15:13:54,434 [ERROR] ❌ Retry failed: [massive-octo-nemesis Issues] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-07-13 15:13:54,507 [INFO] ✅ Success: [The Hacker News] (65 lines)
+2025-07-13 15:13:54,517 [INFO] 📦 Saved 20 total entries to /Users/ragav/Projects/Threat-Intel/threat_intel_aggregator/data/raw_feeds.json
+2025-07-13 15:13:54,517 [INFO] 🧪 Running IOC Parser
+2025-07-13 15:13:54,623 [INFO] ✅ Feed Collection Complete
+2025-07-13 15:25:21,004 [INFO] 📥 Feed Collection Started
+2025-07-13 15:25:21,009 [INFO] 🚀 Starting concurrent fetch of 20 feeds...
+2025-07-13 15:25:21,010 [INFO] 🔄 Trying to fetch: https://blog.talosintelligence.com/rss/
+2025-07-13 15:25:21,011 [INFO] 🔄 Trying to fetch: https://feeds.feedburner.com/TheHackersNews
+2025-07-13 15:25:21,012 [INFO] 🔄 Trying to fetch: https://www.darkreading.com/rss.xml
+2025-07-13 15:25:21,013 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-07-13 15:25:21,013 [INFO] 🔄 Trying to fetch: https://us-cert.cisa.gov/ncas/all.xml
+2025-07-13 15:25:21,014 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-07-13 15:25:21,015 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/issues.atom
+2025-07-13 15:25:21,016 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/releases.atom
+2025-07-13 15:25:21,016 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/commits/master.atom
+2025-07-13 15:25:21,017 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/issues.atom
+2025-07-13 15:25:21,316 [INFO] ✅ Success: [Cisco Talos] (120 lines)
+2025-07-13 15:25:21,323 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/releases.atom
+2025-07-13 15:25:21,422 [ERROR] ❌ Retry failed: [MISP Commits] - 404 Client Error: Not Found for url: https://github.com/MISP/MISP/commits/master.atom
+2025-07-13 15:25:21,424 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/commits/master.atom
+2025-07-13 15:25:21,529 [INFO] ✅ Success: [GitHub Malware Zoo] (371 lines)
+2025-07-13 15:25:21,533 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-07-13 15:25:21,537 [INFO] ✅ Success: [theZoo Commits] (371 lines)
+2025-07-13 15:25:21,538 [INFO] ✅ Success: [Dark Reading] (614 lines)
+2025-07-13 15:25:21,539 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/releases.atom
+2025-07-13 15:25:21,540 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/commits/master.atom
+2025-07-13 15:25:21,560 [ERROR] ❌ Retry failed: [theZoo Issues] - 406 Client Error: Not Acceptable for url: https://github.com/ytisf/theZoo/issues.atom
+2025-07-13 15:25:21,562 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-07-13 15:25:21,617 [INFO] ✅ Success: [theZoo Releases] (45 lines)
+2025-07-13 15:25:21,620 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/releases.atom
+2025-07-13 15:25:21,714 [ERROR] ❌ Retry failed: [MISP Issues] - 406 Client Error: Not Acceptable for url: https://github.com/MISP/MISP/issues.atom
+2025-07-13 15:25:21,717 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-07-13 15:25:21,883 [INFO] ✅ Success: [MISP Releases] (477 lines)
+2025-07-13 15:25:21,886 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-07-13 15:25:21,947 [ERROR] ❌ Retry failed: [CISA Alerts] - 404 Client Error: Not Found for url: https://www.cisa.gov/ncas/all.xml
+2025-07-13 15:25:21,949 [ERROR] ❌ Retry failed: [atomic-red-team Issues] - 406 Client Error: Not Acceptable for url: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-07-13 15:25:21,952 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-07-13 15:25:21,963 [INFO] ✅ Success: [attack-stix-data Commits] (332 lines)
+2025-07-13 15:25:21,964 [ERROR] ❌ Retry failed: [attack-stix-data Issues] - 406 Client Error: Not Acceptable for url: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-07-13 15:25:21,976 [INFO] ✅ Success: [atomic-red-team Releases] (8 lines)
+2025-07-13 15:25:22,004 [INFO] ✅ Success: [atomic-red-team Commits] (370 lines)
+2025-07-13 15:25:22,031 [INFO] ✅ Success: [attack-stix-data Releases] (85 lines)
+2025-07-13 15:25:22,037 [ERROR] ❌ Retry failed: [massive-octo-nemesis Commits] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-07-13 15:25:22,230 [ERROR] ❌ Retry failed: [massive-octo-nemesis Issues] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-07-13 15:25:22,233 [INFO] ✅ Success: [The Hacker News] (65 lines)
+2025-07-13 15:25:22,308 [ERROR] ❌ Retry failed: [massive-octo-nemesis Releases] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-07-13 15:25:22,318 [INFO] 📦 Saved 20 total entries to /Users/ragav/Projects/Threat-Intel/threat_intel_aggregator/data/raw_feeds.json
+2025-07-13 15:25:22,319 [INFO] 🧪 Running IOC Parser
+2025-07-13 15:25:22,415 [INFO] ✅ Feed Collection Complete
+2025-07-13 15:36:48,630 [INFO] 📥 Feed Collection Started
+2025-07-13 15:36:48,636 [INFO] 🚀 Starting concurrent fetch of 20 feeds...
+2025-07-13 15:36:48,636 [INFO] 🔄 Trying to fetch: https://blog.talosintelligence.com/rss/
+2025-07-13 15:36:48,637 [INFO] 🔄 Trying to fetch: https://feeds.feedburner.com/TheHackersNews
+2025-07-13 15:36:48,637 [INFO] 🔄 Trying to fetch: https://www.darkreading.com/rss.xml
+2025-07-13 15:36:48,639 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-07-13 15:36:48,641 [INFO] 🔄 Trying to fetch: https://us-cert.cisa.gov/ncas/all.xml
+2025-07-13 15:36:48,641 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-07-13 15:36:48,642 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/issues.atom
+2025-07-13 15:36:48,643 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/releases.atom
+2025-07-13 15:36:48,643 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/commits/master.atom
+2025-07-13 15:36:48,644 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/issues.atom
+2025-07-13 15:36:48,802 [INFO] ✅ Success: [Cisco Talos] (120 lines)
+2025-07-13 15:36:48,807 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/releases.atom
+2025-07-13 15:36:49,032 [INFO] ✅ Success: [theZoo Releases] (45 lines)
+2025-07-13 15:36:49,033 [ERROR] ❌ Retry failed: [theZoo Issues] - 406 Client Error: Not Acceptable for url: https://github.com/ytisf/theZoo/issues.atom
+2025-07-13 15:36:49,036 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/commits/master.atom
+2025-07-13 15:36:49,036 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-07-13 15:36:49,085 [ERROR] ❌ Retry failed: [MISP Commits] - 404 Client Error: Not Found for url: https://github.com/MISP/MISP/commits/master.atom
+2025-07-13 15:36:49,086 [INFO] ✅ Success: [theZoo Commits] (371 lines)
+2025-07-13 15:36:49,088 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/releases.atom
+2025-07-13 15:36:49,089 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/commits/master.atom
+2025-07-13 15:36:49,098 [INFO] ✅ Success: [GitHub Malware Zoo] (371 lines)
+2025-07-13 15:36:49,100 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-07-13 15:36:49,109 [INFO] ✅ Success: [Dark Reading] (614 lines)
+2025-07-13 15:36:49,110 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/releases.atom
+2025-07-13 15:36:49,140 [ERROR] ❌ Retry failed: [MISP Issues] - 406 Client Error: Not Acceptable for url: https://github.com/MISP/MISP/issues.atom
+2025-07-13 15:36:49,142 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-07-13 15:36:49,244 [ERROR] ❌ Retry failed: [CISA Alerts] - 404 Client Error: Not Found for url: https://www.cisa.gov/ncas/all.xml
+2025-07-13 15:36:49,248 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-07-13 15:36:49,352 [INFO] ✅ Success: [The Hacker News] (65 lines)
+2025-07-13 15:36:49,354 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-07-13 15:36:49,363 [INFO] ✅ Success: [MISP Releases] (477 lines)
+2025-07-13 15:36:49,416 [ERROR] ❌ Retry failed: [attack-stix-data Issues] - 406 Client Error: Not Acceptable for url: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-07-13 15:36:49,458 [ERROR] ❌ Retry failed: [atomic-red-team Issues] - 406 Client Error: Not Acceptable for url: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-07-13 15:36:49,490 [ERROR] ❌ Retry failed: [massive-octo-nemesis Commits] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-07-13 15:36:49,492 [INFO] ✅ Success: [atomic-red-team Releases] (8 lines)
+2025-07-13 15:36:49,493 [INFO] ✅ Success: [attack-stix-data Releases] (85 lines)
+2025-07-13 15:36:49,494 [INFO] ✅ Success: [attack-stix-data Commits] (332 lines)
+2025-07-13 15:36:49,550 [INFO] ✅ Success: [atomic-red-team Commits] (370 lines)
+2025-07-13 15:36:49,564 [ERROR] ❌ Retry failed: [massive-octo-nemesis Issues] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-07-13 15:36:49,750 [ERROR] ❌ Retry failed: [massive-octo-nemesis Releases] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-07-13 15:36:49,755 [INFO] 📦 Saved 20 total entries to /Users/ragav/Projects/Threat-Intel/threat_intel_aggregator/data/raw_feeds.json
+2025-07-13 15:36:49,755 [INFO] 🧪 Running IOC Parser
+2025-07-13 15:36:49,853 [INFO] ✅ Feed Collection Complete
+2025-07-13 15:48:36,101 [INFO] 📥 Feed Collection Started
+2025-07-13 15:48:36,105 [INFO] 🚀 Starting concurrent fetch of 20 feeds...
+2025-07-13 15:48:36,105 [INFO] 🔄 Trying to fetch: https://blog.talosintelligence.com/rss/
+2025-07-13 15:48:36,105 [INFO] 🔄 Trying to fetch: https://feeds.feedburner.com/TheHackersNews
+2025-07-13 15:48:36,105 [INFO] 🔄 Trying to fetch: https://www.darkreading.com/rss.xml
+2025-07-13 15:48:36,106 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-07-13 15:48:36,107 [INFO] 🔄 Trying to fetch: https://us-cert.cisa.gov/ncas/all.xml
+2025-07-13 15:48:36,108 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-07-13 15:48:36,108 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/issues.atom
+2025-07-13 15:48:36,109 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/releases.atom
+2025-07-13 15:48:36,109 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/commits/master.atom
+2025-07-13 15:48:36,109 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/issues.atom
+2025-07-13 15:48:36,779 [INFO] ✅ Success: [Cisco Talos] (120 lines)
+2025-07-13 15:48:36,781 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/releases.atom
+2025-07-13 15:48:36,944 [ERROR] ❌ Retry failed: [theZoo Issues] - 406 Client Error: Not Acceptable for url: https://github.com/ytisf/theZoo/issues.atom
+2025-07-13 15:48:36,947 [INFO] ✅ Success: [Dark Reading] (614 lines)
+2025-07-13 15:48:36,948 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/commits/master.atom
+2025-07-13 15:48:36,950 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-07-13 15:48:36,975 [INFO] ✅ Success: [theZoo Releases] (45 lines)
+2025-07-13 15:48:36,977 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/releases.atom
+2025-07-13 15:48:36,978 [INFO] ✅ Success: [theZoo Commits] (371 lines)
+2025-07-13 15:48:36,980 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/commits/master.atom
+2025-07-13 15:48:37,135 [INFO] ✅ Success: [GitHub Malware Zoo] (371 lines)
+2025-07-13 15:48:37,136 [ERROR] ❌ Retry failed: [MISP Commits] - 404 Client Error: Not Found for url: https://github.com/MISP/MISP/commits/master.atom
+2025-07-13 15:48:37,136 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-07-13 15:48:37,137 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/releases.atom
+2025-07-13 15:48:37,202 [ERROR] ❌ Retry failed: [MISP Issues] - 406 Client Error: Not Acceptable for url: https://github.com/MISP/MISP/issues.atom
+2025-07-13 15:48:37,203 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-07-13 15:48:37,493 [INFO] ✅ Success: [atomic-red-team Releases] (8 lines)
+2025-07-13 15:48:37,494 [INFO] ✅ Success: [The Hacker News] (65 lines)
+2025-07-13 15:48:37,496 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-07-13 15:48:37,496 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-07-13 15:48:37,529 [ERROR] ❌ Retry failed: [attack-stix-data Issues] - 406 Client Error: Not Acceptable for url: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-07-13 15:48:37,530 [INFO] ✅ Success: [attack-stix-data Releases] (85 lines)
+2025-07-13 15:48:37,543 [ERROR] ❌ Retry failed: [CISA Alerts] - 404 Client Error: Not Found for url: https://www.cisa.gov/ncas/all.xml
+2025-07-13 15:48:37,543 [INFO] ✅ Success: [attack-stix-data Commits] (332 lines)
+2025-07-13 15:48:37,569 [INFO] ✅ Success: [atomic-red-team Commits] (370 lines)
+2025-07-13 15:48:37,572 [ERROR] ❌ Retry failed: [atomic-red-team Issues] - 406 Client Error: Not Acceptable for url: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-07-13 15:48:37,604 [ERROR] ❌ Retry failed: [massive-octo-nemesis Commits] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-07-13 15:48:37,614 [INFO] ✅ Success: [MISP Releases] (477 lines)
+2025-07-13 15:48:37,818 [ERROR] ❌ Retry failed: [massive-octo-nemesis Releases] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-07-13 15:48:37,897 [ERROR] ❌ Retry failed: [massive-octo-nemesis Issues] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-07-13 15:48:37,907 [INFO] 📦 Saved 20 total entries to /Users/ragav/Projects/Threat-Intel/threat_intel_aggregator/data/raw_feeds.json
+2025-07-13 15:48:37,907 [INFO] 🧪 Running IOC Parser
+2025-07-13 15:48:38,007 [INFO] ✅ Feed Collection Complete
+2025-07-13 15:59:55,956 [INFO] 📥 Feed Collection Started
+2025-07-13 15:59:55,962 [INFO] 🚀 Starting concurrent fetch of 20 feeds...
+2025-07-13 15:59:55,962 [INFO] 🔄 Trying to fetch: https://blog.talosintelligence.com/rss/
+2025-07-13 15:59:55,963 [INFO] 🔄 Trying to fetch: https://feeds.feedburner.com/TheHackersNews
+2025-07-13 15:59:55,963 [INFO] 🔄 Trying to fetch: https://www.darkreading.com/rss.xml
+2025-07-13 15:59:55,964 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-07-13 15:59:55,965 [INFO] 🔄 Trying to fetch: https://us-cert.cisa.gov/ncas/all.xml
+2025-07-13 15:59:55,967 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-07-13 15:59:55,968 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/issues.atom
+2025-07-13 15:59:55,969 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/releases.atom
+2025-07-13 15:59:55,969 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/commits/master.atom
+2025-07-13 15:59:55,970 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/issues.atom
+2025-07-13 15:59:56,153 [INFO] ✅ Success: [Cisco Talos] (120 lines)
+2025-07-13 15:59:56,157 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/releases.atom
+2025-07-13 15:59:56,340 [ERROR] ❌ Retry failed: [theZoo Issues] - 406 Client Error: Not Acceptable for url: https://github.com/ytisf/theZoo/issues.atom
+2025-07-13 15:59:56,343 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/commits/master.atom
+2025-07-13 15:59:56,351 [INFO] ✅ Success: [theZoo Releases] (45 lines)
+2025-07-13 15:59:56,353 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-07-13 15:59:56,388 [ERROR] ❌ Retry failed: [MISP Commits] - 404 Client Error: Not Found for url: https://github.com/MISP/MISP/commits/master.atom
+2025-07-13 15:59:56,391 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/releases.atom
+2025-07-13 15:59:56,398 [INFO] ✅ Success: [GitHub Malware Zoo] (371 lines)
+2025-07-13 15:59:56,400 [ERROR] ❌ Retry failed: [MISP Issues] - 406 Client Error: Not Acceptable for url: https://github.com/MISP/MISP/issues.atom
+2025-07-13 15:59:56,401 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/commits/master.atom
+2025-07-13 15:59:56,402 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-07-13 15:59:56,409 [INFO] ✅ Success: [theZoo Commits] (371 lines)
+2025-07-13 15:59:56,410 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/releases.atom
+2025-07-13 15:59:56,650 [ERROR] ❌ Retry failed: [CISA Alerts] - 404 Client Error: Not Found for url: https://www.cisa.gov/ncas/all.xml
+2025-07-13 15:59:56,653 [INFO] ✅ Success: [MISP Releases] (477 lines)
+2025-07-13 15:59:56,655 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-07-13 15:59:56,656 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-07-13 15:59:56,695 [ERROR] ❌ Retry failed: [attack-stix-data Issues] - 406 Client Error: Not Acceptable for url: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-07-13 15:59:56,698 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-07-13 15:59:56,745 [INFO] ✅ Success: [Dark Reading] (614 lines)
+2025-07-13 15:59:56,771 [ERROR] ❌ Retry failed: [atomic-red-team Issues] - 406 Client Error: Not Acceptable for url: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-07-13 15:59:56,776 [INFO] ✅ Success: [atomic-red-team Releases] (8 lines)
+2025-07-13 15:59:56,788 [INFO] ✅ Success: [attack-stix-data Releases] (85 lines)
+2025-07-13 15:59:56,820 [INFO] ✅ Success: [atomic-red-team Commits] (370 lines)
+2025-07-13 15:59:56,834 [INFO] ✅ Success: [attack-stix-data Commits] (332 lines)
+2025-07-13 15:59:56,857 [INFO] ✅ Success: [The Hacker News] (65 lines)
+2025-07-13 15:59:56,983 [ERROR] ❌ Retry failed: [massive-octo-nemesis Commits] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-07-13 15:59:56,990 [ERROR] ❌ Retry failed: [massive-octo-nemesis Issues] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-07-13 15:59:57,029 [ERROR] ❌ Retry failed: [massive-octo-nemesis Releases] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-07-13 15:59:57,033 [INFO] 📦 Saved 20 total entries to /Users/ragav/Projects/Threat-Intel/threat_intel_aggregator/data/raw_feeds.json
+2025-07-13 15:59:57,033 [INFO] 🧪 Running IOC Parser
+2025-07-13 15:59:57,120 [INFO] ✅ Feed Collection Complete
+2025-07-13 16:11:20,561 [INFO] 📥 Feed Collection Started
+2025-07-13 16:11:20,565 [INFO] 🚀 Starting concurrent fetch of 20 feeds...
+2025-07-13 16:11:20,565 [INFO] 🔄 Trying to fetch: https://blog.talosintelligence.com/rss/
+2025-07-13 16:11:20,565 [INFO] 🔄 Trying to fetch: https://feeds.feedburner.com/TheHackersNews
+2025-07-13 16:11:20,566 [INFO] 🔄 Trying to fetch: https://www.darkreading.com/rss.xml
+2025-07-13 16:11:20,566 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-07-13 16:11:20,567 [INFO] 🔄 Trying to fetch: https://us-cert.cisa.gov/ncas/all.xml
+2025-07-13 16:11:20,568 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-07-13 16:11:20,570 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/issues.atom
+2025-07-13 16:11:20,571 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/releases.atom
+2025-07-13 16:11:20,572 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/commits/master.atom
+2025-07-13 16:11:20,572 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/issues.atom
+2025-07-13 16:11:20,737 [INFO] ✅ Success: [Cisco Talos] (120 lines)
+2025-07-13 16:11:20,739 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/releases.atom
+2025-07-13 16:11:20,929 [ERROR] ❌ Retry failed: [theZoo Issues] - 406 Client Error: Not Acceptable for url: https://github.com/ytisf/theZoo/issues.atom
+2025-07-13 16:11:20,933 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/commits/master.atom
+2025-07-13 16:11:20,937 [ERROR] ❌ Retry failed: [MISP Commits] - 404 Client Error: Not Found for url: https://github.com/MISP/MISP/commits/master.atom
+2025-07-13 16:11:20,938 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-07-13 16:11:20,948 [INFO] ✅ Success: [theZoo Releases] (45 lines)
+2025-07-13 16:11:20,949 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/releases.atom
+2025-07-13 16:11:20,977 [INFO] ✅ Success: [theZoo Commits] (371 lines)
+2025-07-13 16:11:20,979 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/commits/master.atom
+2025-07-13 16:11:20,982 [INFO] ✅ Success: [Dark Reading] (614 lines)
+2025-07-13 16:11:20,983 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-07-13 16:11:20,993 [INFO] ✅ Success: [GitHub Malware Zoo] (371 lines)
+2025-07-13 16:11:20,994 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/releases.atom
+2025-07-13 16:11:21,082 [ERROR] ❌ Retry failed: [CISA Alerts] - 404 Client Error: Not Found for url: https://www.cisa.gov/ncas/all.xml
+2025-07-13 16:11:21,083 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-07-13 16:11:21,113 [ERROR] ❌ Retry failed: [MISP Issues] - 406 Client Error: Not Acceptable for url: https://github.com/MISP/MISP/issues.atom
+2025-07-13 16:11:21,114 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-07-13 16:11:21,211 [INFO] ✅ Success: [MISP Releases] (477 lines)
+2025-07-13 16:11:21,213 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-07-13 16:11:21,284 [ERROR] ❌ Retry failed: [attack-stix-data Issues] - 406 Client Error: Not Acceptable for url: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-07-13 16:11:21,320 [INFO] ✅ Success: [atomic-red-team Releases] (8 lines)
+2025-07-13 16:11:21,334 [INFO] ✅ Success: [attack-stix-data Releases] (85 lines)
+2025-07-13 16:11:21,339 [ERROR] ❌ Retry failed: [atomic-red-team Issues] - 406 Client Error: Not Acceptable for url: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-07-13 16:11:21,383 [INFO] ✅ Success: [atomic-red-team Commits] (370 lines)
+2025-07-13 16:11:21,384 [INFO] ✅ Success: [attack-stix-data Commits] (332 lines)
+2025-07-13 16:11:21,397 [ERROR] ❌ Retry failed: [massive-octo-nemesis Commits] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-07-13 16:11:21,418 [ERROR] ❌ Retry failed: [massive-octo-nemesis Issues] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-07-13 16:11:21,527 [ERROR] ❌ Retry failed: [massive-octo-nemesis Releases] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-07-13 16:11:21,767 [INFO] ✅ Success: [The Hacker News] (65 lines)
+2025-07-13 16:11:21,771 [INFO] 📦 Saved 20 total entries to /Users/ragav/Projects/Threat-Intel/threat_intel_aggregator/data/raw_feeds.json
+2025-07-13 16:11:21,771 [INFO] 🧪 Running IOC Parser
+2025-07-13 16:11:21,862 [INFO] ✅ Feed Collection Complete
+2025-07-13 16:16:27,220 [INFO] 📥 Feed Collection Started
+2025-07-13 16:16:27,221 [INFO] 🚀 Starting concurrent fetch of 20 feeds...
+2025-07-13 16:16:27,221 [INFO] 🔄 Trying to fetch: https://blog.talosintelligence.com/rss/
+2025-07-13 16:16:27,221 [INFO] 🔄 Trying to fetch: https://feeds.feedburner.com/TheHackersNews
+2025-07-13 16:16:27,221 [INFO] 🔄 Trying to fetch: https://www.darkreading.com/rss.xml
+2025-07-13 16:16:27,221 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-07-13 16:16:27,222 [INFO] 🔄 Trying to fetch: https://us-cert.cisa.gov/ncas/all.xml
+2025-07-13 16:16:27,222 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-07-13 16:16:27,222 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/issues.atom
+2025-07-13 16:16:27,222 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/releases.atom
+2025-07-13 16:16:27,222 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/commits/master.atom
+2025-07-13 16:16:27,222 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/issues.atom
+2025-07-13 16:16:27,390 [INFO] ✅ Success: [Cisco Talos] (120 lines)
+2025-07-13 16:16:27,391 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/releases.atom
+2025-07-13 16:16:27,587 [ERROR] ❌ Retry failed: [theZoo Issues] - 406 Client Error: Not Acceptable for url: https://github.com/ytisf/theZoo/issues.atom
+2025-07-13 16:16:27,592 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/commits/master.atom
+2025-07-13 16:16:27,596 [INFO] ✅ Success: [theZoo Releases] (45 lines)
+2025-07-13 16:16:27,597 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-07-13 16:16:27,599 [ERROR] ❌ Retry failed: [MISP Commits] - 404 Client Error: Not Found for url: https://github.com/MISP/MISP/commits/master.atom
+2025-07-13 16:16:27,600 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/releases.atom
+2025-07-13 16:16:27,642 [ERROR] ❌ Retry failed: [MISP Issues] - 406 Client Error: Not Acceptable for url: https://github.com/MISP/MISP/issues.atom
+2025-07-13 16:16:27,644 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/commits/master.atom
+2025-07-13 16:16:27,652 [INFO] ✅ Success: [Dark Reading] (614 lines)
+2025-07-13 16:16:27,655 [INFO] ✅ Success: [GitHub Malware Zoo] (371 lines)
+2025-07-13 16:16:27,655 [INFO] ✅ Success: [theZoo Commits] (371 lines)
+2025-07-13 16:16:27,656 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-07-13 16:16:27,657 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/releases.atom
+2025-07-13 16:16:27,657 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-07-13 16:16:27,752 [ERROR] ❌ Retry failed: [CISA Alerts] - 404 Client Error: Not Found for url: https://www.cisa.gov/ncas/all.xml
+2025-07-13 16:16:27,753 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-07-13 16:16:27,788 [INFO] ✅ Success: [The Hacker News] (65 lines)
+2025-07-13 16:16:27,789 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-07-13 16:16:27,863 [INFO] ✅ Success: [MISP Releases] (477 lines)
+2025-07-13 16:16:27,934 [ERROR] ❌ Retry failed: [attack-stix-data Issues] - 406 Client Error: Not Acceptable for url: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-07-13 16:16:27,956 [ERROR] ❌ Retry failed: [massive-octo-nemesis Commits] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-07-13 16:16:27,963 [INFO] ✅ Success: [attack-stix-data Releases] (85 lines)
+2025-07-13 16:16:27,992 [INFO] ✅ Success: [atomic-red-team Releases] (8 lines)
+2025-07-13 16:16:28,015 [ERROR] ❌ Retry failed: [atomic-red-team Issues] - 406 Client Error: Not Acceptable for url: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-07-13 16:16:28,035 [INFO] ✅ Success: [attack-stix-data Commits] (332 lines)
+2025-07-13 16:16:28,073 [INFO] ✅ Success: [atomic-red-team Commits] (370 lines)
+2025-07-13 16:16:28,100 [ERROR] ❌ Retry failed: [massive-octo-nemesis Issues] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-07-13 16:16:28,132 [ERROR] ❌ Retry failed: [massive-octo-nemesis Releases] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-07-13 16:16:28,135 [INFO] 📦 Saved 20 total entries to /Users/ragav/Projects/Threat-Intel/threat_intel_aggregator/data/raw_feeds.json
+2025-07-13 16:16:28,136 [INFO] 🧪 Running IOC Parser
+2025-07-13 16:16:28,230 [INFO] ✅ Feed Collection Complete
+2025-07-13 16:17:44,576 [INFO] 🕒 Next scheduled feed collection at 2025-07-13 16:27:44.575922
+2025-07-13 16:52:53,538 [INFO] Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-07-13 16:52:53,538 [INFO] Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-07-13 16:52:53,538 [INFO] Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-07-13 16:52:53,538 [INFO] Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-07-13 16:52:53,538 [INFO] Added job "job_collect_feeds" to job store "default"
+2025-07-13 16:52:53,538 [INFO] Added job "job_summarize" to job store "default"
+2025-07-13 16:52:53,538 [INFO] Added job "job_export" to job store "default"
+2025-07-13 16:52:53,538 [INFO] Added job "log_metrics" to job store "default"
+2025-07-13 16:52:53,538 [INFO] Scheduler started
+2025-07-13 16:52:53,538 [INFO] 🕒 Threat Intelligence Pipeline Scheduler started.
+2025-07-13 16:53:10,807 [INFO] Scheduler has been shut down
+2025-07-13 16:53:10,809 [INFO] 🔴 Scheduler stopped.
+2025-07-13 16:54:48,466 [INFO] Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-07-13 16:54:48,466 [INFO] Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-07-13 16:54:48,466 [INFO] Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-07-13 16:54:48,466 [INFO] Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-07-13 16:54:48,466 [INFO] Added job "job_collect_feeds" to job store "default"
+2025-07-13 16:54:48,466 [INFO] Added job "job_summarize" to job store "default"
+2025-07-13 16:54:48,466 [INFO] Added job "job_export" to job store "default"
+2025-07-13 16:54:48,466 [INFO] Added job "log_metrics" to job store "default"
+2025-07-13 16:54:48,466 [INFO] Scheduler started
+2025-07-13 16:54:48,467 [INFO] 🕒 Threat Intelligence Pipeline Scheduler started.
+2025-07-13 16:58:57,280 [INFO] Scheduler has been shut down
+2025-07-13 16:58:57,281 [INFO] 🔴 Scheduler stopped.
+2025-07-13 16:59:00,758 [INFO] Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-07-13 16:59:00,759 [INFO] Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-07-13 16:59:00,759 [INFO] Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-07-13 16:59:00,759 [INFO] Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-07-13 16:59:00,759 [INFO] Added job "job_collect_feeds" to job store "default"
+2025-07-13 16:59:00,759 [INFO] Added job "job_summarize" to job store "default"
+2025-07-13 16:59:00,759 [INFO] Added job "job_export" to job store "default"
+2025-07-13 16:59:00,759 [INFO] Added job "log_metrics" to job store "default"
+2025-07-13 16:59:00,759 [INFO] Scheduler started
+2025-07-13 16:59:00,759 [INFO] 🔁 Starting job: Collect Feeds
+2025-07-13 16:59:00,759 [INFO] 📥 Feed Collection Started
+2025-07-13 16:59:00,760 [INFO] 🚀 Starting concurrent fetch of 20 feeds...
+2025-07-13 16:59:00,760 [INFO] 🔄 Trying to fetch: https://blog.talosintelligence.com/rss/
+2025-07-13 16:59:00,760 [INFO] 🔄 Trying to fetch: https://feeds.feedburner.com/TheHackersNews
+2025-07-13 16:59:00,760 [INFO] 🔄 Trying to fetch: https://www.darkreading.com/rss.xml
+2025-07-13 16:59:00,761 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-07-13 16:59:00,761 [INFO] 🔄 Trying to fetch: https://us-cert.cisa.gov/ncas/all.xml
+2025-07-13 16:59:00,761 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-07-13 16:59:00,761 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/issues.atom
+2025-07-13 16:59:00,761 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/releases.atom
+2025-07-13 16:59:00,761 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/commits/master.atom
+2025-07-13 16:59:00,761 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/issues.atom
+2025-07-13 16:59:01,138 [ERROR] ❌ Retry failed: [MISP Commits] - 404 Client Error: Not Found for url: https://github.com/MISP/MISP/commits/master.atom
+2025-07-13 16:59:01,141 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/releases.atom
+2025-07-13 16:59:01,142 [ERROR] ❌ Retry failed: [theZoo Issues] - 406 Client Error: Not Acceptable for url: https://github.com/ytisf/theZoo/issues.atom
+2025-07-13 16:59:01,143 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/commits/master.atom
+2025-07-13 16:59:01,161 [INFO] ✅ Success: [theZoo Releases] (45 lines)
+2025-07-13 16:59:01,163 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-07-13 16:59:01,191 [INFO] ✅ Success: [GitHub Malware Zoo] (371 lines)
+2025-07-13 16:59:01,192 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/releases.atom
+2025-07-13 16:59:01,198 [INFO] ✅ Success: [theZoo Commits] (371 lines)
+2025-07-13 16:59:01,200 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/commits/master.atom
+2025-07-13 16:59:01,246 [ERROR] ❌ Retry failed: [MISP Issues] - 406 Client Error: Not Acceptable for url: https://github.com/MISP/MISP/issues.atom
+2025-07-13 16:59:01,248 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-07-13 16:59:01,330 [INFO] ✅ Success: [The Hacker News] (65 lines)
+2025-07-13 16:59:01,331 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/releases.atom
+2025-07-13 16:59:01,380 [ERROR] ❌ Retry failed: [CISA Alerts] - 404 Client Error: Not Found for url: https://www.cisa.gov/ncas/all.xml
+2025-07-13 16:59:01,381 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-07-13 16:59:01,447 [INFO] ✅ Success: [Dark Reading] (614 lines)
+2025-07-13 16:59:01,449 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-07-13 16:59:01,495 [INFO] ✅ Success: [Cisco Talos] (120 lines)
+2025-07-13 16:59:01,497 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-07-13 16:59:01,513 [ERROR] ❌ Retry failed: [attack-stix-data Issues] - 406 Client Error: Not Acceptable for url: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-07-13 16:59:01,575 [INFO] ✅ Success: [attack-stix-data Commits] (332 lines)
+2025-07-13 16:59:01,593 [INFO] ✅ Success: [attack-stix-data Releases] (85 lines)
+2025-07-13 16:59:01,605 [ERROR] ❌ Retry failed: [atomic-red-team Issues] - 406 Client Error: Not Acceptable for url: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-07-13 16:59:01,635 [INFO] ✅ Success: [atomic-red-team Commits] (370 lines)
+2025-07-13 16:59:01,663 [INFO] ✅ Success: [atomic-red-team Releases] (8 lines)
+2025-07-13 16:59:01,694 [ERROR] ❌ Retry failed: [massive-octo-nemesis Commits] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-07-13 16:59:01,737 [INFO] ✅ Success: [MISP Releases] (477 lines)
+2025-07-13 16:59:01,760 [ERROR] ❌ Retry failed: [massive-octo-nemesis Issues] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-07-13 16:59:01,854 [ERROR] ❌ Retry failed: [massive-octo-nemesis Releases] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-07-13 16:59:01,863 [INFO] 📦 Saved 20 total entries to /Users/ragav/Projects/Threat-Intel/threat_intel_aggregator/data/raw_feeds.json
+2025-07-13 16:59:01,863 [INFO] 🧪 Running IOC Parser
+2025-07-13 16:59:01,966 [INFO] ✅ Feed Collection Complete
+2025-07-13 16:59:02,091 [INFO] 🔁 Starting job: Summarize Pending IOCs
+2025-07-13 16:59:02,091 [INFO] 🔁 Starting job: Export High Severity
+2025-07-13 16:59:02,098 [INFO] 📊 Metrics — IOCs: 0, Emails: 0, Errors: 0
+2025-07-13 16:59:02,098 [INFO] 🕒 Threat Intelligence Pipeline Scheduler started.
+2025-07-13 17:04:00,761 [INFO] Running job "job_summarize (trigger: interval[0:05:00], next run at: 2025-07-13 17:04:00 IST)" (scheduled at 2025-07-13 17:04:00.759015+05:30)
+2025-07-13 17:04:00,762 [INFO] 🔁 Starting job: Summarize Pending IOCs
+2025-07-13 17:04:00,763 [INFO] Job "job_summarize (trigger: interval[0:05:00], next run at: 2025-07-13 17:09:00 IST)" executed successfully
+2025-07-13 17:09:00,764 [INFO] Running job "job_summarize (trigger: interval[0:05:00], next run at: 2025-07-13 17:09:00 IST)" (scheduled at 2025-07-13 17:09:00.759015+05:30)
+2025-07-13 17:09:00,764 [INFO] Running job "job_collect_feeds (trigger: interval[0:10:00], next run at: 2025-07-13 17:19:00 IST)" (scheduled at 2025-07-13 17:09:00.758866+05:30)
+2025-07-13 17:09:00,765 [INFO] 🔁 Starting job: Summarize Pending IOCs
+2025-07-13 17:09:00,766 [INFO] 🔁 Starting job: Collect Feeds
+2025-07-13 17:09:00,774 [INFO] 📥 Feed Collection Started
+2025-07-13 17:09:00,774 [INFO] Job "job_summarize (trigger: interval[0:05:00], next run at: 2025-07-13 17:14:00 IST)" executed successfully
+2025-07-13 17:09:00,777 [INFO] 🚀 Starting concurrent fetch of 20 feeds...
+2025-07-13 17:09:00,777 [INFO] 🔄 Trying to fetch: https://blog.talosintelligence.com/rss/
+2025-07-13 17:09:00,777 [INFO] 🔄 Trying to fetch: https://feeds.feedburner.com/TheHackersNews
+2025-07-13 17:09:00,777 [INFO] 🔄 Trying to fetch: https://www.darkreading.com/rss.xml
+2025-07-13 17:09:00,778 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-07-13 17:09:00,778 [INFO] 🔄 Trying to fetch: https://us-cert.cisa.gov/ncas/all.xml
+2025-07-13 17:09:00,779 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-07-13 17:09:00,779 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/issues.atom
+2025-07-13 17:09:00,779 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/releases.atom
+2025-07-13 17:09:00,781 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/commits/master.atom
+2025-07-13 17:09:00,781 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/issues.atom
+2025-07-13 17:09:00,876 [INFO] ✅ Success: [Cisco Talos] (120 lines)
+2025-07-13 17:09:00,881 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/releases.atom
+2025-07-13 17:09:01,158 [ERROR] ❌ Retry failed: [theZoo Issues] - 406 Client Error: Not Acceptable for url: https://github.com/ytisf/theZoo/issues.atom
+2025-07-13 17:09:01,160 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/commits/master.atom
+2025-07-13 17:09:01,180 [ERROR] ❌ Retry failed: [MISP Commits] - 404 Client Error: Not Found for url: https://github.com/MISP/MISP/commits/master.atom
+2025-07-13 17:09:01,182 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-07-13 17:09:01,195 [INFO] ✅ Success: [theZoo Releases] (45 lines)
+2025-07-13 17:09:01,196 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/releases.atom
+2025-07-13 17:09:01,222 [ERROR] ❌ Retry failed: [MISP Issues] - 406 Client Error: Not Acceptable for url: https://github.com/MISP/MISP/issues.atom
+2025-07-13 17:09:01,223 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/commits/master.atom
+2025-07-13 17:09:01,237 [INFO] ✅ Success: [Dark Reading] (614 lines)
+2025-07-13 17:09:01,238 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-07-13 17:09:01,244 [INFO] ✅ Success: [GitHub Malware Zoo] (371 lines)
+2025-07-13 17:09:01,245 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/releases.atom
+2025-07-13 17:09:01,250 [INFO] ✅ Success: [theZoo Commits] (371 lines)
+2025-07-13 17:09:01,251 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-07-13 17:09:01,352 [INFO] ✅ Success: [MISP Releases] (477 lines)
+2025-07-13 17:09:01,354 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-07-13 17:09:01,424 [ERROR] ❌ Retry failed: [CISA Alerts] - 404 Client Error: Not Found for url: https://www.cisa.gov/ncas/all.xml
+2025-07-13 17:09:01,426 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-07-13 17:09:01,530 [ERROR] ❌ Retry failed: [attack-stix-data Issues] - 406 Client Error: Not Acceptable for url: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-07-13 17:09:01,550 [ERROR] ❌ Retry failed: [massive-octo-nemesis Commits] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-07-13 17:09:01,558 [INFO] ✅ Success: [attack-stix-data Releases] (85 lines)
+2025-07-13 17:09:01,567 [INFO] ✅ Success: [attack-stix-data Commits] (332 lines)
+2025-07-13 17:09:01,579 [INFO] ✅ Success: [atomic-red-team Releases] (8 lines)
+2025-07-13 17:09:01,597 [ERROR] ❌ Retry failed: [atomic-red-team Issues] - 406 Client Error: Not Acceptable for url: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-07-13 17:09:01,644 [INFO] ✅ Success: [atomic-red-team Commits] (370 lines)
+2025-07-13 17:09:01,670 [ERROR] ❌ Retry failed: [massive-octo-nemesis Issues] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-07-13 17:09:01,736 [ERROR] ❌ Retry failed: [massive-octo-nemesis Releases] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-07-13 17:09:01,965 [INFO] ✅ Success: [The Hacker News] (65 lines)
+2025-07-13 17:09:01,974 [INFO] 📦 Saved 20 total entries to /Users/ragav/Projects/Threat-Intel/threat_intel_aggregator/data/raw_feeds.json
+2025-07-13 17:09:01,974 [INFO] 🧪 Running IOC Parser
+2025-07-13 17:09:02,074 [INFO] ✅ Feed Collection Complete
+2025-07-13 17:09:02,245 [INFO] Job "job_collect_feeds (trigger: interval[0:10:00], next run at: 2025-07-13 17:19:00 IST)" executed successfully
+2025-07-13 17:14:00,764 [INFO] Running job "job_summarize (trigger: interval[0:05:00], next run at: 2025-07-13 17:19:00 IST)" (scheduled at 2025-07-13 17:14:00.759015+05:30)
+2025-07-13 17:14:00,764 [INFO] 🔁 Starting job: Summarize Pending IOCs
+2025-07-13 17:14:00,765 [INFO] Job "job_summarize (trigger: interval[0:05:00], next run at: 2025-07-13 17:19:00 IST)" executed successfully
+2025-07-13 17:19:00,763 [INFO] Running job "job_collect_feeds (trigger: interval[0:10:00], next run at: 2025-07-13 17:29:00 IST)" (scheduled at 2025-07-13 17:19:00.758866+05:30)
+2025-07-13 17:19:00,764 [INFO] Running job "job_summarize (trigger: interval[0:05:00], next run at: 2025-07-13 17:24:00 IST)" (scheduled at 2025-07-13 17:19:00.759015+05:30)
+2025-07-13 17:19:00,764 [INFO] 🔁 Starting job: Collect Feeds
+2025-07-13 17:19:00,764 [INFO] 🔁 Starting job: Summarize Pending IOCs
+2025-07-13 17:19:00,764 [INFO] 📥 Feed Collection Started
+2025-07-13 17:19:00,764 [INFO] Job "job_summarize (trigger: interval[0:05:00], next run at: 2025-07-13 17:24:00 IST)" executed successfully
+2025-07-13 17:19:00,769 [INFO] 🚀 Starting concurrent fetch of 20 feeds...
+2025-07-13 17:19:00,770 [INFO] 🔄 Trying to fetch: https://blog.talosintelligence.com/rss/
+2025-07-13 17:19:00,770 [INFO] 🔄 Trying to fetch: https://feeds.feedburner.com/TheHackersNews
+2025-07-13 17:19:00,770 [INFO] 🔄 Trying to fetch: https://www.darkreading.com/rss.xml
+2025-07-13 17:19:00,771 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-07-13 17:19:00,772 [INFO] 🔄 Trying to fetch: https://us-cert.cisa.gov/ncas/all.xml
+2025-07-13 17:19:00,772 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-07-13 17:19:00,773 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/issues.atom
+2025-07-13 17:19:00,774 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/releases.atom
+2025-07-13 17:19:00,774 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/commits/master.atom
+2025-07-13 17:19:00,776 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/issues.atom
+2025-07-13 17:19:00,918 [INFO] ✅ Success: [Cisco Talos] (120 lines)
+2025-07-13 17:19:00,920 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/releases.atom
+2025-07-13 17:19:01,146 [ERROR] ❌ Retry failed: [theZoo Issues] - 406 Client Error: Not Acceptable for url: https://github.com/ytisf/theZoo/issues.atom
+2025-07-13 17:19:01,149 [ERROR] ❌ Retry failed: [MISP Commits] - 404 Client Error: Not Found for url: https://github.com/MISP/MISP/commits/master.atom
+2025-07-13 17:19:01,150 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/commits/master.atom
+2025-07-13 17:19:01,151 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-07-13 17:19:01,176 [INFO] ✅ Success: [theZoo Releases] (45 lines)
+2025-07-13 17:19:01,177 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/releases.atom
+2025-07-13 17:19:01,263 [ERROR] ❌ Retry failed: [MISP Issues] - 406 Client Error: Not Acceptable for url: https://github.com/MISP/MISP/issues.atom
+2025-07-13 17:19:01,263 [INFO] ✅ Success: [GitHub Malware Zoo] (371 lines)
+2025-07-13 17:19:01,263 [INFO] ✅ Success: [theZoo Commits] (371 lines)
+2025-07-13 17:19:01,265 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/commits/master.atom
+2025-07-13 17:19:01,266 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-07-13 17:19:01,267 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/releases.atom
+2025-07-13 17:19:01,474 [ERROR] ❌ Retry failed: [CISA Alerts] - 404 Client Error: Not Found for url: https://www.cisa.gov/ncas/all.xml
+2025-07-13 17:19:01,478 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-07-13 17:19:01,479 [INFO] ✅ Success: [MISP Releases] (477 lines)
+2025-07-13 17:19:01,483 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-07-13 17:19:01,498 [ERROR] ❌ Retry failed: [attack-stix-data Issues] - 406 Client Error: Not Acceptable for url: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-07-13 17:19:01,498 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-07-13 17:19:01,545 [INFO] ✅ Success: [attack-stix-data Commits] (332 lines)
+2025-07-13 17:19:01,611 [INFO] ✅ Success: [atomic-red-team Releases] (8 lines)
+2025-07-13 17:19:01,617 [INFO] ✅ Success: [attack-stix-data Releases] (85 lines)
+2025-07-13 17:19:01,627 [ERROR] ❌ Retry failed: [atomic-red-team Issues] - 406 Client Error: Not Acceptable for url: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-07-13 17:19:01,657 [INFO] ✅ Success: [atomic-red-team Commits] (370 lines)
+2025-07-13 17:19:01,679 [INFO] ✅ Success: [Dark Reading] (614 lines)
+2025-07-13 17:19:01,815 [ERROR] ❌ Retry failed: [massive-octo-nemesis Commits] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-07-13 17:19:01,816 [ERROR] ❌ Retry failed: [massive-octo-nemesis Issues] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-07-13 17:19:01,836 [ERROR] ❌ Retry failed: [massive-octo-nemesis Releases] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-07-13 17:19:01,939 [INFO] ✅ Success: [The Hacker News] (65 lines)
+2025-07-13 17:19:01,944 [INFO] 📦 Saved 20 total entries to /Users/ragav/Projects/Threat-Intel/threat_intel_aggregator/data/raw_feeds.json
+2025-07-13 17:19:01,944 [INFO] 🧪 Running IOC Parser
+2025-07-13 17:19:02,044 [INFO] ✅ Feed Collection Complete
+2025-07-13 17:19:02,238 [INFO] Job "job_collect_feeds (trigger: interval[0:10:00], next run at: 2025-07-13 17:29:00 IST)" executed successfully
+2025-07-13 17:24:00,768 [INFO] Running job "job_summarize (trigger: interval[0:05:00], next run at: 2025-07-13 17:29:00 IST)" (scheduled at 2025-07-13 17:24:00.759015+05:30)
+2025-07-13 17:24:00,768 [INFO] 🔁 Starting job: Summarize Pending IOCs
+2025-07-13 17:24:00,768 [INFO] Job "job_summarize (trigger: interval[0:05:00], next run at: 2025-07-13 17:29:00 IST)" executed successfully
+2025-07-13 17:26:15,246 [INFO] Scheduler has been shut down
+2025-07-13 17:26:15,246 [INFO] 🔴 Scheduler stopped.
+2025-07-13 17:29:20,382 [INFO] Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-07-13 17:29:20,382 [INFO] Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-07-13 17:29:20,382 [INFO] Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-07-13 17:29:20,382 [INFO] Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-07-13 17:29:20,382 [INFO] Added job "job_collect_feeds" to job store "default"
+2025-07-13 17:29:20,382 [INFO] Added job "job_summarize" to job store "default"
+2025-07-13 17:29:20,382 [INFO] Added job "job_export" to job store "default"
+2025-07-13 17:29:20,382 [INFO] Added job "log_metrics" to job store "default"
+2025-07-13 17:29:20,382 [INFO] Scheduler started
+2025-07-13 17:29:20,382 [INFO] 🔁 Starting job: Collect Feeds
+2025-07-13 17:29:20,382 [INFO] 📥 Feed Collection Started
+2025-07-13 17:29:20,383 [INFO] 🚀 Starting concurrent fetch of 20 feeds...
+2025-07-13 17:29:20,384 [INFO] 🔄 Trying to fetch: https://blog.talosintelligence.com/rss/
+2025-07-13 17:29:20,384 [INFO] 🔄 Trying to fetch: https://feeds.feedburner.com/TheHackersNews
+2025-07-13 17:29:20,384 [INFO] 🔄 Trying to fetch: https://www.darkreading.com/rss.xml
+2025-07-13 17:29:20,384 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-07-13 17:29:20,384 [INFO] 🔄 Trying to fetch: https://us-cert.cisa.gov/ncas/all.xml
+2025-07-13 17:29:20,384 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-07-13 17:29:20,384 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/issues.atom
+2025-07-13 17:29:20,384 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/releases.atom
+2025-07-13 17:29:20,384 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/commits/master.atom
+2025-07-13 17:29:20,384 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/issues.atom
+2025-07-13 17:29:20,548 [INFO] ✅ Success: [Cisco Talos] (120 lines)
+2025-07-13 17:29:20,549 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/releases.atom
+2025-07-13 17:29:20,770 [INFO] ✅ Success: [theZoo Releases] (45 lines)
+2025-07-13 17:29:20,773 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/commits/master.atom
+2025-07-13 17:29:20,778 [ERROR] ❌ Retry failed: [theZoo Issues] - 406 Client Error: Not Acceptable for url: https://github.com/ytisf/theZoo/issues.atom
+2025-07-13 17:29:20,779 [ERROR] ❌ Retry failed: [MISP Commits] - 404 Client Error: Not Found for url: https://github.com/MISP/MISP/commits/master.atom
+2025-07-13 17:29:20,780 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-07-13 17:29:20,781 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/releases.atom
+2025-07-13 17:29:20,823 [ERROR] ❌ Retry failed: [MISP Issues] - 406 Client Error: Not Acceptable for url: https://github.com/MISP/MISP/issues.atom
+2025-07-13 17:29:20,824 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/commits/master.atom
+2025-07-13 17:29:20,844 [INFO] ✅ Success: [theZoo Commits] (371 lines)
+2025-07-13 17:29:20,845 [INFO] ✅ Success: [GitHub Malware Zoo] (371 lines)
+2025-07-13 17:29:20,845 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-07-13 17:29:20,846 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/releases.atom
+2025-07-13 17:29:20,855 [ERROR] ❌ Retry failed: [CISA Alerts] - 404 Client Error: Not Found for url: https://www.cisa.gov/ncas/all.xml
+2025-07-13 17:29:20,856 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-07-13 17:29:20,871 [INFO] ✅ Success: [Dark Reading] (614 lines)
+2025-07-13 17:29:20,872 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-07-13 17:29:21,006 [INFO] ✅ Success: [MISP Releases] (477 lines)
+2025-07-13 17:29:21,009 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-07-13 17:29:21,082 [INFO] ✅ Success: [The Hacker News] (65 lines)
+2025-07-13 17:29:21,122 [ERROR] ❌ Retry failed: [attack-stix-data Issues] - 406 Client Error: Not Acceptable for url: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-07-13 17:29:21,153 [ERROR] ❌ Retry failed: [massive-octo-nemesis Commits] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-07-13 17:29:21,165 [ERROR] ❌ Retry failed: [massive-octo-nemesis Issues] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-07-13 17:29:21,177 [INFO] ✅ Success: [attack-stix-data Releases] (85 lines)
+2025-07-13 17:29:21,178 [INFO] ✅ Success: [attack-stix-data Commits] (332 lines)
+2025-07-13 17:29:21,206 [INFO] ✅ Success: [atomic-red-team Releases] (8 lines)
+2025-07-13 17:29:21,241 [ERROR] ❌ Retry failed: [atomic-red-team Issues] - 406 Client Error: Not Acceptable for url: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-07-13 17:29:21,274 [INFO] ✅ Success: [atomic-red-team Commits] (370 lines)
+2025-07-13 17:29:21,319 [ERROR] ❌ Retry failed: [massive-octo-nemesis Releases] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-07-13 17:29:21,327 [INFO] 📦 Saved 20 total entries to /Users/ragav/Projects/Threat-Intel/threat_intel_aggregator/data/raw_feeds.json
+2025-07-13 17:29:21,327 [INFO] 🧪 Running IOC Parser
+2025-07-13 17:29:21,435 [INFO] ✅ Feed Collection Complete
+2025-07-13 17:30:35,856 [INFO] 🔁 Starting job: Summarize Pending IOCs
+2025-07-13 17:30:35,856 [INFO] 🔁 Starting job: Export High Severity
+2025-07-13 17:30:35,869 [INFO] 📊 Metrics — IOCs: 0, Emails: 0, Errors: 0
+2025-07-13 17:30:35,869 [INFO] 🕒 Threat Intelligence Pipeline Scheduler started.
+2025-07-13 17:34:20,388 [INFO] Running job "job_summarize (trigger: interval[0:05:00], next run at: 2025-07-13 17:34:20 IST)" (scheduled at 2025-07-13 17:34:20.382546+05:30)
+2025-07-13 17:34:20,389 [INFO] 🔁 Starting job: Summarize Pending IOCs
+2025-07-13 17:34:20,390 [INFO] Job "job_summarize (trigger: interval[0:05:00], next run at: 2025-07-13 17:39:20 IST)" executed successfully
+2025-07-13 17:39:20,384 [INFO] Running job "job_collect_feeds (trigger: interval[0:10:00], next run at: 2025-07-13 17:49:20 IST)" (scheduled at 2025-07-13 17:39:20.382412+05:30)
+2025-07-13 17:39:20,384 [INFO] Running job "job_summarize (trigger: interval[0:05:00], next run at: 2025-07-13 17:44:20 IST)" (scheduled at 2025-07-13 17:39:20.382546+05:30)
+2025-07-13 17:39:20,386 [INFO] 🔁 Starting job: Collect Feeds
+2025-07-13 17:39:20,386 [INFO] 🔁 Starting job: Summarize Pending IOCs
+2025-07-13 17:39:20,387 [INFO] 📥 Feed Collection Started
+2025-07-13 17:39:20,387 [INFO] Job "job_summarize (trigger: interval[0:05:00], next run at: 2025-07-13 17:44:20 IST)" executed successfully
+2025-07-13 17:39:20,393 [INFO] 🚀 Starting concurrent fetch of 20 feeds...
+2025-07-13 17:39:20,394 [INFO] 🔄 Trying to fetch: https://blog.talosintelligence.com/rss/
+2025-07-13 17:39:20,394 [INFO] 🔄 Trying to fetch: https://feeds.feedburner.com/TheHackersNews
+2025-07-13 17:39:20,396 [INFO] 🔄 Trying to fetch: https://www.darkreading.com/rss.xml
+2025-07-13 17:39:20,398 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-07-13 17:39:20,399 [INFO] 🔄 Trying to fetch: https://us-cert.cisa.gov/ncas/all.xml
+2025-07-13 17:39:20,399 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-07-13 17:39:20,399 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/issues.atom
+2025-07-13 17:39:20,400 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/releases.atom
+2025-07-13 17:39:20,401 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/commits/master.atom
+2025-07-13 17:39:20,402 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/issues.atom
+2025-07-13 17:39:20,607 [INFO] ✅ Success: [Cisco Talos] (120 lines)
+2025-07-13 17:39:20,610 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/releases.atom
+2025-07-13 17:39:20,789 [INFO] ✅ Success: [Dark Reading] (614 lines)
+2025-07-13 17:39:20,790 [ERROR] ❌ Retry failed: [theZoo Issues] - 406 Client Error: Not Acceptable for url: https://github.com/ytisf/theZoo/issues.atom
+2025-07-13 17:39:20,792 [ERROR] ❌ Retry failed: [MISP Commits] - 404 Client Error: Not Found for url: https://github.com/MISP/MISP/commits/master.atom
+2025-07-13 17:39:20,793 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/commits/master.atom
+2025-07-13 17:39:20,794 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-07-13 17:39:20,796 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/releases.atom
+2025-07-13 17:39:20,804 [ERROR] ❌ Retry failed: [CISA Alerts] - 404 Client Error: Not Found for url: https://www.cisa.gov/ncas/all.xml
+2025-07-13 17:39:20,806 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/commits/master.atom
+2025-07-13 17:39:20,813 [INFO] ✅ Success: [GitHub Malware Zoo] (371 lines)
+2025-07-13 17:39:20,813 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-07-13 17:39:20,814 [INFO] ✅ Success: [theZoo Commits] (371 lines)
+2025-07-13 17:39:20,815 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/releases.atom
+2025-07-13 17:39:20,819 [INFO] ✅ Success: [theZoo Releases] (45 lines)
+2025-07-13 17:39:20,820 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-07-13 17:39:20,864 [ERROR] ❌ Retry failed: [MISP Issues] - 406 Client Error: Not Acceptable for url: https://github.com/MISP/MISP/issues.atom
+2025-07-13 17:39:20,871 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-07-13 17:39:21,053 [INFO] ✅ Success: [The Hacker News] (65 lines)
+2025-07-13 17:39:21,055 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-07-13 17:39:21,118 [INFO] ✅ Success: [MISP Releases] (477 lines)
+2025-07-13 17:39:21,124 [ERROR] ❌ Retry failed: [massive-octo-nemesis Commits] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-07-13 17:39:21,155 [ERROR] ❌ Retry failed: [attack-stix-data Issues] - 406 Client Error: Not Acceptable for url: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-07-13 17:39:21,177 [INFO] ✅ Success: [attack-stix-data Releases] (85 lines)
+2025-07-13 17:39:21,193 [ERROR] ❌ Retry failed: [massive-octo-nemesis Issues] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-07-13 17:39:21,198 [INFO] ✅ Success: [atomic-red-team Commits] (370 lines)
+2025-07-13 17:39:21,200 [INFO] ✅ Success: [attack-stix-data Commits] (332 lines)
+2025-07-13 17:39:21,203 [INFO] ✅ Success: [atomic-red-team Releases] (8 lines)
+2025-07-13 17:39:21,204 [ERROR] ❌ Retry failed: [atomic-red-team Issues] - 406 Client Error: Not Acceptable for url: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-07-13 17:39:21,374 [ERROR] ❌ Retry failed: [massive-octo-nemesis Releases] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-07-13 17:39:21,383 [INFO] 📦 Saved 20 total entries to /Users/ragav/Projects/Threat-Intel/threat_intel_aggregator/data/raw_feeds.json
+2025-07-13 17:39:21,383 [INFO] 🧪 Running IOC Parser
+2025-07-13 17:39:21,483 [INFO] ✅ Feed Collection Complete
+2025-07-13 17:40:44,503 [INFO] Job "job_collect_feeds (trigger: interval[0:10:00], next run at: 2025-07-13 17:49:20 IST)" executed successfully
+2025-07-13 17:44:20,383 [INFO] Running job "job_summarize (trigger: interval[0:05:00], next run at: 2025-07-13 17:49:20 IST)" (scheduled at 2025-07-13 17:44:20.382546+05:30)
+2025-07-13 17:44:20,383 [INFO] 🔁 Starting job: Summarize Pending IOCs
+2025-07-13 17:44:20,384 [INFO] Job "job_summarize (trigger: interval[0:05:00], next run at: 2025-07-13 17:49:20 IST)" executed successfully
+2025-07-13 17:49:20,386 [INFO] Running job "job_collect_feeds (trigger: interval[0:10:00], next run at: 2025-07-13 17:59:20 IST)" (scheduled at 2025-07-13 17:49:20.382412+05:30)
+2025-07-13 17:49:20,386 [INFO] Running job "job_summarize (trigger: interval[0:05:00], next run at: 2025-07-13 17:54:20 IST)" (scheduled at 2025-07-13 17:49:20.382546+05:30)
+2025-07-13 17:49:20,387 [INFO] 🔁 Starting job: Collect Feeds
+2025-07-13 17:49:20,387 [INFO] 🔁 Starting job: Summarize Pending IOCs
+2025-07-13 17:49:20,387 [INFO] 📥 Feed Collection Started
+2025-07-13 17:49:20,387 [INFO] Job "job_summarize (trigger: interval[0:05:00], next run at: 2025-07-13 17:54:20 IST)" executed successfully
+2025-07-13 17:49:20,391 [INFO] 🚀 Starting concurrent fetch of 20 feeds...
+2025-07-13 17:49:20,392 [INFO] 🔄 Trying to fetch: https://blog.talosintelligence.com/rss/
+2025-07-13 17:49:20,392 [INFO] 🔄 Trying to fetch: https://feeds.feedburner.com/TheHackersNews
+2025-07-13 17:49:20,394 [INFO] 🔄 Trying to fetch: https://www.darkreading.com/rss.xml
+2025-07-13 17:49:20,394 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-07-13 17:49:20,395 [INFO] 🔄 Trying to fetch: https://us-cert.cisa.gov/ncas/all.xml
+2025-07-13 17:49:20,396 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-07-13 17:49:20,397 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/issues.atom
+2025-07-13 17:49:20,399 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/releases.atom
+2025-07-13 17:49:20,399 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/commits/master.atom
+2025-07-13 17:49:20,399 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/issues.atom
+2025-07-13 17:49:20,572 [INFO] ✅ Success: [Cisco Talos] (120 lines)
+2025-07-13 17:49:20,577 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/releases.atom
+2025-07-13 17:49:20,779 [ERROR] ❌ Retry failed: [theZoo Issues] - 406 Client Error: Not Acceptable for url: https://github.com/ytisf/theZoo/issues.atom
+2025-07-13 17:49:20,782 [ERROR] ❌ Retry failed: [MISP Commits] - 404 Client Error: Not Found for url: https://github.com/MISP/MISP/commits/master.atom
+2025-07-13 17:49:20,783 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/commits/master.atom
+2025-07-13 17:49:20,785 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-07-13 17:49:20,796 [INFO] ✅ Success: [theZoo Releases] (45 lines)
+2025-07-13 17:49:20,797 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/releases.atom
+2025-07-13 17:49:20,830 [ERROR] ❌ Retry failed: [MISP Issues] - 406 Client Error: Not Acceptable for url: https://github.com/MISP/MISP/issues.atom
+2025-07-13 17:49:20,833 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/commits/master.atom
+2025-07-13 17:49:20,836 [INFO] ✅ Success: [GitHub Malware Zoo] (371 lines)
+2025-07-13 17:49:20,839 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-07-13 17:49:20,853 [INFO] ✅ Success: [theZoo Commits] (371 lines)
+2025-07-13 17:49:20,856 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/releases.atom
+2025-07-13 17:49:20,858 [INFO] ✅ Success: [Dark Reading] (614 lines)
+2025-07-13 17:49:20,859 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-07-13 17:49:20,969 [INFO] ✅ Success: [The Hacker News] (65 lines)
+2025-07-13 17:49:20,972 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-07-13 17:49:21,046 [ERROR] ❌ Retry failed: [CISA Alerts] - 404 Client Error: Not Found for url: https://www.cisa.gov/ncas/all.xml
+2025-07-13 17:49:21,046 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-07-13 17:49:21,100 [INFO] ✅ Success: [MISP Releases] (477 lines)
+2025-07-13 17:49:21,145 [ERROR] ❌ Retry failed: [attack-stix-data Issues] - 406 Client Error: Not Acceptable for url: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-07-13 17:49:21,164 [ERROR] ❌ Retry failed: [massive-octo-nemesis Commits] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-07-13 17:49:21,179 [ERROR] ❌ Retry failed: [atomic-red-team Issues] - 406 Client Error: Not Acceptable for url: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-07-13 17:49:21,196 [INFO] ✅ Success: [atomic-red-team Releases] (8 lines)
+2025-07-13 17:49:21,212 [INFO] ✅ Success: [attack-stix-data Commits] (332 lines)
+2025-07-13 17:49:21,232 [INFO] ✅ Success: [atomic-red-team Commits] (370 lines)
+2025-07-13 17:49:21,280 [INFO] ✅ Success: [attack-stix-data Releases] (85 lines)
+2025-07-13 17:49:21,288 [ERROR] ❌ Retry failed: [massive-octo-nemesis Issues] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-07-13 17:49:21,374 [ERROR] ❌ Retry failed: [massive-octo-nemesis Releases] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-07-13 17:49:21,381 [INFO] 📦 Saved 20 total entries to /Users/ragav/Projects/Threat-Intel/threat_intel_aggregator/data/raw_feeds.json
+2025-07-13 17:49:21,381 [INFO] 🧪 Running IOC Parser
+2025-07-13 17:49:21,481 [INFO] ✅ Feed Collection Complete
+2025-07-13 17:50:40,754 [INFO] Job "job_collect_feeds (trigger: interval[0:10:00], next run at: 2025-07-13 17:59:20 IST)" executed successfully
+2025-07-13 17:54:20,397 [INFO] Running job "job_summarize (trigger: interval[0:05:00], next run at: 2025-07-13 17:59:20 IST)" (scheduled at 2025-07-13 17:54:20.382546+05:30)
+2025-07-13 17:54:20,397 [INFO] 🔁 Starting job: Summarize Pending IOCs
+2025-07-13 17:54:20,397 [INFO] Job "job_summarize (trigger: interval[0:05:00], next run at: 2025-07-13 17:59:20 IST)" executed successfully
+2025-07-13 17:59:20,388 [INFO] Running job "job_collect_feeds (trigger: interval[0:10:00], next run at: 2025-07-13 18:09:20 IST)" (scheduled at 2025-07-13 17:59:20.382412+05:30)
+2025-07-13 17:59:20,388 [INFO] Running job "job_export (trigger: interval[0:30:00], next run at: 2025-07-13 18:29:20 IST)" (scheduled at 2025-07-13 17:59:20.382606+05:30)
+2025-07-13 17:59:20,388 [INFO] Running job "job_summarize (trigger: interval[0:05:00], next run at: 2025-07-13 18:04:20 IST)" (scheduled at 2025-07-13 17:59:20.382546+05:30)
+2025-07-13 17:59:20,388 [INFO] 🔁 Starting job: Collect Feeds
+2025-07-13 17:59:20,388 [INFO] 🔁 Starting job: Export High Severity
+2025-07-13 17:59:20,388 [INFO] 🔁 Starting job: Summarize Pending IOCs
+2025-07-13 17:59:20,388 [INFO] 📥 Feed Collection Started
+2025-07-13 17:59:20,389 [INFO] Job "job_summarize (trigger: interval[0:05:00], next run at: 2025-07-13 18:04:20 IST)" executed successfully
+2025-07-13 17:59:20,391 [INFO] 🚀 Starting concurrent fetch of 20 feeds...
+2025-07-13 17:59:20,392 [INFO] 🔄 Trying to fetch: https://blog.talosintelligence.com/rss/
+2025-07-13 17:59:20,393 [INFO] 🔄 Trying to fetch: https://feeds.feedburner.com/TheHackersNews
+2025-07-13 17:59:20,394 [INFO] 🔄 Trying to fetch: https://www.darkreading.com/rss.xml
+2025-07-13 17:59:20,394 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-07-13 17:59:20,395 [INFO] 🔄 Trying to fetch: https://us-cert.cisa.gov/ncas/all.xml
+2025-07-13 17:59:20,395 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-07-13 17:59:20,395 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/issues.atom
+2025-07-13 17:59:20,396 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/releases.atom
+2025-07-13 17:59:20,396 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/commits/master.atom
+2025-07-13 17:59:20,397 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/issues.atom
+2025-07-13 17:59:20,402 [INFO] Job "job_export (trigger: interval[0:30:00], next run at: 2025-07-13 18:29:20 IST)" executed successfully
+2025-07-13 17:59:20,794 [INFO] ✅ Success: [Cisco Talos] (120 lines)
+2025-07-13 17:59:20,798 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/releases.atom
+2025-07-13 17:59:20,816 [ERROR] ❌ Retry failed: [theZoo Issues] - 406 Client Error: Not Acceptable for url: https://github.com/ytisf/theZoo/issues.atom
+2025-07-13 17:59:20,818 [INFO] ✅ Success: [theZoo Releases] (45 lines)
+2025-07-13 17:59:20,820 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/commits/master.atom
+2025-07-13 17:59:20,821 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-07-13 17:59:20,822 [ERROR] ❌ Retry failed: [MISP Commits] - 404 Client Error: Not Found for url: https://github.com/MISP/MISP/commits/master.atom
+2025-07-13 17:59:20,823 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/releases.atom
+2025-07-13 17:59:20,874 [INFO] ✅ Success: [theZoo Commits] (371 lines)
+2025-07-13 17:59:20,876 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/commits/master.atom
+2025-07-13 17:59:20,903 [INFO] ✅ Success: [GitHub Malware Zoo] (371 lines)
+2025-07-13 17:59:20,905 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-07-13 17:59:20,913 [INFO] ✅ Success: [Dark Reading] (614 lines)
+2025-07-13 17:59:20,913 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/releases.atom
+2025-07-13 17:59:20,938 [ERROR] ❌ Retry failed: [CISA Alerts] - 404 Client Error: Not Found for url: https://www.cisa.gov/ncas/all.xml
+2025-07-13 17:59:20,941 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-07-13 17:59:20,946 [ERROR] ❌ Retry failed: [MISP Issues] - 406 Client Error: Not Acceptable for url: https://github.com/MISP/MISP/issues.atom
+2025-07-13 17:59:20,947 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-07-13 17:59:21,190 [ERROR] ❌ Retry failed: [attack-stix-data Issues] - 406 Client Error: Not Acceptable for url: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-07-13 17:59:21,192 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-07-13 17:59:21,250 [ERROR] ❌ Retry failed: [massive-octo-nemesis Commits] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-07-13 17:59:21,271 [INFO] ✅ Success: [atomic-red-team Releases] (8 lines)
+2025-07-13 17:59:21,286 [INFO] ✅ Success: [attack-stix-data Releases] (85 lines)
+2025-07-13 17:59:21,296 [INFO] ✅ Success: [attack-stix-data Commits] (332 lines)
+2025-07-13 17:59:21,297 [INFO] ✅ Success: [atomic-red-team Commits] (370 lines)
+2025-07-13 17:59:21,298 [ERROR] ❌ Retry failed: [massive-octo-nemesis Issues] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-07-13 17:59:21,315 [INFO] ✅ Success: [MISP Releases] (477 lines)
+2025-07-13 17:59:21,352 [ERROR] ❌ Retry failed: [atomic-red-team Issues] - 406 Client Error: Not Acceptable for url: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-07-13 17:59:21,501 [ERROR] ❌ Retry failed: [massive-octo-nemesis Releases] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-07-13 17:59:21,566 [INFO] ✅ Success: [The Hacker News] (65 lines)
+2025-07-13 17:59:21,571 [INFO] 📦 Saved 20 total entries to /Users/ragav/Projects/Threat-Intel/threat_intel_aggregator/data/raw_feeds.json
+2025-07-13 17:59:21,571 [INFO] 🧪 Running IOC Parser
+2025-07-13 17:59:21,672 [INFO] ✅ Feed Collection Complete
+2025-07-13 18:00:38,565 [INFO] Job "job_collect_feeds (trigger: interval[0:10:00], next run at: 2025-07-13 18:09:20 IST)" executed successfully
+2025-07-13 18:01:22,462 [INFO] Scheduler has been shut down
+2025-07-13 18:01:22,462 [INFO] 🔴 Scheduler stopped.
+2025-07-13 18:01:26,647 [INFO] Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-07-13 18:01:26,647 [INFO] Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-07-13 18:01:26,647 [INFO] Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-07-13 18:01:26,647 [INFO] Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-07-13 18:01:26,647 [INFO] Added job "job_collect_feeds" to job store "default"
+2025-07-13 18:01:26,647 [INFO] Added job "job_summarize" to job store "default"
+2025-07-13 18:01:26,647 [INFO] Added job "job_export" to job store "default"
+2025-07-13 18:01:26,647 [INFO] Added job "log_metrics" to job store "default"
+2025-07-13 18:01:26,647 [INFO] Scheduler started
+2025-07-13 18:01:26,647 [INFO] 🔁 Starting job: Collect Feeds
+2025-07-13 18:01:26,647 [INFO] 📥 Feed Collection Started
+2025-07-13 18:01:26,648 [INFO] 🚀 Starting concurrent fetch of 20 feeds...
+2025-07-13 18:01:26,648 [INFO] 🔄 Trying to fetch: https://blog.talosintelligence.com/rss/
+2025-07-13 18:01:26,648 [INFO] 🔄 Trying to fetch: https://feeds.feedburner.com/TheHackersNews
+2025-07-13 18:01:26,648 [INFO] 🔄 Trying to fetch: https://www.darkreading.com/rss.xml
+2025-07-13 18:01:26,648 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-07-13 18:01:26,648 [INFO] 🔄 Trying to fetch: https://us-cert.cisa.gov/ncas/all.xml
+2025-07-13 18:01:26,648 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-07-13 18:01:26,648 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/issues.atom
+2025-07-13 18:01:26,649 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/releases.atom
+2025-07-13 18:01:26,649 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/commits/master.atom
+2025-07-13 18:01:26,649 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/issues.atom
+2025-07-13 18:01:26,815 [INFO] ✅ Success: [Cisco Talos] (120 lines)
+2025-07-13 18:01:26,817 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/releases.atom
+2025-07-13 18:01:27,007 [ERROR] ❌ Retry failed: [MISP Commits] - 404 Client Error: Not Found for url: https://github.com/MISP/MISP/commits/master.atom
+2025-07-13 18:01:27,010 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/commits/master.atom
+2025-07-13 18:01:27,018 [INFO] ✅ Success: [theZoo Releases] (45 lines)
+2025-07-13 18:01:27,020 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-07-13 18:01:27,032 [ERROR] ❌ Retry failed: [theZoo Issues] - 406 Client Error: Not Acceptable for url: https://github.com/ytisf/theZoo/issues.atom
+2025-07-13 18:01:27,033 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/releases.atom
+2025-07-13 18:01:27,104 [INFO] ✅ Success: [Dark Reading] (614 lines)
+2025-07-13 18:01:27,105 [ERROR] ❌ Retry failed: [MISP Issues] - 406 Client Error: Not Acceptable for url: https://github.com/MISP/MISP/issues.atom
+2025-07-13 18:01:27,106 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/commits/master.atom
+2025-07-13 18:01:27,106 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-07-13 18:01:27,115 [INFO] ✅ Success: [theZoo Commits] (371 lines)
+2025-07-13 18:01:27,116 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/releases.atom
+2025-07-13 18:01:27,127 [INFO] ✅ Success: [GitHub Malware Zoo] (371 lines)
+2025-07-13 18:01:27,129 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-07-13 18:01:27,204 [ERROR] ❌ Retry failed: [CISA Alerts] - 404 Client Error: Not Found for url: https://www.cisa.gov/ncas/all.xml
+2025-07-13 18:01:27,206 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-07-13 18:01:27,314 [INFO] ✅ Success: [MISP Releases] (477 lines)
+2025-07-13 18:01:27,314 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-07-13 18:01:27,386 [ERROR] ❌ Retry failed: [attack-stix-data Issues] - 406 Client Error: Not Acceptable for url: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-07-13 18:01:27,408 [INFO] ✅ Success: [attack-stix-data Releases] (85 lines)
+2025-07-13 18:01:27,424 [INFO] ✅ Success: [attack-stix-data Commits] (332 lines)
+2025-07-13 18:01:27,429 [ERROR] ❌ Retry failed: [massive-octo-nemesis Commits] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-07-13 18:01:27,449 [INFO] ✅ Success: [atomic-red-team Releases] (8 lines)
+2025-07-13 18:01:27,461 [ERROR] ❌ Retry failed: [atomic-red-team Issues] - 406 Client Error: Not Acceptable for url: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-07-13 18:01:27,511 [INFO] ✅ Success: [atomic-red-team Commits] (370 lines)
+2025-07-13 18:01:27,536 [ERROR] ❌ Retry failed: [massive-octo-nemesis Issues] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-07-13 18:01:27,578 [INFO] ✅ Success: [The Hacker News] (65 lines)
+2025-07-13 18:01:27,658 [ERROR] ❌ Retry failed: [massive-octo-nemesis Releases] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-07-13 18:01:27,667 [INFO] 📦 Saved 20 total entries to /Users/ragav/Projects/Threat-Intel/threat_intel_aggregator/data/raw_feeds.json
+2025-07-13 18:01:27,667 [INFO] 🧪 Running IOC Parser
+2025-07-13 18:01:27,775 [INFO] ✅ Feed Collection Complete
+2025-07-13 18:02:46,794 [INFO] 🔁 Starting job: Summarize Pending IOCs
+2025-07-13 18:02:46,794 [INFO] 🔁 Starting job: Export High Severity
+2025-07-13 18:02:46,806 [INFO] 📊 Metrics — IOCs: 0, Emails: 0, Errors: 0
+2025-07-13 18:02:46,806 [INFO] 🕒 Threat Intelligence Pipeline Scheduler started.
+2025-07-13 18:06:26,652 [INFO] Running job "job_summarize (trigger: interval[0:05:00], next run at: 2025-07-13 18:06:26 IST)" (scheduled at 2025-07-13 18:06:26.647153+05:30)
+2025-07-13 18:06:26,653 [INFO] 🔁 Starting job: Summarize Pending IOCs
+2025-07-13 18:06:26,653 [INFO] Job "job_summarize (trigger: interval[0:05:00], next run at: 2025-07-13 18:11:26 IST)" executed successfully
+2025-07-13 18:11:26,658 [INFO] Running job "job_collect_feeds (trigger: interval[0:10:00], next run at: 2025-07-13 18:21:26 IST)" (scheduled at 2025-07-13 18:11:26.647024+05:30)
+2025-07-13 18:11:26,658 [INFO] Running job "job_summarize (trigger: interval[0:05:00], next run at: 2025-07-13 18:16:26 IST)" (scheduled at 2025-07-13 18:11:26.647153+05:30)
+2025-07-13 18:11:26,659 [INFO] 🔁 Starting job: Collect Feeds
+2025-07-13 18:11:26,659 [INFO] 🔁 Starting job: Summarize Pending IOCs
+2025-07-13 18:11:26,659 [INFO] 📥 Feed Collection Started
+2025-07-13 18:11:26,660 [INFO] Job "job_summarize (trigger: interval[0:05:00], next run at: 2025-07-13 18:16:26 IST)" executed successfully
+2025-07-13 18:11:26,664 [INFO] 🚀 Starting concurrent fetch of 20 feeds...
+2025-07-13 18:11:26,665 [INFO] 🔄 Trying to fetch: https://blog.talosintelligence.com/rss/
+2025-07-13 18:11:26,665 [INFO] 🔄 Trying to fetch: https://feeds.feedburner.com/TheHackersNews
+2025-07-13 18:11:26,666 [INFO] 🔄 Trying to fetch: https://www.darkreading.com/rss.xml
+2025-07-13 18:11:26,668 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-07-13 18:11:26,669 [INFO] 🔄 Trying to fetch: https://us-cert.cisa.gov/ncas/all.xml
+2025-07-13 18:11:26,670 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-07-13 18:11:26,671 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/issues.atom
+2025-07-13 18:11:26,671 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/releases.atom
+2025-07-13 18:11:26,672 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/commits/master.atom
+2025-07-13 18:11:26,672 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/issues.atom
+2025-07-13 18:11:26,915 [INFO] ✅ Success: [Cisco Talos] (120 lines)
+2025-07-13 18:11:26,921 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/releases.atom
+2025-07-13 18:11:27,111 [ERROR] ❌ Retry failed: [theZoo Issues] - 406 Client Error: Not Acceptable for url: https://github.com/ytisf/theZoo/issues.atom
+2025-07-13 18:11:27,114 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/commits/master.atom
+2025-07-13 18:11:27,120 [INFO] ✅ Success: [theZoo Releases] (45 lines)
+2025-07-13 18:11:27,121 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-07-13 18:11:27,178 [INFO] ✅ Success: [theZoo Commits] (371 lines)
+2025-07-13 18:11:27,181 [INFO] ✅ Success: [GitHub Malware Zoo] (371 lines)
+2025-07-13 18:11:27,184 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/releases.atom
+2025-07-13 18:11:27,186 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/commits/master.atom
+2025-07-13 18:11:27,190 [ERROR] ❌ Retry failed: [MISP Commits] - 404 Client Error: Not Found for url: https://github.com/MISP/MISP/commits/master.atom
+2025-07-13 18:11:27,191 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-07-13 18:11:27,202 [ERROR] ❌ Retry failed: [MISP Issues] - 406 Client Error: Not Acceptable for url: https://github.com/MISP/MISP/issues.atom
+2025-07-13 18:11:27,202 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/releases.atom
+2025-07-13 18:11:27,251 [INFO] ✅ Success: [Dark Reading] (614 lines)
+2025-07-13 18:11:27,254 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-07-13 18:11:27,293 [INFO] ✅ Success: [The Hacker News] (65 lines)
+2025-07-13 18:11:27,295 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-07-13 18:11:27,393 [INFO] ✅ Success: [MISP Releases] (477 lines)
+2025-07-13 18:11:27,396 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-07-13 18:11:27,465 [ERROR] ❌ Retry failed: [attack-stix-data Issues] - 406 Client Error: Not Acceptable for url: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-07-13 18:11:27,479 [ERROR] ❌ Retry failed: [CISA Alerts] - 404 Client Error: Not Found for url: https://www.cisa.gov/ncas/all.xml
+2025-07-13 18:11:27,537 [INFO] ✅ Success: [atomic-red-team Releases] (8 lines)
+2025-07-13 18:11:27,546 [ERROR] ❌ Retry failed: [atomic-red-team Issues] - 406 Client Error: Not Acceptable for url: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-07-13 18:11:27,574 [ERROR] ❌ Retry failed: [massive-octo-nemesis Commits] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-07-13 18:11:27,582 [INFO] ✅ Success: [attack-stix-data Commits] (332 lines)
+2025-07-13 18:11:27,600 [INFO] ✅ Success: [atomic-red-team Commits] (370 lines)
+2025-07-13 18:11:27,624 [ERROR] ❌ Retry failed: [massive-octo-nemesis Issues] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-07-13 18:11:27,654 [INFO] ✅ Success: [attack-stix-data Releases] (85 lines)
+2025-07-13 18:11:27,714 [ERROR] ❌ Retry failed: [massive-octo-nemesis Releases] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-07-13 18:11:27,718 [INFO] 📦 Saved 20 total entries to /Users/ragav/Projects/Threat-Intel/threat_intel_aggregator/data/raw_feeds.json
+2025-07-13 18:11:27,718 [INFO] 🧪 Running IOC Parser
+2025-07-13 18:11:27,807 [INFO] ✅ Feed Collection Complete
+2025-07-13 18:12:46,698 [INFO] Job "job_collect_feeds (trigger: interval[0:10:00], next run at: 2025-07-13 18:21:26 IST)" executed successfully
+2025-07-13 18:13:00,559 [INFO] 📥 Feed Collection Started
+2025-07-13 18:13:00,560 [INFO] 🚀 Starting concurrent fetch of 20 feeds...
+2025-07-13 18:13:00,561 [INFO] 🔄 Trying to fetch: https://blog.talosintelligence.com/rss/
+2025-07-13 18:13:00,561 [INFO] 🔄 Trying to fetch: https://feeds.feedburner.com/TheHackersNews
+2025-07-13 18:13:00,561 [INFO] 🔄 Trying to fetch: https://www.darkreading.com/rss.xml
+2025-07-13 18:13:00,562 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-07-13 18:13:00,562 [INFO] 🔄 Trying to fetch: https://us-cert.cisa.gov/ncas/all.xml
+2025-07-13 18:13:00,562 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-07-13 18:13:00,562 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/issues.atom
+2025-07-13 18:13:00,563 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/releases.atom
+2025-07-13 18:13:00,563 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/commits/master.atom
+2025-07-13 18:13:00,563 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/issues.atom
+2025-07-13 18:13:00,743 [INFO] ✅ Success: [Cisco Talos] (120 lines)
+2025-07-13 18:13:00,746 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/releases.atom
+2025-07-13 18:13:00,955 [INFO] ✅ Success: [theZoo Releases] (45 lines)
+2025-07-13 18:13:00,958 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/commits/master.atom
+2025-07-13 18:13:00,980 [ERROR] ❌ Retry failed: [theZoo Issues] - 406 Client Error: Not Acceptable for url: https://github.com/ytisf/theZoo/issues.atom
+2025-07-13 18:13:00,982 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-07-13 18:13:01,004 [INFO] ✅ Success: [GitHub Malware Zoo] (371 lines)
+2025-07-13 18:13:01,007 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/releases.atom
+2025-07-13 18:13:01,010 [INFO] ✅ Success: [theZoo Commits] (371 lines)
+2025-07-13 18:13:01,011 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/commits/master.atom
+2025-07-13 18:13:01,018 [ERROR] ❌ Retry failed: [MISP Commits] - 404 Client Error: Not Found for url: https://github.com/MISP/MISP/commits/master.atom
+2025-07-13 18:13:01,019 [ERROR] ❌ Retry failed: [MISP Issues] - 406 Client Error: Not Acceptable for url: https://github.com/MISP/MISP/issues.atom
+2025-07-13 18:13:01,021 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-07-13 18:13:01,021 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/releases.atom
+2025-07-13 18:13:01,023 [INFO] ✅ Success: [Dark Reading] (614 lines)
+2025-07-13 18:13:01,024 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-07-13 18:13:01,117 [ERROR] ❌ Retry failed: [CISA Alerts] - 404 Client Error: Not Found for url: https://www.cisa.gov/ncas/all.xml
+2025-07-13 18:13:01,118 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-07-13 18:13:01,248 [INFO] ✅ Success: [MISP Releases] (477 lines)
+2025-07-13 18:13:01,250 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-07-13 18:13:01,359 [ERROR] ❌ Retry failed: [massive-octo-nemesis Commits] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-07-13 18:13:01,378 [ERROR] ❌ Retry failed: [attack-stix-data Issues] - 406 Client Error: Not Acceptable for url: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-07-13 18:13:01,388 [INFO] ✅ Success: [atomic-red-team Releases] (8 lines)
+2025-07-13 18:13:01,419 [INFO] ✅ Success: [attack-stix-data Releases] (85 lines)
+2025-07-13 18:13:01,430 [INFO] ✅ Success: [attack-stix-data Commits] (332 lines)
+2025-07-13 18:13:01,459 [ERROR] ❌ Retry failed: [atomic-red-team Issues] - 406 Client Error: Not Acceptable for url: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-07-13 18:13:01,461 [ERROR] ❌ Retry failed: [massive-octo-nemesis Issues] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-07-13 18:13:01,464 [INFO] ✅ Success: [atomic-red-team Commits] (370 lines)
+2025-07-13 18:13:01,594 [ERROR] ❌ Retry failed: [massive-octo-nemesis Releases] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-07-13 18:13:01,639 [INFO] ✅ Success: [The Hacker News] (65 lines)
+2025-07-13 18:13:01,642 [INFO] 📦 Saved 20 total entries to /Users/ragav/Projects/Threat-Intel/threat_intel_aggregator/data/raw_feeds.json
+2025-07-13 18:13:01,642 [INFO] 🧪 Running IOC Parser
+2025-07-13 18:13:01,792 [INFO] ✅ Feed Collection Complete
+2025-07-13 18:16:26,653 [INFO] Running job "job_summarize (trigger: interval[0:05:00], next run at: 2025-07-13 18:21:26 IST)" (scheduled at 2025-07-13 18:16:26.647153+05:30)
+2025-07-13 18:16:26,655 [INFO] 🔁 Starting job: Summarize Pending IOCs
+2025-07-13 18:16:26,655 [INFO] Job "job_summarize (trigger: interval[0:05:00], next run at: 2025-07-13 18:21:26 IST)" executed successfully
+2025-07-13 18:21:26,653 [INFO] Running job "job_collect_feeds (trigger: interval[0:10:00], next run at: 2025-07-13 18:31:26 IST)" (scheduled at 2025-07-13 18:21:26.647024+05:30)
+2025-07-13 18:21:26,653 [INFO] Running job "job_summarize (trigger: interval[0:05:00], next run at: 2025-07-13 18:26:26 IST)" (scheduled at 2025-07-13 18:21:26.647153+05:30)
+2025-07-13 18:21:26,654 [INFO] 🔁 Starting job: Collect Feeds
+2025-07-13 18:21:26,655 [INFO] 🔁 Starting job: Summarize Pending IOCs
+2025-07-13 18:21:26,655 [INFO] 📥 Feed Collection Started
+2025-07-13 18:21:26,655 [INFO] Job "job_summarize (trigger: interval[0:05:00], next run at: 2025-07-13 18:26:26 IST)" executed successfully
+2025-07-13 18:21:26,659 [INFO] 🚀 Starting concurrent fetch of 20 feeds...
+2025-07-13 18:21:26,659 [INFO] 🔄 Trying to fetch: https://blog.talosintelligence.com/rss/
+2025-07-13 18:21:26,660 [INFO] 🔄 Trying to fetch: https://feeds.feedburner.com/TheHackersNews
+2025-07-13 18:21:26,661 [INFO] 🔄 Trying to fetch: https://www.darkreading.com/rss.xml
+2025-07-13 18:21:26,661 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-07-13 18:21:26,662 [INFO] 🔄 Trying to fetch: https://us-cert.cisa.gov/ncas/all.xml
+2025-07-13 18:21:26,663 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-07-13 18:21:26,663 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/issues.atom
+2025-07-13 18:21:26,664 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/releases.atom
+2025-07-13 18:21:26,664 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/commits/master.atom
+2025-07-13 18:21:26,664 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/issues.atom
+2025-07-13 18:21:26,782 [INFO] ✅ Success: [Cisco Talos] (120 lines)
+2025-07-13 18:21:26,784 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/releases.atom
+2025-07-13 18:21:27,030 [INFO] ✅ Success: [theZoo Releases] (45 lines)
+2025-07-13 18:21:27,031 [ERROR] ❌ Retry failed: [theZoo Issues] - 406 Client Error: Not Acceptable for url: https://github.com/ytisf/theZoo/issues.atom
+2025-07-13 18:21:27,033 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/commits/master.atom
+2025-07-13 18:21:27,033 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-07-13 18:21:27,048 [ERROR] ❌ Retry failed: [MISP Commits] - 404 Client Error: Not Found for url: https://github.com/MISP/MISP/commits/master.atom
+2025-07-13 18:21:27,050 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/releases.atom
+2025-07-13 18:21:27,096 [INFO] ✅ Success: [theZoo Commits] (371 lines)
+2025-07-13 18:21:27,097 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/commits/master.atom
+2025-07-13 18:21:27,102 [INFO] ✅ Success: [GitHub Malware Zoo] (371 lines)
+2025-07-13 18:21:27,102 [ERROR] ❌ Retry failed: [MISP Issues] - 406 Client Error: Not Acceptable for url: https://github.com/MISP/MISP/issues.atom
+2025-07-13 18:21:27,103 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-07-13 18:21:27,103 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/releases.atom
+2025-07-13 18:21:27,217 [INFO] ✅ Success: [Dark Reading] (614 lines)
+2025-07-13 18:21:27,219 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-07-13 18:21:27,319 [INFO] ✅ Success: [MISP Releases] (477 lines)
+2025-07-13 18:21:27,320 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-07-13 18:21:27,369 [ERROR] ❌ Retry failed: [CISA Alerts] - 404 Client Error: Not Found for url: https://www.cisa.gov/ncas/all.xml
+2025-07-13 18:21:27,370 [INFO] ✅ Success: [The Hacker News] (65 lines)
+2025-07-13 18:21:27,372 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-07-13 18:21:27,414 [ERROR] ❌ Retry failed: [attack-stix-data Issues] - 406 Client Error: Not Acceptable for url: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-07-13 18:21:27,430 [INFO] ✅ Success: [attack-stix-data Commits] (332 lines)
+2025-07-13 18:21:27,436 [INFO] ✅ Success: [atomic-red-team Releases] (8 lines)
+2025-07-13 18:21:27,438 [INFO] ✅ Success: [attack-stix-data Releases] (85 lines)
+2025-07-13 18:21:27,460 [ERROR] ❌ Retry failed: [atomic-red-team Issues] - 406 Client Error: Not Acceptable for url: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-07-13 18:21:27,550 [ERROR] ❌ Retry failed: [massive-octo-nemesis Commits] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-07-13 18:21:27,559 [INFO] ✅ Success: [atomic-red-team Commits] (370 lines)
+2025-07-13 18:21:27,641 [ERROR] ❌ Retry failed: [massive-octo-nemesis Issues] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-07-13 18:21:27,675 [ERROR] ❌ Retry failed: [massive-octo-nemesis Releases] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-07-13 18:21:27,680 [INFO] 📦 Saved 20 total entries to /Users/ragav/Projects/Threat-Intel/threat_intel_aggregator/data/raw_feeds.json
+2025-07-13 18:21:27,680 [INFO] 🧪 Running IOC Parser
+2025-07-13 18:21:27,776 [INFO] ✅ Feed Collection Complete

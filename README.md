@@ -160,6 +160,6 @@ Feed Health: All green ✅
 * Saara Unnathi R — Feed Collection · IOC Parsing
 * N Ragavenderan — IOC Parsing · AI Summarization · Pipeline Orchestration
 * Jahnavi Rai — AI Summarization · UI Rendering
-* Khushi Gupta — UI Rendering · Pipeline Orchestration
+* Khushi Gupta — UI Rendering
 
 ---

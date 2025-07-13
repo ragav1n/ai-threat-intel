@@ -2304,6 +2304,9 @@
 • url: https://github.com/MISP/MISP
 • domain: github.com
 • domain: github.com
+• url: https://github.com/redcanaryco/atomic-red-team/releases
+• domain: github.com
+• domain: github.com
 • domain: github.com
 • domain: github.com
 • domain: github.com
@@ -2312,9 +2315,6 @@
 • domain: github.com
 • domain: github.com
 • url: https://github.com/mitre-attack/attack-stix-data/releases
-• domain: github.com
-• domain: github.com
-• url: https://github.com/redcanaryco/atomic-red-team/releases
 • domain: github.com
 • domain: github.com
 • domain: github.com
@@ -2498,7 +2498,7 @@
 • sha1: dbe18a6574a7730cbb97911903ad16ab73bc9eaa
 • sha1: 65cc329c3c8d22bf8e170094752ebbe92dff2f86
 • sha1: ed6dd8eaffca7033657173ff0f53aa4cd70999ee
-• ipv6: 12:18:49
+• ipv6: 16:15:46
 • ipv6: 22:44:00
 • ipv6: 18:15:00
 • ipv6: 20:08:00
