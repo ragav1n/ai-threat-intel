@@ -1,0 +1,25 @@
+feeds:
+  - name: Cisco Talos
+    url: https://blog.talosintelligence.com/rss/
+    category: malware analysis
+    source_type: blog
+
+  - name: The Hacker News
+    url: https://feeds.feedburner.com/TheHackersNews
+    category: general news
+    source_type: blog
+
+  - name: Dark Reading
+    url: https://www.darkreading.com/rss.xml
+    category: vulnerability alerts
+    source_type: blog
+
+  - name: GitHub Malware Zoo
+    url: https://github.com/ytisf/theZoo/commits/master.atom
+    category: malware repo updates
+    source_type: github
+
+  - name: CISA Alerts
+    url: https://us-cert.cisa.gov/ncas/all.xml
+    category: official alerts
+    source_type: government

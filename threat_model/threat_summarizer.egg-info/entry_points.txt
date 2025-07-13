@@ -1,0 +1,3 @@
+[console_scripts]
+threat-summarize = threat_summarizer.main:cli_entry
+

@@ -1,0 +1,13 @@
+README.md
+setup.py
+summarizer/__init__.py
+summarizer/logger.py
+summarizer/model_client.py
+summarizer/summarizer.py
+summarizer/watch_and_run.py
+threat_summarizer.egg-info/PKG-INFO
+threat_summarizer.egg-info/SOURCES.txt
+threat_summarizer.egg-info/dependency_links.txt
+threat_summarizer.egg-info/entry_points.txt
+threat_summarizer.egg-info/requires.txt
+threat_summarizer.egg-info/top_level.txt
