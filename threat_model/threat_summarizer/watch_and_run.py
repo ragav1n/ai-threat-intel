@@ -19,6 +19,46 @@ def save_seen(ioc):
     with open(PROCESSED_FILE, "a") as f:
         f.write(ioc.strip() + "\n")
 
+def summarize_pending_iocs():
+    seen = load_seen()
+    summaries = []
+
+    if INPUT_FILE.exists():
+        lines = INPUT_FILE.read_text().splitlines()
+        for line in lines:
+            ioc = line.strip()
+            if ioc and ioc not in seen:
+                print(f"📥 New IOC: {ioc}")
+                result = summarize_threat(ioc, model="llama2")
+                validation = validate_severity(result["input"], result["severity"])
+                result["corrected"] = False  # default
+
+                if validation.startswith("INVALID"):
+                    corrected = validation.split(":")[-1].strip()
+                    print(f"[❗ SEVERITY MISMATCH] Auto-correcting → {corrected}")
+                    result["original_severity"] = result["severity"]
+                    result["severity"] = corrected
+                    result["corrected"] = True
+                else:
+                    print("[✅ Severity Confirmed]")
+
+                append_output(result, validation)
+
+                log_summary(
+                    result["input"],
+                    result["summary"],
+                    result["severity"],
+                    corrected=result.get("corrected", False),
+                    original_severity=result.get("original_severity", None)
+                )
+
+                save_seen(ioc)
+                seen.add(ioc)
+                summaries.append(result)
+
+    return summaries
+
+
 def append_output(result, validation_status):
     with open(OUTPUT_FILE, "a") as f:
         f.write("\n--- THREAT SUMMARY ---\n")
