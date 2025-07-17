@@ -16,7 +16,6 @@
 - [Setup & Installation](#setup--installation)
 - [Usage](#usage)
 - [Data Flow](#data-flow)
-- [Sample Output](#sample-output)
 - [Contributors](#contributors)
 
 ---
@@ -37,12 +36,19 @@ This project is a **modular, AI-powered Threat Intelligence Feed Aggregator** th
 ## Features
 
 ✅ Feed ingestion from blogs, GitHub, and government alerts
+
 ✅ Regex-powered IOC extraction (IP, domain, URL, hash, etc.)
+
 ✅ MongoDB persistence for all IOCs
+
 ✅ Health tracking + CSV-based historical logging
+
 ✅ AI-generated threat summaries via `input.txt` → `watch_and_run.py`
+
 ✅ Email notifications with uptime and attachments
+
 ✅ Easy YAML-based feed configuration
+
 ✅ CLI & Scheduler ready
 
 ---
@@ -103,7 +109,7 @@ cd ai-threat-intel/threat_intel_aggregator
 # Install dependencies
 pip install -r requirements.txt
 
-# Set up MongoDB locally (default URI: mongodb://localhost:27017)
+# Set up MongoDB (default URI: mongodb://localhost:27017)
 
 # Add your email credentials to `.env`
 EMAIL_SENDER=your_email@gmail.com
@@ -135,26 +141,9 @@ python watch_and_run.py
 
 ---
 
-## Sample Output
-
-```
-IOC Summary:
-- 35 IP addresses
-- 12 Domains
-- 5 URLs
-- 2 SHA256 hashes
-
-Uptime: 182 minutes
-Feed Health: All green ✅
-```
-
----
-
 ## Contributors
 
 * Saara Unnathi R — Feed Collection · IOC Parsing
 * N Ragavenderan — IOC Parsing · AI Summarization · Pipeline Orchestration
-* Jahnavi Rai — AI Summarization · UI Rendering
-* Khushi Gupta — UI Rendering
 
 ---
