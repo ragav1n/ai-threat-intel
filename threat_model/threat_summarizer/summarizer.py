@@ -18,9 +18,17 @@ def clean_severity_output(raw_output: str) -> str:
             return level
     return "Unknown"
 
+from threat_model.hunter import enrich_ioc
+
 def summarize_threat(threat_input: str, model: str = "llama3.2:latest") -> dict:
-    summary_prompt = format_template(threat_input, TEMPLATE_PATH)
-    severity_prompt = format_template(threat_input, SEVERITY_TEMPLATE_PATH)
+    # 🕵️‍♂️ Hunter Agent Enrichment
+    enrichment_data = enrich_ioc(threat_input)
+    
+    # Append enrichment to the input for the context of LLM
+    full_input_context = f"{threat_input}\n\n[NETWORK INTELLIGENCE]:\n{enrichment_data}"
+    
+    summary_prompt = format_template(full_input_context, TEMPLATE_PATH)
+    severity_prompt = format_template(full_input_context, SEVERITY_TEMPLATE_PATH)
 
     summary = query_ollama(model, summary_prompt)
     severity_raw = query_ollama(model, severity_prompt)
