@@ -45,6 +45,8 @@ def write_iocs_to_mongo(ioc_json_path=IOC_JSON_PATH):
 
         inserted_count = 0
 
+        duplicate_count = 0
+
         for ioc in raw_iocs:
             ioc["_id"] = hash_ioc(ioc)  # use hash as unique ID
             ioc["timestamp"] = datetime.utcnow().isoformat()
@@ -53,10 +55,13 @@ def write_iocs_to_mongo(ioc_json_path=IOC_JSON_PATH):
                 collection.insert_one(ioc)
                 inserted_count += 1
             except Exception as insert_error:
-                if "duplicate key error" not in str(insert_error):
+                if "duplicate key error" in str(insert_error):
+                    duplicate_count += 1
+                else:
                     print(f"⚠️ Failed to insert IOC: {insert_error}")
 
         print(f"✅ {inserted_count} new IOCs inserted into MongoDB")
+        print(f"♻️  {duplicate_count} duplicate IOCs skipped")
 
     except Exception as e:
         print(f"❌ MongoDB insert failed: {e}")

@@ -29,7 +29,7 @@ def summarize_pending_iocs():
             ioc = line.strip()
             if ioc and ioc not in seen:
                 print(f"📥 New IOC: {ioc}")
-                result = summarize_threat(ioc, model="llama2")
+                result = summarize_threat(ioc, model="llama3.2:latest")
                 validation = validate_severity(result["input"], result["severity"])
                 result["corrected"] = False  # default
 
@@ -81,7 +81,7 @@ def run_loop(poll_interval=5):
                 if ioc and ioc not in seen:
                     print(f"📥 New IOC: {ioc}")
 
-                    result = summarize_threat(ioc, model="llama2")
+                    result = summarize_threat(ioc, model="llama3.2:latest")
                     validation = validate_severity(result["input"], result["severity"])
                     result["corrected"] = False  # default
 
