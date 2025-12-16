@@ -19,7 +19,7 @@ app.add_middleware(
 
 class IOCRequest(BaseModel):
     ioc: str
-    model: str = "llama2"
+    model: str = "llama3.2:latest"
 
 class TriggerRequest(BaseModel):
     secret: str
@@ -28,7 +28,13 @@ class TriggerRequest(BaseModel):
 
 TRIGGER_SECRET = "socgen-feed-key"
 
+
 # ----------- Routes -----------
+
+@app.get("/")
+def read_root():
+    return {"message": "AI Threat Intel API is running", "docs_url": "/docs"}
+
 
 @app.post("/api/summarize")
 def summarize_endpoint(request: IOCRequest):
@@ -54,5 +60,20 @@ def trigger_feed(request: TriggerRequest):
     try:
         collect_feeds()
         return {"status": "Feed job executed successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/summaries")
+def get_summaries(limit: int = 50):
+    try:
+        from threat_model.threat_summarizer.mongo_client import collection
+        
+        # Fetch latest summaries
+        summaries = list(collection.find(
+            {}, 
+            {"_id": 0}  # Exclude Mongo ID
+        ).sort("timestamp", -1).limit(limit))
+        
+        return {"count": len(summaries), "summaries": summaries}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

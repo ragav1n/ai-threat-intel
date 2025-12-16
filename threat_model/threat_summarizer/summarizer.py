@@ -18,7 +18,7 @@ def clean_severity_output(raw_output: str) -> str:
             return level
     return "Unknown"
 
-def summarize_threat(threat_input: str, model: str = "llama2") -> dict:
+def summarize_threat(threat_input: str, model: str = "llama3.2:latest") -> dict:
     summary_prompt = format_template(threat_input, TEMPLATE_PATH)
     severity_prompt = format_template(threat_input, SEVERITY_TEMPLATE_PATH)
 

@@ -5,4 +5,5 @@ python-dotenv
 schedule
 tenacity
 tabulate
-pymongo
+pymongoapscheduler
+beautifulsoup4

@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.env
+.venv
+*.log
+
+# Jupyter
+.ipynb_checkpoints
+
+# VS Code
+.vscode/
+
+# Mac
+.DS_Store
+
+# Logs and Data
+logs/
+threat_model/output.txt
+threat_model/input.txt
+*.pdf
+*.csv
+*.jsonl
+
+# Node / Frontend
+ui/node_modules/
+ui/dist/
+ui/.env.local
+ui/.env.development.local
+ui/.env.test.local
+ui/.env.production.local
+ui/npm-debug.log*
+ui/yarn-debug.log*
+ui/yarn-error.log*

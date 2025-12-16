@@ -1,6 +1,6 @@
 from threat_summarizer.model_client import query_ollama
 
-def validate_severity(threat_input: str, assigned_severity: str, model="llama2") -> str:
+def validate_severity(threat_input: str, assigned_severity: str, model="llama3.2:latest") -> str:
     prompt = f"""
 You are a cybersecurity severity validation engine.
 
