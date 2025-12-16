@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Shield, Activity, Terminal } from 'lucide-react';
+import { Shield, Activity, Terminal, Network } from 'lucide-react';
 
 export default function Navbar() {
   return (
@@ -26,8 +26,8 @@ export default function Navbar() {
         </div>
 
         <div style={{ display: 'flex', gap: '30px' }}>
-          <NavLink 
-            to="/" 
+          <NavLink
+            to="/"
             className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}
             style={({ isActive }) => ({
               color: isActive ? 'var(--primary)' : 'var(--text-muted)',
@@ -39,8 +39,8 @@ export default function Navbar() {
           >
             <Activity size={18} /> Dashboard
           </NavLink>
-          <NavLink 
-            to="/analyzer" 
+          <NavLink
+            to="/analyzer"
             className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}
             style={({ isActive }) => ({
               color: isActive ? 'var(--primary)' : 'var(--text-muted)',
@@ -51,6 +51,19 @@ export default function Navbar() {
             })}
           >
             <Terminal size={18} /> Analyzer
+          </NavLink>
+          <NavLink
+            to="/graph"
+            className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}
+            style={({ isActive }) => ({
+              color: isActive ? 'var(--primary)' : 'var(--text-muted)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              fontWeight: 500
+            })}
+          >
+            <Network size={18} /> Graph
           </NavLink>
         </div>
       </div>

@@ -2299,3 +2299,23 @@ timestamp,feed_name,status,response_time
 2025-12-16T17:34:52.906425,massive-octo-nemesis Releases,failure,0
 2025-12-16T17:34:52.934573,massive-octo-nemesis Issues,failure,0
 2025-12-16T17:34:53.111464,Dark Reading,success,1.371608
+2025-12-16T17:44:52.138190,theZoo Issues,failure,0
+2025-12-16T17:44:52.147536,theZoo Releases,success,0.405163
+2025-12-16T17:44:52.171137,MISP Commits,failure,0
+2025-12-16T17:44:52.210252,Cisco Talos,success,0.453913
+2025-12-16T17:44:52.219418,GitHub Malware Zoo,success,0.447107
+2025-12-16T17:44:52.224883,theZoo Commits,success,0.445507
+2025-12-16T17:44:52.234328,MISP Issues,failure,0
+2025-12-16T17:44:52.621635,attack-stix-data Issues,failure,0
+2025-12-16T17:44:52.621603,atomic-red-team Releases,success,0.384676
+2025-12-16T17:44:52.621923,atomic-red-team Issues,failure,0
+2025-12-16T17:44:52.650817,attack-stix-data Commits,success,0.472078
+2025-12-16T17:44:52.672308,atomic-red-team Commits,success,0.417932
+2025-12-16T17:44:52.686181,The Hacker News,success,0.892348
+2025-12-16T17:44:52.719500,MISP Releases,success,0.510584
+2025-12-16T17:44:52.968135,massive-octo-nemesis Issues,failure,0
+2025-12-16T17:44:52.970876,massive-octo-nemesis Releases,failure,0
+2025-12-16T17:44:52.995584,massive-octo-nemesis Commits,failure,0
+2025-12-16T17:44:53.366168,Dark Reading,success,1.6244
+2025-12-16T17:44:53.415474,attack-stix-data Releases,success,1.20381
+2025-12-16T17:44:53.688086,CISA Alerts,failure,0

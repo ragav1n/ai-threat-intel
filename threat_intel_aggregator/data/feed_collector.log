@@ -6833,3 +6833,62 @@ RuntimeError: 🔥 Simulated feed collection failure for testing
 2025-12-16 23:04:53,115 [INFO] 🧪 Running IOC Parser
 2025-12-16 23:04:53,210 [INFO] ✅ Feed Collection Complete
 2025-12-16 23:06:04,823 [INFO] Job "job_collect_feeds (trigger: interval[0:10:00], next run at: 2025-12-16 23:14:51 IST)" executed successfully
+2025-12-16 23:09:51,728 [INFO] Running job "job_summarize (trigger: interval[0:05:00], next run at: 2025-12-16 23:14:51 IST)" (scheduled at 2025-12-16 23:09:51.723622+05:30)
+2025-12-16 23:09:51,729 [INFO] 🔁 Starting job: Summarize Pending IOCs
+2025-12-16 23:09:51,729 [INFO] Job "job_summarize (trigger: interval[0:05:00], next run at: 2025-12-16 23:14:51 IST)" executed successfully
+2025-12-16 23:14:51,727 [INFO] Running job "job_collect_feeds (trigger: interval[0:10:00], next run at: 2025-12-16 23:24:51 IST)" (scheduled at 2025-12-16 23:14:51.723387+05:30)
+2025-12-16 23:14:51,727 [INFO] Running job "job_summarize (trigger: interval[0:05:00], next run at: 2025-12-16 23:19:51 IST)" (scheduled at 2025-12-16 23:14:51.723622+05:30)
+2025-12-16 23:14:51,729 [INFO] 🔁 Starting job: Collect Feeds
+2025-12-16 23:14:51,729 [INFO] 🔁 Starting job: Summarize Pending IOCs
+2025-12-16 23:14:51,729 [INFO] 📥 Feed Collection Started
+2025-12-16 23:14:51,729 [INFO] Job "job_summarize (trigger: interval[0:05:00], next run at: 2025-12-16 23:19:51 IST)" executed successfully
+2025-12-16 23:14:51,733 [INFO] 🚀 Starting concurrent fetch of 20 feeds...
+2025-12-16 23:14:51,733 [INFO] 🔄 Trying to fetch: https://blog.talosintelligence.com/rss/
+2025-12-16 23:14:51,733 [INFO] 🔄 Trying to fetch: https://feeds.feedburner.com/TheHackersNews
+2025-12-16 23:14:51,733 [INFO] 🔄 Trying to fetch: https://www.darkreading.com/rss.xml
+2025-12-16 23:14:51,734 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-12-16 23:14:51,735 [INFO] 🔄 Trying to fetch: https://us-cert.cisa.gov/ncas/all.xml
+2025-12-16 23:14:51,738 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/commits/master.atom
+2025-12-16 23:14:51,739 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/issues.atom
+2025-12-16 23:14:51,740 [INFO] 🔄 Trying to fetch: https://github.com/ytisf/theZoo/releases.atom
+2025-12-16 23:14:51,741 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/commits/master.atom
+2025-12-16 23:14:51,741 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/issues.atom
+2025-12-16 23:14:52,137 [ERROR] ❌ Retry failed: [theZoo Issues] - 406 Client Error: Not Acceptable for url: https://github.com/ytisf/theZoo/issues.atom
+2025-12-16 23:14:52,138 [INFO] 🔄 Trying to fetch: https://github.com/MISP/MISP/releases.atom
+2025-12-16 23:14:52,147 [INFO] ✅ Success: [theZoo Releases] (45 lines)
+2025-12-16 23:14:52,148 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/commits/master.atom
+2025-12-16 23:14:52,170 [ERROR] ❌ Retry failed: [MISP Commits] - 404 Client Error: Not Found for url: https://github.com/MISP/MISP/commits/master.atom
+2025-12-16 23:14:52,171 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-12-16 23:14:52,209 [INFO] ✅ Success: [Cisco Talos] (118 lines)
+2025-12-16 23:14:52,210 [INFO] 🔄 Trying to fetch: https://github.com/mitre-attack/attack-stix-data/releases.atom
+2025-12-16 23:14:52,219 [INFO] ✅ Success: [GitHub Malware Zoo] (364 lines)
+2025-12-16 23:14:52,219 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/commits/master.atom
+2025-12-16 23:14:52,224 [INFO] ✅ Success: [theZoo Commits] (364 lines)
+2025-12-16 23:14:52,225 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-12-16 23:14:52,234 [ERROR] ❌ Retry failed: [MISP Issues] - 406 Client Error: Not Acceptable for url: https://github.com/MISP/MISP/issues.atom
+2025-12-16 23:14:52,234 [INFO] 🔄 Trying to fetch: https://github.com/redcanaryco/atomic-red-team/releases.atom
+2025-12-16 23:14:52,617 [ERROR] ❌ Retry failed: [attack-stix-data Issues] - 406 Client Error: Not Acceptable for url: https://github.com/mitre-attack/attack-stix-data/issues.atom
+2025-12-16 23:14:52,619 [ERROR] ❌ Retry failed: [atomic-red-team Issues] - 406 Client Error: Not Acceptable for url: https://github.com/redcanaryco/atomic-red-team/issues.atom
+2025-12-16 23:14:52,619 [INFO] ✅ Success: [atomic-red-team Releases] (8 lines)
+2025-12-16 23:14:52,623 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-12-16 23:14:52,625 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-12-16 23:14:52,627 [INFO] 🔄 Trying to fetch: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-12-16 23:14:52,650 [INFO] ✅ Success: [attack-stix-data Commits] (330 lines)
+2025-12-16 23:14:52,672 [INFO] ✅ Success: [atomic-red-team Commits] (370 lines)
+2025-12-16 23:14:52,685 [INFO] ✅ Success: [The Hacker News] (60 lines)
+2025-12-16 23:14:52,719 [INFO] ✅ Success: [MISP Releases] (457 lines)
+2025-12-16 23:14:52,963 [ERROR] ❌ Retry failed: [massive-octo-nemesis Issues] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/issues.atom
+2025-12-16 23:14:52,970 [ERROR] ❌ Retry failed: [massive-octo-nemesis Releases] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/releases.atom
+2025-12-16 23:14:52,995 [ERROR] ❌ Retry failed: [massive-octo-nemesis Commits] - 404 Client Error: Not Found for url: https://github.com/csirtgadgets/massive-octo-nemesis/commits/master.atom
+2025-12-16 23:14:53,365 [INFO] ✅ Success: [Dark Reading] (614 lines)
+2025-12-16 23:14:53,415 [INFO] ✅ Success: [attack-stix-data Releases] (107 lines)
+2025-12-16 23:14:53,686 [ERROR] ❌ Retry failed: [CISA Alerts] - 404 Client Error: Not Found for url: https://www.cisa.gov/ncas/all.xml
+2025-12-16 23:14:53,696 [INFO] 📦 Saved 20 total entries to /Users/ragav/Projects/ai-threat-intel/threat_intel_aggregator/data/raw_feeds.json
+2025-12-16 23:14:53,696 [INFO] 🧪 Running IOC Parser
+2025-12-16 23:14:53,785 [INFO] ✅ Feed Collection Complete
+2025-12-16 23:15:54,554 [INFO] Job "job_collect_feeds (trigger: interval[0:10:00], next run at: 2025-12-16 23:24:51 IST)" executed successfully
+2025-12-16 23:19:51,728 [INFO] Running job "job_summarize (trigger: interval[0:05:00], next run at: 2025-12-16 23:24:51 IST)" (scheduled at 2025-12-16 23:19:51.723622+05:30)
+2025-12-16 23:19:51,730 [INFO] 🔁 Starting job: Summarize Pending IOCs
+2025-12-16 23:19:51,730 [INFO] Job "job_summarize (trigger: interval[0:05:00], next run at: 2025-12-16 23:24:51 IST)" executed successfully
+2025-12-16 23:26:58,848 [WARNING] Run time of job "job_collect_feeds (trigger: interval[0:10:00], next run at: 2025-12-16 23:34:51 IST)" was missed by 0:02:07.124916
+2025-12-16 23:26:58,848 [WARNING] Run time of job "job_summarize (trigger: interval[0:05:00], next run at: 2025-12-16 23:29:51 IST)" was missed by 0:02:07.124933
