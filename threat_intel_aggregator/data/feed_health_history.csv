@@ -2459,3 +2459,183 @@ timestamp,feed_name,status,response_time
 2025-12-17T12:55:48.043650,massive-octo-nemesis Commits,failure,0
 2025-12-17T12:55:48.081276,massive-octo-nemesis Releases,failure,0
 2025-12-17T12:55:48.890089,CISA Alerts,failure,0
+2026-02-07T11:08:37.968286,Krebs on Security,success,0.330781
+2026-02-07T11:08:38.393111,Cisco Talos,success,0.765364
+2026-02-07T11:08:38.421825,Malwarebytes Labs,success,0.029046
+2026-02-07T11:08:38.522937,The Hacker News,success,0.951518
+2026-02-07T11:08:38.902619,Schneier on Security,success,1.342207
+2026-02-07T11:08:39.033107,SentinelOne Blog,success,0.289277
+2026-02-07T11:08:39.048333,SANS ISC,success,1.261069
+2026-02-07T11:08:39.050934,Threatpost,success,1.493399
+2026-02-07T11:08:39.100997,Graham Cluley,success,1.543845
+2026-02-07T11:08:39.245522,Microsoft Security Blog,success,0.195733
+2026-02-07T11:08:39.338853,Bleeping Computer,success,1.769189
+2026-02-07T11:08:39.340718,Recorded Future,success,0.246933
+2026-02-07T11:08:39.430884,Unit 42 (Palo Alto),success,0.524926
+2026-02-07T11:08:39.780277,CISA Known Exploited,success,0.392422
+2026-02-07T11:08:39.903607,Dark Reading,success,2.346323
+2026-02-07T11:08:40.261340,NCSC UK,success,0.82555
+2026-02-07T11:08:40.596616,Feodo Tracker,success,0.332015
+2026-02-07T11:08:40.786268,Security Affairs,success,0.62081
+2026-02-07T11:08:40.982763,Malware Bazaar,success,0.163943
+2026-02-07T11:08:41.142906,SSL Blacklist,success,0.452034
+2026-02-07T11:08:41.427795,NIST NVD CVE,success,2.068288
+2026-02-07T11:08:41.743066,Mandiant Blog,success,1.749832
+2026-02-07T11:08:42.473998,Google Project Zero,success,0.954114
+2026-02-07T11:08:43.235547,Blocklist.de,success,0.757522
+2026-02-07T11:08:43.783412,Sophos News,success,4.144592
+2026-02-07T11:08:44.144979,Trend Micro Research,success,5.092357
+2026-02-07T11:08:44.265742,Spamhaus DROP,success,0.479247
+2026-02-07T11:08:44.523859,Emerging Threats,success,1.285919
+2026-02-07T11:08:44.690604,CISA Alerts,failure,0
+2026-02-07T11:08:44.757493,OpenPhish,success,0.613988
+2026-02-07T11:08:44.799122,GitHub Malware Zoo,success,0.493957
+2026-02-07T11:08:45.035993,GitHub YARA Rules,success,0.47509
+2026-02-07T11:08:45.192134,GitHub Sigma Rules,success,0.461642
+2026-02-07T11:08:45.221431,GitHub Atomic Red Team,success,0.42835
+2026-02-07T11:08:45.259965,URLhaus Recent URLs,failure,0
+2026-02-07T11:08:45.267945,MITRE ATT&CK,success,0.436292
+2026-02-07T11:08:45.742777,ThreatFox IOCs,failure,0
+2026-02-07T11:08:46.249305,Exploit-DB,success,1.203516
+2026-02-07T11:08:46.283473,AlienVault OTX Pulses,failure,0
+2026-02-07T11:08:46.387461,theZoo Commits,success,0.106538
+2026-02-07T11:08:46.805283,theZoo Releases,success,0.414905
+2026-02-07T11:08:47.601081,VulnDB,success,2.376027
+2026-02-07T11:08:47.795064,PhishTank,failure,0
+2026-02-07T11:08:48.394925,MISP Releases,success,0.530927
+2026-02-07T11:08:48.884514,attack-stix-data Commits,success,0.449395
+2026-02-07T11:08:50.453581,CERT-EU,failure,0
+2026-02-07T11:08:50.613441,Fortinet PSIRT,success,2.044546
+2026-02-07T11:08:50.856211,atomic-red-team Commits,success,0.204451
+2026-02-07T11:08:50.884210,theZoo Issues,failure,0
+2026-02-07T11:08:50.923849,attack-stix-data Releases,success,0.468672
+2026-02-07T11:08:51.047839,VMware Security Advisories,failure,0
+2026-02-07T11:08:51.270541,atomic-red-team Releases,success,0.384311
+2026-02-07T11:08:51.533406,MISP Commits,failure,0
+2026-02-07T11:08:51.646124,Cisco Security Advisories,success,4.117193
+2026-02-07T11:08:52.122666,Ransomware Tracker,failure,0
+2026-02-07T11:08:52.521218,MISP Issues,failure,0
+2026-02-07T11:08:53.521324,attack-stix-data Issues,failure,0
+2026-02-07T11:08:54.417575,Packet Storm,failure,0
+2026-02-07T11:08:55.564885,atomic-red-team Issues,failure,0
+2026-02-07T11:08:55.613105,massive-octo-nemesis Commits,failure,0
+2026-02-07T11:08:55.650744,massive-octo-nemesis Issues,failure,0
+2026-02-07T11:08:55.851777,massive-octo-nemesis Releases,failure,0
+2026-02-07T11:10:19.193906,Bleeping Computer,success,0.061597
+2026-02-07T11:10:19.254227,Krebs on Security,success,0.062065
+2026-02-07T11:10:19.254411,Schneier on Security,success,0.117961
+2026-02-07T11:10:19.403358,Cisco Talos,success,0.216736
+2026-02-07T11:10:19.431337,SentinelOne Blog,success,0.162112
+2026-02-07T11:10:19.504633,Unit 42 (Palo Alto),success,0.071152
+2026-02-07T11:10:19.508278,Trend Micro Research,success,0.026108
+2026-02-07T11:10:19.571598,Malwarebytes Labs,success,0.03223
+2026-02-07T11:10:19.708693,Microsoft Security Blog,success,0.190142
+2026-02-07T11:10:20.049952,The Hacker News,success,0.899826
+2026-02-07T11:10:20.204918,Threatpost,success,1.072144
+2026-02-07T11:10:20.270404,CISA Cybersecurity Advisories,success,0.195953
+2026-02-07T11:10:20.396623,Graham Cluley,success,1.264206
+2026-02-07T11:10:20.423311,CISA Known Exploited,success,0.097115
+2026-02-07T11:10:20.532842,Sophos News,success,0.879076
+2026-02-07T11:10:20.588550,Recorded Future,success,0.719368
+2026-02-07T11:10:20.702744,URLhaus CSV,success,0.163335
+2026-02-07T11:10:20.708320,Feodo Tracker,success,0.173718
+2026-02-07T11:10:20.836389,Dark Reading,success,1.703215
+2026-02-07T11:10:20.950503,Malware Bazaar,success,0.131128
+2026-02-07T11:10:20.976373,ThreatFox CSV,success,0.256291
+2026-02-07T11:10:21.031488,SANS ISC,success,1.642382
+2026-02-07T11:10:21.088014,SSL Blacklist,success,0.384702
+2026-02-07T11:10:21.101809,Spamhaus DROP,success,0.068067
+2026-02-07T11:10:21.143212,Blocklist.de,success,0.187099
+2026-02-07T11:10:21.198519,Security Affairs,success,0.397067
+2026-02-07T11:10:21.202256,NCSC UK,success,0.74643
+2026-02-07T11:10:21.532813,NIST NVD CVE,success,1.234197
+2026-02-07T11:10:21.685241,GitHub YARA Rules,success,0.442336
+2026-02-07T11:10:21.760374,GitHub Malware Zoo,success,0.507676
+2026-02-07T11:10:21.832865,Botvrij Domains,success,0.729174
+2026-02-07T11:10:21.988784,C2 IntelFeeds,success,0.897797
+2026-02-07T11:10:22.053003,GitHub Sigma Rules,success,0.480102
+2026-02-07T11:10:22.152381,DigitalSide Threat-Intel,success,0.982969
+2026-02-07T11:10:22.224000,GitHub Atomic Red Team,success,0.499508
+2026-02-07T11:10:22.284987,MITRE ATT&CK,success,0.487184
+2026-02-07T11:10:22.376628,Google Project Zero,success,0.150919
+2026-02-07T11:10:22.532675,GTFOBins,success,0.505126
+2026-02-07T11:10:22.558577,OpenPhish,success,0.061261
+2026-02-07T11:10:22.760644,LOLBAS Project,success,0.890184
+2026-02-07T11:10:22.893261,VulnDB,success,0.736845
+2026-02-07T11:10:22.917850,theZoo Commits,success,0.117552
+2026-02-07T11:10:23.165960,Fortinet PSIRT,success,0.212467
+2026-02-07T11:10:23.310152,Emerging Threats,success,2.33033
+2026-02-07T11:10:23.395717,Exploit-DB,success,1.328209
+2026-02-07T11:10:23.442609,theZoo Releases,success,0.490006
+2026-02-07T11:10:23.919324,Vulners Blog,success,1.194553
+2026-02-07T11:10:24.068820,attack-stix-data Commits,success,0.524808
+2026-02-07T11:10:24.136981,MISP Releases,success,0.670669
+2026-02-07T11:10:24.290437,atomic-red-team Commits,success,0.114713
+2026-02-07T11:10:24.597370,attack-stix-data Releases,success,0.523978
+2026-02-07T11:10:25.008276,atomic-red-team Releases,success,0.405413
+2026-02-07T11:10:26.423383,Cisco Security Advisories,success,1.587939
+2026-02-07T11:10:27.644401,theZoo Issues,failure,0
+2026-02-07T11:10:27.896690,MISP Commits,failure,0
+2026-02-07T11:10:28.009630,MISP Issues,failure,0
+2026-02-07T11:10:28.635663,attack-stix-data Issues,failure,0
+2026-02-07T11:10:28.963256,atomic-red-team Issues,failure,0
+2026-02-07T11:10:29.714372,massive-octo-nemesis Commits,failure,0
+2026-02-07T11:10:31.030225,massive-octo-nemesis Issues,failure,0
+2026-02-07T11:10:32.044024,Juniper Security Advisories,failure,0
+2026-02-07T11:10:32.362191,massive-octo-nemesis Releases,failure,0
+2026-02-07T11:10:32.798395,F5 Security Advisories,failure,0
+2026-02-07T11:10:39.617055,Mandiant Blog,success,1.82699
+2026-02-07T11:13:00.869321,Bleeping Computer,success,0.121264
+2026-02-07T11:13:00.959310,Krebs on Security,success,0.142828
+2026-02-07T11:13:01.054986,SentinelOne Blog,success,0.078559
+2026-02-07T11:13:01.241505,Malwarebytes Labs,success,0.034371
+2026-02-07T11:13:01.438996,Trend Micro Research,success,0.019556
+2026-02-07T11:13:01.644728,Unit 42 (Palo Alto),success,0.202752
+2026-02-07T11:13:01.789577,Microsoft Security Blog,success,0.127443
+2026-02-07T11:13:01.881148,The Hacker News,success,1.000417
+2026-02-07T11:13:01.882458,Threatpost,success,1.130872
+2026-02-07T11:13:01.905731,Security Affairs,success,0.268612
+2026-02-07T11:13:01.991955,Graham Cluley,success,1.24329
+2026-02-07T11:13:01.996754,CISA Cybersecurity Advisories,success,0.06946
+2026-02-07T11:13:02.119542,SANS ISC,success,1.130351
+2026-02-07T11:13:02.127913,CISA Known Exploited,success,0.090815
+2026-02-07T11:13:02.151785,Cisco Talos,success,0.606056
+2026-02-07T11:13:02.244809,Sophos News,success,0.699381
+2026-02-07T11:13:02.537460,URLhaus CSV,success,0.323894
+2026-02-07T11:13:02.617850,Recorded Future,success,0.694762
+2026-02-07T11:13:02.804870,SSL Blacklist,success,0.396999
+2026-02-07T11:13:03.006356,Feodo Tracker,success,0.849445
+2026-02-07T11:13:03.140122,Google Project Zero,success,0.215567
+2026-02-07T11:13:03.140339,Dark Reading,success,2.345252
+2026-02-07T11:13:03.242956,Blocklist.de,success,0.226235
+2026-02-07T11:13:03.263362,Spamhaus DROP,success,0.118477
+2026-02-07T11:13:03.265187,Malware Bazaar,success,0.658741
+2026-02-07T11:13:03.266767,ThreatFox CSV,success,0.596843
+2026-02-07T11:13:03.474035,NIST NVD CVE,success,1.451694
+2026-02-07T11:13:03.523234,Botvrij Domains,success,0.257609
+2026-02-07T11:13:03.741791,OpenPhish,success,0.063029
+2026-02-07T11:13:03.804934,GitHub Malware Zoo,success,0.496639
+2026-02-07T11:13:03.858960,Mandiant Blog,success,1.616867
+2026-02-07T11:13:03.877004,Schneier on Security,success,1.110733
+2026-02-07T11:13:03.978371,C2 IntelFeeds,success,0.728441
+2026-02-07T11:13:03.978839,DigitalSide Threat-Intel,success,0.60821
+2026-02-07T11:13:04.008504,GitHub YARA Rules,success,0.496559
+2026-02-07T11:13:04.018837,GitHub Sigma Rules,success,0.45033
+2026-02-07T11:13:04.148728,Exploit-DB,success,0.152394
+2026-02-07T11:13:04.255105,GitHub Atomic Red Team,success,0.469805
+2026-02-07T11:13:04.360010,Emerging Threats,success,1.213796
+2026-02-07T11:13:04.398047,MITRE ATT&CK,success,0.550411
+2026-02-07T11:13:04.500232,LOLBAS Project,success,0.521739
+2026-02-07T11:13:04.500480,theZoo Commits,success,0.126346
+2026-02-07T11:13:04.594296,NCSC UK,success,2.047682
+2026-02-07T11:13:04.653955,VulnDB,success,0.669855
+2026-02-07T11:13:04.732187,atomic-red-team Commits,success,0.105188
+2026-02-07T11:13:04.787241,GTFOBins,success,0.821274
+2026-02-07T11:13:04.846492,Fortinet PSIRT,success,0.198416
+2026-02-07T11:13:04.884381,theZoo Releases,success,0.518755
+2026-02-07T11:13:05.023826,attack-stix-data Releases,success,0.515154
+2026-02-07T11:13:05.067616,atomic-red-team Releases,success,0.410144
+2026-02-07T11:13:05.091197,attack-stix-data Commits,success,0.544088
+2026-02-07T11:13:05.151303,MISP Releases,success,0.674086
+2026-02-07T11:13:06.502845,Vulners Blog,success,2.137797
+2026-02-07T11:13:07.907133,Cisco Security Advisories,success,1.536065
