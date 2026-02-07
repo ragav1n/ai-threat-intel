@@ -1,188 +1,98 @@
 {
-  "Dark Reading": {
+  "MITRE ATT&CK": {
     "success": 1,
     "failure": 0,
     "total": 1,
-    "last_response_time": 2.345252
-  },
-  "Blocklist.de": {
-    "success": 1,
-    "failure": 0,
-    "total": 1,
-    "last_response_time": 0.226235
-  },
-  "Spamhaus DROP": {
-    "success": 1,
-    "failure": 0,
-    "total": 1,
-    "last_response_time": 0.118477
-  },
-  "Malware Bazaar": {
-    "success": 1,
-    "failure": 0,
-    "total": 1,
-    "last_response_time": 0.658741
-  },
-  "ThreatFox CSV": {
-    "success": 1,
-    "failure": 0,
-    "total": 1,
-    "last_response_time": 0.596843
-  },
-  "NIST NVD CVE": {
-    "success": 1,
-    "failure": 0,
-    "total": 1,
-    "last_response_time": 1.451694
-  },
-  "Botvrij Domains": {
-    "success": 1,
-    "failure": 0,
-    "total": 1,
-    "last_response_time": 0.257609
+    "last_response_time": 0.455505
   },
   "OpenPhish": {
     "success": 1,
     "failure": 0,
     "total": 1,
-    "last_response_time": 0.063029
+    "last_response_time": 0.056905
   },
-  "GitHub Malware Zoo": {
+  "theZoo Commits": {
     "success": 1,
     "failure": 0,
     "total": 1,
-    "last_response_time": 0.496639
-  },
-  "Mandiant Blog": {
-    "success": 1,
-    "failure": 0,
-    "total": 1,
-    "last_response_time": 1.616867
-  },
-  "Schneier on Security": {
-    "success": 1,
-    "failure": 0,
-    "total": 1,
-    "last_response_time": 1.110733
-  },
-  "DigitalSide Threat-Intel": {
-    "success": 1,
-    "failure": 0,
-    "total": 1,
-    "last_response_time": 0.60821
-  },
-  "GitHub YARA Rules": {
-    "success": 1,
-    "failure": 0,
-    "total": 1,
-    "last_response_time": 0.496559
-  },
-  "GitHub Sigma Rules": {
-    "success": 1,
-    "failure": 0,
-    "total": 1,
-    "last_response_time": 0.45033
+    "last_response_time": 0.105685
   },
   "Exploit-DB": {
     "success": 1,
     "failure": 0,
     "total": 1,
-    "last_response_time": 0.152394
-  },
-  "GitHub Atomic Red Team": {
-    "success": 1,
-    "failure": 0,
-    "total": 1,
-    "last_response_time": 0.469805
-  },
-  "Emerging Threats": {
-    "success": 1,
-    "failure": 0,
-    "total": 1,
-    "last_response_time": 1.213796
-  },
-  "MITRE ATT&CK": {
-    "success": 1,
-    "failure": 0,
-    "total": 1,
-    "last_response_time": 0.550411
+    "last_response_time": 0.367284
   },
   "LOLBAS Project": {
     "success": 1,
     "failure": 0,
     "total": 1,
-    "last_response_time": 0.521739
-  },
-  "NCSC UK": {
-    "success": 1,
-    "failure": 0,
-    "total": 1,
-    "last_response_time": 2.047682
-  },
-  "VulnDB": {
-    "success": 1,
-    "failure": 0,
-    "total": 1,
-    "last_response_time": 0.669855
+    "last_response_time": 0.559522
   },
   "atomic-red-team Commits": {
     "success": 1,
     "failure": 0,
     "total": 1,
-    "last_response_time": 0.105188
-  },
-  "GTFOBins": {
-    "success": 1,
-    "failure": 0,
-    "total": 1,
-    "last_response_time": 0.821274
-  },
-  "Fortinet PSIRT": {
-    "success": 1,
-    "failure": 0,
-    "total": 1,
-    "last_response_time": 0.198416
+    "last_response_time": 0.11847
   },
   "theZoo Releases": {
     "success": 1,
     "failure": 0,
     "total": 1,
-    "last_response_time": 0.518755
+    "last_response_time": 0.415193
   },
   "attack-stix-data Releases": {
     "success": 1,
     "failure": 0,
     "total": 1,
-    "last_response_time": 0.515154
-  },
-  "atomic-red-team Releases": {
-    "success": 1,
-    "failure": 0,
-    "total": 1,
-    "last_response_time": 0.410144
+    "last_response_time": 0.501176
   },
   "attack-stix-data Commits": {
     "success": 1,
     "failure": 0,
     "total": 1,
-    "last_response_time": 0.544088
+    "last_response_time": 0.533572
   },
   "MISP Releases": {
     "success": 1,
     "failure": 0,
     "total": 1,
-    "last_response_time": 0.674086
+    "last_response_time": 0.562155
+  },
+  "atomic-red-team Releases": {
+    "success": 1,
+    "failure": 0,
+    "total": 1,
+    "last_response_time": 0.401554
+  },
+  "VulnDB": {
+    "success": 1,
+    "failure": 0,
+    "total": 1,
+    "last_response_time": 1.324099
   },
   "Vulners Blog": {
     "success": 1,
     "failure": 0,
     "total": 1,
-    "last_response_time": 2.137797
+    "last_response_time": 1.502628
+  },
+  "Trend Micro Research": {
+    "success": 1,
+    "failure": 0,
+    "total": 1,
+    "last_response_time": 4.831644
   },
   "Cisco Security Advisories": {
     "success": 1,
     "failure": 0,
     "total": 1,
-    "last_response_time": 1.536065
+    "last_response_time": 3.335215
+  },
+  "Fortinet PSIRT": {
+    "success": 0,
+    "failure": 1,
+    "total": 1,
+    "last_response_time": null
   }
 }
