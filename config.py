@@ -1,80 +1,34 @@
 """
-Centralized configuration management for AI Threat Intel.
-
-Loads all configuration from environment variables with sensible defaults.
+Configuration settings for the AI Threat Intelligence system.
 """
 import os
-from dataclasses import dataclass
-from functools import lru_cache
-from typing import Optional
+from pathlib import Path
 
-from dotenv import load_dotenv
+# Base Paths (Relative to project root)
+BASE_DIR = Path(__file__).parent
+DATA_DIR = BASE_DIR / "threat_intel_aggregator" / "data"
 
-# Load .env file
-load_dotenv()
+# Ensure data directory exists
+DATA_DIR.mkdir(parents=True, exist_ok=True)
 
+# Database Configuration
+MONGO_URI = os.getenv("MONGO_URI", "mongodb://mongo:27017/")
+MONGO_DB = os.getenv("MONGO_DB", "threat_intel")
+MONGO_COLLECTION = os.getenv("MONGO_COLLECTION", "summaries")
 
-@dataclass
-class MongoConfig:
-    """MongoDB configuration."""
-    uri: str
-    database: str
-    ioc_collection: str
-    summary_collection: str
-    
-    @property
-    def full_uri(self) -> str:
-        """Get the full MongoDB URI."""
-        return self.uri
+# Secrets
+TRIGGER_SECRET = os.getenv("TRIGGER_SECRET", "socgen-feed-key")
 
+# Scheduler
+SCHEDULER_INTERVAL_MINUTES = int(os.getenv("SCHEDULER_INTERVAL", "10"))
 
-@dataclass
-class AppConfig:
-    """Application configuration."""
-    debug: bool
-    log_level: str
-    api_host: str
-    api_port: int
-    scheduler_interval_minutes: int
-    
+# AI Configuration
+OLLAMA_BASE_URL = os.getenv("OLLAMA_URL", "http://host.docker.internal:11434")
+OLLAMA_TIMEOUT = 120  # seconds
 
-@dataclass
-class Config:
-    """Root configuration container."""
-    mongo: MongoConfig
-    app: AppConfig
+# Logging
+LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
+LOG_FILE = BASE_DIR / "threat_model" / "logs" / "threat_intel.log"
 
-
-@lru_cache()
-def get_config() -> Config:
-    """
-    Get the application configuration.
-    
-    Uses lru_cache to ensure config is only loaded once.
-    """
-    return Config(
-        mongo=MongoConfig(
-            uri=os.getenv("MONGO_URI", "mongodb://localhost:27017/"),
-            database=os.getenv("MONGO_DB", "threat_intel"),
-            ioc_collection=os.getenv("MONGO_IOC_COLLECTION", "iocs"),
-            summary_collection=os.getenv("MONGO_COLLECTION", "summaries"),
-        ),
-        app=AppConfig(
-            debug=os.getenv("DEBUG", "false").lower() == "true",
-            log_level=os.getenv("LOG_LEVEL", "INFO"),
-            api_host=os.getenv("API_HOST", "0.0.0.0"),
-            api_port=int(os.getenv("API_PORT", "8000")),
-            scheduler_interval_minutes=int(os.getenv("SCHEDULER_INTERVAL", "10")),
-        ),
-    )
-
-
-# Convenience function for quick access
-def get_mongo_uri() -> str:
-    """Get MongoDB URI."""
-    return get_config().mongo.uri
-
-
-def get_mongo_db() -> str:
-    """Get MongoDB database name."""
-    return get_config().mongo.database
+# Create log directory
+LOG_FILE.parent.mkdir(parents=True, exist_ok=True)

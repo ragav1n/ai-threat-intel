@@ -137,6 +137,10 @@ def summarize_endpoint(request: Request, body: IOCRequest):
     """
     try:
         result = summarize_threat(body.ioc, model=body.model)
+        # Save to database
+        from threat_model.threat_summarizer.mongo_client import upload_summary
+        upload_summary(result)
+
         return SummaryResponse(
             timestamp=result["timestamp"],
             input=result["input"],

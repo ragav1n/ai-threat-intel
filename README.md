@@ -19,12 +19,20 @@ make install
 # Run API server
 make run-api          # http://localhost:8000
 
+# Run Dashboard (optional, requires Node.js)
+cd soc-dashboard && npm run dev  # http://localhost:3000
+
 # Run feed scheduler (in another terminal)
 make run-scheduler
 
-# Or use Docker
+# Or use Docker (Recommended for full stack)
 make docker-up
 ```
+
+### Access Points
+- **SOC Dashboard**: [http://localhost:3000](http://localhost:3000)
+- **API Docs**: [http://localhost:8000/docs](http://localhost:8000/docs)
+- **API Health**: [http://localhost:8000/health](http://localhost:8000/health)
 
 ---
 
