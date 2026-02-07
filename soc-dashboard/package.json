@@ -53,6 +53,7 @@
     "react-day-picker": "8.10.1",
     "react-dom": "^19",
     "react-hook-form": "^7.54.1",
+    "react-markdown": "^10.1.0",
     "react-resizable-panels": "^2.1.7",
     "reaviz": "^16.1.1",
     "recharts": "^2.15.0",
@@ -64,6 +65,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.13",
+    "@tailwindcss/typography": "^0.5.19",
     "@types/node": "^22.19.9",
     "@types/react": "^19.2.13",
     "@types/react-dom": "^19.2.3",

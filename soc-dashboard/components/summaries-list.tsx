@@ -4,6 +4,7 @@ import React from "react"
 
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
+import ReactMarkdown from 'react-markdown'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -188,7 +189,9 @@ export default function SummariesList() {
                     {/* Summary */}
                     <div>
                       <h4 className="font-semibold text-foreground mb-2">Threat Summary</h4>
-                      <p className="text-sm text-muted-foreground whitespace-pre-wrap">{summary.summary}</p>
+                      <div className="text-sm text-muted-foreground prose prose-sm prose-invert max-w-none prose-headings:text-foreground prose-headings:font-semibold prose-headings:text-base prose-p:text-muted-foreground prose-strong:text-foreground prose-ul:text-muted-foreground prose-li:marker:text-primary">
+                        <ReactMarkdown>{summary.summary}</ReactMarkdown>
+                      </div>
                     </div>
 
                     {/* Enrichment */}
@@ -219,7 +222,9 @@ export default function SummariesList() {
                         <h4 className="font-semibold text-foreground mb-2">Recommendations</h4>
                         <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
                           {summary.recommendations.map((rec: string, ridx: number) => (
-                            <li key={ridx}>{rec}</li>
+                            <li key={ridx} className="prose prose-sm prose-invert prose-p:inline prose-strong:text-foreground">
+                              <ReactMarkdown components={{ p: ({ children }) => <span>{children}</span> }}>{rec}</ReactMarkdown>
+                            </li>
                           ))}
                         </ul>
                       </div>

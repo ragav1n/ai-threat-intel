@@ -23,6 +23,7 @@ venv/
 logs/
 threat_model/output.txt
 threat_model/input.txt
+threat_model/processed_inputs.txt
 *.pdf
 *.csv
 *.jsonl
@@ -31,3 +32,9 @@ threat_model/input.txt
 *.egg-info/
 dist/
 build/
+
+# Next.js
+soc-dashboard/.next/
+
+# Duplicate lock files
+soc-dashboard/pnpm-lock.yaml
