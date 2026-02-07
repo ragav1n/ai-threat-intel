@@ -1,0 +1,341 @@
+'use client'
+
+import { useState, useEffect } from 'react'
+import { motion } from 'framer-motion'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
+import { AlertCircle, Shield, Activity, Download, Mail, RefreshCw, TrendingUp, Zap } from 'lucide-react'
+import DashboardStats from '@/components/dashboard-stats'
+import FeedsList from '@/components/feeds-list'
+import IOCTable from '@/components/ioc-table'
+import SummariesList from '@/components/summaries-list'
+import { NeonAlert } from '@/components/neon-alert'
+import { useToast } from '@/hooks/use-toast'
+import { EtherealShadow } from '@/components/ui/ethereal-shadow'
+
+function OverviewTab() {
+  const [iocStats, setIocStats] = useState<any>(null)
+  const [summaryStats, setSummaryStats] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [iocRes, summaryRes] = await Promise.all([
+          fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/iocs/stats`),
+          fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/summaries/stats`),
+        ])
+        setIocStats(await iocRes.json())
+        setSummaryStats(await summaryRes.json())
+      } catch (error) {
+        console.error('Failed to fetch overview data:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchData()
+  }, [])
+
+  if (loading) {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {[...Array(3)].map((_, i) => (
+          <Card key={i} className="p-6 h-80 animate-pulse bg-gradient-to-r from-muted to-muted/50" />
+        ))}
+      </div>
+    )
+  }
+
+  return (
+    <motion.div
+      className="grid grid-cols-1 md:grid-cols-2 gap-6"
+      variants={{
+        hidden: { opacity: 0 },
+        visible: {
+          opacity: 1,
+          transition: { staggerChildren: 0.15, delayChildren: 0 },
+        },
+      }}
+      initial="hidden"
+      animate="visible"
+    >
+      {/* IOC Distribution */}
+      <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5 } } }}>
+        <Card className="p-6 hover:border-primary/50 transition-colors bg-card/50 backdrop-blur-sm border-border/30 h-full">
+          <h3 className="text-lg font-semibold mb-4 text-foreground">IOC Types Distribution</h3>
+          <ResponsiveContainer width="100%" height={300}>
+            <PieChart>
+              <Pie
+                data={
+                  iocStats?.by_type
+                    ? Object.entries(iocStats.by_type).map(([name, value]) => ({
+                      name: name.toUpperCase(),
+                      value: value as number,
+                    }))
+                    : []
+                }
+                cx="50%"
+                cy="50%"
+                labelLine={false}
+                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                outerRadius={80}
+                fill="#8884d8"
+                dataKey="value"
+              >
+                {['#06b6d4', '#f59e0b', '#ef4444', '#8b5cf6'].map((color) => (
+                  <Cell key={`cell-${color}`} fill={color} />
+                ))}
+              </Pie>
+              <Tooltip />
+            </PieChart>
+          </ResponsiveContainer>
+        </Card>
+      </motion.div>
+
+      {/* Severity Breakdown */}
+      <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5 } } }}>
+        <Card className="p-6 hover:border-primary/50 transition-colors bg-card/50 backdrop-blur-sm border-border/30 h-full">
+          <h3 className="text-lg font-semibold mb-4 text-foreground">Severity Breakdown</h3>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={summaryStats?.by_severity ? Object.entries(summaryStats.by_severity).map(([name, value]) => ({ name, value })) : []}>
+              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+              <XAxis dataKey="name" stroke="hsl(var(--muted-foreground))" />
+              <YAxis stroke="hsl(var(--muted-foreground))" />
+              <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--card))', border: '1px solid hsl(var(--border))' }} />
+              <Bar dataKey="value" fill="hsl(var(--primary))" />
+            </BarChart>
+          </ResponsiveContainer>
+        </Card>
+      </motion.div>
+
+      {/* Top Feeds */}
+      <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5 } } }} className="md:col-span-2">
+        <Card className="p-6 hover:border-primary/50 transition-colors bg-card/50 backdrop-blur-sm border-border/30 h-full">
+          <h3 className="text-lg font-semibold mb-4 text-foreground">Top Threat Feeds</h3>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart layout="vertical" data={iocStats?.top_feeds ? Object.entries(iocStats.top_feeds).map(([name, value]) => ({ name, value })) : []}>
+              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+              <XAxis type="number" stroke="hsl(var(--muted-foreground))" />
+              <YAxis dataKey="name" type="category" stroke="hsl(var(--muted-foreground))" width={100} />
+              <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--card))', border: '1px solid hsl(var(--border))' }} />
+              <Bar dataKey="value" fill="hsl(var(--chart-1))" />
+            </BarChart>
+          </ResponsiveContainer>
+        </Card>
+      </motion.div>
+    </motion.div>
+  )
+}
+
+export default function Page() {
+  const { toast } = useToast()
+  const [isCollecting, setIsCollecting] = useState(false)
+  const [isSending, setIsSending] = useState(false)
+  const [isGenerating, setIsGenerating] = useState(false)
+
+  const handleCollectFeeds = async () => {
+    setIsCollecting(true)
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/feeds/collect`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ secret: 'socgen-feed-key' }),
+      })
+      const data = await response.json()
+      toast({
+        title: 'Success',
+        description: data.status,
+      })
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to collect feeds',
+        variant: 'destructive',
+      })
+    } finally {
+      setIsCollecting(false)
+    }
+  }
+
+  const handleSendEmail = async () => {
+    setIsSending(true)
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/email/send`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ severity_filter: 'High', limit: 50 }),
+      })
+      const data = await response.json()
+      toast({
+        title: 'Success',
+        description: data.message,
+      })
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to send email',
+        variant: 'destructive',
+      })
+    } finally {
+      setIsSending(false)
+    }
+  }
+
+  const handleGenerateReport = async () => {
+    setIsGenerating(true)
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/reports/generate?limit=50`, {
+        method: 'POST',
+      })
+      const data = await response.json()
+      window.location.href = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/reports/download`
+      toast({
+        title: 'Success',
+        description: data.message,
+      })
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to generate report',
+        variant: 'destructive',
+      })
+    } finally {
+      setIsGenerating(false)
+    }
+  }
+
+  return (
+    <div className="min-h-screen bg-background relative overflow-hidden">
+      {/* Animated Background */}
+      <div className="fixed inset-0 z-0">
+        <EtherealShadow
+          color="rgba(6, 182, 212, 0.15)"
+          animation={{ scale: 60, speed: 40 }}
+          noise={{ opacity: 0.5, scale: 1 }}
+          sizing="fill"
+        />
+      </div>
+
+      {/* Header */}
+      <header className="sticky top-0 z-50 border-b border-border/40 backdrop-blur-xl bg-background/70">
+        <motion.div
+          className="container mx-auto px-4 py-4"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+        >
+          <div className="flex items-center justify-between">
+            <motion.div className="flex items-center gap-3" whileHover={{ scale: 1.02 }}>
+              <motion.div animate={{ rotate: 360 }} transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}>
+                <Shield className="h-8 w-8 text-primary drop-shadow-lg" />
+              </motion.div>
+              <div>
+                <h1 className="text-2xl font-bold text-foreground">SOC Dashboard</h1>
+                <p className="text-sm text-muted-foreground">Threat Intelligence & Security Monitoring</p>
+              </div>
+            </motion.div>
+            <div className="flex gap-2">
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button
+                  onClick={handleCollectFeeds}
+                  disabled={isCollecting}
+                  size="sm"
+                  className="gap-2 bg-primary hover:bg-primary/90"
+                >
+                  <motion.div animate={isCollecting ? { rotate: 360 } : {}} transition={{ duration: 1, repeat: isCollecting ? Infinity : 0, ease: 'linear' }}>
+                    <RefreshCw className="h-4 w-4" />
+                  </motion.div>
+                  {isCollecting ? 'Collecting...' : 'Collect Feeds'}
+                </Button>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button
+                  onClick={handleGenerateReport}
+                  disabled={isGenerating}
+                  size="sm"
+                  variant="outline"
+                  className="gap-2 bg-transparent"
+                >
+                  <motion.div animate={isGenerating ? { scale: [1, 1.2, 1] } : {}} transition={{ duration: 0.8, repeat: isGenerating ? Infinity : 0 }}>
+                    <Download className="h-4 w-4" />
+                  </motion.div>
+                  {isGenerating ? 'Generating...' : 'Report'}
+                </Button>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button
+                  onClick={handleSendEmail}
+                  disabled={isSending}
+                  size="sm"
+                  variant="outline"
+                  className="gap-2 bg-transparent"
+                >
+                  <motion.div animate={isSending ? { y: [0, -4, 0] } : {}} transition={{ duration: 0.8, repeat: isSending ? Infinity : 0 }}>
+                    <Mail className="h-4 w-4" />
+                  </motion.div>
+                  {isSending ? 'Sending...' : 'Email'}
+                </Button>
+              </motion.div>
+            </div>
+          </div>
+        </motion.div>
+      </header>
+
+      {/* Main Content */}
+      <main className="container mx-auto px-4 py-8 relative z-10">
+        {/* Critical Alerts */}
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <NeonAlert severity="critical" title="Critical Threats Detected" count={3} />
+          <NeonAlert severity="high" title="High Severity IOCs" count={12} />
+          <NeonAlert severity="medium" title="Medium Priority Alerts" count={8} />
+        </motion.div>
+
+        {/* Statistics */}
+        <DashboardStats />
+
+        {/* Main Tabs */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.5 }}>
+          <Tabs defaultValue="overview" className="mt-8">
+            <TabsList className="grid w-full grid-cols-4 bg-secondary/50 backdrop-blur-sm border border-border/30">
+              <TabsTrigger value="overview" className="flex items-center gap-2">
+                <Activity className="h-4 w-4" />
+                <span className="hidden sm:inline">Overview</span>
+              </TabsTrigger>
+              <TabsTrigger value="feeds" className="flex items-center gap-2">
+                <TrendingUp className="h-4 w-4" />
+                <span className="hidden sm:inline">Feeds</span>
+              </TabsTrigger>
+              <TabsTrigger value="iocs" className="flex items-center gap-2">
+                <AlertCircle className="h-4 w-4" />
+                <span className="hidden sm:inline">IOCs</span>
+              </TabsTrigger>
+              <TabsTrigger value="summaries" className="flex items-center gap-2">
+                <Shield className="h-4 w-4" />
+                <span className="hidden sm:inline">Summaries</span>
+              </TabsTrigger>
+            </TabsList>
+            <TabsContent value="overview" className="mt-6 space-y-6">
+              <OverviewTab />
+            </TabsContent>
+            <TabsContent value="feeds" className="mt-6">
+              <FeedsList />
+            </TabsContent>
+            <TabsContent value="iocs" className="mt-6">
+              <IOCTable />
+            </TabsContent>
+            <TabsContent value="summaries" className="mt-6">
+              <SummariesList />
+            </TabsContent>
+          </Tabs>
+        </motion.div>
+      </main>
+    </div>
+  )
+}
