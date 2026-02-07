@@ -152,7 +152,6 @@ def scheduled_job():
         if failure_count >= MAX_FAILURES_BEFORE_ALERT:
             send_alert(f"Feed collector failed {failure_count} times in a row.")
 
-    normalize_parsed_results()
     write_iocs_to_mongo()
     export_iocs_to_summarizer_input()  # <- this line pushes IOCs to input.txt
 
@@ -187,79 +186,3 @@ if __name__ == "__main__":
             logging.error(traceback.format_exc())
             send_alert("Restarting entire process after crash")
             time.sleep(30)  # Wait before restarting outer loop
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-'''
-from apscheduler.schedulers.blocking import BlockingScheduler
-from feed_collection.collector import collect_feeds_concurrently
-from feed_collection.status import print_last_fetch_status
-from feed_collection.parser import parse_feeds, normalize_parsed_results
-from feed_collection.config import load_feed_metadata
-import datetime
-import json
-import os
-import pandas as pd
-
-# Load and print feed metadata
-feeds = load_feed_metadata()
-for f in feeds:
-    print(f"{f['name']} - {f['url']}")
-
-def scheduled_job():
-    print(f"\n🕒 Feed Collection Started at {datetime.datetime.now()}")
-
-    # Step 1: Collect feeds
-    collect_feeds_concurrently()
-    print("📥 Feed Collection Complete.")
-
-    # Step 2: Parse IOCs
-    parsed = parse_feeds()
-
-    # Step 3: Normalize IOCs
-    normalized_iocs = normalize_parsed_results(parsed)
-
-    # Output paths
-    output_json_path = "data/normalized_iocs.json"
-    output_csv_path = "data/normalized_iocs.csv"
-
-    # Step 4: Save as JSON
-    os.makedirs(os.path.dirname(output_json_path), exist_ok=True)
-    with open(output_json_path, "w") as f:
-        json.dump(normalized_iocs, f, indent=2)
-    print(f"✅ Normalized IOCs saved to {output_json_path}")
-
-    # Step 5: Save as CSV
-    df = pd.DataFrame(normalized_iocs)
-    df.to_csv(output_csv_path, index=False)
-    print(f"📄 CSV export saved to {output_csv_path}")
-
-if __name__ == "__main__":
-    print_last_fetch_status()
-
-    scheduler = BlockingScheduler()
-    # scheduler.add_job(scheduled_job, 'interval', minutes=15)  # Production
-    scheduler.add_job(scheduled_job, 'interval', seconds=20)    # Quick testing
-    print("🚀 Scheduler running... Press Ctrl+C to exit.")
-    scheduler.start()
-'''
