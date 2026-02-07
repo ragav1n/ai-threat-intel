@@ -5,7 +5,6 @@ import { motion } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import { AlertCircle, Shield, Activity, Download, Mail, RefreshCw, TrendingUp, Zap } from 'lucide-react'
 import DashboardStats from '@/components/dashboard-stats'
 import FeedsList from '@/components/feeds-list'
@@ -14,6 +13,28 @@ import SummariesList from '@/components/summaries-list'
 import { NeonAlert } from '@/components/neon-alert'
 import { useToast } from '@/hooks/use-toast'
 import { EtherealShadow } from '@/components/ui/ethereal-shadow'
+import SizedPieChart from '@/components/ui/sized-pie-chart'
+import BarChartMedium from '@/components/ui/bar-chart-medium'
+import HorizontalBarMedium from '@/components/ui/horizontal-bar-medium'
+
+const SEVERITY_COLORS: Record<string, string> = {
+  Critical: '#ef4444',
+  High: '#f97316',
+  Medium: '#eab308',
+  Low: '#22c55e',
+  Unknown: '#6b7280',
+}
+
+const IOC_TYPE_COLORS: Record<string, string> = {
+  ip: '#06b6d4',
+  domain: '#f59e0b',
+  hash: '#ef4444',
+  url: '#8b5cf6',
+  sha256: '#10b981',
+  sha1: '#ec4899',
+  md5: '#f43f5e',
+  email: '#6366f1',
+}
 
 function OverviewTab() {
   const [iocStats, setIocStats] = useState<any>(null)
@@ -48,6 +69,31 @@ function OverviewTab() {
     )
   }
 
+  // Transform IOC type data for pie chart
+  const pieChartData = iocStats?.by_type
+    ? Object.entries(iocStats.by_type).map(([name, value]) => ({
+      name: name.toUpperCase(),
+      value: value as number,
+      fill: IOC_TYPE_COLORS[name.toLowerCase()] || '#8b5cf6',
+    }))
+    : []
+
+  // Transform severity data for vertical bar chart
+  const severityBarData = summaryStats?.by_severity
+    ? Object.entries(summaryStats.by_severity).map(([name, value]) => ({
+      key: name,
+      data: value as number,
+    }))
+    : []
+
+  // Transform top feeds data for horizontal bar chart
+  const topFeedsData = iocStats?.top_feeds
+    ? Object.entries(iocStats.top_feeds).map(([name, value]) => ({
+      key: name,
+      data: value as number,
+    }))
+    : []
+
   return (
     <motion.div
       className="grid grid-cols-1 md:grid-cols-2 gap-6"
@@ -61,69 +107,37 @@ function OverviewTab() {
       initial="hidden"
       animate="visible"
     >
-      {/* IOC Distribution */}
+      {/* IOC Distribution - Sized Pie Chart */}
       <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5 } } }}>
-        <Card className="p-6 hover:border-primary/50 transition-colors bg-card/50 backdrop-blur-sm border-border/30 h-full">
-          <h3 className="text-lg font-semibold mb-4 text-foreground">IOC Types Distribution</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <PieChart>
-              <Pie
-                data={
-                  iocStats?.by_type
-                    ? Object.entries(iocStats.by_type).map(([name, value]) => ({
-                      name: name.toUpperCase(),
-                      value: value as number,
-                    }))
-                    : []
-                }
-                cx="50%"
-                cy="50%"
-                labelLine={false}
-                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                outerRadius={80}
-                fill="#8884d8"
-                dataKey="value"
-              >
-                {['#06b6d4', '#f59e0b', '#ef4444', '#8b5cf6'].map((color) => (
-                  <Cell key={`cell-${color}`} fill={color} />
-                ))}
-              </Pie>
-              <Tooltip />
-            </PieChart>
-          </ResponsiveContainer>
-        </Card>
+        <SizedPieChart
+          data={pieChartData}
+          title="IOC Types Distribution"
+          description="Breakdown by indicator type"
+          className="h-full"
+        />
       </motion.div>
 
-      {/* Severity Breakdown */}
+      {/* Severity Breakdown - Vertical Bar Chart */}
       <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5 } } }}>
-        <Card className="p-6 hover:border-primary/50 transition-colors bg-card/50 backdrop-blur-sm border-border/30 h-full">
-          <h3 className="text-lg font-semibold mb-4 text-foreground">Severity Breakdown</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={summaryStats?.by_severity ? Object.entries(summaryStats.by_severity).map(([name, value]) => ({ name, value })) : []}>
-              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-              <XAxis dataKey="name" stroke="hsl(var(--muted-foreground))" />
-              <YAxis stroke="hsl(var(--muted-foreground))" />
-              <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--card))', border: '1px solid hsl(var(--border))' }} />
-              <Bar dataKey="value" fill="hsl(var(--primary))" />
-            </BarChart>
-          </ResponsiveContainer>
-        </Card>
+        <BarChartMedium
+          data={severityBarData}
+          title="Severity Breakdown"
+          height={280}
+          showTimePeriod={false}
+          colorScheme={Object.values(SEVERITY_COLORS)}
+          className="h-full"
+        />
       </motion.div>
 
-      {/* Top Feeds */}
+      {/* Top Feeds - Horizontal Bar Chart */}
       <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5 } } }} className="md:col-span-2">
-        <Card className="p-6 hover:border-primary/50 transition-colors bg-card/50 backdrop-blur-sm border-border/30 h-full">
-          <h3 className="text-lg font-semibold mb-4 text-foreground">Top Threat Feeds</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart layout="vertical" data={iocStats?.top_feeds ? Object.entries(iocStats.top_feeds).map(([name, value]) => ({ name, value })) : []}>
-              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-              <XAxis type="number" stroke="hsl(var(--muted-foreground))" />
-              <YAxis dataKey="name" type="category" stroke="hsl(var(--muted-foreground))" width={100} />
-              <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--card))', border: '1px solid hsl(var(--border))' }} />
-              <Bar dataKey="value" fill="hsl(var(--chart-1))" />
-            </BarChart>
-          </ResponsiveContainer>
-        </Card>
+        <HorizontalBarMedium
+          data={topFeedsData}
+          title="Top Threat Feeds"
+          height={300}
+          colorScheme={['#5B14C5', '#9152EE', '#40E5D1', '#A840E8', '#4C86FF']}
+          className="h-full"
+        />
       </motion.div>
     </motion.div>
   )
