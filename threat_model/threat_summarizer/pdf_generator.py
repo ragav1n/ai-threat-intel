@@ -7,6 +7,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import List, Dict, Any
 import os
+import re
 
 
 # Colors (RGB)
@@ -80,6 +81,64 @@ class ThreatReportPDF(FPDF):
         for old, new in replacements.items():
             text = text.replace(old, new)
         return text.encode("latin-1", "ignore").decode("latin-1")
+    
+    def render_markdown(self, text: str):
+        """Render markdown-formatted text with proper styling."""
+        if not text:
+            return
+        
+        text = self.clean_text(text)
+        lines = text.split('\n')
+        
+        for line in lines:
+            line = line.strip()
+            if not line:
+                self.ln(2)
+                continue
+            
+            # Handle ## headings
+            if line.startswith('## '):
+                heading = line[3:].strip()
+                self.set_font("Helvetica", "B", 10)
+                self.set_text_color(*COLORS["primary"])
+                self.cell(0, 6, heading, ln=True)
+                self.set_font("Helvetica", "", 9)
+                self.set_text_color(*COLORS["dark"])
+                continue
+            
+            # Handle numbered lists with bold items like "1. **Bold Text**"
+            numbered_bold_match = re.match(r'^(\d+)\.\s*\*\*(.+?)\*\*(.*)$', line)
+            if numbered_bold_match:
+                num = numbered_bold_match.group(1)
+                bold_text = numbered_bold_match.group(2)
+                rest = numbered_bold_match.group(3)
+                
+                self.set_font("Helvetica", "", 9)
+                self.cell(8, 5, f"{num}.")
+                self.set_font("Helvetica", "B", 9)
+                self.cell(0, 5, bold_text + rest, ln=True)
+                self.set_font("Helvetica", "", 9)
+                continue
+            
+            # Handle bullet points
+            if line.startswith('- '):
+                bullet_text = line[2:].strip()
+                # Check for bold in bullet
+                bold_match = re.search(r'\*\*(.+?)\*\*', bullet_text)
+                if bold_match:
+                    bullet_text = re.sub(r'\*\*(.+?)\*\*', r'\1', bullet_text)
+                self.cell(6, 4, "-")
+                self.multi_cell(0, 4, bullet_text)
+                continue
+            
+            # Handle inline **bold** text in regular lines
+            if '**' in line:
+                # Remove markdown bold markers
+                line = re.sub(r'\*\*(.+?)\*\*', r'\1', line)
+            
+            # Regular text
+            self.multi_cell(0, 4, line)
+
     
     def add_section_header(self, title: str):
         """Add a section header with styling."""
@@ -173,16 +232,14 @@ class ThreatReportPDF(FPDF):
             self.set_text_color(*COLORS["primary"])
             self.cell(0, 5, f"MITRE ATT&CK: {', '.join(tactics)}", ln=True)
         
-        # Summary
-        self.set_font("Helvetica", "", 10)
-        self.set_text_color(*COLORS["dark"])
-        summary = self.clean_text(threat.get("summary", "No summary available."))
+        # Summary - render with markdown formatting
+        summary = threat.get("summary", "No summary available.")
         
         # Truncate if too long
-        if len(summary) > 800:
-            summary = summary[:800] + "..."
+        if len(summary) > 1200:
+            summary = summary[:1200] + "..."
         
-        self.multi_cell(0, 5, summary)
+        self.render_markdown(summary)
         
         # Recommendations (if available)
         recommendations = threat.get("recommendations")
