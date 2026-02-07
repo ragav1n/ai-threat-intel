@@ -1,35 +1,35 @@
 {
-  "attack-stix-data Commits": {
+  "attack-stix-data Releases": {
     "success": 1,
     "failure": 0,
     "total": 1,
-    "last_response_time": 0.472078
-  },
-  "atomic-red-team Commits": {
-    "success": 1,
-    "failure": 0,
-    "total": 1,
-    "last_response_time": 0.417932
+    "last_response_time": 0.424132
   },
   "The Hacker News": {
     "success": 1,
     "failure": 0,
     "total": 1,
-    "last_response_time": 0.892348
+    "last_response_time": 0.864873
   },
   "MISP Releases": {
     "success": 1,
     "failure": 0,
     "total": 1,
-    "last_response_time": 0.510584
+    "last_response_time": 0.539844
+  },
+  "atomic-red-team Releases": {
+    "success": 1,
+    "failure": 0,
+    "total": 1,
+    "last_response_time": 0.394525
+  },
+  "Dark Reading": {
+    "success": 1,
+    "failure": 0,
+    "total": 1,
+    "last_response_time": 1.058712
   },
   "massive-octo-nemesis Issues": {
-    "success": 0,
-    "failure": 1,
-    "total": 1,
-    "last_response_time": null
-  },
-  "massive-octo-nemesis Releases": {
     "success": 0,
     "failure": 1,
     "total": 1,
@@ -41,17 +41,11 @@
     "total": 1,
     "last_response_time": null
   },
-  "Dark Reading": {
-    "success": 1,
-    "failure": 0,
+  "massive-octo-nemesis Releases": {
+    "success": 0,
+    "failure": 1,
     "total": 1,
-    "last_response_time": 1.6244
-  },
-  "attack-stix-data Releases": {
-    "success": 1,
-    "failure": 0,
-    "total": 1,
-    "last_response_time": 1.20381
+    "last_response_time": null
   },
   "CISA Alerts": {
     "success": 0,
