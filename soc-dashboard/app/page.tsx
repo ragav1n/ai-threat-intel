@@ -148,6 +148,7 @@ export default function Page() {
   const [isCollecting, setIsCollecting] = useState(false)
   const [isSending, setIsSending] = useState(false)
   const [isGenerating, setIsGenerating] = useState(false)
+  const [reportLimit, setReportLimit] = useState(50)
 
   const handleCollectFeeds = async () => {
     setIsCollecting(true)
@@ -200,7 +201,7 @@ export default function Page() {
   const handleGenerateReport = async () => {
     setIsGenerating(true)
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/reports/generate?limit=50`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/reports/generate?limit=${reportLimit}`, {
         method: 'POST',
       })
       const data = await response.json()
@@ -264,20 +265,32 @@ export default function Page() {
                   {isCollecting ? 'Collecting...' : 'Collect Feeds'}
                 </Button>
               </motion.div>
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button
-                  onClick={handleGenerateReport}
-                  disabled={isGenerating}
-                  size="sm"
-                  variant="outline"
-                  className="gap-2 bg-transparent"
+              <div className="flex items-center gap-1">
+                <select
+                  value={reportLimit}
+                  onChange={(e) => setReportLimit(Number(e.target.value))}
+                  className="h-8 rounded-md border border-input bg-transparent px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
                 >
-                  <motion.div animate={isGenerating ? { scale: [1, 1.2, 1] } : {}} transition={{ duration: 0.8, repeat: isGenerating ? Infinity : 0 }}>
-                    <Download className="h-4 w-4" />
-                  </motion.div>
-                  {isGenerating ? 'Generating...' : 'Report'}
-                </Button>
-              </motion.div>
+                  <option value={10}>10</option>
+                  <option value={25}>25</option>
+                  <option value={50}>50</option>
+                  <option value={100}>100</option>
+                </select>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Button
+                    onClick={handleGenerateReport}
+                    disabled={isGenerating}
+                    size="sm"
+                    variant="outline"
+                    className="gap-2 bg-transparent"
+                  >
+                    <motion.div animate={isGenerating ? { scale: [1, 1.2, 1] } : {}} transition={{ duration: 0.8, repeat: isGenerating ? Infinity : 0 }}>
+                      <Download className="h-4 w-4" />
+                    </motion.div>
+                    {isGenerating ? 'Generating...' : 'Report'}
+                  </Button>
+                </motion.div>
+              </div>
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Button
                   onClick={handleSendEmail}
