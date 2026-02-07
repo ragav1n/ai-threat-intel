@@ -48,6 +48,7 @@ body {
     --sidebar-border: 200 15% 18%;
     --sidebar-ring: 190 100% 45%;
   }
+
   .dark {
     --background: 200 20% 5%;
     --foreground: 0 0% 95%;
@@ -88,7 +89,39 @@ body {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Reaviz/Chart tooltip z-index fix - ensure tooltips appear above everything */
+.reaviz-tooltip,
+[class*="reaviz"] [class*="tooltip"],
+[class*="Tooltip"],
+div[style*="position: fixed"],
+div[style*="position: absolute"][style*="pointer-events: none"],
+foreignObject+g,
+g>foreignObject {
+  z-index: 99999 !important;
+}
+
+/* Portal containers for tooltips */
+body>div:not(#__next):not([class]),
+body>div[style*="position: absolute"],
+body>div[style*="position: fixed"] {
+  z-index: 99999 !important;
+}
+
+/* ChartTooltip and Radix portals */
+[data-radix-popper-content-wrapper],
+[data-radix-portal],
+[role="tooltip"],
+.tooltip-portal {
+  z-index: 99999 !important;
+}
+
+/* Ensure SVG tooltips are above chart containers */
+svg foreignObject {
+  overflow: visible !important;
 }
