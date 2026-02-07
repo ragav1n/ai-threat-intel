@@ -1,5 +1,7 @@
 feeds:
-  # Security Blogs
+  # ============================================
+  # SECURITY BLOGS & NEWS (19 sources)
+  # ============================================
   - name: Cisco Talos
     url: https://blog.talosintelligence.com/rss/
     category: malware analysis
@@ -30,9 +32,95 @@ feeds:
     source_type: blog
     priority: medium
 
-  # Government Sources
-  - name: CISA Alerts
-    url: https://us-cert.cisa.gov/ncas/all.xml
+  - name: Bleeping Computer
+    url: https://www.bleepingcomputer.com/feed/
+    category: security news
+    source_type: blog
+    priority: high
+
+  - name: Security Affairs
+    url: https://securityaffairs.co/wordpress/feed
+    category: security news
+    source_type: blog
+    priority: medium
+
+  - name: Graham Cluley
+    url: https://grahamcluley.com/feed/
+    category: security news
+    source_type: blog
+    priority: low
+
+  - name: Schneier on Security
+    url: https://www.schneier.com/feed/
+    category: security research
+    source_type: blog
+    priority: medium
+
+  - name: SANS ISC
+    url: https://isc.sans.edu/rssfeed_full.xml
+    category: security research
+    source_type: blog
+    priority: medium
+
+  - name: Malwarebytes Labs
+    url: https://blog.malwarebytes.com/feed/
+    category: malware analysis
+    source_type: blog
+    priority: high
+
+  - name: SentinelOne Blog
+    url: https://www.sentinelone.com/blog/feed/
+    category: threat research
+    source_type: blog
+    priority: high
+
+  - name: Sophos News
+    url: https://news.sophos.com/en-us/feed/
+    category: security news
+    source_type: blog
+    priority: medium
+
+  - name: Trend Micro Research
+    url: https://www.trendmicro.com/en_us/research.html/feed
+    category: threat research
+    source_type: blog
+    priority: high
+
+  - name: Unit 42 (Palo Alto)
+    url: https://unit42.paloaltonetworks.com/feed/
+    category: threat research
+    source_type: blog
+    priority: high
+
+  - name: Microsoft Security Blog
+    url: https://www.microsoft.com/en-us/security/blog/feed/
+    category: threat research
+    source_type: blog
+    priority: high
+
+  - name: Google Project Zero
+    url: https://googleprojectzero.blogspot.com/feeds/posts/default
+    category: vulnerability research
+    source_type: blog
+    priority: critical
+
+  - name: Recorded Future
+    url: https://www.recordedfuture.com/feed
+    category: threat intelligence
+    source_type: blog
+    priority: high
+
+  - name: Mandiant Blog
+    url: https://www.mandiant.com/resources/blog/rss.xml
+    category: threat research
+    source_type: blog
+    priority: critical
+
+  # ============================================
+  # GOVERNMENT & OFFICIAL SOURCES (4 sources)
+  # ============================================
+  - name: CISA Cybersecurity Advisories
+    url: https://www.cisa.gov/cybersecurity-advisories/all.xml
     category: official alerts
     source_type: government
     priority: critical
@@ -43,16 +131,23 @@ feeds:
     source_type: government
     priority: critical
 
-  # GitHub Sources
-  - name: GitHub Malware Zoo
-    url: https://github.com/ytisf/theZoo/commits/master.atom
-    category: malware repo updates
-    source_type: github
-    priority: low
+  - name: NIST NVD CVE
+    url: https://nvd.nist.gov/feeds/xml/cve/misc/nvd-rss.xml
+    category: vulnerability
+    source_type: government
+    priority: high
 
-  # Abuse.ch Threat Intel
-  - name: URLhaus Recent URLs
-    url: https://urlhaus.abuse.ch/feeds/text_recent/
+  - name: NCSC UK
+    url: https://www.ncsc.gov.uk/api/1/services/v1/all-rss-feed.xml
+    category: official alerts
+    source_type: government
+    priority: high
+
+  # ============================================
+  # ABUSE.CH THREAT FEEDS (5 sources)
+  # ============================================
+  - name: URLhaus CSV
+    url: https://urlhaus.abuse.ch/downloads/csv_recent/
     category: malicious urls
     source_type: threat_feed
     priority: high
@@ -63,16 +158,146 @@ feeds:
     source_type: threat_feed
     priority: high
 
-  # AlienVault OTX (Public Feed)
-  - name: AlienVault OTX Pulses
-    url: https://otx.alienvault.com/api/v1/pulses/subscribed?limit=10
-    category: threat intelligence
-    source_type: api
+  - name: SSL Blacklist
+    url: https://sslbl.abuse.ch/blacklist/sslblacklist.csv
+    category: malicious ssl
+    source_type: threat_feed
     priority: high
 
-  # Sans Internet Storm Center
-  - name: SANS ISC
-    url: https://isc.sans.edu/rssfeed_full.xml
-    category: security research
+  - name: Malware Bazaar
+    url: https://bazaar.abuse.ch/export/txt/sha256/recent/
+    category: malware hashes
+    source_type: threat_feed
+    priority: high
+
+  - name: ThreatFox CSV
+    url: https://threatfox.abuse.ch/export/csv/recent/
+    category: iocs
+    source_type: threat_feed
+    priority: critical
+
+  # ============================================
+  # COMMUNITY & OPEN SOURCE INTEL (7 sources)
+  # ============================================
+  - name: OpenPhish
+    url: https://openphish.com/feed.txt
+    category: phishing
+    source_type: threat_feed
+    priority: high
+
+  - name: Blocklist.de
+    url: https://lists.blocklist.de/lists/all.txt
+    category: ip blocklist
+    source_type: threat_feed
+    priority: medium
+
+  - name: Emerging Threats
+    url: https://rules.emergingthreats.net/blockrules/compromised-ips.txt
+    category: compromised ips
+    source_type: threat_feed
+    priority: high
+
+  - name: Spamhaus DROP
+    url: https://www.spamhaus.org/drop/drop.txt
+    category: ip blocklist
+    source_type: threat_feed
+    priority: high
+
+  - name: C2 IntelFeeds
+    url: https://raw.githubusercontent.com/drb-ra/C2IntelFeeds/master/feeds/IPC2s-30day.csv
+    category: c2 servers
+    source_type: threat_feed
+    priority: high
+
+  - name: Botvrij Domains
+    url: https://www.botvrij.eu/data/ioclist.domain.raw
+    category: malicious domains
+    source_type: threat_feed
+    priority: medium
+
+  - name: DigitalSide Threat-Intel
+    url: https://raw.githubusercontent.com/davidonzo/Threat-Intel/master/lists/latestips.txt
+    category: malicious ips
+    source_type: threat_feed
+    priority: medium
+
+  # ============================================
+  # GITHUB REPOSITORIES (7 sources)
+  # ============================================
+  - name: GitHub Malware Zoo
+    url: https://github.com/ytisf/theZoo/commits/master.atom
+    category: malware repo updates
+    source_type: github
+    priority: low
+
+  - name: GitHub YARA Rules
+    url: https://github.com/Yara-Rules/rules/commits/master.atom
+    category: detection rules
+    source_type: github
+    priority: medium
+
+  - name: GitHub Sigma Rules
+    url: https://github.com/SigmaHQ/sigma/commits/master.atom
+    category: detection rules
+    source_type: github
+    priority: medium
+
+  - name: GitHub Atomic Red Team
+    url: https://github.com/redcanaryco/atomic-red-team/commits/master.atom
+    category: attack techniques
+    source_type: github
+    priority: medium
+
+  - name: MITRE ATT&CK
+    url: https://github.com/mitre/cti/commits/master.atom
+    category: attack framework
+    source_type: github
+    priority: high
+
+  - name: LOLBAS Project
+    url: https://github.com/LOLBAS-Project/LOLBAS/commits/master.atom
+    category: living off the land
+    source_type: github
+    priority: medium
+
+  - name: GTFOBins
+    url: https://github.com/GTFOBins/GTFOBins.github.io/commits/master.atom
+    category: unix binaries
+    source_type: github
+    priority: medium
+
+  # ============================================
+  # CVE & VULNERABILITY FEEDS (3 sources)
+  # ============================================
+  - name: Exploit-DB
+    url: https://www.exploit-db.com/rss.xml
+    category: exploits
+    source_type: threat_feed
+    priority: high
+
+  - name: VulnDB
+    url: https://vuldb.com/?rss.recent
+    category: vulnerability
+    source_type: threat_feed
+    priority: medium
+
+  - name: Vulners Blog
+    url: https://vulners.com/rss.xml
+    category: vulnerability
     source_type: blog
     priority: medium
+
+  # ============================================
+  # VENDOR SECURITY ADVISORIES (2 sources)
+  # ============================================
+  - name: Cisco Security Advisories
+    url: https://tools.cisco.com/security/center/psirtrss20/CiscoSecurityAdvisory.xml
+    category: vendor advisory
+    source_type: blog
+    priority: high
+
+  - name: Fortinet PSIRT
+    url: https://www.fortiguard.com/rss/ir.xml
+    category: vendor advisory
+    source_type: blog
+    priority: high
