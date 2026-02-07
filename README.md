@@ -141,39 +141,9 @@ python watch_and_run.py
 
 ---
 
-## Frontend & Advanced Features
-
-### Web Interface
-A UI has been added for real-time monitoring and investigation.
-
-*   **Dashboard**: Live feed of IOCs with severity badges and auto-refresh.
-*   **Analyzer**: Chat-based interface mimicking a terminal. It uses the **Hunter Agent** to automatically enrich IPs with Geolocation and ASN data before analysis.
-*   **Threat Graph**: An interactive force-directed graph to visualize threat clusters. It groups threats by "Campaigns" (shared keywords like Phishing, Ransomware) instead of just lists.
-
-**To Run:**
-```bash
-cd ui
-npm install
-npm run dev
-```
-Access at: [http://localhost:5173/](http://localhost:5173/)
-
-### Agent
-The system now includes an autonomous agent that hunts for extra context:
-*   **IPs**: Fetches Geolocation, ISP, and ASN.
-*   **Domains**: Fetches Whois registrar info.
-*   **Integration**: Automatically feeds this data to Llama 3.2 for smarter summaries.
-
-### Interactive Threat Graph
-*   **Visual Analysis**: See how threats connect based on shared attributes.
-*   **Detail Sidebar**: Click any node to open a slide-out inspector with the full report.
-*   **Clustering**: Automatically groups "High Risk" items and shared malware families.
-
----
-
 ## Contributors
 
 * Saara Unnathi R — Feed Collection · IOC Parsing
-* N Ragavenderan — IOC Parsing · AI Summarization · Pipeline Orchestration · UI Development
+* N Ragavenderan — IOC Parsing · AI Summarization · Pipeline Orchestration
 
 ---
