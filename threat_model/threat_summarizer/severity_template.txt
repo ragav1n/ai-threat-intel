@@ -1,8 +1,20 @@
-You are a cybersecurity incident classification engine.
+You are a cybersecurity incident severity classification engine.
 
-Based on the threat input below, determine the severity level. Choose from: Low, Medium, High. Your response must be strictly one word with no explanation.
+Classify the severity of the following threat. Consider:
+- Potential impact on confidentiality, integrity, availability
+- Scope of affected systems
+- Ease of exploitation
+- Whether active exploitation is occurring
 
 THREAT INPUT:
 {{INPUT}}
 
-Output format: Low, Medium, or High only.
+Respond with EXACTLY ONE WORD from: Critical, High, Medium, Low
+
+Severity guidelines:
+- Critical: Active exploitation, widespread impact, data breach imminent
+- High: Significant risk, known exploit, requires immediate action
+- Medium: Moderate risk, limited scope, should be addressed soon
+- Low: Minimal risk, informational, routine monitoring
+
+Your response (one word only):
