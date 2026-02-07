@@ -17,6 +17,8 @@ IOC_PATTERNS: dict[IOCType, str] = {
     IOCType.MD5: r"\b[a-fA-F\d]{32}\b",
     IOCType.SHA1: r"\b[a-fA-F\d]{40}\b",
     IOCType.SHA256: r"\b[a-fA-F\d]{64}\b",
+    IOCType.EMAIL: r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b",
+    IOCType.CVE: r"\bCVE-\d{4}-\d{4,}\b",
 }
 
 # Common false positives to filter out
