@@ -7,14 +7,17 @@ Features:
 - CORS support
 - Structured error responses
 """
-from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import JSONResponse
+from fastapi import FastAPI, HTTPException, Request, Query
+from fastapi.responses import JSONResponse, FileResponse
 from pydantic import BaseModel, Field, field_validator
 from fastapi.middleware.cors import CORSMiddleware
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
-import re
+from typing import List, Optional
+from pathlib import Path
+import json
+import os
 
 from threat_model.threat_summarizer.summarizer import summarize_threat
 from threat_intel_aggregator.main import scheduled_job as collect_feeds
@@ -65,24 +68,32 @@ class TriggerRequest(BaseModel):
     secret: str = Field(..., min_length=1)
 
 
+class EmailRequest(BaseModel):
+    """Request model for sending email report."""
+    severity_filter: str = Field(default="High", description="Filter by severity: All, Critical, High, Medium, Low")
+    limit: int = Field(default=50, ge=1, le=200)
+
+
 class SummaryResponse(BaseModel):
     """Response model for summarization."""
     timestamp: str
     input: str
     summary: str
     severity: str
-    enrichment: str | None = None
+    enrichment: Optional[str] = None
+    mitre_tactics: Optional[List[str]] = None
 
 
 class ErrorResponse(BaseModel):
     """Standard error response."""
     error: str
-    detail: str | None = None
+    detail: Optional[str] = None
 
 
 # ----------- Config -----------
 
 TRIGGER_SECRET = "socgen-feed-key"
+DATA_DIR = Path(__file__).parent / "threat_intel_aggregator" / "data"
 
 
 # ----------- Exception Handler -----------
@@ -96,7 +107,7 @@ async def global_exception_handler(request: Request, exc: Exception):
     )
 
 
-# ----------- Routes -----------
+# ----------- Health Routes -----------
 
 @app.get("/", tags=["Health"])
 def read_root():
@@ -114,6 +125,8 @@ def health_check():
     return {"status": "healthy", "service": "ai-threat-intel"}
 
 
+# ----------- Analysis Routes -----------
+
 @app.post("/api/summarize", response_model=SummaryResponse, tags=["Analysis"])
 @limiter.limit("10/minute")
 def summarize_endpoint(request: Request, body: IOCRequest):
@@ -130,44 +143,190 @@ def summarize_endpoint(request: Request, body: IOCRequest):
             summary=result["summary"],
             severity=result["severity"],
             enrichment=result.get("enrichment"),
+            mitre_tactics=result.get("mitre_tactics"),
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.post("/api/trigger-feed", tags=["Admin"])
+# ----------- Feed Routes -----------
+
+@app.get("/api/feeds", tags=["Feeds"])
+@limiter.limit("30/minute")
+def get_feeds(request: Request):
+    """
+    Get list of configured feeds and their health status.
+    """
+    try:
+        from threat_intel_aggregator.feed_collection.config import load_feed_metadata
+        from threat_intel_aggregator.feed_collection.health import load_health_data
+        
+        feeds = load_feed_metadata()
+        health = load_health_data()
+        
+        result = []
+        for feed in feeds:
+            name = feed.get("name", "Unknown")
+            feed_health = health.get(name, {})
+            result.append({
+                "name": name,
+                "url": feed.get("url"),
+                "category": feed.get("category"),
+                "source_type": feed.get("source_type"),
+                "priority": feed.get("priority", "medium"),
+                "success_count": feed_health.get("success", 0),
+                "failure_count": feed_health.get("failure", 0),
+                "last_response_time": feed_health.get("last_response_time"),
+            })
+        
+        return {
+            "count": len(result),
+            "feeds": result
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/feeds/stats", tags=["Feeds"])
+@limiter.limit("30/minute")
+def get_feed_stats(request: Request):
+    """
+    Get feed collection statistics.
+    """
+    try:
+        from threat_intel_aggregator.feed_collection.collector import get_feed_stats
+        stats = get_feed_stats()
+        return stats
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/feeds/collect", tags=["Feeds"])
 @limiter.limit("2/minute")
-def trigger_feed(request: Request, body: TriggerRequest):
+def trigger_feed_collection(request: Request, body: TriggerRequest):
     """
     Manually trigger feed collection.
     
     Requires secret key authentication.
-    Rate limited to 2 requests per minute.
     """
     if body.secret != TRIGGER_SECRET:
         raise HTTPException(status_code=401, detail="Unauthorized trigger key")
 
     try:
         collect_feeds()
-        return {"status": "Feed job executed successfully"}
+        return {"status": "Feed collection completed successfully"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.get("/api/summaries", tags=["Data"])
+# ----------- IOC Routes -----------
+
+@app.get("/api/iocs", tags=["IOCs"])
 @limiter.limit("30/minute")
-def get_summaries(request: Request, limit: int = Field(default=50, ge=1, le=200)):
+def get_iocs(
+    request: Request,
+    limit: int = Query(default=100, ge=1, le=1000),
+    ioc_type: Optional[str] = Query(default=None, description="Filter by type: ip, domain, url, hash"),
+    severity: Optional[str] = Query(default=None, description="Filter by severity"),
+):
     """
-    Retrieve recent threat summaries from database.
-    
-    Args:
-        limit: Maximum number of summaries to return (1-200).
+    Get extracted IOCs from collected feeds.
     """
     try:
-        from threat_model.threat_summarizer.mongo_client import collection
+        ioc_file = DATA_DIR / "normalized_iocs.json"
+        if not ioc_file.exists():
+            return {"count": 0, "iocs": [], "message": "No IOCs collected yet"}
+        
+        with open(ioc_file) as f:
+            iocs = json.load(f)
+        
+        # Apply filters
+        if ioc_type:
+            iocs = [i for i in iocs if ioc_type.lower() in i.get("type", "").lower()]
+        if severity:
+            iocs = [i for i in iocs if severity.lower() in i.get("severity", "").lower()]
+        
+        # Sort by timestamp and limit
+        iocs = sorted(iocs, key=lambda x: x.get("timestamp", ""), reverse=True)[:limit]
+        
+        return {
+            "count": len(iocs),
+            "total_available": len(iocs),
+            "iocs": iocs
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
+
+@app.get("/api/iocs/stats", tags=["IOCs"])
+@limiter.limit("30/minute")
+def get_ioc_stats(request: Request):
+    """
+    Get IOC statistics by type and severity.
+    """
+    try:
+        ioc_file = DATA_DIR / "normalized_iocs.json"
+        if not ioc_file.exists():
+            return {"total": 0, "by_type": {}, "by_severity": {}, "by_feed": {}}
+        
+        with open(ioc_file) as f:
+            iocs = json.load(f)
+        
+        by_type = {}
+        by_severity = {}
+        by_feed = {}
+        
+        for ioc in iocs:
+            # Count by type
+            ioc_type = ioc.get("type", "unknown")
+            by_type[ioc_type] = by_type.get(ioc_type, 0) + 1
+            
+            # Count by severity
+            sev = ioc.get("severity", "unknown")
+            by_severity[sev] = by_severity.get(sev, 0) + 1
+            
+            # Count by feed
+            feed = ioc.get("feed", "unknown")
+            by_feed[feed] = by_feed.get(feed, 0) + 1
+        
+        # Sort by_feed by count
+        by_feed = dict(sorted(by_feed.items(), key=lambda x: x[1], reverse=True)[:20])
+        
+        return {
+            "total": len(iocs),
+            "by_type": by_type,
+            "by_severity": by_severity,
+            "top_feeds": by_feed
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# ----------- Summary Routes -----------
+
+@app.get("/api/summaries", tags=["Summaries"])
+@limiter.limit("30/minute")
+def get_summaries(
+    request: Request, 
+    limit: int = Query(default=50, ge=1, le=200),
+    severity: Optional[str] = Query(default=None, description="Filter by severity"),
+):
+    """
+    Retrieve recent threat summaries from database.
+    """
+    try:
+        from threat_model.threat_summarizer.mongo_client import get_collection
+        
+        collection = get_collection()
+        if collection is None:
+            return {"count": 0, "summaries": [], "message": "MongoDB not configured"}
+        
+        query = {}
+        if severity:
+            query["severity"] = {"$regex": severity, "$options": "i"}
+        
         summaries = list(
-            collection.find({}, {"_id": 0})
+            collection.find(query, {"_id": 0})
             .sort("timestamp", -1)
             .limit(limit)
         )
@@ -175,6 +334,156 @@ def get_summaries(request: Request, limit: int = Field(default=50, ge=1, le=200)
         return {"count": len(summaries), "summaries": summaries}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/summaries/stats", tags=["Summaries"])
+@limiter.limit("30/minute")
+def get_summary_stats(request: Request):
+    """
+    Get summary statistics.
+    """
+    try:
+        from threat_model.threat_summarizer.mongo_client import get_collection
+        
+        collection = get_collection()
+        if collection is None:
+            return {"total": 0, "by_severity": {}}
+        
+        total = collection.count_documents({})
+        
+        # Count by severity
+        by_severity = {}
+        for sev in ["Critical", "High", "Medium", "Low"]:
+            count = collection.count_documents({"severity": {"$regex": sev, "$options": "i"}})
+            if count > 0:
+                by_severity[sev] = count
+        
+        return {"total": total, "by_severity": by_severity}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# ----------- Report Routes -----------
+
+@app.post("/api/reports/generate", tags=["Reports"])
+@limiter.limit("5/minute")
+def generate_report(request: Request, limit: int = Query(default=50, ge=1, le=100)):
+    """
+    Generate a PDF report of recent threat summaries.
+    """
+    try:
+        from threat_model.threat_summarizer.mongo_client import get_collection
+        from threat_model.threat_summarizer.pdf_generator import generate_pdf
+        
+        collection = get_collection()
+        if collection is None:
+            raise HTTPException(status_code=500, detail="MongoDB not configured")
+        
+        summaries = list(
+            collection.find({}, {"_id": 0})
+            .sort("timestamp", -1)
+            .limit(limit)
+        )
+        
+        if not summaries:
+            raise HTTPException(status_code=404, detail="No summaries to generate report")
+        
+        pdf_path = generate_pdf(summaries, "threat_model/logs/api_report.pdf")
+        
+        return {
+            "status": "success",
+            "message": f"Report generated with {len(summaries)} summaries",
+            "download_url": "/api/reports/download"
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/reports/download", tags=["Reports"])
+def download_report(request: Request):
+    """
+    Download the generated PDF report.
+    """
+    pdf_path = Path("threat_model/logs/api_report.pdf")
+    if not pdf_path.exists():
+        raise HTTPException(status_code=404, detail="No report available. Generate one first.")
+    
+    return FileResponse(
+        path=pdf_path,
+        filename="threat_intel_report.pdf",
+        media_type="application/pdf"
+    )
+
+
+# ----------- Email Routes -----------
+
+@app.post("/api/email/send", tags=["Email"])
+@limiter.limit("3/minute")
+def send_email_report(request: Request, body: EmailRequest):
+    """
+    Send an email report with threat summaries.
+    """
+    try:
+        from threat_model.threat_summarizer.mongo_client import get_collection
+        from threat_model.threat_summarizer.emailer import send_batch_email, is_email_configured
+        
+        if not is_email_configured():
+            raise HTTPException(status_code=500, detail="Email not configured. Check .env file.")
+        
+        collection = get_collection()
+        if collection is None:
+            raise HTTPException(status_code=500, detail="MongoDB not configured")
+        
+        # Build query
+        query = {}
+        if body.severity_filter and body.severity_filter != "All":
+            query["severity"] = {"$regex": body.severity_filter, "$options": "i"}
+        
+        summaries = list(
+            collection.find(query, {"_id": 0})
+            .sort("timestamp", -1)
+            .limit(body.limit)
+        )
+        
+        if not summaries:
+            raise HTTPException(status_code=404, detail="No summaries match the filter")
+        
+        success = send_batch_email(summaries)
+        
+        if success:
+            return {"status": "success", "message": f"Email sent with {len(summaries)} summaries"}
+        else:
+            raise HTTPException(status_code=500, detail="Failed to send email")
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/email/status", tags=["Email"])
+def get_email_status(request: Request):
+    """
+    Check if email is configured.
+    """
+    from threat_model.threat_summarizer.emailer import is_email_configured, EMAIL_USER, EMAIL_TO
+    
+    configured = is_email_configured()
+    return {
+        "configured": configured,
+        "from": EMAIL_USER if configured else None,
+        "to": EMAIL_TO if configured else None,
+    }
+
+
+# ----------- Legacy Route (backward compat) -----------
+
+@app.post("/api/trigger-feed", tags=["Admin"], deprecated=True)
+@limiter.limit("2/minute")
+def trigger_feed_legacy(request: Request, body: TriggerRequest):
+    """Legacy endpoint - use /api/feeds/collect instead."""
+    return trigger_feed_collection(request, body)
 
 
 # ----------- Run with Uvicorn -----------
