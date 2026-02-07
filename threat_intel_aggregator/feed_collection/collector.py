@@ -1,13 +1,18 @@
-# feed_collection/collector.py
-
-import requests
+"""
+Feed collection with concurrent fetching and retry logic.
+"""
 import json
 import logging
+from typing import Dict, Any, Tuple, List
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from logging.handlers import RotatingFileHandler
-from .config import RAW_FEED_OUTPUT, FETCH_LOG_FILE
+
+import requests
+from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
+
+from .config import RAW_FEED_OUTPUT, FETCH_LOG_FILE, load_feed_metadata
 from .health import update_feed_health
-from .config import load_feed_metadata
+
 
 # Configure rotating log handler
 handler = RotatingFileHandler(FETCH_LOG_FILE, maxBytes=1_000_000, backupCount=3)
@@ -17,107 +22,138 @@ logging.basicConfig(
     format='%(asctime)s [%(levelname)s] %(message)s'
 )
 
-def fetch_feed(feed_info):
+# Default headers to avoid being blocked
+DEFAULT_HEADERS = {
+    "User-Agent": "AI-ThreatIntel-Aggregator/2.0 (+https://github.com/ragav1n/ai-threat-intel)",
+    "Accept": "application/rss+xml, application/atom+xml, application/xml, text/xml, */*",
+}
+
+
+@retry(
+    stop=stop_after_attempt(3),
+    wait=wait_exponential(multiplier=1, min=2, max=10),
+    retry=retry_if_exception_type((requests.RequestException, requests.Timeout)),
+)
+def fetch_with_retry(url: str, timeout: int = 15) -> requests.Response:
+    """
+    Fetch URL with retry logic using exponential backoff.
+    
+    Args:
+        url: URL to fetch.
+        timeout: Request timeout in seconds.
+        
+    Returns:
+        Response object.
+    """
+    response = requests.get(url, headers=DEFAULT_HEADERS, timeout=timeout)
+    response.raise_for_status()
+    return response
+
+
+def fetch_feed(feed_info: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
+    """
+    Fetch a single feed and return the result.
+    
+    Args:
+        feed_info: Feed configuration dictionary.
+        
+    Returns:
+        Tuple of (feed_name, result_dict).
+    """
     name = feed_info.get("name", "Unnamed Feed")
     url = feed_info["url"]
     source_type = feed_info.get("source_type", "rss")
     category = feed_info.get("category", "unknown")
 
     try:
-        logging.info(f"🔄 Trying to fetch: {url}")
-        response = requests.get(url, timeout=10)
-        response.raise_for_status()
-
+        logging.info(f"🔄 Fetching: {name} ({url})")
+        response = fetch_with_retry(url)
+        
         content = response.text
-        logging.info(f"✅ Success: [{name}] ({len(content.splitlines())} lines)")
-
-        update_feed_health(feed_info, response.elapsed.total_seconds(), success=True)
+        response_time = response.elapsed.total_seconds()
+        
+        logging.info(f"✅ Success: [{name}] ({len(content.splitlines())} lines, {response_time:.2f}s)")
+        update_feed_health(feed_info, response_time, success=True)
 
         return name, {
             "status": "success",
             "url": url,
             "content": content,
             "category": category,
-            "source_type": source_type
+            "source_type": source_type,
+            "response_time": response_time,
         }
 
     except Exception as e:
-        logging.error(f"❌ Retry failed: [{name}] - {e}")
+        logging.error(f"❌ Failed after retries: [{name}] - {e}")
         update_feed_health(feed_info, 0, success=False)
         return name, {
             "status": "failed",
             "url": url,
-            "error": str(e)
+            "error": str(e),
+            "category": category,
+            "source_type": source_type,
         }
 
-def collect_feeds_concurrently():
-    feeds = load_feed_metadata()
-    results = {}
-    logging.info(f"🚀 Starting concurrent fetch of {len(feeds)} feeds...")
 
-    with ThreadPoolExecutor(max_workers=10) as executor:
+def collect_feeds_concurrently(max_workers: int = 10) -> Dict[str, Any]:
+    """
+    Collect all configured feeds concurrently.
+    
+    Args:
+        max_workers: Maximum number of concurrent threads.
+        
+    Returns:
+        Dictionary of feed results.
+    """
+    feeds = load_feed_metadata()
+    results: Dict[str, Any] = {}
+    
+    success_count = 0
+    failure_count = 0
+    
+    logging.info(f"🚀 Starting concurrent fetch of {len(feeds)} feeds...")
+    print(f"\n🚀 Fetching {len(feeds)} feeds concurrently...")
+
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
         future_to_feed = {executor.submit(fetch_feed, feed): feed for feed in feeds}
+        
         for future in as_completed(future_to_feed):
             name, result = future.result()
             results[name] = result
+            
+            if result["status"] == "success":
+                success_count += 1
+                print(f"  ✅ {name}")
+            else:
+                failure_count += 1
+                print(f"  ❌ {name}: {result.get('error', 'Unknown error')}")
 
+    # Save results
     with open(RAW_FEED_OUTPUT, "w") as f:
         json.dump(results, f, indent=2)
 
-    logging.info(f"📦 Saved {len(results)} total entries to {RAW_FEED_OUTPUT}")
-
-'''
-Function-by-Function Explanation
-1. is_duplicate(entry, existing_entries)
-    Purpose:
-    Checks if the same feed item (by title and link) already exists in the saved feed list.
-    Why it matters:
-    Avoids saving repeated items across fetch runs.
-
-2. load_existing_entries(path)
-Purpose:
-Loads existing collected feed entries from a JSON file (raw_feeds.json).
-Why it matters:
-Keeps previous results intact and enables deduplication logic.
-
-3. collect_feed_from_url(feed_info)
-Purpose:
-
-Downloads one feed (RSS or Atom) using parse_feed().
-
-Logs success/failure.
-
-Updates the feed’s health status (success_count, fail_count, etc.).
-
-Why it matters:
-
-Makes the system resilient via retry (tenacity handles retries).
-
-Enables per-feed health scoring and error tracking.
-
-4. collect_feeds_concurrently(save_to_file=True, out_path="data/raw_feeds.json")
-Purpose:
-
-Loads metadata for all feeds.
-
-Concurrently fetches each feed using ThreadPoolExecutor.
-
-Deduplicates new entries.
-
-Saves the combined result into raw_feeds.json.
-
-Updates last_fetched.txt with the latest fetch timestamp.
-
-Why it matters:
-This is your core orchestrator for feed ingestion and the foundation for your full pipeline.
-
-Logging & Files Generated
-File Path	Purpose
-data/raw_feeds.json	Stores current list of collected entries
-data/last_fetched.txt	Stores timestamp of last successful run
-data/feed_collector.log	Logs all success/failure/info messages
-data/feed_health.json	Tracks health of each feed (from health.py)
+    summary = f"📦 Completed: {success_count} success, {failure_count} failed"
+    logging.info(summary)
+    print(f"\n{summary}")
+    
+    return results
 
 
-
-'''
+def get_feed_stats() -> Dict[str, Any]:
+    """Get statistics about the last feed collection."""
+    try:
+        with open(RAW_FEED_OUTPUT, "r") as f:
+            results = json.load(f)
+        
+        success = sum(1 for r in results.values() if r.get("status") == "success")
+        failed = sum(1 for r in results.values() if r.get("status") == "failed")
+        
+        return {
+            "total": len(results),
+            "success": success,
+            "failed": failed,
+            "success_rate": f"{(success / len(results) * 100):.1f}%" if results else "0%",
+        }
+    except FileNotFoundError:
+        return {"total": 0, "success": 0, "failed": 0, "success_rate": "0%"}

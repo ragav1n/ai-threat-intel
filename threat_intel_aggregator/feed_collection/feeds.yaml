@@ -1,25 +1,78 @@
 feeds:
+  # Security Blogs
   - name: Cisco Talos
     url: https://blog.talosintelligence.com/rss/
     category: malware analysis
     source_type: blog
+    priority: high
 
   - name: The Hacker News
     url: https://feeds.feedburner.com/TheHackersNews
     category: general news
     source_type: blog
+    priority: medium
 
   - name: Dark Reading
     url: https://www.darkreading.com/rss.xml
     category: vulnerability alerts
     source_type: blog
+    priority: medium
 
-  - name: GitHub Malware Zoo
-    url: https://github.com/ytisf/theZoo/commits/master.atom
-    category: malware repo updates
-    source_type: github
+  - name: Krebs on Security
+    url: https://krebsonsecurity.com/feed/
+    category: security news
+    source_type: blog
+    priority: high
 
+  - name: Threatpost
+    url: https://threatpost.com/feed/
+    category: security news
+    source_type: blog
+    priority: medium
+
+  # Government Sources
   - name: CISA Alerts
     url: https://us-cert.cisa.gov/ncas/all.xml
     category: official alerts
     source_type: government
+    priority: critical
+
+  - name: CISA Known Exploited
+    url: https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json
+    category: vulnerability
+    source_type: government
+    priority: critical
+
+  # GitHub Sources
+  - name: GitHub Malware Zoo
+    url: https://github.com/ytisf/theZoo/commits/master.atom
+    category: malware repo updates
+    source_type: github
+    priority: low
+
+  # Abuse.ch Threat Intel
+  - name: URLhaus Recent URLs
+    url: https://urlhaus.abuse.ch/feeds/text_recent/
+    category: malicious urls
+    source_type: threat_feed
+    priority: high
+
+  - name: Feodo Tracker
+    url: https://feodotracker.abuse.ch/downloads/ipblocklist.txt
+    category: botnet c2
+    source_type: threat_feed
+    priority: high
+
+  # AlienVault OTX (Public Feed)
+  - name: AlienVault OTX Pulses
+    url: https://otx.alienvault.com/api/v1/pulses/subscribed?limit=10
+    category: threat intelligence
+    source_type: api
+    priority: high
+
+  # Sans Internet Storm Center
+  - name: SANS ISC
+    url: https://isc.sans.edu/rssfeed_full.xml
+    category: security research
+    source_type: blog
+    priority: medium
