@@ -168,81 +168,77 @@ def summarize_endpoint(request: Request, body: IOCRequest):
         IST = timezone(timedelta(hours=5, minutes=30))
         timestamp = datetime.now(IST).isoformat()
         
-        # Extract IOCs from the input and store them
-        iocs = extract_iocs_with_confidence(body.ioc)
-        for ioc_match in iocs:
-            ioc_data = {
-                "ioc": ioc_match.value,
-                "type": ioc_match.ioc_type.value,
-                "severity": result.get("severity", "Medium"),
-                "confidence": ioc_match.confidence,
-                "feed": "Manual Analysis",
-                "source_url": "dashboard",
-                "timestamp": timestamp
-            }
-            upload_ioc(ioc_data)
+        # Smart Type Detection for non-standard IOCs (Registry, File Paths)
+        import re
+        ioc_input = body.ioc.strip()
+        detected_type = "unknown"
+        smart_confidence = 0.0
         
-        # If no IOCs extracted, detect type and store the input itself
-        if not iocs:
-            # Detect IOC type from pattern
-            import re
-            ioc_input = body.ioc.strip()
-            detected_type = "unknown"
-            confidence = 0.5
-            
-            # Registry key patterns
-            if re.search(r'^(HKEY_|HK[A-Z]{2,}\\|HKCU\\|HKLM\\)', ioc_input, re.IGNORECASE):
-                detected_type = "registry_key"
-                confidence = 0.9
-            # File path patterns (Windows)
-            elif re.search(r'^[A-Za-z]:\\|\\\\[a-zA-Z0-9]', ioc_input):
-                detected_type = "file_path"
-                confidence = 0.85
-            # File path patterns (Unix)
-            elif re.search(r'^/[a-zA-Z0-9_\-]+/', ioc_input):
-                detected_type = "file_path"
-                confidence = 0.85
-            # Domain-like (contains dots, no spaces)
-            elif re.search(r'^[a-zA-Z0-9\[\]\.\-]+\.[a-zA-Z]{2,}$', ioc_input.replace('[.]', '.')):
-                detected_type = "domain"
-                confidence = 0.8
-            # IP address
-            elif re.search(r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$', ioc_input.replace('[.]', '.')):
-                detected_type = "ip"
-                confidence = 0.9
-            # Hash patterns
-            elif re.match(r'^[a-fA-F0-9]{32}$', ioc_input):
-                detected_type = "md5"
-                confidence = 0.95
-            elif re.match(r'^[a-fA-F0-9]{40}$', ioc_input):
-                detected_type = "sha1"
-                confidence = 0.95
-            elif re.match(r'^[a-fA-F0-9]{64}$', ioc_input):
-                detected_type = "sha256"
-                confidence = 0.95
-            # URL
-            elif re.search(r'^https?://', ioc_input, re.IGNORECASE):
-                detected_type = "url"
-                confidence = 0.9
-            # Email
-            elif re.search(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', ioc_input):
-                detected_type = "email"
-                confidence = 0.85
-            # CVE
-            elif re.search(r'^CVE-\d{4}-\d+$', ioc_input, re.IGNORECASE):
-                detected_type = "cve"
-                confidence = 0.95
-            
+        # Registry key patterns
+        if re.search(r'^(HKEY_|HK[A-Z]{2,}\\|HKCU\\|HKLM\\)', ioc_input, re.IGNORECASE):
+            detected_type = "registry_key"
+            smart_confidence = 0.95
+        # File path patterns (Windows)
+        elif re.search(r'^[A-Za-z]:\\|\\\\[a-zA-Z0-9]', ioc_input):
+            detected_type = "file_path"
+            smart_confidence = 0.95
+        # File path patterns (Unix - absolute paths only)
+        elif re.search(r'^/[a-zA-Z0-9_\-.]+(/[a-zA-Z0-9_\-.]+)+', ioc_input):
+            detected_type = "file_path"
+            smart_confidence = 0.90
+
+        # If we detected a specific type (Registry/File), use it immediately
+        if detected_type != "unknown":
             ioc_data = {
-                "ioc": body.ioc,
+                "ioc": ioc_input,
                 "type": detected_type,
                 "severity": result.get("severity", "Medium"),
-                "confidence": confidence,
+                "confidence": smart_confidence,
                 "feed": "Manual Analysis",
                 "source_url": "dashboard",
                 "timestamp": timestamp
             }
             upload_ioc(ioc_data)
+        else:
+            # Fallback to standard extraction for IPs, Domains, URLs, Hashes
+            iocs = extract_iocs_with_confidence(body.ioc)
+            
+            if iocs:
+                for ioc_match in iocs:
+                    ioc_data = {
+                        "ioc": ioc_match.value,
+                        "type": ioc_match.ioc_type.value,
+                        "severity": result.get("severity", "Medium"),
+                        "confidence": ioc_match.confidence,
+                        "feed": "Manual Analysis",
+                        "source_url": "dashboard",
+                        "timestamp": timestamp
+                    }
+                    upload_ioc(ioc_data)
+            else:
+                # If nothing extracted, try to identify IPs/Domains/Hashes loosely or just store as unknown
+                # Simple fallback/unknown detection
+                final_type = "unknown"
+                final_conf = 0.5
+                
+                # Loose checks for single items that extractor might have missed or filtered
+                if re.search(r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$', ioc_input):
+                    final_type = "ip"
+                    final_conf = 0.8
+                elif re.search(r'^[a-fA-F0-9]{32,64}$', ioc_input):
+                    final_type = "hash"
+                    final_conf = 0.9
+                
+                ioc_data = {
+                    "ioc": ioc_input,
+                    "type": final_type,
+                    "severity": result.get("severity", "Medium"),
+                    "confidence": final_conf,
+                    "feed": "Manual Analysis",
+                    "source_url": "dashboard",
+                    "timestamp": timestamp
+                }
+                upload_ioc(ioc_data)
 
         return SummaryResponse(
             timestamp=result["timestamp"],
