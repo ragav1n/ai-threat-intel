@@ -101,7 +101,7 @@ A **modular, AI-powered Threat Intelligence Feed Aggregator** that:
 ```bash
 curl -X POST http://localhost:8000/api/summarize \
   -H "Content-Type: application/json" \
-  -d '{"ioc": "8.8.8.8", "model": "llama3.2:latest"}'
+  -d '{"ioc": "8.8.8.8", "model": "qwen2.5:7b"}'
 ```
 
 **Response:**

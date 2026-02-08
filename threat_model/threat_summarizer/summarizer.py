@@ -117,7 +117,7 @@ def extract_recommendations(summary: str) -> List[str]:
 
 def summarize_threat(
     threat_input: str, 
-    model: str = "llama3.2:latest",
+    model: str = "qwen2.5:7b",
     include_enrichment: bool = True
 ) -> ThreatSummaryResult:
     """
@@ -168,7 +168,7 @@ def summarize_threat(
 
 def batch_summarize(
     iocs: List[str],
-    model: str = "llama3.2:latest"
+    model: str = "qwen2.5:7b"
 ) -> List[ThreatSummaryResult]:
     """
     Summarize multiple IOCs in batch.
