@@ -95,3 +95,44 @@ def get_recent_summaries(limit: int = 10) -> list[Dict[str, Any]]:
         )
     except Exception:
         return []
+
+
+def get_ioc_collection() -> Optional[Collection]:
+    """Get the IOCs collection."""
+    client = get_client()
+    if client is None:
+        return None
+    
+    db = client[MONGO_DB]
+    return db["iocs"]
+
+
+def upload_ioc(ioc_data: Dict[str, Any]) -> bool:
+    """
+    Upload an IOC to MongoDB.
+    
+    Args:
+        ioc_data: Dictionary containing ioc, type, severity, confidence, etc.
+        
+    Returns:
+        True if upload succeeded, False otherwise.
+    """
+    collection = get_ioc_collection()
+    if collection is None:
+        return False
+    
+    try:
+        # Avoid duplicate IOCs
+        existing = collection.find_one({"ioc": ioc_data.get("ioc")})
+        if existing:
+            # Update existing with newer data
+            collection.update_one(
+                {"ioc": ioc_data.get("ioc")},
+                {"$set": ioc_data}
+            )
+        else:
+            collection.insert_one(ioc_data)
+        return True
+    except Exception as e:
+        print(f"[⚠️ MongoDB IOC Upload Failed] {e}")
+        return False

@@ -89,8 +89,9 @@ def enrich_ioc(ioc: str) -> str:
     """
     enrichment = []
     
-    # Clean IOC - remove protocol and path
+    # Clean IOC - remove protocol, path, and defang
     clean_ioc = ioc.replace("http://", "").replace("https://", "").split("/")[0]
+    clean_ioc = clean_ioc.replace("[.]", ".").replace("[:]", ":")
 
     if is_ip(clean_ioc):
         enrichment.append(f"[Hunter] IP detected: {clean_ioc}")
@@ -109,6 +110,6 @@ def enrich_ioc(ioc: str) -> str:
             enrichment.append("DNS Resolution: Failed")
     
     if not enrichment:
-        return "No network enrichment available."
+        return ""
          
     return " ".join(enrichment)

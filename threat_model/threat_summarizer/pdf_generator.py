@@ -225,9 +225,37 @@ class ThreatReportPDF(FPDF):
             self.multi_cell(0, 4, f"Intel: {self.clean_text(enrichment[:150])}")
             self.ln(2)
         
-        # MITRE ATT&CK Tactics (if available)
-        tactics = threat.get("mitre_tactics")
-        if tactics:
+        # Enhanced MITRE ATT&CK TTPs (new Phase 1 feature)
+        mitre_ttps = threat.get("mitre_ttps")
+        if mitre_ttps and len(mitre_ttps) > 0:
+            self.set_font("Helvetica", "B", 9)
+            self.set_text_color(*COLORS["primary"])
+            self.cell(0, 5, "MITRE ATT&CK Techniques:", ln=True)
+            self.set_font("Helvetica", "", 8)
+            self.set_text_color(*COLORS["dark"])
+            
+            for ttp in mitre_ttps[:5]:  # Limit to 5 TTPs
+                technique_id = ttp.get("technique_id", "")
+                technique_name = ttp.get("technique_name", "")
+                tactic = ttp.get("tactic", "")
+                confidence = ttp.get("confidence", 0)
+                
+                # Format confidence as percentage
+                confidence_pct = int(confidence * 100) if isinstance(confidence, float) else confidence
+                confidence_str = f"{confidence_pct}%" if confidence_pct else ""
+                
+                ttp_line = f"  {technique_id}: {technique_name}"
+                if tactic:
+                    ttp_line += f" ({tactic})"
+                if confidence_str:
+                    ttp_line += f" - {confidence_str} confidence"
+                
+                self.cell(0, 4, self.clean_text(ttp_line), ln=True)
+            self.ln(2)
+        
+        # Legacy MITRE ATT&CK Tactics (fallback)
+        elif threat.get("mitre_tactics"):
+            tactics = threat.get("mitre_tactics")
             self.set_font("Helvetica", "B", 9)
             self.set_text_color(*COLORS["primary"])
             self.cell(0, 5, f"MITRE ATT&CK: {', '.join(tactics)}", ln=True)
@@ -239,6 +267,7 @@ class ThreatReportPDF(FPDF):
         if len(summary) > 1200:
             summary = summary[:1200] + "..."
         
+        self.set_text_color(*COLORS["dark"])
         self.render_markdown(summary)
         
         # Recommendations (if available)
