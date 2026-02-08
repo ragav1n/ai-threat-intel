@@ -12,6 +12,11 @@ export const metadata: Metadata = {
   title: 'Threat Intelligence Dashboard',
   description: 'SOC threat intelligence and security monitoring dashboard',
   generator: 'v0.app',
+  icons: {
+    icon: '/favicon.jpg',
+    shortcut: '/favicon.jpg',
+    apple: '/favicon.jpg',
+  },
 }
 
 export default function RootLayout({
