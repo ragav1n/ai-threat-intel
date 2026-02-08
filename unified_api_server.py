@@ -48,7 +48,7 @@ app.add_middleware(
 class IOCRequest(BaseModel):
     """Request model for IOC summarization."""
     ioc: str = Field(..., min_length=1, max_length=500, description="The IOC to analyze")
-    model: str = Field(default="llama3.2:latest", description="LLM model to use")
+    model: str = Field(default="qwen2.5:7b", description="LLM model to use")
     
     @field_validator("ioc")
     @classmethod

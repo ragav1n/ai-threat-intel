@@ -13,7 +13,7 @@ def cli_entry():
             if not threat.strip():
                 continue
 
-            model = input("🤖 Enter model (default: llama3.2:latest): ") or "llama3.2:latest"
+            model = input("🤖 Enter model (default: qwen2.5:7b): ") or "qwen2.5:7b"
             
             print("\n⏳ Analyzing...")
             result = summarize_threat(threat, model)

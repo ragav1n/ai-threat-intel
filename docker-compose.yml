@@ -8,7 +8,10 @@ services:
       - MONGO_URI=mongodb://mongo:27017/
       - MONGO_DB=threat_intel
       - LOG_LEVEL=INFO
+      - LOG_LEVEL=INFO
       - OLLAMA_URL=http://host.docker.internal:11434
+      - OLLAMA_TIMEOUT=300
+      - TZ=Asia/Kolkata
     depends_on:
       - mongo
     restart: unless-stopped
@@ -29,7 +32,9 @@ services:
       - "3001:3000"
     environment:
       - NEXT_PUBLIC_API_URL=http://localhost:8000
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
       - API_URL=http://api:8000
+      - TZ=Asia/Kolkata
     restart: unless-stopped
 
   # Feed Scheduler
@@ -40,6 +45,7 @@ services:
       - MONGO_URI=mongodb://mongo:27017/
       - MONGO_DB=threat_intel
       - SCHEDULER_INTERVAL=10
+      - TZ=Asia/Kolkata
     depends_on:
       - mongo
     restart: unless-stopped
