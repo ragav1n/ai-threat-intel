@@ -16,11 +16,12 @@ export default function IOCTable() {
   const [loading, setLoading] = useState(true)
   const [iocType, setIOCType] = useState<string>('all')
   const [severity, setSeverity] = useState<string>('all')
+  const [minConfidence, setMinConfidence] = useState<number>(0)
   const [limit, setLimit] = useState(50)
 
+  // Fetch IOCs with polling for real-time updates
   useEffect(() => {
     const fetchIOCs = async () => {
-      setLoading(true)
       try {
         let url = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/iocs?limit=` + limit
         if (iocType !== 'all') url += '&ioc_type=' + iocType
@@ -28,7 +29,17 @@ export default function IOCTable() {
 
         const response = await fetch(url)
         const data = await response.json()
-        setIOCs(data.iocs || [])
+        let fetchedIocs = data.iocs || []
+
+        // Frontend filtering for confidence (since API merges sources)
+        if (minConfidence > 0) {
+          fetchedIocs = fetchedIocs.filter((i: any) => {
+            const conf = typeof i.confidence === 'number' ? i.confidence : 0
+            return conf >= (minConfidence / 100)
+          })
+        }
+
+        setIOCs(fetchedIocs)
       } catch (error) {
         console.error('Failed to fetch IOCs:', error)
       } finally {
@@ -36,7 +47,11 @@ export default function IOCTable() {
       }
     }
     fetchIOCs()
-  }, [iocType, severity, limit])
+
+    // Poll every 15 seconds for real-time updates
+    const interval = setInterval(fetchIOCs, 15000)
+    return () => clearInterval(interval)
+  }, [iocType, severity, limit, minConfidence])
 
   const getSeverityColor = (severity: string) => {
     switch (severity?.toLowerCase()) {
@@ -64,7 +79,7 @@ export default function IOCTable() {
   return (
     <div className="space-y-4">
       {/* Filters */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Select value={iocType} onValueChange={setIOCType}>
           <SelectTrigger>
             <SelectValue placeholder="All IOC Types" />
@@ -102,6 +117,21 @@ export default function IOCTable() {
             <SelectItem value="100">100 Results</SelectItem>
           </SelectContent>
         </Select>
+
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-muted-foreground whitespace-nowrap">Min Confidence:</span>
+          <Select value={minConfidence.toString()} onValueChange={(v) => setMinConfidence(parseInt(v))}>
+            <SelectTrigger>
+              <SelectValue placeholder="Confidence" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="0">All (0%)</SelectItem>
+              <SelectItem value="50">Medium (50%+)</SelectItem>
+              <SelectItem value="80">High (80%+)</SelectItem>
+              <SelectItem value="90">Very High (90%+)</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
       {/* Table */}
@@ -116,6 +146,7 @@ export default function IOCTable() {
               <TableRow className="border-border/50 hover:bg-secondary/50">
                 <TableHead>IOC Value</TableHead>
                 <TableHead>Type</TableHead>
+                <TableHead>Confidence</TableHead>
                 <TableHead>Severity</TableHead>
                 <TableHead>Feed Source</TableHead>
                 <TableHead>Timestamp</TableHead>
@@ -124,13 +155,13 @@ export default function IOCTable() {
             <TableBody>
               {loading ? (
                 <TableRow>
-                  <TableCell colSpan={5} className="py-4">
+                  <TableCell colSpan={6} className="py-4">
                     <SkeletonTable rows={5} />
                   </TableCell>
                 </TableRow>
               ) : iocs.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={5} className="py-0">
+                  <TableCell colSpan={6} className="py-0">
                     <EmptyState
                       type="no-results"
                       title="No IOCs Found"
@@ -139,28 +170,49 @@ export default function IOCTable() {
                   </TableCell>
                 </TableRow>
               ) : (
-                iocs.map((ioc, idx) => (
-                  <motion.tr
-                    key={idx}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: idx * 0.03, duration: 0.4 }}
-                    whileHover={{ scale: 1.01, backgroundColor: 'rgba(6, 182, 212, 0.05)' }}
-                    className="border-border/30 transition-colors"
-                  >
-                    <TableCell className="font-mono text-sm text-foreground break-all">{ioc.ioc}</TableCell>
-                    <TableCell>
-                      <Badge className={getTypeColor(ioc.type)}>{ioc.type.toUpperCase()}</Badge>
-                    </TableCell>
-                    <TableCell>
-                      <Badge className={getSeverityColor(ioc.severity)}>{ioc.severity}</Badge>
-                    </TableCell>
-                    <TableCell className="text-muted-foreground text-sm">{ioc.feed}</TableCell>
-                    <TableCell className="text-muted-foreground text-sm whitespace-nowrap">
-                      {new Date(ioc.timestamp).toLocaleString()}
-                    </TableCell>
-                  </motion.tr>
-                ))
+                iocs.map((ioc, idx) => {
+                  const confidence = typeof ioc.confidence === 'number'
+                    ? Math.round(ioc.confidence * 100)
+                    : (ioc.confidence || 0)
+                  const confidenceColor = confidence >= 80
+                    ? 'bg-green-500'
+                    : confidence >= 50
+                      ? 'bg-yellow-500'
+                      : 'bg-orange-500'
+                  return (
+                    <motion.tr
+                      key={idx}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: idx * 0.03, duration: 0.4 }}
+                      whileHover={{ scale: 1.01, backgroundColor: 'rgba(6, 182, 212, 0.05)' }}
+                      className="border-border/30 transition-colors"
+                    >
+                      <TableCell className="font-mono text-sm text-foreground break-all">{ioc.ioc}</TableCell>
+                      <TableCell>
+                        <Badge className={getTypeColor(ioc.type)}>{ioc.type.toUpperCase()}</Badge>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <div className="w-12 h-2 bg-secondary rounded-full overflow-hidden">
+                            <div
+                              className={`h-full ${confidenceColor} transition-all`}
+                              style={{ width: `${confidence}%` }}
+                            />
+                          </div>
+                          <span className="text-xs text-muted-foreground">{confidence}%</span>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Badge className={getSeverityColor(ioc.severity)}>{ioc.severity}</Badge>
+                      </TableCell>
+                      <TableCell className="text-muted-foreground text-sm">{ioc.feed}</TableCell>
+                      <TableCell className="text-muted-foreground text-sm whitespace-nowrap">
+                        {new Date(ioc.timestamp).toLocaleString()}
+                      </TableCell>
+                    </motion.tr>
+                  )
+                })
               )}
             </TableBody>
           </Table>

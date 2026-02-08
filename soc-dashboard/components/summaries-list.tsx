@@ -22,7 +22,9 @@ export default function SummariesList() {
   const [newIOC, setNewIOC] = useState('')
   const [analyzing, setAnalyzing] = useState(false)
   const [severity, setSeverity] = useState<string>('')
+  const [refreshKey, setRefreshKey] = useState(0)
 
+  // Fetch summaries with polling for real-time updates
   useEffect(() => {
     const fetchSummaries = async () => {
       try {
@@ -39,7 +41,11 @@ export default function SummariesList() {
       }
     }
     fetchSummaries()
-  }, [severity])
+
+    // Poll every 15 seconds for real-time updates
+    const interval = setInterval(fetchSummaries, 15000)
+    return () => clearInterval(interval)
+  }, [severity, refreshKey])
 
   const handleAnalyzeIOC = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -55,6 +61,7 @@ export default function SummariesList() {
       const data = await response.json()
       setSummaries([data, ...summaries])
       setNewIOC('')
+      setRefreshKey(prev => prev + 1) // Trigger refresh for real-time update
       toast({
         title: 'Success',
         description: 'IOC analyzed successfully',
@@ -202,8 +209,48 @@ export default function SummariesList() {
                       </div>
                     )}
 
-                    {/* MITRE Tactics */}
-                    {summary.mitre_tactics && summary.mitre_tactics.length > 0 && (
+                    {/* Enhanced MITRE ATT&CK TTPs (Phase 1 feature) */}
+                    {summary.mitre_ttps && summary.mitre_ttps.length > 0 && (
+                      <div>
+                        <h4 className="font-semibold text-foreground mb-2">MITRE ATT&CK Techniques</h4>
+                        <div className="flex flex-wrap gap-2">
+                          {summary.mitre_ttps.map((ttp: any, tidx: number) => {
+                            const confidence = typeof ttp.confidence === 'number'
+                              ? Math.round(ttp.confidence * 100)
+                              : ttp.confidence
+                            const confidenceColor = confidence >= 80
+                              ? 'text-green-400'
+                              : confidence >= 50
+                                ? 'text-yellow-400'
+                                : 'text-orange-400'
+                            return (
+                              <div
+                                key={tidx}
+                                className="flex items-center gap-2 bg-secondary/50 border border-primary/30 rounded-lg px-3 py-2"
+                              >
+                                <Badge variant="outline" className="bg-primary/20 text-primary border-primary/30 font-mono">
+                                  {ttp.technique_id}
+                                </Badge>
+                                <span className="text-sm text-foreground">{ttp.technique_name}</span>
+                                {ttp.tactic && (
+                                  <Badge variant="secondary" className="text-xs">
+                                    {ttp.tactic}
+                                  </Badge>
+                                )}
+                                {confidence && (
+                                  <span className={`text-xs font-medium ${confidenceColor}`}>
+                                    {confidence}%
+                                  </span>
+                                )}
+                              </div>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Legacy MITRE Tactics (fallback) */}
+                    {!summary.mitre_ttps && summary.mitre_tactics && summary.mitre_tactics.length > 0 && (
                       <div>
                         <h4 className="font-semibold text-foreground mb-2">MITRE Tactics</h4>
                         <div className="flex flex-wrap gap-2">
@@ -211,6 +258,18 @@ export default function SummariesList() {
                             <Badge key={tidx} variant="outline" className="text-xs">
                               {tactic}
                             </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* RAG Context (Phase 1 feature) */}
+                    {summary.rag_context && summary.rag_context.length > 0 && (
+                      <div>
+                        <h4 className="font-semibold text-foreground mb-2 text-sm">Retrieved Context</h4>
+                        <div className="text-xs text-muted-foreground bg-secondary/30 rounded-lg p-2 max-h-20 overflow-y-auto">
+                          {summary.rag_context.slice(0, 3).map((ctx: string, cidx: number) => (
+                            <p key={cidx} className="truncate">{ctx}</p>
                           ))}
                         </div>
                       </div>

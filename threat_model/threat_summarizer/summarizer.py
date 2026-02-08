@@ -318,8 +318,13 @@ def summarize_threat(
     # Extract recommendations
     recommendations = extract_recommendations(summary)
 
+    # IST timezone for consistent timestamps
+    from datetime import timezone, timedelta
+    IST = timezone(timedelta(hours=5, minutes=30))
+    timestamp = datetime.now(IST).isoformat()
+
     return {
-        "timestamp": datetime.utcnow().isoformat(),
+        "timestamp": timestamp,
         "input": threat_input,
         "summary": summary,
         "severity": str(severity),

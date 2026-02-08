@@ -12,6 +12,8 @@ services:
       - OLLAMA_URL=http://host.docker.internal:11434
       - OLLAMA_TIMEOUT=300
       - TZ=Asia/Kolkata
+    volumes:
+      - mitre_cache:/root/.cache/mitre_attack # Persist MITRE RAG embeddings
     depends_on:
       - mongo
     restart: unless-stopped
@@ -61,3 +63,4 @@ services:
 
 volumes:
   mongo_data:
+  mitre_cache: # Persist MITRE ATT&CK RAG embeddings

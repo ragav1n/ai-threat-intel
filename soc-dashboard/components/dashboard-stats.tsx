@@ -32,6 +32,7 @@ export default function DashboardStats() {
   const [summaryStats, setSummaryStats] = useState<any>(null)
   const [loading, setLoading] = useState(true)
 
+  // Fetch stats with polling for real-time updates
   useEffect(() => {
     const fetchStats = async () => {
       try {
@@ -50,6 +51,10 @@ export default function DashboardStats() {
       }
     }
     fetchStats()
+
+    // Poll every 15 seconds for real-time updates
+    const interval = setInterval(fetchStats, 15000)
+    return () => clearInterval(interval)
   }, [])
 
   if (loading) {
