@@ -1,112 +1,144 @@
-# 🛡️ Threat Intelligence Feed Aggregator
+# Threat Intelligence Feed Aggregator
 
-A fully automated, production-grade threat intelligence feed aggregator that:
-- Collects threat indicators (IOCs) from RSS, Atom, YAML-based feeds
-- Normalizes and stores them in MongoDB (deduplicated)
-- Writes IOCs to `input.txt` for downstream processing (e.g., AI summarization)
-- Tracks feed health, logs failures, and sends email alerts
-- Supports fault tolerance, scheduling, and real-time monitoring
+A fully automated, production-grade threat intelligence feed aggregator that collects, normalizes, and deduplicates Indicators of Compromise (IOCs) from various open sources.
+
+## Key Features
+
+*   **Multi-Source Collection**:
+    *   **RSS/Atom Feeds**: Standard threat feed consumption.
+    *   **GitHub Discovery**: Automatically discovers and consumes Atom feeds from security repositories (e.g., `theZoo`, `atomic-red-team`).
+    *   **JSON/CSV/Text**: Flexible parsing for unstructured or semi-structured data.
+*   **Intelligent Processing**:
+    *   **Concurrent Fetching**: Uses thread pools for high-speed parallel data collection.
+    *   **Smart Normalization**: Standardizes IOCs into common formats (IP, Domain, URL, Hash, CVE).
+    *   **Deduplication**: Uses SHA256 hashing (`type::value`) to prevent duplicate entries in the database.
+*   **Robust Architecture**:
+    *   **Fault Tolerance**: Automatic retries with exponential backoff for network failures.
+    *   **Health Monitoring**: Tracks feed uptime, response times, and success rates.
+    *   **Alerting**: Email alerts triggered after 3 consecutive failures, including uptime stats and CSV reports.
+*   **Integration Ready**:
+    *   Exports to MongoDB for persistent storage.
+    *   Generates `input.txt` for downstream AI summarization (e.g., Ollama/LLM pipelines).
 
 ---
 
-## 📂 Project Structurethreat_intel_aggregator/
-├── main.py # Entry point with scheduler
-├── data/ # Stores JSON, CSV, logs, timestamps
-│ ├── normalized_iocs.json
-│ ├── normalized_iocs.csv
-│ ├── feed_collector.log
-│ └── ...
+## Architecture
+
+![Architecture Diagram](architecture.png)
+
+The system follows a standard ETL (Extract, Transform, Load) pipeline:
+
+1.  **Scheduler**: Triggers collection every 10 minutes (configurable).
+2.  **Collector**: Fetches data from configured sources in parallel.
+3.  **Parser/Extractor**: Identifies IOCs using regex and normalizes them.
+4.  **Writer**:
+    *   **MongoDB**: Stores structured, deduplicated IOCs.
+    *   **Filesystem**: export `input.txt` for external tools.
+
+---
+
+## Project Structure
+
+```plaintext
+threat_intel_aggregator/
+├── main.py                  # Entry point & Scheduler
 ├── feed_collection/
-│ ├── collector.py # Feed fetching & concurrency
-│ ├── parser.py # Feed parsing & extraction
-│ ├── ioc_extractor.py # IOC regex extraction
-│ ├── mongo_writer.py # MongoDB insert & export to input.txt
-│ ├── config.py # Loads feeds.yaml & paths
-│ ├── feeds.yaml # Feed configuration list
-│ └── summarizer.py (optional) # If integrated directly with Ollama
-├── .env # Mongo URI & config (not committed)
-└── requirements.txt # Python dependencies
+│   ├── collector.py         # Concurrent fetcher & retry logic
+│   ├── github_discovery.py  # GitHub feed auto-discovery
+│   ├── parser.py            # Data normalization & cleanup
+│   ├── ioc_extractor.py     # Regex-backed IOC extraction
+│   ├── mongo_writer.py      # Database interaction & Deduplication
+│   ├── config.py            # Configuration loader
+│   ├── feeds.yaml           # STATIC Feed definitions
+│   └── health.py            # Health tracking logic
+├── data/                    # Local data storage
+│   ├── normalized_iocs.json # Latest processed IOCs
+│   ├── normalized_iocs.csv  # CSV export for reports
+│   ├── feed_health.json     # Feed status tracking
+│   ├── feed_collector.log   # Application logs
+│   └── raw_feeds.json       # Intermediate raw data
+├── enums.py                 # IOC Types & Severity definitions
+└── requirements.txt         # Dependencies
+```
 
 ---
 
-## 🚀 Features
+## Installation & Setup
 
-- ✅ Concurrent feed fetching from any RSS/Atom/CSV/JSON feeds
-- ✅ Custom IOC extraction: IPs, domains, hashes, URLs, etc.
-- ✅ Deduplication using SHA256 hash-based `_id`
-- ✅ Feed health tracking (success/failure, timestamps)
-- ✅ Outputs IOCs as `.json`, `.csv`, and bullet-formatted `input.txt`
-- ✅ Email alert system with uptime, IOC count, and CSV attachment
-- ✅ Watchdog loop with crash recovery
+### 1. Prerequisites
 
----
+*   Python 3.8+
+*   MongoDB (Local or Atlas)
 
-## 🔧 Installation
-
-### 1. Clone the repo and install dependencies:
+### 2. Install Dependencies
 
 ```bash
-git clone https://github.com/your-org/threat_intel_aggregator.git
 cd threat_intel_aggregator
-
-python3 -m venv venv
-source venv/bin/activate
-
 pip install -r requirements.txt
 ```
 
-### ▶️ Running the Aggregator
+### 3. Configuration
 
-```bash
-cd threat_intel_aggregator
-python3 main.py
+#### Feeds (`feed_collection/feeds.yaml`)
+Define your static feed sources here. The aggregator also auto-discovers GitHub feeds.
+
+```yaml
+feeds:
+  - name: "Hybrid Analysis"
+    url: "https://www.hybrid-analysis.com/feed?json"
+    source_type: "json"
+    category: "general"
+  
+  - name: "CISA US-CERT"
+    url: "https://www.us-cert.gov/ncas/alerts.xml"
+    source_type: "rss"
+    category: "government"
 ```
 
-- Starts with an immediate IOC fetch
-- Then runs every 10 minutes
-- Writes logs to data/feed_collector.log
-- Fails gracefully with retries and alerting
+#### Environment Variables
+Create a `.env` file for sensitive config (optional, defaults provided):
 
-### 🔁 Output Files
-
-| File                   | Description                          |
-| ---------------------- | ------------------------------------ |
-| `normalized_iocs.json` | Clean list of extracted IOCs         |
-| `normalized_iocs.csv`  | Same in CSV format                   |
-| `feed_health.json`     | Status of each feed                  |
-| `input.txt`            | Bullet-formatted IOCs for summarizer |
-| `feed_collector.log`   | Full log file                        |
-
-### 📬 Alert System
-
-If 3 consecutive cycles fail:
-
-- Sends an email with reason
-- Includes:
-    - Uptime duration
-    - IOC count and sample
-    - Formatted ASCII table of IOCs
-    - Attached .csv report
-
-### Integration: Threat Summarizer
-
-This aggregator writes input.txt to a separate module:
-
-```bash
-
-../threat_model/input.txt
+```env
+MONGO_URI=mongodb://localhost:27017/
+MONGO_DB=threat_intel
+MONGO_IOC_COLLECTION=iocs
 ```
 
-Your summarizer can monitor this file and:
-
-    - Summarize IOCs via Ollama
-
-    - Store the summary in MongoDB
-
-    - Send out PDF or HTML reports
+*(Note: Email alerts are currently configured in `main.py`. Update credentials there if needed.)*
 
 ---
 
-## 📝 License
+## Usage
 
-MIT License
+Start the aggregator:
+
+```bash
+python main.py
+```
+
+*   **First Run**: Runs immediately upon startup.
+*   **Loop**: Runs every 10 minutes thereafter.
+*   **Logs**: storage in `data/feed_collector.log`.
+
+### Stopping
+Press `Ctrl+C` to gracefully stop the scheduler.
+
+---
+
+## Output Files
+
+| File | Description |
+| :--- | :--- |
+| **`data/normalized_iocs.json`** | JSON list of all extracted IOCs from the last run. |
+| **`data/normalized_iocs.csv`** | CSV version of the IOCs, used for email attachments. |
+| **`../threat_model/input.txt`** | Simplified bullet-list of IOCs for AI Summarizers. |
+| **`data/feed_health.json`** | Tracks last success/failure and response time for each feed. |
+
+---
+
+## Monitoring & Alerts
+
+The system includes a built-in "Dead Man's Switch":
+*   **Trigger**: If the collection job fails 3 times in a row.
+*   **Action**: Sends an email to the configured administrator.
+*   **Content**: Includes failure reason, system uptime, and a CSV report of the last known IOCs.
