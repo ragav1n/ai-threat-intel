@@ -1,5 +1,6 @@
 """
 Feed content parsing and IOC normalization.
+Enhanced with confidence scoring.
 """
 import json
 import csv
@@ -11,7 +12,7 @@ import feedparser
 from bs4 import BeautifulSoup
 from tenacity import retry, stop_after_attempt, wait_fixed
 
-from .ioc_extractor import extract_iocs
+from .ioc_extractor import extract_iocs_with_confidence, IOCMatch
 from .config import RAW_FEED_OUTPUT, NORMALIZED_IOC_JSON, NORMALIZED_IOC_CSV
 
 # Import enums
@@ -33,9 +34,32 @@ IOC_SEVERITY_MAP: Dict[IOCType, Severity] = {
 }
 
 
-def get_severity_for_ioc(ioc_type: IOCType) -> Severity:
-    """Get the severity level for a given IOC type."""
-    return IOC_SEVERITY_MAP.get(ioc_type, Severity.UNKNOWN)
+def get_severity_for_ioc(ioc_type: IOCType, confidence: float = 0.5) -> Severity:
+    """
+    Get the severity level for a given IOC type, adjusted by confidence.
+    
+    High confidence (>0.8) can elevate severity.
+    Low confidence (<0.4) can reduce severity.
+    """
+    base_severity = IOC_SEVERITY_MAP.get(ioc_type, Severity.UNKNOWN)
+    
+    # Adjust severity based on confidence
+    if confidence >= 0.85:
+        # Elevate if not already CRITICAL
+        if base_severity == Severity.HIGH:
+            return Severity.CRITICAL
+        elif base_severity == Severity.MEDIUM:
+            return Severity.HIGH
+    elif confidence < 0.4:
+        # Reduce severity for low confidence
+        if base_severity == Severity.CRITICAL:
+            return Severity.HIGH
+        elif base_severity == Severity.HIGH:
+            return Severity.MEDIUM
+        elif base_severity == Severity.MEDIUM:
+            return Severity.LOW
+    
+    return base_severity
 
 
 @retry(stop=stop_after_attempt(3), wait=wait_fixed(2))
@@ -73,30 +97,33 @@ def normalize_and_store_iocs(
     feed_name: str, 
     text: str, 
     source_url: str, 
-    timestamp: str
+    timestamp: str,
+    min_confidence: float = 0.3
 ) -> List[Dict[str, Any]]:
     """
-    Extract and normalize IOCs from text content.
+    Extract and normalize IOCs from text content with confidence scoring.
     
     Args:
         feed_name: Name of the source feed.
         text: Text content to extract IOCs from.
         source_url: URL of the source.
         timestamp: ISO timestamp of extraction.
+        min_confidence: Minimum confidence threshold.
         
     Returns:
-        List of normalized IOC entries.
+        List of normalized IOC entries with confidence scores.
     """
-    iocs = extract_iocs(text)
+    ioc_matches = extract_iocs_with_confidence(text, min_confidence=min_confidence)
     normalized_entries = []
 
-    for ioc_value, ioc_type in iocs:
-        severity = get_severity_for_ioc(ioc_type)
+    for match in ioc_matches:
+        severity = get_severity_for_ioc(match.ioc_type, match.confidence)
         entry = {
             "feed": feed_name,
-            "ioc": ioc_value,
-            "type": str(ioc_type),  # Convert enum to string for JSON
+            "ioc": match.value,
+            "type": str(match.ioc_type),
             "severity": str(severity),
+            "confidence": match.confidence,
             "timestamp": timestamp,
             "source_url": source_url
         }
@@ -105,9 +132,12 @@ def normalize_and_store_iocs(
     return normalized_entries
 
 
-def normalize_parsed_results() -> List[Dict[str, Any]]:
+def normalize_parsed_results(min_confidence: float = 0.3) -> List[Dict[str, Any]]:
     """
-    Process raw feed data and extract normalized IOCs.
+    Process raw feed data and extract normalized IOCs with confidence scores.
+    
+    Args:
+        min_confidence: Minimum confidence threshold for IOCs.
     
     Returns:
         List of all normalized IOC entries.
@@ -134,30 +164,32 @@ def normalize_parsed_results() -> List[Dict[str, Any]]:
             feed_name=feed_name,
             text=clean_text,
             source_url=data.get("url"),
-            timestamp=now
+            timestamp=now,
+            min_confidence=min_confidence
         )
 
         if found_iocs:
             print(f"✅ [{feed_name}] Found {len(found_iocs)} IOCs")
             for ioc in found_iocs[:5]:  # Only print first 5
-                print(f"   • {ioc['type']} ({ioc['severity']}): {ioc['ioc']}")
+                conf_str = f"{ioc['confidence']:.0%}"
+                print(f"   • {ioc['type']} ({ioc['severity']}, {conf_str}): {ioc['ioc']}")
             if len(found_iocs) > 5:
                 print(f"   ... and {len(found_iocs) - 5} more")
             normalized.extend(found_iocs)
         else:
             print(f"⚠️  [{feed_name}] No IOCs found")
 
-    # Save to JSON
+    # Save to JSON (includes confidence field)
     try:
         with open(NORMALIZED_IOC_JSON, "w") as f:
             json.dump(normalized, f, indent=2)
     except Exception as e:
         print(f"❌ Failed to write normalized_iocs.json: {e}")
 
-    # Save to CSV
+    # Save to CSV (includes confidence field)
     try:
         with open(NORMALIZED_IOC_CSV, "w", newline="") as csvfile:
-            fieldnames = ["feed", "ioc", "type", "severity", "timestamp", "source_url"]
+            fieldnames = ["feed", "ioc", "type", "severity", "confidence", "timestamp", "source_url"]
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             writer.writeheader()
             for row in normalized:

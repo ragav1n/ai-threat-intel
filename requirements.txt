@@ -32,3 +32,7 @@ fpdf>=1.7.2
 
 # LLM
 ollama>=0.1.0
+
+# RAG Dependencies
+chromadb>=0.4.0
+sentence-transformers>=2.2.0

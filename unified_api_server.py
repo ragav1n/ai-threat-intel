@@ -75,13 +75,27 @@ class EmailRequest(BaseModel):
 
 
 class SummaryResponse(BaseModel):
-    """Response model for summarization."""
+    """Response model for summarization with enhanced TTP mapping."""
     timestamp: str
     input: str
     summary: str
     severity: str
     enrichment: Optional[str] = None
-    mitre_tactics: Optional[List[str]] = None
+    mitre_tactics: Optional[List[str]] = None  # Legacy field for backward compat
+    mitre_ttps: Optional[List[dict]] = None  # Enhanced: [{technique_id, technique_name, tactic, confidence}]
+    rag_context: Optional[List[str]] = None  # Retrieved MITRE context used
+    recommendations: Optional[List[str]] = None
+
+
+class IOCResponse(BaseModel):
+    """Response model for IOC with confidence scoring."""
+    feed: str
+    ioc: str
+    type: str
+    severity: str
+    confidence: float = Field(ge=0.0, le=1.0, description="Confidence score 0.0-1.0")
+    timestamp: str
+    source_url: Optional[str] = None
 
 
 class ErrorResponse(BaseModel):
@@ -131,7 +145,12 @@ def health_check():
 @limiter.limit("10/minute")
 def summarize_endpoint(request: Request, body: IOCRequest):
     """
-    Analyze and summarize a threat indicator.
+    Analyze and summarize a threat indicator with RAG-enhanced context.
+    
+    Returns:
+    - Summary with MITRE ATT&CK TTP mappings including confidence scores
+    - Retrieved MITRE context used for grounding
+    - Actionable recommendations
     
     Rate limited to 10 requests per minute per IP.
     """
@@ -148,6 +167,9 @@ def summarize_endpoint(request: Request, body: IOCRequest):
             severity=result["severity"],
             enrichment=result.get("enrichment"),
             mitre_tactics=result.get("mitre_tactics"),
+            mitre_ttps=result.get("mitre_ttps"),
+            rag_context=result.get("rag_context"),
+            recommendations=result.get("recommendations"),
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

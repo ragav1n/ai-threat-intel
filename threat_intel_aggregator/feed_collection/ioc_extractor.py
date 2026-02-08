@@ -1,9 +1,15 @@
 """
-IOC (Indicator of Compromise) extraction from text using regex patterns.
+IOC (Indicator of Compromise) extraction from text with confidence scoring.
+
+Enhancements:
+- Multi-factor confidence scoring based on pattern quality, context, and validation
+- Improved false positive filtering
+- Context-aware extraction
 """
 import re
 import ipaddress
-from typing import List, Tuple
+from typing import List, Tuple, Dict, Any, Optional
+from dataclasses import dataclass
 
 from threat_intel_aggregator.enums import IOCType
 
@@ -25,7 +31,49 @@ IOC_PATTERNS: dict[IOCType, str] = {
 DOMAIN_BLACKLIST = {
     "example.com", "localhost.localdomain", "test.com",
     "gmail.com", "yahoo.com", "hotmail.com",  # Email providers aren't IOCs
+    "google.com", "microsoft.com", "github.com",  # Common legitimate domains
 }
+
+# High-value TLDs that increase confidence
+HIGH_RISK_TLDS = {".ru", ".cn", ".top", ".xyz", ".tk", ".pw", ".cc", ".ws"}
+
+# Threat context keywords that increase confidence
+THREAT_CONTEXT_KEYWORDS = {
+    "malware", "malicious", "threat", "attack", "exploit", "vulnerability",
+    "ransomware", "phishing", "trojan", "backdoor", "botnet", "c2", "c&c",
+    "compromise", "infected", "suspicious", "ioc", "indicator", "apt",
+    "campaign", "actor", "payload", "dropper", "loader", "rat",
+}
+
+# Base confidence scores by IOC type
+IOC_TYPE_BASE_CONFIDENCE: Dict[IOCType, float] = {
+    IOCType.SHA256: 0.85,   # Very specific, low false positive
+    IOCType.SHA1: 0.80,     # Specific but less common now
+    IOCType.MD5: 0.75,      # Less secure but still good indicator
+    IOCType.URL: 0.70,      # Context-dependent
+    IOCType.IP: 0.60,       # Could be legitimate
+    IOCType.IPV6: 0.60,
+    IOCType.DOMAIN: 0.55,   # High false positive potential
+    IOCType.CVE: 0.90,      # Structured identifier
+    IOCType.EMAIL: 0.50,    # Often benign
+}
+
+
+@dataclass
+class IOCMatch:
+    """Represents an extracted IOC with confidence score."""
+    value: str
+    ioc_type: IOCType
+    confidence: float
+    context_snippet: str = ""
+    
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert to dictionary format."""
+        return {
+            "ioc": self.value,
+            "type": str(self.ioc_type),
+            "confidence": round(self.confidence, 2),
+        }
 
 
 def is_valid_ip(ip_str: str) -> bool:
@@ -58,9 +106,152 @@ def is_private_ip(ip_str: str) -> bool:
         return False
 
 
+def get_context_window(text: str, match_start: int, match_end: int, window_size: int = 100) -> str:
+    """Extract context around a match for confidence scoring."""
+    start = max(0, match_start - window_size)
+    end = min(len(text), match_end + window_size)
+    return text[start:end].lower()
+
+
+def calculate_context_boost(context: str) -> float:
+    """
+    Calculate confidence boost based on surrounding context.
+    
+    Returns a value between 0.0 and 0.2 based on threat-related keywords.
+    """
+    keyword_count = sum(1 for kw in THREAT_CONTEXT_KEYWORDS if kw in context)
+    
+    # More keywords = higher confidence, max boost of 0.2
+    if keyword_count >= 3:
+        return 0.20
+    elif keyword_count >= 2:
+        return 0.15
+    elif keyword_count >= 1:
+        return 0.10
+    return 0.0
+
+
+def calculate_ip_confidence(ip_str: str, context: str) -> float:
+    """Calculate confidence score for IP addresses."""
+    base = IOC_TYPE_BASE_CONFIDENCE[IOCType.IP]
+    
+    # Penalize common legitimate IPs
+    if ip_str.startswith("8.8.") or ip_str.startswith("1.1.1."):  # Google/Cloudflare DNS
+        base -= 0.30
+    
+    # Boost for private IPs mentioned in threat context (internal compromise)
+    if is_private_ip(ip_str):
+        if any(kw in context for kw in ["lateral", "internal", "pivot"]):
+            base += 0.10
+        else:
+            base -= 0.20
+    
+    # Add context boost
+    base += calculate_context_boost(context)
+    
+    return max(0.1, min(1.0, base))
+
+
+def calculate_domain_confidence(domain: str, context: str) -> float:
+    """Calculate confidence score for domains."""
+    base = IOC_TYPE_BASE_CONFIDENCE[IOCType.DOMAIN]
+    
+    # Check TLD risk
+    domain_lower = domain.lower()
+    for tld in HIGH_RISK_TLDS:
+        if domain_lower.endswith(tld):
+            base += 0.15
+            break
+    
+    # Long random-looking subdomains often malicious
+    parts = domain.split('.')
+    if len(parts) > 2:
+        subdomain = parts[0]
+        if len(subdomain) > 15:
+            base += 0.10
+        if any(c.isdigit() for c in subdomain) and any(c.isalpha() for c in subdomain):
+            base += 0.05  # Mixed alphanumeric subdomains
+    
+    # Add context boost
+    base += calculate_context_boost(context)
+    
+    return max(0.1, min(1.0, base))
+
+
+def calculate_hash_confidence(hash_value: str, ioc_type: IOCType, context: str) -> float:
+    """Calculate confidence score for hash values."""
+    base = IOC_TYPE_BASE_CONFIDENCE.get(ioc_type, 0.7)
+    
+    # All-zero or repeating patterns are likely placeholders
+    if len(set(hash_value.lower())) < 4:
+        base -= 0.40
+    
+    # Add context boost
+    base += calculate_context_boost(context)
+    
+    return max(0.1, min(1.0, base))
+
+
+def calculate_url_confidence(url: str, context: str) -> float:
+    """Calculate confidence score for URLs."""
+    base = IOC_TYPE_BASE_CONFIDENCE[IOCType.URL]
+    
+    url_lower = url.lower()
+    
+    # Check for suspicious patterns
+    if any(pattern in url_lower for pattern in ["/wp-admin", "/phishing", "/payload", ".exe", ".zip", ".rar"]):
+        base += 0.15
+    
+    # High-risk TLDs in URL
+    for tld in HIGH_RISK_TLDS:
+        if tld in url_lower:
+            base += 0.10
+            break
+    
+    # Long URLs more suspicious
+    if len(url) > 150:
+        base += 0.05
+    
+    # Add context boost
+    base += calculate_context_boost(context)
+    
+    return max(0.1, min(1.0, base))
+
+
+def calculate_confidence(
+    ioc_value: str, 
+    ioc_type: IOCType, 
+    context: str
+) -> float:
+    """
+    Calculate confidence score for an IOC extraction.
+    
+    Args:
+        ioc_value: The extracted IOC.
+        ioc_type: Type of IOC.
+        context: Surrounding text context.
+        
+    Returns:
+        Confidence score between 0.0 and 1.0.
+    """
+    if ioc_type == IOCType.IP:
+        return calculate_ip_confidence(ioc_value, context)
+    elif ioc_type == IOCType.DOMAIN:
+        return calculate_domain_confidence(ioc_value, context)
+    elif ioc_type in (IOCType.MD5, IOCType.SHA1, IOCType.SHA256):
+        return calculate_hash_confidence(ioc_value, ioc_type, context)
+    elif ioc_type == IOCType.URL:
+        return calculate_url_confidence(ioc_value, context)
+    elif ioc_type == IOCType.CVE:
+        return min(1.0, IOC_TYPE_BASE_CONFIDENCE[IOCType.CVE] + calculate_context_boost(context))
+    else:
+        # Default for EMAIL and others
+        return min(1.0, IOC_TYPE_BASE_CONFIDENCE.get(ioc_type, 0.5) + calculate_context_boost(context))
+
+
 def extract_iocs(text: str, include_private_ips: bool = False) -> List[Tuple[str, IOCType]]:
     """
-    Extract all IOCs from the given text.
+    Extract all IOCs from the given text (legacy interface).
     
     Args:
         text: The text to extract IOCs from.
@@ -69,16 +260,39 @@ def extract_iocs(text: str, include_private_ips: bool = False) -> List[Tuple[str
     Returns:
         List of tuples (ioc_value, ioc_type).
     """
-    matches: List[Tuple[str, IOCType]] = []
+    matches = extract_iocs_with_confidence(text, include_private_ips)
+    return [(m.value, m.ioc_type) for m in matches]
+
+
+def extract_iocs_with_confidence(
+    text: str, 
+    include_private_ips: bool = False,
+    min_confidence: float = 0.0
+) -> List[IOCMatch]:
+    """
+    Extract all IOCs from the given text with confidence scores.
+    
+    Args:
+        text: The text to extract IOCs from.
+        include_private_ips: Whether to include private/reserved IPs.
+        min_confidence: Minimum confidence threshold (0.0-1.0).
+    
+    Returns:
+        List of IOCMatch objects with confidence scores.
+    """
+    matches: List[IOCMatch] = []
     seen: set[str] = set()  # Deduplicate within same extraction
     
     for ioc_type, pattern in IOC_PATTERNS.items():
-        found = re.findall(pattern, text)
-        
-        for item in found:
+        for match in re.finditer(pattern, text):
+            item = match.group()
+            
             # Skip duplicates
             if item in seen:
                 continue
+            
+            # Get context for confidence calculation
+            context = get_context_window(text, match.start(), match.end())
             
             # Validate and filter based on type
             if ioc_type == IOCType.IP:
@@ -95,8 +309,23 @@ def extract_iocs(text: str, include_private_ips: bool = False) -> List[Tuple[str
                 if item.lower() in DOMAIN_BLACKLIST:
                     continue
             
+            # Calculate confidence
+            confidence = calculate_confidence(item, ioc_type, context)
+            
+            # Apply minimum threshold
+            if confidence < min_confidence:
+                continue
+            
             seen.add(item)
-            matches.append((item, ioc_type))
+            matches.append(IOCMatch(
+                value=item,
+                ioc_type=ioc_type,
+                confidence=confidence,
+                context_snippet=context[:50] if context else ""
+            ))
+    
+    # Sort by confidence descending
+    matches.sort(key=lambda m: m.confidence, reverse=True)
     
     return matches
 
