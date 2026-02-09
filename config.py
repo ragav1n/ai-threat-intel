@@ -3,6 +3,10 @@ Configuration settings for the AI Threat Intelligence system.
 """
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 # Base Paths (Relative to project root)
 BASE_DIR = Path(__file__).parent
@@ -17,7 +21,9 @@ MONGO_DB = os.getenv("MONGO_DB", "threat_intel")
 MONGO_COLLECTION = os.getenv("MONGO_COLLECTION", "summaries")
 
 # Secrets
-TRIGGER_SECRET = os.getenv("TRIGGER_SECRET", "socgen-feed-key")
+TRIGGER_SECRET = os.getenv("TRIGGER_SECRET")
+if not TRIGGER_SECRET:
+    raise ValueError("TRIGGER_SECRET environment variable is not set. Please set it in .env file.")
 
 # Scheduler
 SCHEDULER_INTERVAL_MINUTES = int(os.getenv("SCHEDULER_INTERVAL", "10"))
