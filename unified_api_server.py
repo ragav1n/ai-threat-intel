@@ -106,8 +106,7 @@ class ErrorResponse(BaseModel):
 
 # ----------- Config -----------
 
-TRIGGER_SECRET = "socgen-feed-key"
-DATA_DIR = Path(__file__).parent / "threat_intel_aggregator" / "data"
+from config import TRIGGER_SECRET, DATA_DIR
 
 
 # ----------- Exception Handler -----------
