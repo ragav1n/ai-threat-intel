@@ -436,6 +436,135 @@ def get_ioc_stats(request: Request):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@app.get("/api/iocs/frequency", tags=["IOCs"])
+@limiter.limit("30/minute")
+def get_ioc_frequency(
+    request: Request,
+    period: str = Query(default="7d", description="Time period: 1d, 7d, 30d, 90d"),
+    group_by: str = Query(default="severity", description="Group by: severity or type"),
+):
+    """
+    Get IOC frequency data aggregated by time buckets and grouped by severity or type.
+    Used for the Attack Frequency area chart on the dashboard.
+    """
+    from datetime import datetime, timedelta
+    from collections import defaultdict
+
+    try:
+        iocs = []
+
+        # Load from file
+        ioc_file = DATA_DIR / "normalized_iocs.json"
+        if ioc_file.exists():
+            with open(ioc_file) as f:
+                iocs = json.load(f)
+
+        # Also include MongoDB IOCs
+        try:
+            from threat_model.threat_summarizer.mongo_client import get_ioc_collection
+            collection = get_ioc_collection()
+            if collection is not None:
+                mongo_iocs = list(collection.find({}, {"_id": 0}))
+                existing_values = {i.get("ioc") for i in iocs}
+                for m_ioc in mongo_iocs:
+                    if m_ioc.get("ioc") not in existing_values:
+                        iocs.append(m_ioc)
+        except Exception:
+            pass
+
+        # Determine time range and bucket format
+        now = datetime.utcnow()
+        period_config = {
+            "1d":  {"delta": timedelta(days=1),  "fmt": "%H:00",       "label_fmt": "%H:00",       "step": timedelta(hours=1)},
+            "7d":  {"delta": timedelta(days=7),  "fmt": "%Y-%m-%d",    "label_fmt": "%a",          "step": timedelta(days=1)},
+            "30d": {"delta": timedelta(days=30), "fmt": "%Y-%m-%d",    "label_fmt": "%b %d",       "step": timedelta(days=1)},
+            "90d": {"delta": timedelta(days=90), "fmt": "%Y-W%W",      "label_fmt": "Week %W",     "step": timedelta(weeks=1)},
+        }
+
+        if period not in period_config:
+            raise HTTPException(status_code=400, detail=f"Invalid period. Must be one of: {', '.join(period_config.keys())}")
+
+        cfg = period_config[period]
+        start_time = now - cfg["delta"]
+
+        # Generate all time buckets
+        buckets = []
+        current = start_time
+        while current <= now:
+            bucket_key = current.strftime(cfg["fmt"])
+            bucket_label = current.strftime(cfg["label_fmt"])
+            buckets.append({"key": bucket_key, "label": bucket_label})
+            current += cfg["step"]
+
+        # Deduplicate buckets while preserving order
+        seen = set()
+        unique_buckets = []
+        for b in buckets:
+            if b["key"] not in seen:
+                seen.add(b["key"])
+                unique_buckets.append(b)
+        buckets = unique_buckets
+
+        # Group IOCs into buckets
+        group_field = "severity" if group_by == "severity" else "type"
+        bucket_data = defaultdict(lambda: defaultdict(int))
+        all_keys = set()
+
+        for ioc in iocs:
+            ts_str = ioc.get("timestamp", "")
+            if not ts_str:
+                continue
+
+            try:
+                # Parse ISO timestamp
+                ts = datetime.fromisoformat(ts_str.replace("Z", "+00:00")).replace(tzinfo=None)
+            except (ValueError, TypeError):
+                continue
+
+            if ts < start_time:
+                continue
+
+            bucket_key = ts.strftime(cfg["fmt"])
+            group_value = ioc.get(group_field, "unknown")
+            # Normalize the group value
+            if group_by == "severity":
+                group_value = group_value.capitalize() if group_value else "Unknown"
+            else:
+                group_value = group_value.lower() if group_value else "unknown"
+
+            bucket_data[bucket_key][group_value] += 1
+            all_keys.add(group_value)
+
+        # Determine keys order
+        if group_by == "severity":
+            ordered_keys = [k for k in ["Critical", "High", "Medium", "Low", "Unknown"] if k in all_keys]
+        else:
+            # Sort by total count descending, take top 8
+            key_totals = defaultdict(int)
+            for bd in bucket_data.values():
+                for k, v in bd.items():
+                    key_totals[k] += v
+            ordered_keys = sorted(key_totals.keys(), key=lambda x: key_totals[x], reverse=True)[:8]
+
+        # Build response data
+        data = []
+        for bucket in buckets:
+            point = {"period": bucket["label"]}
+            for key in ordered_keys:
+                point[key] = bucket_data[bucket["key"]].get(key, 0)
+            data.append(point)
+
+        return {
+            "group_by": group_by,
+            "keys": ordered_keys,
+            "data": data
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 # ----------- Summary Routes -----------
 
 @app.get("/api/summaries", tags=["Summaries"])

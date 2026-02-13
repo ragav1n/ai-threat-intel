@@ -16,6 +16,7 @@ import { EtherealShadow } from '@/components/ui/ethereal-shadow'
 import SizedPieChart from '@/components/ui/sized-pie-chart'
 import BarChartMedium from '@/components/ui/bar-chart-medium'
 import HorizontalBarMedium from '@/components/ui/horizontal-bar-medium'
+import AttackFrequencyChart from '@/components/attack-frequency-chart'
 
 const SEVERITY_COLORS: Record<string, string> = {
   Critical: '#ef4444',
@@ -127,6 +128,11 @@ function OverviewTab() {
           colorScheme={Object.values(SEVERITY_COLORS)}
           className="h-full"
         />
+      </motion.div>
+
+      {/* Attack Frequency - Area Chart */}
+      <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5 } } }} className="md:col-span-2">
+        <AttackFrequencyChart />
       </motion.div>
 
       {/* Top Feeds - Horizontal Bar Chart */}
