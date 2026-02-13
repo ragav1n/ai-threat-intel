@@ -35,6 +35,8 @@ IOC_SEVERITY_MAP: Dict[IOCType, Severity] = {
     IOCType.MD5: Severity.HIGH,
     IOCType.SHA1: Severity.HIGH,
     IOCType.SHA256: Severity.HIGH,
+    IOCType.EMAIL: Severity.LOW,
+    IOCType.CVE: Severity.CRITICAL,
 }
 
 
