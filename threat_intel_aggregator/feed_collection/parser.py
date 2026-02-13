@@ -5,6 +5,7 @@ Enhanced with confidence scoring.
 import json
 import csv
 import os
+import logging
 from datetime import datetime
 from typing import List, Dict, Any
 
@@ -14,6 +15,8 @@ from tenacity import retry, stop_after_attempt, wait_fixed
 
 from .ioc_extractor import extract_iocs_with_confidence, IOCMatch
 from .config import RAW_FEED_OUTPUT, NORMALIZED_IOC_JSON, NORMALIZED_IOC_CSV
+from .llm_ioc_verifier import get_llm_verifier
+from .confidence_fusion import fuse_confidence, fuse_with_penalty
 
 # Import enums
 try:
@@ -21,6 +24,7 @@ try:
 except ImportError:
     from ..enums import IOCType, Severity
 
+logger = logging.getLogger(__name__)
 
 # Severity mapping based on IOC type
 IOC_SEVERITY_MAP: Dict[IOCType, Severity] = {
@@ -98,10 +102,14 @@ def normalize_and_store_iocs(
     text: str, 
     source_url: str, 
     timestamp: str,
-    min_confidence: float = 0.3
+    min_confidence: float = 0.3,
+    enable_llm_verification: bool = True,
+    max_llm_verify: int = 50,
 ) -> List[Dict[str, Any]]:
     """
-    Extract and normalize IOCs from text content with confidence scoring.
+    Extract and normalize IOCs from text content with hybrid confidence scoring.
+    
+    Pipeline: Regex extraction → LLM verification → Confidence fusion.
     
     Args:
         feed_name: Name of the source feed.
@@ -109,23 +117,64 @@ def normalize_and_store_iocs(
         source_url: URL of the source.
         timestamp: ISO timestamp of extraction.
         min_confidence: Minimum confidence threshold.
+        enable_llm_verification: Whether to run LLM verification pass.
+        max_llm_verify: Max IOCs to verify via LLM per batch.
         
     Returns:
-        List of normalized IOC entries with confidence scores.
+        List of normalized IOC entries with fused confidence scores.
     """
+    # Step 1: Regex extraction (with deobfuscation built-in)
     ioc_matches = extract_iocs_with_confidence(text, min_confidence=min_confidence)
+    
+    if not ioc_matches:
+        return []
+    
+    # Step 2: LLM verification pass (optional, with graceful fallback)
+    llm_results = {}
+    if enable_llm_verification:
+        try:
+            verifier = get_llm_verifier()
+            if verifier.is_available():
+                verified = verifier.batch_verify(ioc_matches, max_iocs=max_llm_verify)
+                llm_results = {v["ioc"]: v for v in verified}
+                logger.info(f"🤖 LLM verified {len(llm_results)} IOCs for [{feed_name}]")
+            else:
+                logger.warning(f"⚠️ LLM unavailable, using regex-only confidence for [{feed_name}]")
+        except Exception as e:
+            logger.error(f"❌ LLM verification failed for [{feed_name}]: {e}")
+    
+    # Step 3: Confidence fusion and normalization
     normalized_entries = []
-
     for match in ioc_matches:
-        severity = get_severity_for_ioc(match.ioc_type, match.confidence)
+        llm_data = llm_results.get(match.value, {})
+        llm_confidence = llm_data.get("llm_confidence")
+        llm_is_valid = llm_data.get("is_valid_ioc", True)
+        llm_verified = llm_data.get("llm_verified", False)
+        llm_reasoning = llm_data.get("llm_reasoning", "")
+        
+        # Fuse confidence scores with penalty for invalid IOCs
+        fused = fuse_with_penalty(
+            regex_confidence=match.confidence,
+            llm_confidence=llm_confidence,
+            llm_is_valid=llm_is_valid,
+        )
+        
+        # Use fused confidence for severity calculation
+        severity = get_severity_for_ioc(match.ioc_type, fused)
+        
         entry = {
             "feed": feed_name,
             "ioc": match.value,
             "type": str(match.ioc_type),
             "severity": str(severity),
-            "confidence": match.confidence,
+            "confidence": round(match.confidence, 4),
+            "fused_confidence": round(fused, 4),
+            "llm_confidence": round(llm_confidence, 4) if llm_confidence is not None else None,
+            "llm_verified": llm_verified,
+            "llm_reasoning": llm_reasoning,
+            "deobfuscated": getattr(match, 'deobfuscated', False),
             "timestamp": timestamp,
-            "source_url": source_url
+            "source_url": source_url,
         }
         normalized_entries.append(entry)
 
@@ -171,7 +220,7 @@ def normalize_parsed_results(min_confidence: float = 0.3) -> List[Dict[str, Any]
         if found_iocs:
             print(f"✅ [{feed_name}] Found {len(found_iocs)} IOCs")
             for ioc in found_iocs[:5]:  # Only print first 5
-                conf_str = f"{ioc['confidence']:.0%}"
+                conf_str = f"{ioc['fused_confidence']:.0%}"
                 print(f"   • {ioc['type']} ({ioc['severity']}, {conf_str}): {ioc['ioc']}")
             if len(found_iocs) > 5:
                 print(f"   ... and {len(found_iocs) - 5} more")
@@ -189,7 +238,7 @@ def normalize_parsed_results(min_confidence: float = 0.3) -> List[Dict[str, Any]
     # Save to CSV (includes confidence field)
     try:
         with open(NORMALIZED_IOC_CSV, "w", newline="") as csvfile:
-            fieldnames = ["feed", "ioc", "type", "severity", "confidence", "timestamp", "source_url"]
+            fieldnames = ["feed", "ioc", "type", "severity", "confidence", "fused_confidence", "llm_confidence", "llm_verified", "llm_reasoning", "deobfuscated", "timestamp", "source_url"]
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             writer.writeheader()
             for row in normalized:

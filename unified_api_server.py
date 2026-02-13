@@ -88,14 +88,66 @@ class SummaryResponse(BaseModel):
 
 
 class IOCResponse(BaseModel):
-    """Response model for IOC with confidence scoring."""
+    """Response model for IOC with hybrid confidence scoring."""
     feed: str
     ioc: str
     type: str
     severity: str
-    confidence: float = Field(ge=0.0, le=1.0, description="Confidence score 0.0-1.0")
+    confidence: float = Field(ge=0.0, le=1.0, description="Regex confidence score 0.0-1.0")
+    fused_confidence: Optional[float] = Field(default=None, ge=0.0, le=1.0, description="Fused confidence (0.4×regex + 0.6×LLM)")
+    llm_confidence: Optional[float] = Field(default=None, ge=0.0, le=1.0, description="LLM verification confidence")
+    llm_verified: bool = Field(default=False, description="Whether LLM verification was performed")
+    llm_reasoning: Optional[str] = Field(default=None, description="LLM reasoning for verification")
+    deobfuscated: bool = Field(default=False, description="Whether IOC was deobfuscated")
     timestamp: str
     source_url: Optional[str] = None
+
+
+# Allowed models for verification (prevents abuse of Ollama resources)
+ALLOWED_VERIFIER_MODELS = {
+    "qwen2.5:7b", "qwen2.5:3b", "llama3.2:3b", "llama3.1:8b",
+    "mistral:7b", "gemma2:2b", "gemma2:9b",
+}
+
+# Allowed IOC types
+ALLOWED_IOC_TYPES_API = {
+    "auto", "ip", "ipv6", "domain", "url",
+    "md5", "sha1", "sha256", "cve", "email",
+}
+
+
+class IOCVerifyRequest(BaseModel):
+    """Request model for on-demand IOC verification."""
+    ioc: str = Field(..., min_length=1, max_length=500)
+    ioc_type: str = Field(default="auto", description="IOC type: ip, domain, url, md5, sha256, or auto")
+    context: str = Field(default="", max_length=1000, description="Optional context text")
+    model: str = Field(default="qwen2.5:7b", description="Ollama model for verification")
+    
+    @field_validator("ioc")
+    @classmethod
+    def validate_ioc_input(cls, v: str) -> str:
+        """Sanitize IOC input."""
+        v = v.strip()
+        if not v:
+            raise ValueError("IOC cannot be empty")
+        # Block injection attempts
+        if any(char in v for char in ["<script>", "{{", "}}", "${", "`"]):
+            raise ValueError("Invalid characters in IOC")
+        return v
+    
+    @field_validator("ioc_type")
+    @classmethod
+    def validate_ioc_type(cls, v: str) -> str:
+        if v.lower() not in ALLOWED_IOC_TYPES_API:
+            raise ValueError(f"Invalid IOC type. Allowed: {', '.join(sorted(ALLOWED_IOC_TYPES_API))}")
+        return v.lower()
+    
+    @field_validator("model")
+    @classmethod
+    def validate_model(cls, v: str) -> str:
+        if v not in ALLOWED_VERIFIER_MODELS:
+            raise ValueError(f"Model not allowed. Allowed: {', '.join(sorted(ALLOWED_VERIFIER_MODELS))}")
+        return v
 
 
 class ErrorResponse(BaseModel):
@@ -561,6 +613,66 @@ def get_ioc_frequency(
         }
     except HTTPException:
         raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/iocs/verify", tags=["IOCs"])
+@limiter.limit("5/minute")
+def verify_ioc_endpoint(request: Request, body: IOCVerifyRequest):
+    """
+    On-demand LLM verification of a single IOC.
+    
+    Returns regex confidence, LLM confidence, and fused confidence score.
+    """
+    try:
+        from threat_intel_aggregator.feed_collection.ioc_extractor import extract_iocs_with_confidence
+        from threat_intel_aggregator.feed_collection.llm_ioc_verifier import get_llm_verifier
+        from threat_intel_aggregator.feed_collection.confidence_fusion import fuse_with_penalty
+        from threat_intel_aggregator.feed_collection.ioc_deobfuscator import deobfuscate_text
+        
+        # Deobfuscate first
+        deobfuscated_text, was_deobfuscated = deobfuscate_text(body.ioc)
+        
+        # Regex extraction
+        ioc_matches = extract_iocs_with_confidence(deobfuscated_text)
+        
+        if not ioc_matches:
+            # No IOC found by regex — still try LLM verification
+            regex_confidence = 0.5
+            ioc_type = body.ioc_type if body.ioc_type != "auto" else "unknown"
+        else:
+            best_match = ioc_matches[0]
+            regex_confidence = best_match.confidence
+            ioc_type = str(best_match.ioc_type) if body.ioc_type == "auto" else body.ioc_type
+        
+        # LLM verification
+        verifier = get_llm_verifier(model=body.model)
+        verification = verifier.verify_ioc(
+            ioc_value=body.ioc,
+            ioc_type=ioc_type,
+            context_snippet=body.context,
+        )
+        
+        # Confidence fusion
+        fused = fuse_with_penalty(
+            regex_confidence=regex_confidence,
+            llm_confidence=verification.llm_confidence,
+            llm_is_valid=verification.is_valid_ioc,
+        )
+        
+        return {
+            "ioc": body.ioc,
+            "ioc_type": ioc_type,
+            "deobfuscated": was_deobfuscated,
+            "regex_confidence": round(regex_confidence, 4),
+            "llm_confidence": round(verification.llm_confidence, 4),
+            "fused_confidence": round(fused, 4),
+            "is_valid_ioc": verification.is_valid_ioc,
+            "llm_reasoning": verification.reasoning,
+            "llm_verified": verification.error is None,
+            "model_used": verification.model_used,
+        }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

@@ -90,6 +90,13 @@ def write_iocs_to_mongo(ioc_json_path: Path = IOC_JSON_PATH) -> Dict[str, int]:
         for ioc in raw_iocs:
             ioc["_id"] = hash_ioc(ioc)
             ioc["ingested_at"] = datetime.utcnow().isoformat()
+            
+            # Ensure Phase 1 fields have defaults if missing
+            ioc.setdefault("fused_confidence", ioc.get("confidence", 0.5))
+            ioc.setdefault("llm_verified", False)
+            ioc.setdefault("llm_confidence", None)
+            ioc.setdefault("llm_reasoning", "")
+            ioc.setdefault("deobfuscated", False)
 
             try:
                 collection.insert_one(ioc)

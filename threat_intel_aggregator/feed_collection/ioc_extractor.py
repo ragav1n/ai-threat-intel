@@ -8,10 +8,14 @@ Enhancements:
 """
 import re
 import ipaddress
+import logging
 from typing import List, Tuple, Dict, Any, Optional
 from dataclasses import dataclass
 
 from threat_intel_aggregator.enums import IOCType
+from threat_intel_aggregator.feed_collection.ioc_deobfuscator import deobfuscate_text
+
+logger = logging.getLogger(__name__)
 
 
 # Regex patterns for each IOC type
@@ -66,6 +70,7 @@ class IOCMatch:
     ioc_type: IOCType
     confidence: float
     context_snippet: str = ""
+    deobfuscated: bool = False
     
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary format."""
@@ -73,6 +78,7 @@ class IOCMatch:
             "ioc": self.value,
             "type": str(self.ioc_type),
             "confidence": round(self.confidence, 2),
+            "deobfuscated": self.deobfuscated,
         }
 
 
@@ -283,6 +289,11 @@ def extract_iocs_with_confidence(
     matches: List[IOCMatch] = []
     seen: set[str] = set()  # Deduplicate within same extraction
     
+    # Phase 1: Deobfuscate text before regex matching
+    text, was_deobfuscated = deobfuscate_text(text)
+    if was_deobfuscated:
+        logger.info("🔧 Text was deobfuscated before IOC extraction")
+    
     for ioc_type, pattern in IOC_PATTERNS.items():
         for match in re.finditer(pattern, text):
             item = match.group()
@@ -321,7 +332,8 @@ def extract_iocs_with_confidence(
                 value=item,
                 ioc_type=ioc_type,
                 confidence=confidence,
-                context_snippet=context[:50] if context else ""
+                context_snippet=context[:50] if context else "",
+                deobfuscated=was_deobfuscated,
             ))
     
     # Sort by confidence descending
