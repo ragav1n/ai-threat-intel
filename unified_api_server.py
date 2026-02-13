@@ -18,6 +18,8 @@ from typing import List, Optional
 from pathlib import Path
 import json
 import os
+import re
+import hmac
 
 from threat_model.threat_summarizer.summarizer import summarize_threat
 from threat_intel_aggregator.main import scheduled_job as collect_feeds
@@ -45,6 +47,29 @@ app.add_middleware(
 
 # ----------- Request/Response Models -----------
 
+# Allowed severity values (prevents NoSQL regex injection)
+ALLOWED_SEVERITIES = {"all", "critical", "high", "medium", "low", "unknown"}
+
+# Allowed models for summarization
+ALLOWED_SUMMARIZER_MODELS = {
+    "qwen2.5:7b", "qwen2.5:3b", "llama3.2:3b", "llama3.1:8b",
+    "mistral:7b", "gemma2:2b", "gemma2:9b",
+}
+
+
+def sanitize_query_string(value: str, max_length: int = 100) -> str:
+    """Sanitize a user-provided string used in database queries.
+    
+    Strips regex metacharacters to prevent NoSQL regex injection.
+    """
+    if not value:
+        return value
+    value = value[:max_length].strip()
+    # Remove regex metacharacters
+    value = re.sub(r'[\\.*+?^${}()|\[\]]', '', value)
+    return value
+
+
 class IOCRequest(BaseModel):
     """Request model for IOC summarization."""
     ioc: str = Field(..., min_length=1, max_length=500, description="The IOC to analyze")
@@ -53,25 +78,40 @@ class IOCRequest(BaseModel):
     @field_validator("ioc")
     @classmethod
     def validate_ioc(cls, v: str) -> str:
-        """Basic IOC format validation."""
+        """IOC format validation with injection protection."""
         v = v.strip()
         if not v:
             raise ValueError("IOC cannot be empty")
-        # Block obvious injection attempts
-        if any(char in v for char in ["<script>", "{{", "}}", "${", "`"]):
+        # Block XSS, template injection, and shell metacharacters
+        dangerous_patterns = ["<script>", "{{", "}}", "${", "`", ";", "&&", "||", "$(", "<!--"]
+        if any(p in v for p in dangerous_patterns):
             raise ValueError("Invalid characters in IOC")
+        return v
+    
+    @field_validator("model")
+    @classmethod
+    def validate_model(cls, v: str) -> str:
+        if v not in ALLOWED_SUMMARIZER_MODELS:
+            raise ValueError(f"Model not allowed. Allowed: {', '.join(sorted(ALLOWED_SUMMARIZER_MODELS))}")
         return v
 
 
 class TriggerRequest(BaseModel):
     """Request model for feed trigger."""
-    secret: str = Field(..., min_length=1)
+    secret: str = Field(..., min_length=1, max_length=256)
 
 
 class EmailRequest(BaseModel):
     """Request model for sending email report."""
     severity_filter: str = Field(default="High", description="Filter by severity: All, Critical, High, Medium, Low")
     limit: int = Field(default=50, ge=1, le=200)
+    
+    @field_validator("severity_filter")
+    @classmethod
+    def validate_severity(cls, v: str) -> str:
+        if v.lower() not in ALLOWED_SEVERITIES:
+            raise ValueError(f"Invalid severity. Allowed: {', '.join(sorted(ALLOWED_SEVERITIES))}")
+        return v
 
 
 class SummaryResponse(BaseModel):
@@ -366,7 +406,8 @@ def trigger_feed_collection(request: Request, body: TriggerRequest):
     
     Requires secret key authentication.
     """
-    if body.secret != TRIGGER_SECRET:
+    # Timing-safe comparison to prevent timing attacks
+    if not hmac.compare_digest(body.secret, TRIGGER_SECRET):
         raise HTTPException(status_code=401, detail="Unauthorized trigger key")
 
     try:
@@ -412,11 +453,13 @@ def get_iocs(
         except Exception as e:
             print(f"[⚠️ MongoDB IOC fetch failed] {e}")
         
-        # Apply filters
+        # Apply filters (sanitized — no MongoDB query, just Python string match)
         if ioc_type:
-            iocs = [i for i in iocs if ioc_type.lower() in i.get("type", "").lower()]
+            safe_type = sanitize_query_string(ioc_type)
+            iocs = [i for i in iocs if safe_type.lower() in i.get("type", "").lower()]
         if severity:
-            iocs = [i for i in iocs if severity.lower() in i.get("severity", "").lower()]
+            safe_sev = sanitize_query_string(severity)
+            iocs = [i for i in iocs if safe_sev.lower() in i.get("severity", "").lower()]
         
         # Sort by timestamp and limit
         iocs = sorted(iocs, key=lambda x: x.get("timestamp", ""), reverse=True)[:limit]
@@ -698,7 +741,8 @@ def get_summaries(
         
         query = {}
         if severity:
-            query["severity"] = {"$regex": severity, "$options": "i"}
+            safe_sev = sanitize_query_string(severity)
+            query["severity"] = {"$regex": f"^{safe_sev}$", "$options": "i"}
         
         summaries = list(
             collection.find(query, {"_id": 0})
@@ -814,7 +858,8 @@ def send_email_report(request: Request, body: EmailRequest):
         # Build query
         query = {}
         if body.severity_filter and body.severity_filter != "All":
-            query["severity"] = {"$regex": body.severity_filter, "$options": "i"}
+            safe_sev = sanitize_query_string(body.severity_filter)
+            query["severity"] = {"$regex": f"^{safe_sev}$", "$options": "i"}
         
         summaries = list(
             collection.find(query, {"_id": 0})
