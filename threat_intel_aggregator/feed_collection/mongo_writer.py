@@ -11,19 +11,26 @@ from pymongo import MongoClient
 from pymongo.errors import DuplicateKeyError
 
 # Use centralized config
+from pathlib import Path
 try:
-    from config import get_config
+    import sys
+    # Add root to path if needed for config import
+    root_path = Path(__file__).resolve().parent.parent.parent
+    if str(root_path) not in sys.path:
+        sys.path.append(str(root_path))
+    from config import get_config, DATA_DIR, BASE_DIR as ROOT_BASE_DIR
 except ImportError:
+    ROOT_BASE_DIR = Path(__file__).resolve().parent.parent
+    DATA_DIR = ROOT_BASE_DIR / "data"
     from dotenv import load_dotenv
     import os
     load_dotenv()
     
-    # Fallback config
     class FallbackConfig:
         class Mongo:
-            uri = os.getenv("MONGO_URI", os.getenv("MONGODB_URI", "mongodb://localhost:27017/"))
-            database = os.getenv("MONGO_DB", os.getenv("MONGODB_DB", "threat_intel"))
-            ioc_collection = os.getenv("MONGO_IOC_COLLECTION", os.getenv("MONGODB_COLLECTION", "iocs"))
+            uri = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
+            database = os.getenv("MONGO_DB", "threat_intel")
+            ioc_collection = os.getenv("MONGO_IOC_COLLECTION", "iocs")
         mongo = Mongo()
     
     def get_config():
@@ -31,12 +38,8 @@ except ImportError:
 
 
 # Path setup
-BASE_DIR = Path(__file__).resolve().parent.parent
-DATA_DIR = BASE_DIR / "data"
-DATA_DIR.mkdir(exist_ok=True)
-
 IOC_JSON_PATH = DATA_DIR / "normalized_iocs.json"
-SUMMARIZER_INPUT_PATH = BASE_DIR.parent / "threat_model" / "input.txt"
+SUMMARIZER_INPUT_PATH = ROOT_BASE_DIR.parent / "threat_model" / "input.txt"
 
 
 # MongoDB connection singleton

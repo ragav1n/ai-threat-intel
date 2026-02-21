@@ -10,7 +10,11 @@ load_dotenv()
 
 # Base Paths (Relative to project root)
 BASE_DIR = Path(__file__).parent
-DATA_DIR = BASE_DIR / "threat_intel_aggregator" / "data"
+DATA_DIR = Path(os.getenv("DATA_DIR", BASE_DIR / "data"))
+
+# If in Docker, ensure we prefer /app/data if it exists (volume mount point)
+if os.path.exists("/app/data") and not os.getenv("DATA_DIR"):
+    DATA_DIR = Path("/app/data")
 
 # Ensure data directory exists
 DATA_DIR.mkdir(parents=True, exist_ok=True)

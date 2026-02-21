@@ -7,12 +7,14 @@ feeds:
     category: malware analysis
     source_type: blog
     priority: high
+    reliability: 0.9
 
   - name: The Hacker News
     url: https://feeds.feedburner.com/TheHackersNews
     category: general news
     source_type: blog
     priority: medium
+    reliability: 0.7
 
   - name: Dark Reading
     url: https://www.darkreading.com/rss.xml
@@ -103,6 +105,7 @@ feeds:
     category: vulnerability research
     source_type: blog
     priority: critical
+    reliability: 1.0
 
   - name: Recorded Future
     url: https://www.recordedfuture.com/feed
@@ -115,6 +118,7 @@ feeds:
     category: threat research
     source_type: blog
     priority: critical
+    reliability: 1.0
 
   # ============================================
   # GOVERNMENT & OFFICIAL SOURCES (4 sources)
@@ -124,6 +128,7 @@ feeds:
     category: official alerts
     source_type: government
     priority: critical
+    reliability: 1.0
 
   - name: CISA Known Exploited
     url: https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json
@@ -175,6 +180,7 @@ feeds:
     category: iocs
     source_type: threat_feed
     priority: critical
+    reliability: 0.95
 
   # ============================================
   # COMMUNITY & OPEN SOURCE INTEL (7 sources)

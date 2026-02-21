@@ -38,6 +38,7 @@ DEFAULT_FUSION_CONFIG = FusionConfig(weight_regex=0.4, weight_llm=0.6)
 def fuse_confidence(
     regex_confidence: float,
     llm_confidence: Optional[float] = None,
+    source_reliability: float = 1.0,
     config: Optional[FusionConfig] = None,
 ) -> float:
     """
@@ -62,6 +63,9 @@ def fuse_confidence(
     # Weighted fusion
     fused = (config.weight_regex * regex_confidence) + (config.weight_llm * llm_confidence)
     
+    # Scale by source reliability (Admiralty Scale)
+    fused *= source_reliability
+    
     # Clamp to [0.0, 1.0]
     fused = max(0.0, min(1.0, fused))
     
@@ -77,6 +81,7 @@ def fuse_with_penalty(
     regex_confidence: float,
     llm_confidence: Optional[float] = None,
     llm_is_valid: Optional[bool] = None,
+    source_reliability: float = 1.0,
     config: Optional[FusionConfig] = None,
 ) -> float:
     """
@@ -99,4 +104,4 @@ def fuse_with_penalty(
         # Invert LLM confidence as a penalty
         llm_confidence = 1.0 - llm_confidence
     
-    return fuse_confidence(regex_confidence, llm_confidence, config)
+    return fuse_confidence(regex_confidence, llm_confidence, source_reliability, config)
