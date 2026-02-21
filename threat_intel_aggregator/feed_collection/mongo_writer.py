@@ -1,6 +1,7 @@
 """
 MongoDB writer for IOC storage with deduplication.
 """
+import os
 import json
 import hashlib
 from datetime import datetime
@@ -20,8 +21,13 @@ try:
         sys.path.append(str(root_path))
     from config import get_config, DATA_DIR, BASE_DIR as ROOT_BASE_DIR
 except ImportError:
-    ROOT_BASE_DIR = Path(__file__).resolve().parent.parent
-    DATA_DIR = ROOT_BASE_DIR / "data"
+    ROOT_BASE_DIR = Path(__file__).resolve().parent.parent.parent
+    # Check for volume mount first, same as root config.py
+    if os.path.exists("/app/data"):
+        DATA_DIR = Path("/app/data")
+    else:
+        DATA_DIR = ROOT_BASE_DIR / "data"
+        
     from dotenv import load_dotenv
     import os
     load_dotenv()
@@ -92,7 +98,7 @@ def write_iocs_to_mongo(ioc_json_path: Path = IOC_JSON_PATH) -> Dict[str, int]:
 
         for ioc in raw_iocs:
             ioc["_id"] = hash_ioc(ioc)
-            ioc["ingested_at"] = datetime.utcnow().isoformat()
+            ioc["ingested_at"] = datetime.utcnow().isoformat() + "Z"
             
             # Ensure Phase 1 fields have defaults if missing
             ioc.setdefault("fused_confidence", ioc.get("confidence", 0.5))
@@ -101,16 +107,29 @@ def write_iocs_to_mongo(ioc_json_path: Path = IOC_JSON_PATH) -> Dict[str, int]:
             ioc.setdefault("llm_reasoning", "")
             ioc.setdefault("deobfuscated", False)
 
-            try:
-                collection.insert_one(ioc)
-                stats["inserted"] += 1
-            except DuplicateKeyError:
-                stats["duplicates"] += 1
-            except Exception as e:
-                print(f"⚠️ Failed to insert IOC: {e}")
-                stats["errors"] += 1
+        from pymongo import UpdateOne
+        
+        operations = []
+        for ioc in raw_iocs:
+            ioc["_id"] = hash_ioc(ioc)
+            ioc["ingested_at"] = datetime.utcnow().isoformat() + "Z"
+            
+            # Ensure Phase 1 fields have defaults if missing
+            ioc.setdefault("fused_confidence", ioc.get("confidence", 0.5))
+            ioc.setdefault("llm_verified", False)
+            ioc.setdefault("llm_confidence", None)
+            ioc.setdefault("llm_reasoning", "")
+            ioc.setdefault("deobfuscated", False)
 
-        print(f"✅ MongoDB: {stats['inserted']} new, {stats['duplicates']} duplicates, {stats['errors']} errors")
+            operations.append(
+                UpdateOne({"_id": ioc["_id"]}, {"$set": ioc}, upsert=True)
+            )
+
+        if operations:
+            result = collection.bulk_write(operations, ordered=False)
+            stats["inserted"] = result.upserted_count + result.modified_count
+        
+        print(f"✅ MongoDB Bulk Write: {stats['inserted']} records processed")
         return stats
 
     except FileNotFoundError:

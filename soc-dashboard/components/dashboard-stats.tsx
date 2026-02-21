@@ -90,7 +90,7 @@ export default function DashboardStats() {
     },
     {
       label: 'High Severity',
-      value: iocStats?.by_severity?.High || 0,
+      value: iocStats?.by_severity?.high || iocStats?.by_severity?.High || 0,
       icon: AlertTriangle,
       color: 'text-red-500',
     },

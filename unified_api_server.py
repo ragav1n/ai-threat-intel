@@ -217,6 +217,15 @@ def get_kg():
     return _kg_instance
 
 
+@app.on_event("shutdown")
+def shutdown_event():
+    """Gracefully close resources on shutdown."""
+    global _kg_instance
+    if _kg_instance:
+        print("🛑 Closing Knowledge Graph connection...")
+        _kg_instance.close()
+
+
 # ----------- Exception Handler -----------
 
 @app.exception_handler(Exception)
@@ -447,21 +456,31 @@ def get_iocs(
     Get extracted IOCs. Prioritizes MongoDB for performance.
     """
     try:
-        iocs = []
-        
+        # Build query
+        query = {}
+        if ioc_type:
+            query["type"] = ioc_type
+        if severity:
+            query["severity"] = severity
+
         # 1. Try MongoDB First (Indexed and fast)
         try:
             from threat_model.threat_summarizer.mongo_client import get_ioc_collection
             collection = get_ioc_collection()
             if collection is not None:
-                query = {}
-                if ioc_type:
-                    query["type"] = {"$regex": f"^{sanitize_query_string(ioc_type)}", "$options": "i"}
-                if severity:
-                    query["severity"] = {"$regex": f"^{sanitize_query_string(severity)}", "$options": "i"}
+                # Default to ingested_at for freshness, but allow fallback
+                sort_field = request.query_params.get("sortBy", "ingested_at")
+                # Validate sort field
+                if sort_field not in ["timestamp", "ingested_at", "confidence", "severity"]:
+                    sort_field = "ingested_at"
                 
-                iocs = list(collection.find(query, {"_id": 0}).sort("timestamp", -1).limit(limit))
+                iocs = list(collection.find(query, {"_id": 0}).sort(sort_field, -1).limit(limit))
                 if iocs:
+                    # Fix: Ensure confidence is always populated for the frontend
+                    for ioc in iocs:
+                        if "confidence" not in ioc or ioc["confidence"] is None:
+                            ioc["confidence"] = ioc.get("fused_confidence", 0.5)
+                            
                     return {"count": len(iocs), "total_available": collection.count_documents(query), "iocs": iocs}
         except Exception as e:
             print(f"[⚠️ MongoDB fetch failed] {e}")
@@ -505,29 +524,30 @@ def get_ioc_stats(request: Request):
             from threat_model.threat_summarizer.mongo_client import get_ioc_collection
             collection = get_ioc_collection()
             if collection is not None:
-                total = collection.count_documents({})
-                
-                # Group by type
-                by_type_list = list(collection.aggregate([
-                    {"$group": {"_id": "$type", "count": {"$sum": 1}}},
-                    {"$sort": {"count": -1}}
-                ]))
-                by_type = {item["_id"] or "unknown": item["count"] for item in by_type_list}
-                
-                # Group by severity
-                by_severity_list = list(collection.aggregate([
-                    {"$group": {"_id": "$severity", "count": {"$sum": 1}}},
-                    {"$sort": {"count": -1}}
-                ]))
-                by_severity = {item["_id"] or "unknown": item["count"] for item in by_severity_list}
-                
-                # Group by feed
-                by_feed_list = list(collection.aggregate([
-                    {"$group": {"_id": "$feed", "count": {"$sum": 1}}},
-                    {"$sort": {"count": -1}},
-                    {"$limit": 20}
-                ]))
-                by_feed = {item["_id"] or "unknown": item["count"] for item in by_feed_list}
+                # Multi-facet aggregation for better performance
+                pipeline = [
+                    {"$facet": {
+                        "total": [{"$count": "count"}],
+                        "by_type": [
+                            {"$group": {"_id": "$type", "count": {"$sum": 1}}},
+                            {"$sort": {"count": -1}}
+                        ],
+                        "by_severity": [
+                            {"$group": {"_id": "$severity", "count": {"$sum": 1}}},
+                            {"$sort": {"count": -1}}
+                        ],
+                        "top_feeds": [
+                            {"$group": {"_id": "$feed", "count": {"$sum": 1}}},
+                            {"$sort": {"count": -1}},
+                            {"$limit": 20}
+                        ]
+                    }}
+                ]
+                facet_result = list(collection.aggregate(pipeline))[0]
+                total = facet_result["total"][0]["count"] if facet_result["total"] else 0
+                by_type = {item["_id"] or "unknown": item["count"] for item in facet_result["by_type"]}
+                by_severity = {item["_id"] or "unknown": item["count"] for item in facet_result["by_severity"]}
+                by_feed = {item["_id"] or "unknown": item["count"] for item in facet_result["top_feeds"]}
                 
                 return {
                     "total": total,
@@ -580,118 +600,101 @@ def get_ioc_frequency(
     Get IOC frequency data aggregated by time buckets and grouped by severity or type.
     Used for the Attack Frequency area chart on the dashboard.
     """
-    from datetime import datetime, timedelta
+    from datetime import datetime, timedelta, timezone
     from collections import defaultdict
-
+    
     try:
-        iocs = []
+        # Determine time range
+        # Determine time range
+        now = datetime.now(timezone.utc)
+        period_map = {"1d": 1, "7d": 7, "30d": 30, "90d": 90}
+        days = period_map.get(period, 7)
+        start_date = now - timedelta(days=days)
+        start_date_str = start_date.strftime("%Y-%m-%dT%H:%M:%S")
 
-        # Load from file
-        ioc_file = DATA_DIR / "normalized_iocs.json"
-        if ioc_file.exists():
-            with open(ioc_file) as f:
-                iocs = json.load(f)
-
-        # Also include MongoDB IOCs
+        # 1. MongoDB Aggregation (Massively faster for 170k+ records)
         try:
             from threat_model.threat_summarizer.mongo_client import get_ioc_collection
             collection = get_ioc_collection()
             if collection is not None:
-                mongo_iocs = list(collection.find({}, {"_id": 0}))
-                existing_values = {i.get("ioc") for i in iocs}
-                for m_ioc in mongo_iocs:
-                    if m_ioc.get("ioc") not in existing_values:
-                        iocs.append(m_ioc)
-        except Exception:
-            pass
+                group_field = "$severity" if group_by == "severity" else "$type"
+                
+                # MongoDB aggregation to bucket and group
+                pipeline = [
+                    # Filter by date window (Use ingested_at for activity graph if preferred, but user expects 'timestamp')
+                    # Fallback to ingested_at if timestamp isn't reliable for activity
+                    {"$match": {
+                        "$or": [
+                            {"ingested_at": {"$gte": start_date_str}},
+                            {"timestamp": {"$gte": start_date_str}}
+                        ]
+                    }},
+                    # Project simple date/hour bucket using string manipulation (safer than $dateFromString for mixed formats)
+                    {"$project": {
+                        "date_bucket": {
+                            "$cond": {
+                                "if": {"$ne": [period, "1d"]},
+                                "then": {"$substr": [{"$ifNull": ["$ingested_at", "$timestamp"]}, 0, 10]},
+                                "else": {"$substr": [{"$ifNull": ["$ingested_at", "$timestamp"]}, 0, 13]}
+                            }
+                        },
+                        "group": group_field
+                    }},
+                    {"$group": {
+                        "_id": {"date": "$date_bucket", "group": "$group"},
+                        "count": {"$sum": 1}
+                    }},
+                    {"$sort": {"_id.date": 1}}
+                ]
+                
+                results = list(collection.aggregate(pipeline))
+                
+                # Generate all buckets for padding
+                buckets = []
+                current = start_date
+                step = timedelta(hours=1) if period == "1d" else timedelta(days=1)
+                fmt = "%Y-%m-%d" if period != "1d" else "%Y-%m-%dT%H:00"
+                label_fmt = "%b %d" if period != "1d" else "%H:00"
+                
+                while current <= now:
+                    buckets.append({
+                        "key": current.strftime(fmt),
+                        "label": current.strftime(label_fmt)
+                    })
+                    current += step
 
-        # Determine time range and bucket format
-        now = datetime.utcnow()
-        period_config = {
-            "1d":  {"delta": timedelta(days=1),  "fmt": "%H:00",       "label_fmt": "%H:00",       "step": timedelta(hours=1)},
-            "7d":  {"delta": timedelta(days=7),  "fmt": "%Y-%m-%d",    "label_fmt": "%a",          "step": timedelta(days=1)},
-            "30d": {"delta": timedelta(days=30), "fmt": "%Y-%m-%d",    "label_fmt": "%b %d",       "step": timedelta(days=1)},
-            "90d": {"delta": timedelta(days=90), "fmt": "%Y-W%W",      "label_fmt": "Week %W",     "step": timedelta(weeks=1)},
-        }
+                # Pivot results
+                pivot = defaultdict(lambda: defaultdict(int))
+                active_groups = set()
+                for r in results:
+                    pivot[r["_id"]["date"]][r["_id"]["group"]] = r["count"]
+                    active_groups.add(r["_id"]["group"])
 
-        if period not in period_config:
-            raise HTTPException(status_code=400, detail=f"Invalid period. Must be one of: {', '.join(period_config.keys())}")
+                # Order groups for UI consistency
+                if group_by == "severity":
+                    ordered_keys = ["Critical", "High", "Medium", "Low", "Unknown"]
+                else:
+                    ordered_keys = sorted(list(active_groups))
 
-        cfg = period_config[period]
-        start_time = now - cfg["delta"]
+                # Final formatting
+                chart_data = []
+                for b in buckets:
+                    point = {"period": b["label"]}
+                    for k in ordered_keys:
+                        # Normalize key name for UI
+                        ui_key = k.capitalize() if group_by == "severity" else k
+                        point[ui_key] = pivot[b["key"]].get(k, 0)
+                    chart_data.append(point)
 
-        # Generate all time buckets
-        buckets = []
-        current = start_time
-        while current <= now:
-            bucket_key = current.strftime(cfg["fmt"])
-            bucket_label = current.strftime(cfg["label_fmt"])
-            buckets.append({"key": bucket_key, "label": bucket_label})
-            current += cfg["step"]
-
-        # Deduplicate buckets while preserving order
-        seen = set()
-        unique_buckets = []
-        for b in buckets:
-            if b["key"] not in seen:
-                seen.add(b["key"])
-                unique_buckets.append(b)
-        buckets = unique_buckets
-
-        # Group IOCs into buckets
-        group_field = "severity" if group_by == "severity" else "type"
-        bucket_data = defaultdict(lambda: defaultdict(int))
-        all_keys = set()
-
-        for ioc in iocs:
-            ts_str = ioc.get("timestamp", "")
-            if not ts_str:
-                continue
-
-            try:
-                # Parse ISO timestamp
-                ts = datetime.fromisoformat(ts_str.replace("Z", "+00:00")).replace(tzinfo=None)
-            except (ValueError, TypeError):
-                continue
-
-            if ts < start_time:
-                continue
-
-            bucket_key = ts.strftime(cfg["fmt"])
-            group_value = ioc.get(group_field, "unknown")
-            # Normalize the group value
-            if group_by == "severity":
-                group_value = group_value.capitalize() if group_value else "Unknown"
-            else:
-                group_value = group_value.lower() if group_value else "unknown"
-
-            bucket_data[bucket_key][group_value] += 1
-            all_keys.add(group_value)
-
-        # Determine keys order
-        if group_by == "severity":
-            ordered_keys = [k for k in ["Critical", "High", "Medium", "Low", "Unknown"] if k in all_keys]
-        else:
-            # Sort by total count descending, take top 8
-            key_totals = defaultdict(int)
-            for bd in bucket_data.values():
-                for k, v in bd.items():
-                    key_totals[k] += v
-            ordered_keys = sorted(key_totals.keys(), key=lambda x: key_totals[x], reverse=True)[:8]
-
-        # Build response data
-        data = []
-        for bucket in buckets:
-            point = {"period": bucket["label"]}
-            for key in ordered_keys:
-                point[key] = bucket_data[bucket["key"]].get(key, 0)
-            data.append(point)
-
-        return {
-            "group_by": group_by,
-            "keys": ordered_keys,
-            "data": data
-        }
+                return {
+                    "group_by": group_by,
+                    "keys": ordered_keys,
+                    "data": chart_data
+                }
+        except Exception as e:
+            print(f"⚠️ MongoDB Aggregation failed: {e}")
+            # Fallback to empty if it fails to avoid breaking dashboard
+            return {"group_by": group_by, "data": []}
     except HTTPException:
         raise
     except Exception as e:
@@ -801,22 +804,44 @@ def get_summary_stats(request: Request):
     Get summary statistics.
     """
     try:
-        from threat_model.threat_summarizer.mongo_client import get_collection
+        from threat_model.threat_summarizer.mongo_client import get_collection, get_ioc_collection
         
-        collection = get_collection()
-        if collection is None:
-            return {"total": 0, "by_severity": {}}
+        summary_coll = get_collection()
+        ioc_coll = get_ioc_collection()
         
-        total = collection.count_documents({})
-        
-        # Count by severity
-        by_severity = {}
-        for sev in ["Critical", "High", "Medium", "Low"]:
-            count = collection.count_documents({"severity": {"$regex": sev, "$options": "i"}})
-            if count > 0:
-                by_severity[sev] = count
-        
-        return {"total": total, "by_severity": by_severity}
+        # 1. Get Summary Stats (Processed Threats)
+        summary_total = summary_coll.count_documents({}) if summary_coll is not None else 0
+        summary_by_severity = {}
+        if summary_coll is not None:
+            for sev in ["Critical", "High", "Medium", "Low"]:
+                count = summary_coll.count_documents({"severity": {"$regex": sev, "$options": "i"}})
+                if count > 0:
+                    summary_by_severity[sev] = count
+
+        # 2. Get Raw IOC Stats (for real-time dashboard cards)
+        # We merge these so the dashboard cards show the most impressive/accurate numbers
+        if ioc_coll is not None:
+            # High/Critical IOCs from raw data
+            raw_critical = ioc_coll.count_documents({"severity": {"$regex": "Critical", "$options": "i"}})
+            raw_high = ioc_coll.count_documents({"severity": {"$regex": "High", "$options": "i"}})
+            
+            # Combine or prefer higher number? 
+            # Dashboard labels: "Critical Threats Detected" (Summaries) and "High Severity IOCs" (Raw)
+            # We'll adjust the response to match what the dashboard expects
+            combined_severity = {
+                "Critical": summary_by_severity.get("Critical", 0), # Keep this for "Threats Detected"
+                "High": max(summary_by_severity.get("High", 0), raw_high), # Use raw IOC count for "High Severity IOCs"
+                "Medium": summary_by_severity.get("Medium", 0),
+                "Low": summary_by_severity.get("Low", 0)
+            }
+        else:
+            combined_severity = summary_by_severity
+
+        return {
+            "total": summary_total, 
+            "by_severity": combined_severity,
+            "raw_ioc_count": ioc_coll.count_documents({}) if ioc_coll is not None else 0
+        }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -951,33 +976,40 @@ def get_knowledge_graph(
     """
     try:
         kg = get_kg()
-        top_nodes = kg.get_top_nodes(n=limit)
+        top_iocs = kg.get_top_nodes(n=limit)
         
-        # Filter nodes by confidence
-        node_ids = {n["id"] for n in top_nodes if n.get("confidence", 0) >= min_confidence}
+        # Initial set of nodes (top IOCs)
+        base_node_ids = {n["id"] for n in top_iocs if n.get("confidence", 0) >= min_confidence}
         
-        # Build subgraph efficiently
-        subgraph = kg.graph.subgraph(node_ids)
+        # Subgraph of top-ranked IOCs and their interconnections
+        subgraph = kg.graph.subgraph(base_node_ids)
         
+        # Build final visualization data (Exclude context nodes)
         nodes = []
-        for node_id in subgraph.nodes:
-            nodes.append({
-                "data": {
-                    "id": node_id,
-                    **subgraph.nodes[node_id]
-                }
-            })
+        visible_node_ids = set()
+        for node_id, data in subgraph.nodes(data=True):
+            # Double-check type filter even with subgraph restricted to IOCs
+            if data.get("type", "").lower() != "context":
+                nodes.append({
+                    "data": {
+                        "id": node_id,
+                        **data
+                    }
+                })
+                visible_node_ids.add(node_id)
             
         edges = []
         for u, v, k, data in subgraph.edges(data=True, keys=True):
-            edges.append({
-                "data": {
-                    "id": f"{u}-{v}-{k}",
-                    "source": u,
-                    "target": v,
-                    **data
-                }
-            })
+            # Only return edges between visible nodes (IOCs)
+            if u in visible_node_ids and v in visible_node_ids:
+                edges.append({
+                    "data": {
+                        "id": f"{u}-{v}-{k}",
+                        "source": u,
+                        "target": v,
+                        **data
+                    }
+                })
         
         return {
             "nodes": nodes,
@@ -1057,15 +1089,25 @@ def get_node_details(
             raise HTTPException(status_code=404, detail=f"Node '{node}' not found")
             
         data = dict(kg.graph.nodes[node])
+        data["id"] = node
         
-        # Get provenance from SQLite
+        # Get provenance and reviewed status from SQLite
         provenance = []
-        with kg._get_db_conn() as conn:
-            row = conn.execute("SELECT provenance FROM node_metadata WHERE node_id = ?", (node,)).fetchone()
-            if row:
-                provenance = json.loads(row[0])
+        reviewed = False
+        try:
+            with kg._get_db_conn() as conn:
+                row = conn.execute(
+                    "SELECT provenance, reviewed FROM node_metadata WHERE node_id = ?", 
+                    (node,)
+                ).fetchone()
+                if row:
+                    provenance = json.loads(row[0])
+                    reviewed = bool(row[1])
+        except Exception as e:
+            print(f"⚠️ Metadata fetch error for {node}: {e}")
                 
         data["provenance"] = provenance
+        data["reviewed"] = data.get("reviewed", reviewed)
         return data
     except HTTPException:
         raise

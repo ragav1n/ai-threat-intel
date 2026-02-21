@@ -17,6 +17,9 @@ export default function NodeInspector({ nodeId, onClose }: NodeInspectorProps) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    // Re-fetch guard: don't fetch if we already have the same node loaded
+    if (details?.id === nodeId) return
+
     const fetchDetails = async () => {
       setLoading(true)
       try {
@@ -24,6 +27,7 @@ export default function NodeInspector({ nodeId, onClose }: NodeInspectorProps) {
           `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}/api/knowledge-graph/node?node=${encodeURIComponent(nodeId)}`
         )
         const data = await res.json()
+        console.log("Inspector Details for node:", nodeId, data)
         setDetails(data)
       } catch (error) {
         console.error("Failed to fetch node details:", error)
@@ -33,6 +37,18 @@ export default function NodeInspector({ nodeId, onClose }: NodeInspectorProps) {
     }
     fetchDetails()
   }, [nodeId])
+
+  const safeFormatDate = (dateStr: string | null) => {
+    if (!dateStr) return "N/A"
+    try {
+      // Handle the +00:00 suffix which can be tricky in some JS engines
+      const date = new Date(dateStr.replace("+00:00", "Z"))
+      if (isNaN(date.getTime())) return "Unknown Date"
+      return date.toLocaleString()
+    } catch (e) {
+      return "Invalid Date"
+    }
+  }
 
   const getReliabilityLabel = (conf: number) => {
     if (conf >= 0.9) return { label: "High Confidence", color: "bg-green-500/20 text-green-400" }
@@ -155,14 +171,14 @@ export default function NodeInspector({ nodeId, onClose }: NodeInspectorProps) {
                     <div className="absolute -left-[21px] top-1 w-3 h-3 rounded-full bg-primary" />
                     <div className="text-[10px] text-muted-foreground uppercase">Last Seen</div>
                     <div className="text-sm font-medium">
-                      {details.last_seen ? new Date(details.last_seen).toLocaleString() : "First Analysis"}
+                      {safeFormatDate(details.last_seen)}
                     </div>
                   </div>
                   <div className="relative opacity-60">
                     <div className="absolute -left-[21px] top-1 w-3 h-3 rounded-full bg-muted-foreground" />
                     <div className="text-[10px] text-muted-foreground uppercase">First Ingested</div>
                     <div className="text-sm font-medium">
-                      {details.first_seen ? new Date(details.first_seen).toLocaleString() : "Unknown"}
+                      {safeFormatDate(details.first_seen)}
                     </div>
                   </div>
                 </div>

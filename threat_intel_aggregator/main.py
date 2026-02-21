@@ -31,8 +31,13 @@ from tabulate import tabulate
 try:
     from config import DATA_DIR, SCHEDULER_INTERVAL_MINUTES as SCHEDULER_INTERVAL
 except ImportError:
+    from pathlib import Path
     SCHEDULER_INTERVAL = 10
-    DATA_DIR = Path("data")
+    # Prefer volume mount if in Docker
+    if os.path.exists("/app/data"):
+        DATA_DIR = Path("/app/data")
+    else:
+        DATA_DIR = Path("data")
 
 
 # Logging setup
@@ -201,9 +206,9 @@ def scheduled_job() -> Dict[str, Any]:
         export_iocs_to_summarizer_input()
 
         # Step 5: Update Knowledge Graph (Decay and Persist)
-        logging.info("📉 Appling Knowledge Graph decay and persisting")
         kg.apply_decay(datetime.now(timezone.utc))
         kg.persist()
+        kg.close()
 
         logging.info("✅ Feed Collection Complete")
         print("\n" + "=" * 50)

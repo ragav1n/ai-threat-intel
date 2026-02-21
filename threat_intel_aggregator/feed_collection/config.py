@@ -11,8 +11,12 @@ try:
         sys.path.append(str(root_path))
     from config import DATA_DIR, BASE_DIR as ROOT_BASE_DIR
 except ImportError:
-    ROOT_BASE_DIR = Path(__file__).resolve().parent.parent
-    DATA_DIR = ROOT_BASE_DIR / "data"
+    ROOT_BASE_DIR = Path(__file__).resolve().parent.parent.parent
+    # Check for volume mount first, same as root config.py
+    if os.path.exists("/app/data"):
+        DATA_DIR = Path("/app/data")
+    else:
+        DATA_DIR = ROOT_BASE_DIR / "data"
 
 # === Path Configuration ===
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -45,6 +49,7 @@ def load_static_feed_metadata(path=FEED_FILE):
 def load_feed_metadata(path=FEED_FILE, include_github=True):
     """
     Loads both static and optionally auto-discovered GitHub feeds.
+    Turned on by default since the dynamic intelligence adds value.
     """
     static_feeds = load_static_feed_metadata(path)
     if include_github:

@@ -36,6 +36,16 @@ class ThreatKnowledgeGraph:
                  self._db_conn.execute("PRAGMA query_only = ON")
         return self._db_conn
 
+    def close(self):
+        """Closes the SQLite connection to prevent memory leaks and file locks."""
+        if self._db_conn:
+            try:
+                self._db_conn.close()
+            except Exception as e:
+                print(f"⚠️ Error closing DB: {e}")
+            finally:
+                self._db_conn = None
+
     def _init_db(self):
         try:
             with self._get_db_conn() as conn:
@@ -97,6 +107,11 @@ class ThreatKnowledgeGraph:
 
         # Update SQL metadata for provenance
         db = conn or self._get_db_conn()
+        needs_commit = False
+        if not conn:
+            db.execute("BEGIN")
+            needs_commit = True
+
         row = db.execute("SELECT provenance FROM node_metadata WHERE node_id = ?", (ioc_value,)).fetchone()
         if row:
             prov = json.loads(row[0])
@@ -107,7 +122,7 @@ class ThreatKnowledgeGraph:
             db.execute("INSERT INTO node_metadata (node_id, provenance) VALUES (?, ?)", 
                          (ioc_value, json.dumps([source])))
         
-        if not conn:
+        if needs_commit:
             db.execute("COMMIT")
 
     def add_relationship(self, source_id: str, target_id: str, edge_type: str, weight: float, context_id: str, conn=None):
@@ -128,13 +143,35 @@ class ThreatKnowledgeGraph:
             )
             
             db = conn or self._get_db_conn()
+            needs_commit = False
+            if not conn:
+                db.execute("BEGIN")
+                needs_commit = True
+
             db.execute("""
                 INSERT OR IGNORE INTO edge_provenance (source, target, edge_key, context_id, timestamp)
                 VALUES (?, ?, ?, ?, ?)
             """, (source_id, target_id, edge_id, context_id, now))
             
-            if not conn:
+            if needs_commit:
                 db.execute("COMMIT")
+
+    def enrich_co_occurrence(self, ioc_values: List[str], context_id: str, conn=None):
+        """Creates CO_OCCURS_WITH edges between IOCs that appear in the same context."""
+        if len(ioc_values) < 2:
+            return
+        
+        # Combinatorial explosion guard
+        if len(ioc_values) > 5:
+            return
+
+        for i in range(len(ioc_values)):
+            for j in range(i + 1, len(ioc_values)):
+                self.add_relationship(
+                    ioc_values[i], ioc_values[j], 
+                    "CO_OCCURS_WITH", 0.5, context_id, 
+                    conn=conn
+                )
 
     def apply_decay(self, now: datetime, halflife_days: float = 30):
         """Decays non-reviewed nodes based on wall-clock time."""
@@ -170,15 +207,20 @@ class ThreatKnowledgeGraph:
         if not self.graph.nodes:
             return []
             
-        # Filter out context nodes from the ranking and visualization
-        eligible_nodes = [node for node, data in self.graph.nodes(data=True) if data.get("type") != "context"]
+        # Filter out context nodes from the ranking list (we want the top *IOCs*)
+        # but we will bring Article nodes back during subgraph construction to maintain connectivity
+        ioc_nodes = [node for node, data in self.graph.nodes(data=True) if data.get("type") != "context"]
         
-        if not eligible_nodes:
+        if not ioc_nodes:
             return []
 
-        # Degree centrality weighted by confidence
-        centrality = {node: self.graph.degree(node) * self.graph.nodes[node].get("confidence", 0) 
-                      for node in eligible_nodes}
+        import math
+        # Centrality metric: Rewards high confidence exponentially, degree logarithmically
+        # (confidence ** 2) * log1p(degree)
+        centrality = {
+            node: (self.graph.nodes[node].get("confidence", 0) ** 2) * math.log1p(self.graph.degree(node))
+            for node in ioc_nodes
+        }
         
         sorted_nodes = sorted(centrality.items(), key=lambda x: x[1], reverse=True)[:n]
         return [{"id": node, "score": score, **self.graph.nodes[node]} for node, score in sorted_nodes]
@@ -248,8 +290,8 @@ class ThreatKnowledgeGraph:
             self.graph.add_node(
                 context_id, 
                 type="context", 
-                confidence=1.0, 
-                label="Feed Entry", 
+                confidence=0.1, # Reduced to ignore in UI scoring/ranking
+                label="Article/Feed Entry", 
                 first_seen=now, 
                 last_seen=now
             )
@@ -270,6 +312,9 @@ class ThreatKnowledgeGraph:
                 # Link each IOC to the article context
                 w1 = self.graph.nodes[val].get("confidence", 0.5)
                 self.add_relationship(val, context_id, "MENTIONED_IN", w1, context_id, conn=conn)
+            
+            # Enrich with co-occurrence relationships (max 5 IOCs)
+            self.enrich_co_occurrence(ioc_values, context_id, conn=conn)
                 
             conn.execute("COMMIT")
         except Exception as e:

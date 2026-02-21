@@ -13,13 +13,13 @@ A Threat Intelligence Platform that aggregates, correlates, and analyzes threat 
 
 ## Key Capabilities
 
-*   **Multi-Source Aggregation**: Collects IOCs from RSS feeds, GitHub repos, CISA alerts, and more.
-*   **Cognitive Analysis**: Uses Local LLMs (Qwen2.5/LLaMA3) to generate human-readable threat summaries.
-*   **Autonomous Hunter**: Enriches IOCs with Geolocation, WHOIS, ASN, and DNS resolution.
-*   **RAG Integration**: Maps threats to MITRE ATT&CK techniques using semantic search.
-*   **Smart Alerting**: Batches high-severity threats into HTML email reports with PDF and CSV attachments.
-*   **Health Monitoring**: Tracks feed uptime and system health.
-*   **SOC Dashboard**: Real-time visualization of threats, feeds, and AI insights.
+- **Scalable Aggregation**: Collects IOCs from 100+ sources including RSS feeds, GitHub repos, CISA alerts, Cisco Talos, Kaspersky, and more.
+- **Cognitive Analysis**: Uses Local LLMs (Qwen2.5/LLaMA3) for automated verification and human-readable threat summaries.
+- **Knowledge Graph Intelligence**: Maps relationships between threats using a high-fidelity star topology with real-time graph visualization.
+- **Autonomous Hunter**: Enriches IOCs with Geolocation, WHOIS, ASN, and DNS resolution.
+- **RAG Integration**: Maps threats to MITRE ATT&CK techniques using semantic search.
+- **Smart Alerting**: Batches high-severity threats into HTML email reports with PDF and CSV attachments.
+- **Interactive SOC Dashboard**: Real-time 2D force-directed graph with physics manipulation, connectivity filtering, and live threat feed monitoring.
 
 ---
 
@@ -53,12 +53,14 @@ make docker-up
 ### Option B: Manual Setup
 
 **1. Prerequisites**
-*   Python 3.11+
-*   Node.js 18+
-*   MongoDB running locally
-*   Ollama running (`ollama serve`)
+
+- Python 3.11+
+- Node.js 18+
+- MongoDB running locally
+- Ollama running (`ollama serve`)
 
 **2. Backend Setup**
+
 ```bash
 # Install dependencies
 make install
@@ -71,6 +73,7 @@ make run-scheduler
 ```
 
 **3. Frontend Setup**
+
 ```bash
 cd soc-dashboard
 npm install
@@ -113,26 +116,26 @@ To configure feeds, edit `threat_intel_aggregator/feed_collection/feeds.yaml`.
 
 The system includes a robust email alerting module located in `threat_model/threat_summarizer/emailer.py`.
 
-*   **Triggers**:
-    *   High/Critical severity threats detected by the AI.
-    *   Batch processing (every 10 minutes or 10 high-severity items).
-*   **Content**:
-    *   **HTML Body**: Summary of threats, severity counts, and MITRE TTPs.
-    *   **Attachments**:
-        *   `threat_summary_report.pdf`: Detailed investigation report.
-        *   `threat_summaries.csv`: Raw data for import.
+- **Triggers**:
+  - High/Critical severity threats detected by the AI.
+  - Batch processing (every 10 minutes or 10 high-severity items).
+- **Content**:
+  - **HTML Body**: Summary of threats, severity counts, and MITRE TTPs.
+  - **Attachments**:
+    - `threat_summary_report.pdf`: Detailed investigation report.
+    - `threat_summaries.csv`: Raw data for import.
 
 ---
 
 ## API Reference
 
-| Method | Endpoint | Description |
-| :--- | :--- | :--- |
-| `GET` | `/api/iocs` | List enriched IOCs with filters. |
-| `POST` | `/api/summarize` | Generate AI summary for a specific IOC. |
-| `GET` | `/api/feeds` | Get feed health status. |
-| `POST` | `/api/reports/generate` | Create PDF reports. |
-| `POST` | `/api/email/send` | Trigger manual email report. |
+| Method | Endpoint                | Description                             |
+| :----- | :---------------------- | :-------------------------------------- |
+| `GET`  | `/api/iocs`             | List enriched IOCs with filters.        |
+| `POST` | `/api/summarize`        | Generate AI summary for a specific IOC. |
+| `GET`  | `/api/feeds`            | Get feed health status.                 |
+| `POST` | `/api/reports/generate` | Create PDF reports.                     |
+| `POST` | `/api/email/send`       | Trigger manual email report.            |
 
 ---
 
@@ -157,5 +160,5 @@ ai-threat-intel/
 
 ## Contributors
 
-*   **Saara Unnathi R** — Feed Collection · IOC Parsing
-*   **N Ragavenderan** — AI Architecture · API · Dashboard
+- **Saara Unnathi R** — Feed Collection · IOC Parsing
+- **N Ragavenderan** — AI Architecture · API · Dashboard

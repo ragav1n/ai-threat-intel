@@ -7,6 +7,8 @@ import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Network, Search, RefreshCw, Layers, ZoomIn } from "lucide-react"
 import { Input } from "@/components/ui/input"
+import { Slider } from "@/components/ui/slider"
+import { Switch } from "@/components/ui/switch"
 import NodeInspector from "@/components/knowledge-graph/node-inspector"
 
 // Dynamic import for 2D Graph to avoid SSR issues
@@ -23,14 +25,15 @@ const ForceGraph2D = dynamic(() => import("react-force-graph-2d"), {
 })
 
 const TYPE_COLORS: Record<string, string> = {
-  ip: "#06b6d4",
-  domain: "#f59e0b",
-  md5: "#ef4444",
-  sha256: "#10b981",
-  url: "#8b5cf6",
-  email: "#6366f1",
-  cve: "#f43f5e",
-  unknown: "#6b7280",
+  ip: "#0ea5e9",      // Vibrant Light Blue
+  domain: "#f59e0b",  // Amber
+  md5: "#ec4899",     // Pink (Match reference image 4/5)
+  sha256: "#10b981",  // Emerald
+  url: "#8b5cf6",     // Violet
+  email: "#6366f1",   // Indigo
+  cve: "#f43f5e",     // Rose
+  context: "#94a3b8", // Slate (Articles)
+  unknown: "#475569",
 }
 
 export default function KnowledgeGraphView() {
@@ -39,6 +42,8 @@ export default function KnowledgeGraphView() {
   const [selectedNode, setSelectedNode] = useState<string | null>(null)
   const [searchTerm, setSearchTerm] = useState("")
   const [minConfidence, setMinConfidence] = useState(0.3)
+  const [minDegree, setMinDegree] = useState(0)
+  const [isPhysicsFrozen, setIsPhysicsFrozen] = useState(false)
   const graphRef = useRef<any>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const [dimensions, setDimensions] = useState({ width: 800, height: 600 })
@@ -73,22 +78,43 @@ export default function KnowledgeGraphView() {
       )
       const graphData = await res.json()
       
+      const safeNodes = Array.isArray(graphData.nodes) ? graphData.nodes : []
+      const safeEdges = Array.isArray(graphData.edges) ? graphData.edges : []
+
       const formatted = {
-        nodes: graphData.nodes.map((n: any) => ({
-          id: n.data.id,
-          name: n.data.id,
-          type: n.data.type,
-          val: (n.data.confidence || 0.5) * 5 + 1, // Node size for 3D
-          confidence: n.data.confidence,
-          color: TYPE_COLORS[n.data.type] || "#6b7280"
-        })),
-        links: graphData.edges.map((e: any) => ({
-          source: e.data.source,
-          target: e.data.target,
-          type: e.data.type,
-          weight: e.data.weight,
-        })),
+        nodes: safeNodes.map((n: any) => {
+          const type = n?.data?.type || "unknown"
+          const isHub = type === "context"
+          return {
+            id: n?.data?.id || `unknown-${Math.random()}`,
+            name: isHub ? "Article" : (n?.data?.id || "Unknown"),
+            label: isHub ? "FEED ENTRY" : (n?.data?.id || "Unknown"),
+            type: type,
+            confidence: n?.data?.confidence || 0.5,
+            color: TYPE_COLORS[type] || TYPE_COLORS.unknown,
+            degree: 0 // Will be computed
+          }
+        }),
+        links: safeEdges.map((e: any) => ({
+          source: e?.data?.source,
+          target: e?.data?.target,
+          type: e?.data?.type || "RELATED",
+          weight: e?.data?.weight || 1,
+        })).filter((l: any) => l.source && l.target),
       }
+
+      // Compute degree client-side for sizing
+      const degreeMap: Record<string, number> = {}
+      formatted.links.forEach((l: any) => {
+        degreeMap[l.source] = (degreeMap[l.source] || 0) + 1
+        degreeMap[l.target] = (degreeMap[l.target] || 0) + 1
+      })
+        formatted.nodes.forEach((n: any) => {
+          n.degree = degreeMap[n.id] || 0
+          // Significantly smaller radius as requested
+          n.val = n.type === 'context' ? 6 : Math.sqrt(n.degree + 1) * 1.5 * (n.confidence || 0.5) + 2
+        })
+
       setData(formatted)
     } catch (error) {
       console.error("Failed to fetch graph:", error)
@@ -98,37 +124,62 @@ export default function KnowledgeGraphView() {
   }
 
   const filteredData = useMemo(() => {
-    if (!searchTerm) return data
     const term = searchTerm.toLowerCase()
+    const safeNodes = Array.isArray(data?.nodes) ? data.nodes : []
+    const safeLinks = Array.isArray(data?.links) ? data.links : []
+    
+    const filteredNodes = safeNodes.filter((n) => {
+      if (term && n.id && !n.id.toLowerCase().includes(term)) return false;
+      if (n.degree < minDegree && n.type !== 'context') return false;
+      return true;
+    })
+
+    const nodeIds = new Set(filteredNodes.map(n => n.id))
+    const filteredLinks = safeLinks.filter(l => 
+      nodeIds.has(typeof l.source === 'object' ? l.source?.id : l.source) && 
+      nodeIds.has(typeof l.target === 'object' ? l.target?.id : l.target)
+    )
+
     return {
-      nodes: data.nodes.filter((n) => n.id.toLowerCase().includes(term)),
-      links: data.links, 
+      nodes: filteredNodes,
+      links: filteredLinks, 
     }
   }, [data, searchTerm])
 
   const handleNodeClick = (node: any) => {
     setSelectedNode(node.id)
     if (graphRef.current) {
-      // Improved zoom interaction
+      // Zoom to at least level 4, but don't zoom out if already closer
+      const currentZoom = graphRef.current.zoom()
       graphRef.current.centerAt(node.x, node.y, 1000)
-      graphRef.current.zoom(4, 1000)
+      graphRef.current.zoom(Math.max(4, currentZoom), 1000)
     }
   }
 
-  // Configure forces for better spacing
+  useEffect(() => {
+    if (graphRef.current && !isPhysicsFrozen) {
+      graphRef.current.d3ReheatSimulation();
+    }
+  }, [isPhysicsFrozen])
+
+  // Configure forces for balanced, interactive clustering
   useEffect(() => {
     if (graphRef.current) {
       const fg = graphRef.current;
-      // Suggested repulsion strength
-      fg.d3Force('charge', (window as any).d3?.forceManyBody().strength(-40));
-      // Suggested link distance
-      fg.d3Force('link').distance(40);
-      // Centering and gravitational pull towards middle
-      fg.d3Force('center', (window as any).d3?.forceCenter());
-      fg.d3Force('x', (window as any).d3?.forceX().strength(0.08));
-      fg.d3Force('y', (window as any).d3?.forceY().strength(0.08));
-      // Suggested collision radius
-      fg.d3Force('collide', (window as any).d3?.forceCollide(10));
+      const d3 = (window as any).d3;
+      // Guard: Ensure D3 is loaded and force simulation is initialized
+      if (!d3 || !fg.d3Force('link')) return;
+
+      // Stronger repulsion to spread out large clusters
+      fg.d3Force('charge', d3.forceManyBody().strength(-120));
+      // Increased link distance to give more breathing room
+      fg.d3Force('link').distance(80);
+      // Centering to keep it in frame
+      fg.d3Force('center', d3.forceCenter());
+      fg.d3Force('x', d3.forceX().strength(0.05));
+      fg.d3Force('y', d3.forceY().strength(0.05));
+      // Collision force proportional to node size
+      fg.d3Force('collide', d3.forceCollide((node: any) => node.val + 5));
     }
   }, [data]);
 
@@ -165,14 +216,36 @@ export default function KnowledgeGraphView() {
                 <span>Filter Confidence</span>
                 <span className="text-primary">{(minConfidence * 100).toFixed(0)}%</span>
               </div>
-              <input
-                type="range"
-                min="0"
-                max="1"
-                step="0.05"
-                value={minConfidence}
-                onChange={(e) => setMinConfidence(parseFloat(e.target.value))}
-                className="w-full accent-primary h-1 bg-white/10 rounded-lg appearance-none cursor-pointer"
+              <Slider
+                value={[minConfidence]}
+                min={0}
+                max={1}
+                step={0.05}
+                onValueChange={(vals) => setMinConfidence(vals[0])}
+                className="py-2"
+              />
+            </div>
+
+            <div className="space-y-3 p-2 bg-white/5 rounded-lg border border-white/5">
+              <div className="flex items-center justify-between text-[10px] text-muted-foreground uppercase font-black tracking-widest">
+                <span>Min Connections</span>
+                <span className="text-primary">{minDegree}</span>
+              </div>
+              <Slider
+                value={[minDegree]}
+                min={0}
+                max={10}
+                step={1}
+                onValueChange={(vals) => setMinDegree(vals[0])}
+                className="py-2"
+              />
+            </div>
+
+            <div className="flex items-center justify-between p-2 bg-white/5 rounded-lg border border-white/5 text-[10px] text-muted-foreground uppercase font-black tracking-widest">
+              <span>Freeze Physics</span>
+              <Switch 
+                checked={isPhysicsFrozen}
+                onCheckedChange={setIsPhysicsFrozen}
               />
             </div>
           </div>
@@ -181,7 +254,9 @@ export default function KnowledgeGraphView() {
         {/* Legend */}
         <Card className="p-4 bg-background/40 backdrop-blur-2xl border-white/10 text-[10px] font-mono tracking-tighter">
           <div className="grid grid-cols-2 gap-y-2 gap-x-4">
-            {Object.entries(TYPE_COLORS).map(([type, color]) => (
+            {Object.entries(TYPE_COLORS)
+              .filter(([type]) => data.nodes.some(n => n.type === type))
+              .map(([type, color]) => (
               <div key={type} className="flex items-center gap-2 group cursor-default">
                 <div 
                    className="w-2 h-2 rounded-full shadow-[0_0_8px_rgba(0,0,0,0.5)] transition-transform group-hover:scale-125" 
@@ -201,39 +276,94 @@ export default function KnowledgeGraphView() {
           width={dimensions.width}
           height={dimensions.height}
           graphData={filteredData}
-          nodeLabel={(node: any) => `${node.id}\nConfidence: ${(node.confidence * 100).toFixed(1)}%`}
+          nodeLabel={(node: any) => node.type === 'context' ? `Article Hub\nConnections: ${node.degree}` : `${node.id}\nConfidence: ${(node.confidence * 100).toFixed(1)}%`}
           nodeColor="color"
-          nodeRelSize={5}
+          nodeRelSize={1}
           linkWidth={1.5}
-          linkColor={() => "rgba(255,255,255,0.12)"}
-          backgroundColor="#020617"
+          linkColor={(link: any) => {
+            const type = link.type || "RELATED"
+            const colors: Record<string, string> = {
+              'MENTIONED_IN': 'rgba(14,165,233,0.3)',
+              'CO_OCCURS_WITH': 'rgba(16,185,129,0.3)',
+              'RELATED': 'rgba(251,146,60,0.6)'
+            }
+            return colors[type] || 'rgba(255,255,255,0.08)'
+          }}
+          linkDirectionalArrowLength={4}
+          linkDirectionalArrowRelPos={1}
           onNodeClick={handleNodeClick}
           enableNodeDrag={true}
-          warmupTicks={200}    // Runs simulation offscreen first for instant layout
-          cooldownTicks={0}    // Stops animating once stable for performance
+          warmupTicks={300}
+          cooldownTicks={0} // Settle immediately after warmup; dragging reheats automatically
           nodeCanvasObject={(node: any, ctx: CanvasRenderingContext2D, globalScale) => {
-            const label = node.id;
             const size = node.val || 5;
+            const isHub = node.type === 'context';
             
-            // Simplified circle rendering for massive performance
+            // Halo/Glow effect for clusters
+            if (isHub) {
+              const gradient = ctx.createRadialGradient(node.x, node.y, 0, node.x, node.y, size * 2);
+              gradient.addColorStop(0, `${node.color}33`);
+              gradient.addColorStop(1, 'transparent');
+              ctx.fillStyle = gradient;
+              ctx.beginPath();
+              ctx.arc(node.x, node.y, size * 2, 0, 2 * Math.PI);
+              ctx.fill();
+            }
+
+            // Draw Geometric Shape (Polygons)
+            const sides = isHub ? 8 : (node.type === 'cve' ? 6 : (node.type === 'domain' ? 5 : 4));
             ctx.beginPath();
-            ctx.arc(node.x, node.y, size, 0, 2 * Math.PI, false);
-            ctx.fillStyle = node.color || "#6b7280";
+            for (let i = 0; i < sides; i++) {
+                const angle = (i * 2 * Math.PI / sides) - Math.PI / 2;
+                const tx = node.x + size * Math.cos(angle);
+                const ty = node.y + size * Math.sin(angle);
+                i === 0 ? ctx.moveTo(tx, ty) : ctx.lineTo(tx, ty);
+            }
+            ctx.closePath();
+            ctx.fillStyle = node.color;
             ctx.fill();
             
-            // Optional: Draw text if zoomed in significantly
-            if (globalScale > 8) {
-              const fontSize = 12 / globalScale;
-              ctx.font = `${fontSize}px Sans-Serif`;
+            // Border
+            ctx.strokeStyle = isHub ? '#fff' : 'rgba(255,255,255,0.2)';
+            ctx.lineWidth = 1 / globalScale;
+            ctx.stroke();
+
+            // Label Rendering - Gated strictly by zoom level
+            if (globalScale > 2.5) {
+              const rawLabel = isHub ? "ARTICLE HUB" : node.id;
+              const label = rawLabel.length > 15 ? rawLabel.substring(0, 13) + '…' : rawLabel;
+              const fontSize = isHub ? 14 / globalScale : 11 / globalScale;
+              ctx.font = `${isHub ? 'bold' : 'normal'} ${fontSize}px Sans-Serif`;
               ctx.textAlign = 'center';
               ctx.textBaseline = 'middle';
-              ctx.fillText(label, node.x, node.y + size + 2);
+              
+              const tw = ctx.measureText(label).width;
+              ctx.fillStyle = 'rgba(0,0,0,0.85)';
+              ctx.fillRect(node.x - tw/2 - 2, node.y + size + 2, tw + 4, fontSize + 3);
+              
+              ctx.fillStyle = isHub ? '#38bdf8' : '#fff';
+              ctx.fillText(label, node.x, node.y + size + 2 + fontSize/2);
             }
           }}
+          linkCanvasObject={(link: any, ctx: CanvasRenderingContext2D, globalScale) => {
+            if (globalScale < 5) return; // Only show on very close zoom
+            const start = link.source;
+            const end = link.target;
+            if (typeof start !== 'object' || typeof end !== 'object') return;
+
+            const mx = (start.x + end.x) / 2;
+            const my = (start.y + end.y) / 2;
+            const relType = link.type || "RELATES";
+            
+            ctx.font = `${8 / globalScale}px monospace`;
+            ctx.fillStyle = 'rgba(255,255,255,0.5)';
+            ctx.textAlign = 'center';
+            ctx.fillText(relType, mx, my);
+          }}
+          linkCanvasObjectMode={() => "after"}
           nodeCanvasObjectMode={() => "replace"}
-          d3AlphaDecay={0.02}
-          d3VelocityDecay={0.3}
-          onEngineStop={() => graphRef.current?.zoomToFit(600, 100)}
+          d3AlphaDecay={isPhysicsFrozen ? 1 : 0.03}
+          d3VelocityDecay={isPhysicsFrozen ? 1 : 0.4}
         />
         
         {loading && (

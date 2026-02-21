@@ -149,19 +149,20 @@ export default function IOCTable() {
                 <TableHead>Confidence</TableHead>
                 <TableHead>Severity</TableHead>
                 <TableHead>Feed Source</TableHead>
-                <TableHead>Timestamp</TableHead>
+                <TableHead>First Seen</TableHead>
+                <TableHead>Ingested At</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {loading ? (
                 <TableRow>
-                  <TableCell colSpan={6} className="py-4">
+                  <TableCell colSpan={7} className="py-4">
                     <SkeletonTable rows={5} />
                   </TableCell>
                 </TableRow>
               ) : iocs.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={6} className="py-0">
+                  <TableCell colSpan={7} className="py-0">
                     <EmptyState
                       type="no-results"
                       title="No IOCs Found"
@@ -208,7 +209,10 @@ export default function IOCTable() {
                       </TableCell>
                       <TableCell className="text-muted-foreground text-sm">{ioc.feed}</TableCell>
                       <TableCell className="text-muted-foreground text-sm whitespace-nowrap">
-                        {new Date(ioc.timestamp).toLocaleString()}
+                        {new Date(ioc.timestamp).toLocaleDateString()}
+                      </TableCell>
+                      <TableCell className="text-muted-foreground text-sm whitespace-nowrap font-medium">
+                        {ioc.ingested_at ? new Date(ioc.ingested_at).toLocaleString() : 'Just now'}
                       </TableCell>
                     </motion.tr>
                   )

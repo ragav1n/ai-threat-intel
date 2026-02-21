@@ -307,3 +307,345 @@ feeds:
     category: vendor advisory
     source_type: blog
     priority: high
+
+  # ============================================
+  # ADDITIONAL FEEDS (7 sources)
+  # ============================================
+  - name: CyberCure IPv4
+    url: http://api.cybercure.ai/feed/get_ips
+    category: malicious ips
+    source_type: threat_feed
+    priority: medium
+
+  - name: CyberCure URLs
+    url: http://api.cybercure.ai/feed/get_url
+    category: malicious urls
+    source_type: threat_feed
+    priority: medium
+
+  - name: Tor Bulk Exit List
+    url: https://check.torproject.org/torbulkexitlist
+    category: tor nodes
+    source_type: threat_feed
+    priority: low
+
+  - name: SANS Suspicious Domains High
+    url: https://isc.sans.edu/feeds/suspiciousdomains_High.txt
+    category: malicious domains
+    source_type: threat_feed
+    priority: high
+
+  - name: SANS Suspicious Domains Low
+    url: https://isc.sans.edu/feeds/suspiciousdomains_Low.txt
+    category: malicious domains
+    source_type: threat_feed
+    priority: low
+
+  - name: Firehol Level 1
+    url: https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/firehol_level1.netset
+    category: ip blocklist
+    source_type: threat_feed
+    priority: critical
+
+  # ============================================
+  # ADDITIONAL SECURITY VENDORS & RESEARCH (26 sources)
+  # ============================================
+  - name: Securelist (Kaspersky)
+    url: https://securelist.com/feed/
+    category: threat research
+    source_type: blog
+    priority: high
+
+  - name: CrowdStrike Blog
+    url: https://www.crowdstrike.com/blog/feed/
+    category: threat research
+    source_type: blog
+    priority: critical
+
+  - name: Trellix Threat Center
+    url: https://www.trellix.com/en-us/about/newsroom/stories/threat-research.rss
+    category: threat research
+    source_type: blog
+    priority: high
+
+  - name: Check Point Research
+    url: https://research.checkpoint.com/feed/
+    category: threat research
+    source_type: blog
+    priority: high
+
+  - name: ESET WeLiveSecurity
+    url: https://www.welivesecurity.com/feed/
+    category: threat research
+    source_type: blog
+    priority: high
+
+  - name: Symantec Broadcom
+    url: https://symantec-enterprise-blogs.security.com/feed
+    category: threat research
+    source_type: blog
+    priority: high
+
+  - name: Cybereason Blog
+    url: https://www.cybereason.com/blog/rss.xml
+    category: threat research
+    source_type: blog
+    priority: medium
+
+  - name: Proofpoint Threat Insights
+    url: https://www.proofpoint.com/us/threat-insight/rss.xml
+    category: threat research
+    source_type: blog
+    priority: high
+
+  - name: F5 Labs
+    url: https://www.f5.com/labs/articles/threat-intelligence.rss
+    category: threat research
+    source_type: blog
+    priority: medium
+
+  - name: Zscaler Security Research
+    url: https://www.zscaler.com/blogs/security-research/rss.xml
+    category: threat research
+    source_type: blog
+    priority: high
+
+  - name: Trustwave SpiderLabs
+    url: https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/rss/
+    category: threat research
+    source_type: blog
+    priority: medium
+
+  - name: Dragos Threat Intel
+    url: https://www.dragos.com/feed/
+    category: ics security
+    source_type: blog
+    priority: critical
+
+  - name: Flashpoint Blog
+    url: https://flashpoint.io/feed/
+    category: threat intelligence
+    source_type: blog
+    priority: high
+
+  - name: Red Canary Blog
+    url: https://redcanary.com/blog/feed/
+    category: threat research
+    source_type: blog
+    priority: high
+
+  - name: Blackberry Threat Vector
+    url: https://blogs.blackberry.com/en/company/feed
+    category: threat research
+    source_type: blog
+    priority: medium
+
+  - name: Bitdefender Labs
+    url: https://www.bitdefender.com/blog/labs/feed/
+    category: threat research
+    source_type: blog
+    priority: high
+
+  - name: Intezer Blog
+    url: https://intezer.com/feed/
+    category: malware analysis
+    source_type: blog
+    priority: medium
+
+  - name: Rapid7 Blog
+    url: https://blog.rapid7.com/rss/
+    category: vulnerability research
+    source_type: blog
+    priority: high
+
+  - name: Qualys Security Blog
+    url: https://blog.qualys.com/feed
+    category: vulnerability research
+    source_type: blog
+    priority: medium
+
+  - name: Tenable Blog
+    url: https://www.tenable.com/blog/feed
+    category: vulnerability research
+    source_type: blog
+    priority: medium
+
+  - name: Splunk SURGe
+    url: https://www.splunk.com/en_us/blog/security.rss
+    category: threat research
+    source_type: blog
+    priority: medium
+
+  - name: Volexity Blog
+    url: https://www.volexity.com/blog/feed/
+    category: threat research
+    source_type: blog
+    priority: critical
+
+  - name: Malpedia Blog
+    url: https://malpedia.caad.fkie.fraunhofer.de/blog/feed
+    category: malware analysis
+    source_type: blog
+    priority: high
+
+  - name: CIRCL OSINT
+    url: https://www.circl.lu/doc/misp/feed-osint/
+    category: osint
+    source_type: threat_feed
+    priority: high
+
+  - name: Any.Run Malware Trends
+    url: https://any.run/cybersecurity-blog/feed/
+    category: malware analysis
+    source_type: blog
+    priority: high
+
+  - name: OTX AlienVault Pulse
+    url: https://cybersecurity.att.com/blogs/labs-research/rss
+    category: threat intelligence
+    source_type: blog
+    priority: high
+
+  # ============================================
+  # ADDITIONAL GOV & CERT (15 sources)
+  # ============================================
+  - name: CERT-FR Alerts
+    url: https://www.cert.ssi.gouv.fr/feed/
+    category: official alerts
+    source_type: government
+    priority: high
+
+  - name: CERT-EU Advisories
+    url: https://cert.europa.eu/api/v1/advisories/rss
+    category: official alerts
+    source_type: government
+    priority: high
+
+  - name: JPCERT/CC
+    url: https://www.jpcert.or.jp/english/jpcert_en.rdf
+    category: official alerts
+    source_type: government
+    priority: high
+
+  - name: ACSC Alerts (Australia)
+    url: https://www.cyber.gov.au/acsc/view-all-content/alerts/rss
+    category: official alerts
+    source_type: government
+    priority: high
+
+  - name: CERT-NZ Alerts
+    url: https://www.cert.govt.nz/it-specialists/advisories/feed/
+    category: official alerts
+    source_type: government
+    priority: medium
+
+  - name: US-CERT Current Activity
+    url: https://us-cert.cisa.gov/ncas/current-activity.xml
+    category: official alerts
+    source_type: government
+    priority: critical
+
+  - name: CERT Coordination Center
+    url: https://www.kb.cert.org/vuls/rss/
+    category: vulnerability research
+    source_type: government
+    priority: high
+
+  - name: Canadian Cyber Centre
+    url: https://cyber.gc.ca/api/v1/rss?lang=en
+    category: official alerts
+    source_type: government
+    priority: medium
+
+  - name: GovCERT.ch
+    url: https://www.govcert.admin.ch/blog/index.xml
+    category: official alerts
+    source_type: government
+    priority: medium
+
+  - name: HKCERT
+    url: https://www.hkcert.org/rss/security-bulletin
+    category: official alerts
+    source_type: government
+    priority: low
+
+  - name: SingCERT
+    url: https://www.csa.gov.sg/singcert/rss
+    category: official alerts
+    source_type: government
+    priority: medium
+
+  - name: ENISA Publications
+    url: https://www.enisa.europa.eu/publications/RSS
+    category: official reports
+    source_type: government
+    priority: low
+
+  - name: CISA ICS-CERT
+    url: https://www.cisa.gov/uscert/ics/advisories/advisories.xml
+    category: ics security
+    source_type: government
+    priority: critical
+
+  - name: NSA Cybersecurity
+    url: https://www.nsa.gov/DesktopModules/ArticleCS/RSS.ashx?max=10&portalId=1&catId=1626
+    category: official alerts
+    source_type: government
+    priority: high
+
+  # ============================================
+  # ADDITIONAL SECURITY NEWS (9 sources)
+  # ============================================
+  - name: SecurityWeek
+    url: https://www.securityweek.com/feed/
+    category: security news
+    source_type: blog
+    priority: medium
+
+  - name: CyberScoop
+    url: https://www.cyberscoop.com/feed/
+    category: security news
+    source_type: blog
+    priority: medium
+
+  - name: Infosecurity Magazine
+    url: https://www.infosecurity-magazine.com/rss/news/
+    category: security news
+    source_type: blog
+    priority: medium
+
+  - name: The Record by Recorded Future
+    url: https://therecord.media/feed/
+    category: security news
+    source_type: blog
+    priority: medium
+
+  - name: Help Net Security
+    url: https://www.helpnetsecurity.com/feed/
+    category: security news
+    source_type: blog
+    priority: medium
+
+  - name: PortSwigger Daily Swig
+    url: https://portswigger.net/daily-swig/rss
+    category: security news
+    source_type: blog
+    priority: medium
+
+  - name: BleepingComputer Vulnerabilities
+    url: https://www.bleepingcomputer.com/feed/vulnerabilities/
+    category: vulnerability alerts
+    source_type: blog
+    priority: high
+
+  - name: BleepingComputer Ransomware
+    url: https://www.bleepingcomputer.com/feed/ransomware/
+    category: ransomware tracking
+    source_type: blog
+    priority: critical
+
+  - name: CSO Online
+    url: https://www.csoonline.com/feed/
+    category: security news
+    source_type: blog
+    priority: medium
