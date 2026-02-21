@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { AlertCircle, Shield, Activity, Download, Mail, RefreshCw, TrendingUp, Zap } from 'lucide-react'
+import { AlertCircle, Shield, Activity, Download, Mail, RefreshCw, TrendingUp, Network } from 'lucide-react'
 import DashboardStats from '@/components/dashboard-stats'
 import FeedsList from '@/components/feeds-list'
 import IOCTable from '@/components/ioc-table'
@@ -17,6 +17,7 @@ import SizedPieChart from '@/components/ui/sized-pie-chart'
 import BarChartMedium from '@/components/ui/bar-chart-medium'
 import HorizontalBarMedium from '@/components/ui/horizontal-bar-medium'
 import AttackFrequencyChart from '@/components/attack-frequency-chart'
+import KnowledgeGraphView from '@/components/knowledge-graph/graph-view'
 
 const SEVERITY_COLORS: Record<string, string> = {
   Critical: '#ef4444',
@@ -336,7 +337,7 @@ export default function Page() {
         {/* Main Tabs */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.5 }}>
           <Tabs defaultValue="overview" className="mt-8">
-            <TabsList className="grid w-full grid-cols-4 bg-secondary/50 backdrop-blur-sm border border-border/30">
+            <TabsList className="grid w-full grid-cols-5 bg-secondary/50 backdrop-blur-sm border border-border/30">
               <TabsTrigger value="overview" className="flex items-center gap-2">
                 <Activity className="h-4 w-4" />
                 <span className="hidden sm:inline">Overview</span>
@@ -353,6 +354,10 @@ export default function Page() {
                 <Shield className="h-4 w-4" />
                 <span className="hidden sm:inline">Summaries</span>
               </TabsTrigger>
+              <TabsTrigger value="graph" className="flex items-center gap-2">
+                <Network className="h-4 w-4" />
+                <span className="hidden sm:inline">Graph</span>
+              </TabsTrigger>
             </TabsList>
             <TabsContent value="overview" className="mt-6 space-y-6">
               <OverviewTab />
@@ -365,6 +370,9 @@ export default function Page() {
             </TabsContent>
             <TabsContent value="summaries" className="mt-6">
               <SummariesList />
+            </TabsContent>
+            <TabsContent value="graph" className="mt-6">
+              <KnowledgeGraphView />
             </TabsContent>
           </Tabs>
         </motion.div>

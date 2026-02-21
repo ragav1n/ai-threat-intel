@@ -81,6 +81,7 @@ def fetch_feed(feed_info: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
             "content": content,
             "category": category,
             "source_type": source_type,
+            "reliability": feed_info.get("reliability", 0.5),
             "response_time": response_time,
         }
 
@@ -93,6 +94,7 @@ def fetch_feed(feed_info: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
             "error": str(e),
             "category": category,
             "source_type": source_type,
+            "reliability": feed_info.get("reliability", 0.5),
         }
 
 

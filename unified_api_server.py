@@ -15,6 +15,7 @@ from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 from typing import List, Optional
+from datetime import datetime, timezone
 from pathlib import Path
 import json
 import os
@@ -210,7 +211,7 @@ def get_kg():
     """Returns the Knowledge Graph instance, refreshing from disk if needed."""
     global _kg_instance
     if _kg_instance is None:
-        _kg_instance = ThreatKnowledgeGraph()
+        _kg_instance = ThreatKnowledgeGraph(read_only=True)
     else:
         _kg_instance.load()
     return _kg_instance
@@ -443,42 +444,46 @@ def get_iocs(
     severity: Optional[str] = Query(default=None, description="Filter by severity"),
 ):
     """
-    Get extracted IOCs from collected feeds AND manual analysis.
+    Get extracted IOCs. Prioritizes MongoDB for performance.
     """
     try:
         iocs = []
         
-        # Load IOCs from feeds (normalized_iocs.json)
-        ioc_file = DATA_DIR / "normalized_iocs.json"
-        if ioc_file.exists():
-            with open(ioc_file) as f:
-                iocs = json.load(f)
-        
-        # Also load IOCs from MongoDB (manual analysis)
+        # 1. Try MongoDB First (Indexed and fast)
         try:
             from threat_model.threat_summarizer.mongo_client import get_ioc_collection
             collection = get_ioc_collection()
             if collection is not None:
-                mongo_iocs = list(collection.find({}, {"_id": 0}).sort("timestamp", -1).limit(500))
-                # Merge with file IOCs, avoiding duplicates
-                existing_values = {i.get("ioc") for i in iocs}
-                for m_ioc in mongo_iocs:
-                    if m_ioc.get("ioc") not in existing_values:
-                        iocs.append(m_ioc)
+                query = {}
+                if ioc_type:
+                    query["type"] = {"$regex": f"^{sanitize_query_string(ioc_type)}", "$options": "i"}
+                if severity:
+                    query["severity"] = {"$regex": f"^{sanitize_query_string(severity)}", "$options": "i"}
+                
+                iocs = list(collection.find(query, {"_id": 0}).sort("timestamp", -1).limit(limit))
+                if iocs:
+                    return {"count": len(iocs), "total_available": collection.count_documents(query), "iocs": iocs}
         except Exception as e:
-            print(f"[⚠️ MongoDB IOC fetch failed] {e}")
-        
-        # Apply filters (sanitized — no MongoDB query, just Python string match)
-        if ioc_type:
-            safe_type = sanitize_query_string(ioc_type)
-            iocs = [i for i in iocs if safe_type.lower() in i.get("type", "").lower()]
-        if severity:
-            safe_sev = sanitize_query_string(severity)
-            iocs = [i for i in iocs if safe_sev.lower() in i.get("severity", "").lower()]
-        
-        # Sort by timestamp and limit
-        iocs = sorted(iocs, key=lambda x: x.get("timestamp", ""), reverse=True)[:limit]
-        
+            print(f"[⚠️ MongoDB fetch failed] {e}")
+
+        # 2. Fallback to JSON (ONLY if MongoDB yielded nothing or failed)
+        ioc_file = DATA_DIR / "normalized_iocs.json"
+        if not iocs and ioc_file.exists():
+            with open(ioc_file) as f:
+                # Load with a generator or slice if possible? 
+                # For now, just load and slice to prevent OOM
+                iocs = json.load(f)
+            
+            # Apply Python-side filtering for fallback
+            if ioc_type:
+                safe_type = sanitize_query_string(ioc_type).lower()
+                iocs = [i for i in iocs if safe_type in i.get("type", "").lower()]
+            if severity:
+                safe_sev = sanitize_query_string(severity).lower()
+                iocs = [i for i in iocs if safe_sev in i.get("severity", "").lower()]
+            
+            iocs = sorted(iocs, key=lambda x: x.get("timestamp", ""), reverse=True)[:limit]
+
         return {
             "count": len(iocs),
             "total_available": len(iocs),
@@ -492,48 +497,66 @@ def get_iocs(
 @limiter.limit("30/minute")
 def get_ioc_stats(request: Request):
     """
-    Get IOC statistics by type and severity (includes manual analysis).
+    Get IOC statistics. Optimized to use MongoDB aggregation.
     """
     try:
-        iocs = []
-        
-        # Load from file
-        ioc_file = DATA_DIR / "normalized_iocs.json"
-        if ioc_file.exists():
-            with open(ioc_file) as f:
-                iocs = json.load(f)
-        
-        # Also include MongoDB IOCs
+        # 1. Try MongoDB Aggregation (Fastest)
         try:
             from threat_model.threat_summarizer.mongo_client import get_ioc_collection
             collection = get_ioc_collection()
             if collection is not None:
-                mongo_iocs = list(collection.find({}, {"_id": 0}))
-                existing_values = {i.get("ioc") for i in iocs}
-                for m_ioc in mongo_iocs:
-                    if m_ioc.get("ioc") not in existing_values:
-                        iocs.append(m_ioc)
-        except Exception:
-            pass
+                total = collection.count_documents({})
+                
+                # Group by type
+                by_type_list = list(collection.aggregate([
+                    {"$group": {"_id": "$type", "count": {"$sum": 1}}},
+                    {"$sort": {"count": -1}}
+                ]))
+                by_type = {item["_id"] or "unknown": item["count"] for item in by_type_list}
+                
+                # Group by severity
+                by_severity_list = list(collection.aggregate([
+                    {"$group": {"_id": "$severity", "count": {"$sum": 1}}},
+                    {"$sort": {"count": -1}}
+                ]))
+                by_severity = {item["_id"] or "unknown": item["count"] for item in by_severity_list}
+                
+                # Group by feed
+                by_feed_list = list(collection.aggregate([
+                    {"$group": {"_id": "$feed", "count": {"$sum": 1}}},
+                    {"$sort": {"count": -1}},
+                    {"$limit": 20}
+                ]))
+                by_feed = {item["_id"] or "unknown": item["count"] for item in by_feed_list}
+                
+                return {
+                    "total": total,
+                    "by_type": by_type,
+                    "by_severity": by_severity,
+                    "top_feeds": by_feed
+                }
+        except Exception as e:
+            print(f"[⚠️ MongoDB stats failed] {e}")
+
+        # 2. Fallback to JSON (Slow)
+        iocs = []
+        ioc_file = DATA_DIR / "normalized_iocs.json"
+        if ioc_file.exists():
+            with open(ioc_file) as f:
+                iocs = json.load(f)
         
         by_type = {}
         by_severity = {}
         by_feed = {}
         
         for ioc in iocs:
-            # Count by type
             ioc_type = ioc.get("type", "unknown")
             by_type[ioc_type] = by_type.get(ioc_type, 0) + 1
-            
-            # Count by severity
             sev = ioc.get("severity", "unknown")
             by_severity[sev] = by_severity.get(sev, 0) + 1
-            
-            # Count by feed
             feed = ioc.get("feed", "unknown")
             by_feed[feed] = by_feed.get(feed, 0) + 1
         
-        # Sort by_feed by count
         by_feed = dict(sorted(by_feed.items(), key=lambda x: x[1], reverse=True)[:20])
         
         return {
@@ -717,6 +740,7 @@ def verify_ioc_endpoint(request: Request, body: IOCVerifyRequest):
             regex_confidence=regex_confidence,
             llm_confidence=verification.llm_confidence,
             llm_is_valid=verification.is_valid_ioc,
+            source_reliability=1.0,  # Manual analysis is self-trusted
         )
         
         return {
@@ -918,7 +942,7 @@ def get_email_status(request: Request):
 @limiter.limit("10/minute")
 def get_knowledge_graph(
     request: Request,
-    limit: int = Query(default=100, ge=1, le=1000),
+    limit: int = Query(default=300, ge=1, le=500),
     min_confidence: float = Query(default=0.3, ge=0.0, le=1.0)
 ):
     """
@@ -932,27 +956,28 @@ def get_knowledge_graph(
         # Filter nodes by confidence
         node_ids = {n["id"] for n in top_nodes if n.get("confidence", 0) >= min_confidence}
         
-        # Build subgraph
+        # Build subgraph efficiently
+        subgraph = kg.graph.subgraph(node_ids)
+        
         nodes = []
-        for node_id in node_ids:
+        for node_id in subgraph.nodes:
             nodes.append({
                 "data": {
                     "id": node_id,
-                    **kg.graph.nodes[node_id]
+                    **subgraph.nodes[node_id]
                 }
             })
             
         edges = []
-        for u, v, k, data in kg.graph.edges(data=True, keys=True):
-            if u in node_ids and v in node_ids:
-                edges.append({
-                    "data": {
-                        "id": f"{u}-{v}-{k}",
-                        "source": u,
-                        "target": v,
-                        **data
-                    }
-                })
+        for u, v, k, data in subgraph.edges(data=True, keys=True):
+            edges.append({
+                "data": {
+                    "id": f"{u}-{v}-{k}",
+                    "source": u,
+                    "target": v,
+                    **data
+                }
+            })
         
         return {
             "nodes": nodes,
@@ -1013,6 +1038,35 @@ def query_knowledge_graph(
             "nodes": nodes,
             "edges": edges
         }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+@app.get("/api/knowledge-graph/node", tags=["Knowledge Graph"])
+@limiter.limit("30/minute")
+def get_node_details(
+    request: Request,
+    node: str = Query(..., description="The IOC or node ID to inspect")
+):
+    """
+    Get detailed metadata for a single node, including its provenance from SQLite.
+    """
+    try:
+        kg = get_kg()
+        if not kg.graph.has_node(node):
+            raise HTTPException(status_code=404, detail=f"Node '{node}' not found")
+            
+        data = dict(kg.graph.nodes[node])
+        
+        # Get provenance from SQLite
+        provenance = []
+        with kg._get_db_conn() as conn:
+            row = conn.execute("SELECT provenance FROM node_metadata WHERE node_id = ?", (node,)).fetchone()
+            if row:
+                provenance = json.loads(row[0])
+                
+        data["provenance"] = provenance
+        return data
     except HTTPException:
         raise
     except Exception as e:

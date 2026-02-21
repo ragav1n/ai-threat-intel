@@ -13,6 +13,7 @@ services:
       - OLLAMA_TIMEOUT=300
       - TZ=Asia/Kolkata
     volumes:
+      - threat_data:/app/data
       - mitre_cache:/root/.cache/mitre_attack # Persist MITRE RAG embeddings
     depends_on:
       - mongo
@@ -50,6 +51,8 @@ services:
       - TZ=Asia/Kolkata
     depends_on:
       - mongo
+    volumes:
+      - threat_data:/app/data
     restart: unless-stopped
 
   # MongoDB (for local development)
@@ -63,4 +66,5 @@ services:
 
 volumes:
   mongo_data:
+  threat_data:
   mitre_cache: # Persist MITRE ATT&CK RAG embeddings

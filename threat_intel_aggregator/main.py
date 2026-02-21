@@ -29,16 +29,15 @@ from tabulate import tabulate
 
 # Try to use centralized config
 try:
-    from config import get_config
-    config = get_config()
-    SCHEDULER_INTERVAL = config.app.scheduler_interval_minutes
+    from config import DATA_DIR, SCHEDULER_INTERVAL_MINUTES as SCHEDULER_INTERVAL
 except ImportError:
     SCHEDULER_INTERVAL = 10
+    DATA_DIR = Path("data")
 
 
 # Logging setup
 logging.basicConfig(
-    filename="data/feed_collector.log",
+    filename=str(DATA_DIR / "feed_collector.log"),
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s"
 )
@@ -181,10 +180,15 @@ def scheduled_job() -> Dict[str, Any]:
         print("\n🧪 Parsing and normalizing IOCs...")
         
         # Initialize Knowledge Graph
-        kg = ThreatKnowledgeGraph()
+        kg = ThreatKnowledgeGraph(data_dir=str(DATA_DIR / "knowledge_graph"))
         
+        kg_batch_count = [0] # Use list for closure mutability
         def kg_callback(iocs: List[Dict[str, Any]], context_id: str):
             kg.update_from_batch(iocs, context_id)
+            kg_batch_count[0] += 1
+            if kg_batch_count[0] % 50 == 0:
+                kg.persist()
+                logging.info(f"🔄 Periodic Graph Persist: {kg_batch_count[0]} batches")
             
         normalized = normalize_parsed_results(kg_callback=kg_callback)
         stats["iocs"] = len(normalized)

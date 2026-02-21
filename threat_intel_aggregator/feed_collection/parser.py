@@ -111,6 +111,7 @@ def normalize_and_store_iocs(
     text: str, 
     source_url: str, 
     timestamp: str,
+    source_reliability: float = 1.0,
     min_confidence: float = 0.3,
     enable_llm_verification: bool = True,
     max_llm_verify: int = 50,
@@ -166,6 +167,7 @@ def normalize_and_store_iocs(
             regex_confidence=match.confidence,
             llm_confidence=llm_confidence,
             llm_is_valid=llm_is_valid,
+            source_reliability=source_reliability,
         )
         
         # Use fused confidence for severity calculation
@@ -217,6 +219,7 @@ def normalize_parsed_results(min_confidence: float = 0.3, kg_callback: Optional[
 
         raw_content = data.get("content", "")
         source_url = data.get("url", "")
+        source_reliability = data.get("reliability", 0.5)
         
         # Check if it's a feed (RSS/Atom)
         parsed_feed = feedparser.parse(raw_content)
@@ -235,6 +238,7 @@ def normalize_parsed_results(min_confidence: float = 0.3, kg_callback: Optional[
                     text=entry_text,
                     source_url=entry_url,
                     timestamp=now,
+                    source_reliability=source_reliability,
                     min_confidence=min_confidence
                 )
                 
@@ -253,6 +257,7 @@ def normalize_parsed_results(min_confidence: float = 0.3, kg_callback: Optional[
                 text=clean_text,
                 source_url=source_url,
                 timestamp=now,
+                source_reliability=source_reliability,
                 min_confidence=min_confidence
             )
 
