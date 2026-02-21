@@ -201,7 +201,7 @@ export default function AttackFrequencyChart() {
                         <div className="px-2.5">
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
                                 {stageMetrics.slice(0, 4).map((stage) => {
-                                    const value = latestData ? (Number(latestData[stage.key]) || 0) : 0
+                                    const value = currentData.reduce((sum, item) => sum + (Number(item[stage.key]) || 0), 0)
                                     const change = getChangeForMetric(stage.key)
 
                                     return (

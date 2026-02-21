@@ -8,7 +8,7 @@ import os
 import logging
 import hashlib
 from datetime import datetime
-from typing import List, Dict, Any, Optional, Callable
+from typing import List, Dict, Any, Optional, Callable, Union
 
 import feedparser
 from bs4 import BeautifulSoup
@@ -41,13 +41,23 @@ IOC_SEVERITY_MAP: Dict[IOCType, Severity] = {
 }
 
 
-def get_severity_for_ioc(ioc_type: IOCType, confidence: float = 0.5) -> Severity:
+def get_severity_for_ioc(ioc_type: Union[IOCType, str], confidence: float = 0.5) -> Severity:
     """
     Get the severity level for a given IOC type, adjusted by confidence.
     
     High confidence (>0.8) can elevate severity.
     Low confidence (<0.4) can reduce severity.
     """
+    # Normalize ioc_type to Enum if it's a string
+    if isinstance(ioc_type, str):
+        try:
+            ioc_type = IOCType.from_string(ioc_type)
+        except ValueError:
+            # Fallback for manual string comparison if Enum fails
+            if ioc_type.lower() == "cve":
+                return Severity.CRITICAL
+            return Severity.UNKNOWN
+
     base_severity = IOC_SEVERITY_MAP.get(ioc_type, Severity.UNKNOWN)
     
     # Adjust severity based on confidence
@@ -114,7 +124,7 @@ def normalize_and_store_iocs(
     source_reliability: float = 1.0,
     min_confidence: float = 0.3,
     enable_llm_verification: bool = True,
-    max_llm_verify: int = 50,
+    max_llm_verify: int = 5,  # Reduced from 50 to prevent pipeline stalls
 ) -> List[Dict[str, Any]]:
     """
     Extract and normalize IOCs from text content with hybrid confidence scoring.
@@ -143,13 +153,20 @@ def normalize_and_store_iocs(
     llm_results = {}
     if enable_llm_verification:
         try:
-            verifier = get_llm_verifier()
-            if verifier.is_available():
-                verified = verifier.batch_verify(ioc_matches, max_iocs=max_llm_verify)
-                llm_results = {v["ioc"]: v for v in verified}
-                logger.info(f"🤖 LLM verified {len(llm_results)} IOCs for [{feed_name}]")
-            else:
-                logger.warning(f"⚠️ LLM unavailable, using regex-only confidence for [{feed_name}]")
+            # ONLY verify high-value or highly suspicious IOCs via LLM to save time
+            high_value_matches = [
+                m for m in ioc_matches 
+                if m.ioc_type in [IOCType.CVE, IOCType.URL, IOCType.IP] and m.confidence > 0.6
+            ][:max_llm_verify]
+            
+            if high_value_matches:
+                verifier = get_llm_verifier()
+                if verifier.is_available():
+                    verified = verifier.batch_verify(high_value_matches, max_iocs=max_llm_verify)
+                    llm_results = {v["ioc"]: v for v in verified}
+                    logger.info(f"🤖 LLM verified {len(llm_results)} high-value IOCs for [{feed_name}]")
+                else:
+                    logger.warning(f"⚠️ LLM unavailable, using regex-only confidence for [{feed_name}]")
         except Exception as e:
             logger.error(f"❌ LLM verification failed for [{feed_name}]: {e}")
     
@@ -222,9 +239,20 @@ def normalize_parsed_results(min_confidence: float = 0.3, kg_callback: Optional[
         source_reliability = data.get("reliability", 0.5)
         
         # Check if it's a feed (RSS/Atom)
-        parsed_feed = feedparser.parse(raw_content)
+        is_rss = False
+        parsed_feed = None
+        content_stripped = str(raw_content).strip()
         
-        if parsed_feed.entries:
+        # Only parse if it looks like XML, to avoid feedparser downloading raw URLs
+        if content_stripped.startswith("<") or "<?xml" in content_stripped[:100]:
+            try:
+                parsed_feed = feedparser.parse(raw_content)
+                if hasattr(parsed_feed, 'entries') and parsed_feed.entries:
+                    is_rss = True
+            except Exception as e:
+                logger.warning(f"Failed to parse feed {feed_name}: {e}")
+        
+        if is_rss and parsed_feed:
             # RSS/Atom feed detected - process individual entries
             for entry in parsed_feed.entries:
                 title = entry.get("title", "")

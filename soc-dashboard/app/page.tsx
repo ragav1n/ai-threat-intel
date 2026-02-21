@@ -228,6 +228,22 @@ export default function Page() {
     }
   }
 
+  const [summaryStats, setSummaryStats] = useState<any>(null)
+  
+  useEffect(() => {
+    const fetchSummaryStats = async () => {
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/summaries/stats`)
+        setSummaryStats(await res.json())
+      } catch (error) {
+        console.error('Failed to fetch summary stats for alerts:', error)
+      }
+    }
+    fetchSummaryStats()
+    const interval = setInterval(fetchSummaryStats, 30000)
+    return () => clearInterval(interval)
+  }, [])
+
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
       {/* Animated Background */}
@@ -326,9 +342,21 @@ export default function Page() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <NeonAlert severity="critical" title="Critical Threats Detected" count={3} />
-          <NeonAlert severity="high" title="High Severity IOCs" count={12} />
-          <NeonAlert severity="medium" title="Medium Priority Alerts" count={8} />
+          <NeonAlert 
+            severity="critical" 
+            title="Critical Threats Detected" 
+            count={summaryStats?.by_severity?.Critical || 0} 
+          />
+          <NeonAlert 
+            severity="high" 
+            title="High Severity IOCs" 
+            count={summaryStats?.by_severity?.High || 0} 
+          />
+          <NeonAlert 
+            severity="medium" 
+            title="Medium Priority Alerts" 
+            count={summaryStats?.by_severity?.Medium || 0} 
+          />
         </motion.div>
 
         {/* Statistics */}

@@ -29,10 +29,11 @@ This document tracks the high-level implementation status of the AI Threat Intel
 **Core Features:**
 
 - **Knowledge Graph Engine**: Implemented using `NetworkX` with high-performance SQLite metadata persistence.
-- **Star Topology Optimization**: $O(N)$ relationship mapping (IOC → Article) replacing $O(N^2)$ cliques, reducing edge bloat by 99%.
+- **Star Topology Optimization**: **O(N)** relationship mapping (IOC → Article) replacing **O(N^2)** cliques, reducing edge bloat.
 - **Bayesian Confidence Fusion**: Continuously updates IOC reliability scores across multiple intelligence feeds.
-- **Real-time Persistence**: Incremental updates and wall-clock aware confidence decay logic.
-- **Advanced Graph with D3 Physics**: Implemented collision detection, simulation warmup, and static rendering for instant-load stability.
+- **Path Consistency Guard**: Unified data persistence layer ensuring consistency between parser and database writer.
+- **Advanced Graph with D3 Physics**: Implemented collision detection, simulation warmup, and interactive controls (Physics Freeze, Connectivity Filter).
+- **Feed Milestone**: Expanded coverage to **109+** open-source and professional threat intelligence sources.
 - **Visual Overhaul**: Standardized Lucide `Network` iconography and implemented a high-contrast SOC-grade dark theme.
 - **API Guardrails**: Enforced 300-node subgraph limits to ensure dashboard stability even with massive datasets.
 
@@ -42,22 +43,22 @@ This document tracks the high-level implementation status of the AI Threat Intel
 
 **Goal**: Detect coordinated campaigns by analyzing IOC occurrences over time.
 
-- [ ] **Temporal Analysis**: Track "first seen" and "last seen" timestamps per campaign.
-- [ ] **Community Detection**: Use Louvain/Leiden algorithms to find clusters of related activity.
-- [ ] **Campaign API**: Endpoints to retrieve and visualize campaigns.
+- **Temporal Analysis**: Track "first seen" and "last seen" timestamps per campaign.
+- **Community Detection**: Use Louvain/Leiden algorithms to find clusters of related activity.
+- **Campaign API**: Endpoints to retrieve and visualize campaigns.
 
 ### **Phase 4: GraphRAG-Enhanced Summarization**
 
 **Goal**: Use the Knowledge Graph to provide context-aware summaries.
 
-- [ ] **Context Retrieval**: Fetch related graph nodes (e.g., "This IP is linked to Actor X").
-- [ ] **RAG Integration**: Inject graph context into LLM prompts for deeper analysis.
-- [ ] **Enhanced Reports**: Summaries that explain _why_ an IOC is dangerous, not just _that_ it is.
+- **Context Retrieval**: Fetch related graph nodes (e.g., "This IP is linked to Actor X").
+- **RAG Integration**: Inject graph context into LLM prompts for deeper analysis.
+- **Enhanced Reports**: Summaries that explain _why_ an IOC is dangerous, not just _that_ it is.
 
 ### **Phase 5: Evaluation Framework**
 
 **Goal**: Measure the accuracy and performance of the system.
 
-- [ ] **Labeled Dataset**: Create a ground-truth dataset of 100-200 malware samples.
-- [ ] **Metrics Engine**: Calculate Precision, Recall, and F1 scores for extraction.
-- [ ] **Latency Benchmarking**: Track extraction speed and LLM overhead.
+- **Labeled Dataset**: Create a ground-truth dataset of 100-200 malware samples.
+- **Metrics Engine**: Calculate Precision, Recall, and F1 scores for extraction.
+- **Latency Benchmarking**: Track extraction speed and LLM overhead.
