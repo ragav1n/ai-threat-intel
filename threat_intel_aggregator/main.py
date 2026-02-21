@@ -4,8 +4,8 @@ Feed scheduler and main entry point for threat intelligence collection.
 import time
 import logging
 import traceback
-from datetime import datetime
-from typing import Optional, Dict, Any
+from datetime import datetime, timezone
+from typing import Optional, Dict, Any, List
 
 import schedule
 
@@ -16,6 +16,7 @@ from threat_intel_aggregator.feed_collection.mongo_writer import (
     export_iocs_to_summarizer_input,
     get_ioc_stats,
 )
+from threat_intel_aggregator.knowledge_graph.graph_manager import ThreatKnowledgeGraph
 
 # Email imports
 import smtplib
@@ -175,10 +176,17 @@ def scheduled_job() -> Dict[str, Any]:
         collect_feeds_concurrently()
         stats["feeds"] = get_feed_stats()
 
-        # Step 2: Parse and normalize IOCs
-        logging.info("🧪 Running IOC Parser")
+        # Step 2: Parse and normalize IOCs with Knowledge Graph integration
+        logging.info("🧪 Running IOC Parser with Knowledge Graph integration")
         print("\n🧪 Parsing and normalizing IOCs...")
-        normalized = normalize_parsed_results()
+        
+        # Initialize Knowledge Graph
+        kg = ThreatKnowledgeGraph()
+        
+        def kg_callback(iocs: List[Dict[str, Any]], context_id: str):
+            kg.update_from_batch(iocs, context_id)
+            
+        normalized = normalize_parsed_results(kg_callback=kg_callback)
         stats["iocs"] = len(normalized)
 
         # Step 3: Write to MongoDB
@@ -187,6 +195,11 @@ def scheduled_job() -> Dict[str, Any]:
 
         # Step 4: Export to summarizer
         export_iocs_to_summarizer_input()
+
+        # Step 5: Update Knowledge Graph (Decay and Persist)
+        logging.info("📉 Appling Knowledge Graph decay and persisting")
+        kg.apply_decay(datetime.now(timezone.utc))
+        kg.persist()
 
         logging.info("✅ Feed Collection Complete")
         print("\n" + "=" * 50)

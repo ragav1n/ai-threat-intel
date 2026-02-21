@@ -23,6 +23,7 @@ import hmac
 
 from threat_model.threat_summarizer.summarizer import summarize_threat
 from threat_intel_aggregator.main import scheduled_job as collect_feeds
+from threat_intel_aggregator.knowledge_graph.graph_manager import ThreatKnowledgeGraph
 
 # Rate limiter setup
 limiter = Limiter(key_func=get_remote_address)
@@ -199,6 +200,20 @@ class ErrorResponse(BaseModel):
 # ----------- Config -----------
 
 from config import TRIGGER_SECRET, DATA_DIR
+
+
+# ----------- Knowledge Graph Helper -----------
+
+_kg_instance = None
+
+def get_kg():
+    """Returns the Knowledge Graph instance, refreshing from disk if needed."""
+    global _kg_instance
+    if _kg_instance is None:
+        _kg_instance = ThreatKnowledgeGraph()
+    else:
+        _kg_instance.load()
+    return _kg_instance
 
 
 # ----------- Exception Handler -----------
@@ -897,13 +912,144 @@ def get_email_status(request: Request):
     }
 
 
-# ----------- Legacy Route (backward compat) -----------
+# ----------- Knowledge Graph Routes -----------
 
-@app.post("/api/trigger-feed", tags=["Admin"], deprecated=True)
-@limiter.limit("2/minute")
-def trigger_feed_legacy(request: Request, body: TriggerRequest):
-    """Legacy endpoint - use /api/feeds/collect instead."""
-    return trigger_feed_collection(request, body)
+@app.get("/api/knowledge-graph", tags=["Knowledge Graph"])
+@limiter.limit("10/minute")
+def get_knowledge_graph(
+    request: Request,
+    limit: int = Query(default=100, ge=1, le=1000),
+    min_confidence: float = Query(default=0.3, ge=0.0, le=1.0)
+):
+    """
+    Get the current threat knowledge graph.
+    Returns a high-centrality subgraph by default to maintain performance.
+    """
+    try:
+        kg = get_kg()
+        top_nodes = kg.get_top_nodes(n=limit)
+        
+        # Filter nodes by confidence
+        node_ids = {n["id"] for n in top_nodes if n.get("confidence", 0) >= min_confidence}
+        
+        # Build subgraph
+        nodes = []
+        for node_id in node_ids:
+            nodes.append({
+                "data": {
+                    "id": node_id,
+                    **kg.graph.nodes[node_id]
+                }
+            })
+            
+        edges = []
+        for u, v, k, data in kg.graph.edges(data=True, keys=True):
+            if u in node_ids and v in node_ids:
+                edges.append({
+                    "data": {
+                        "id": f"{u}-{v}-{k}",
+                        "source": u,
+                        "target": v,
+                        **data
+                    }
+                })
+        
+        return {
+            "nodes": nodes,
+            "edges": edges,
+            "total_nodes": len(kg.graph.nodes),
+            "total_edges": len(kg.graph.edges)
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/knowledge-graph/query", tags=["Knowledge Graph"])
+@limiter.limit("30/minute")
+def query_knowledge_graph(
+    request: Request,
+    node: str = Query(..., description="The IOC or node ID to query"),
+    depth: int = Query(default=1, ge=1, le=2)
+):
+    """
+    Get the neighborhood of a specific node in the knowledge graph.
+    """
+    try:
+        kg = get_kg()
+        if not kg.graph.has_node(node):
+            raise HTTPException(status_code=404, detail=f"Node '{node}' not found in graph")
+            
+        subgraph_nodes = {node}
+        current_layer = {node}
+        
+        for _ in range(depth):
+            next_layer = set()
+            for n in current_layer:
+                next_layer.update(kg.graph.neighbors(n))
+                if kg.graph.is_directed():
+                    # For directed graph, also get predecessors
+                    next_layer.update(kg.graph.predecessors(n))
+            subgraph_nodes.update(next_layer)
+            current_layer = next_layer
+            
+        # Build response in Cytoscape format
+        nodes = []
+        for n_id in subgraph_nodes:
+            nodes.append({"data": {"id": n_id, **kg.graph.nodes[n_id]}})
+            
+        edges = []
+        for u, v, k, data in kg.graph.edges(data=True, keys=True):
+            if u in subgraph_nodes and v in subgraph_nodes:
+                edges.append({
+                    "data": {
+                        "id": f"{u}-{v}-{k}",
+                        "source": u,
+                        "target": v,
+                        **data
+                    }
+                })
+                
+        return {
+            "nodes": nodes,
+            "edges": edges
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/knowledge-graph/stats", tags=["Knowledge Graph"])
+@limiter.limit("30/minute")
+def get_knowledge_graph_stats(request: Request):
+    """
+    Get statistics about the knowledge graph.
+    """
+    try:
+        kg = get_kg()
+        import networkx as nx
+        
+        # Basic stats
+        node_count = len(kg.graph.nodes)
+        edge_count = len(kg.graph.edges)
+        density = nx.density(kg.graph)
+        
+        # Node types distribution
+        types = {}
+        for _, data in kg.graph.nodes(data=True):
+            t = data.get("type", "unknown")
+            types[t] = types.get(t, 0) + 1
+            
+        return {
+            "nodes": node_count,
+            "edges": edge_count,
+            "density": round(density, 6),
+            "by_type": types,
+            "schema_version": kg.SCHEMA_VERSION,
+            "last_updated": datetime.fromtimestamp(kg._last_loaded_time, timezone.utc).isoformat() if kg._last_loaded_time else None
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 # ----------- Run with Uvicorn -----------

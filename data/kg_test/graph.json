@@ -1,0 +1,30 @@
+{
+  "directed": true,
+  "multigraph": true,
+  "graph": {},
+  "nodes": [
+    {
+      "type": "ip",
+      "confidence": 0.4399999999994117,
+      "first_seen": "2026-02-21T01:46:32.656961+00:00",
+      "last_seen": "2026-01-22T01:46:32.658316+00:00",
+      "reviewed": false,
+      "id": "1.1.1.1"
+    },
+    {
+      "id": "example.com"
+    }
+  ],
+  "edges": [
+    {
+      "type": "CO_OCCURS_WITH",
+      "weight": 0.7999999999114312,
+      "context_id": "Article_1",
+      "timestamp": "2026-02-21T01:46:32.657907+00:00",
+      "source": "1.1.1.1",
+      "target": "example.com",
+      "key": "CO_OCCURS_WITH:Article_1"
+    }
+  ],
+  "schema_version": "1.0"
+}
