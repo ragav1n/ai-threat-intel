@@ -6,8 +6,9 @@ import json
 import csv
 import os
 import logging
+import hashlib
 from datetime import datetime
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional, Callable
 
 import feedparser
 from bs4 import BeautifulSoup
@@ -66,6 +67,12 @@ def get_severity_for_ioc(ioc_type: IOCType, confidence: float = 0.5) -> Severity
             return Severity.LOW
     
     return base_severity
+
+
+def generate_entry_id(url: str, title: str) -> str:
+    """Generates a stable SHA256 hash for a feed entry."""
+    unique_str = f"{url}|{title}"
+    return hashlib.sha256(unique_str.encode()).hexdigest()
 
 
 @retry(stop=stop_after_attempt(3), wait=wait_fixed(2))
@@ -183,12 +190,13 @@ def normalize_and_store_iocs(
     return normalized_entries
 
 
-def normalize_parsed_results(min_confidence: float = 0.3) -> List[Dict[str, Any]]:
+def normalize_parsed_results(min_confidence: float = 0.3, kg_callback: Optional[Callable] = None) -> List[Dict[str, Any]]:
     """
     Process raw feed data and extract normalized IOCs with confidence scores.
     
     Args:
         min_confidence: Minimum confidence threshold for IOCs.
+        kg_callback: Optional callback to update knowledge graph (List[IOC], context_id).
     
     Returns:
         List of all normalized IOC entries.
@@ -207,28 +215,51 @@ def normalize_parsed_results(min_confidence: float = 0.3) -> List[Dict[str, Any]
         if data.get("status") != "success":
             continue
 
-        # Parse HTML content
-        soup = BeautifulSoup(data.get("content", ""), "html.parser")
-        clean_text = soup.get_text(separator=" ")
-
-        found_iocs = normalize_and_store_iocs(
-            feed_name=feed_name,
-            text=clean_text,
-            source_url=data.get("url"),
-            timestamp=now,
-            min_confidence=min_confidence
-        )
-
-        if found_iocs:
-            print(f"✅ [{feed_name}] Found {len(found_iocs)} IOCs")
-            for ioc in found_iocs[:5]:  # Only print first 5
-                conf_str = f"{ioc['fused_confidence']:.0%}"
-                print(f"   • {ioc['type']} ({ioc['severity']}, {conf_str}): {ioc['ioc']}")
-            if len(found_iocs) > 5:
-                print(f"   ... and {len(found_iocs) - 5} more")
-            normalized.extend(found_iocs)
+        raw_content = data.get("content", "")
+        source_url = data.get("url", "")
+        
+        # Check if it's a feed (RSS/Atom)
+        parsed_feed = feedparser.parse(raw_content)
+        
+        if parsed_feed.entries:
+            # RSS/Atom feed detected - process individual entries
+            for entry in parsed_feed.entries:
+                title = entry.get("title", "")
+                summary = entry.get("summary", "")
+                entry_text = f"{title} {summary}"
+                entry_url = entry.get("link", source_url)
+                entry_id = generate_entry_id(entry_url, title)
+                
+                found_iocs = normalize_and_store_iocs(
+                    feed_name=feed_name,
+                    text=entry_text,
+                    source_url=entry_url,
+                    timestamp=now,
+                    min_confidence=min_confidence
+                )
+                
+                if found_iocs:
+                    if kg_callback:
+                        kg_callback(found_iocs, entry_id)
+                    normalized.extend(found_iocs)
         else:
-            print(f"⚠️  [{feed_name}] No IOCs found")
+            # Simple HTML or plaintext
+            soup = BeautifulSoup(raw_content, "html.parser")
+            clean_text = soup.get_text(separator=" ")
+            entry_id = generate_entry_id(source_url, feed_name)
+
+            found_iocs = normalize_and_store_iocs(
+                feed_name=feed_name,
+                text=clean_text,
+                source_url=source_url,
+                timestamp=now,
+                min_confidence=min_confidence
+            )
+
+            if found_iocs:
+                if kg_callback:
+                    kg_callback(found_iocs, entry_id)
+                normalized.extend(found_iocs)
 
     # Save to JSON (includes confidence field)
     try:
