@@ -37,15 +37,20 @@ This document tracks the high-level implementation status of the AI Threat Intel
 - **Visual Overhaul**: Standardized Lucide `Network` iconography and implemented a high-contrast SOC-grade dark theme.
 - **API Guardrails**: Enforced 300-node subgraph limits to ensure dashboard stability even with massive datasets.
 
+### **Phase 3: Temporal Campaign Detection**
+
+**Status:** Completed & Deployed  
+**Core Features:**
+
+- **Louvain Community Detection**: Applies the Louvain algorithm on an IOC-only graph projection (context nodes excluded), detecting coordinated threat clusters.
+- **Temporal Enrichment**: Tracks `first_seen`, `last_seen`, and `duration_hours` per campaign from Knowledge Graph node timestamps.
+- **Campaign Filtering**: Discards trivial communities (< 3 IOCs) to reduce noise. Auto-generates labels from dominant IOC type + date.
+- **MongoDB Persistence**: Stores detected campaigns with severity distribution, confidence stats, and IOC membership.
+- **Campaign API**: Four new REST endpoints — list, detail, stats, and timeline — with rate limiting and pagination.
+- **Scheduler Integration**: Campaign detection runs every 30 minutes via `job_detect_campaigns()`.
+- **Test Suite**: 18 tests covering community detection, temporal enrichment, filtering, labeling, timeline generation, and model serialization.
+
 ## Upcoming Phases (To Be Implemented)
-
-### **Phase 3: Temporal Campaign Detection (Current Focus)**
-
-**Goal**: Detect coordinated campaigns by analyzing IOC occurrences over time.
-
-- **Temporal Analysis**: Track "first seen" and "last seen" timestamps per campaign.
-- **Community Detection**: Use Louvain/Leiden algorithms to find clusters of related activity.
-- **Campaign API**: Endpoints to retrieve and visualize campaigns.
 
 ### **Phase 4: GraphRAG-Enhanced Summarization**
 
