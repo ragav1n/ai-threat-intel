@@ -1147,6 +1147,167 @@ def get_knowledge_graph_stats(request: Request):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+# ----------- Campaign Routes -----------
+
+@app.get("/api/campaigns", tags=["Campaigns"])
+@limiter.limit("30/minute")
+def get_campaigns(
+    request: Request,
+    limit: int = Query(default=50, ge=1, le=200),
+    sort_by: str = Query(default="last_seen", description="Sort by: last_seen, ioc_count, avg_confidence"),
+    active_only: bool = Query(default=False, description="Only return campaigns active in last 48h"),
+):
+    """
+    List detected threat campaigns.
+    """
+    try:
+        from threat_intel_aggregator.feed_collection.mongo_writer import get_campaign_collection
+
+        collection = get_campaign_collection()
+
+        # Validate sort field
+        allowed_sorts = {"last_seen", "ioc_count", "avg_confidence", "first_seen", "detected_at"}
+        if sort_by not in allowed_sorts:
+            sort_by = "last_seen"
+
+        query = {}
+        if active_only:
+            from datetime import timedelta
+            cutoff = (datetime.now(timezone.utc) - timedelta(hours=48)).isoformat()
+            query["last_seen"] = {"$gte": cutoff}
+
+        campaigns = list(
+            collection.find(query, {"_id": 0, "ioc_members": 0})
+            .sort(sort_by, -1)
+            .limit(limit)
+        )
+
+        return {
+            "count": len(campaigns),
+            "total_available": collection.count_documents(query),
+            "campaigns": campaigns,
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/campaigns/stats", tags=["Campaigns"])
+@limiter.limit("30/minute")
+def get_campaign_stats(request: Request):
+    """
+    Get aggregate campaign statistics.
+    """
+    try:
+        from threat_intel_aggregator.feed_collection.mongo_writer import get_campaign_collection
+        from datetime import timedelta
+
+        collection = get_campaign_collection()
+
+        total = collection.count_documents({})
+        cutoff_48h = (datetime.now(timezone.utc) - timedelta(hours=48)).isoformat()
+        active = collection.count_documents({"last_seen": {"$gte": cutoff_48h}})
+
+        # Aggregation for avg IOC count and top severity
+        pipeline = [
+            {"$facet": {
+                "avg_ioc_count": [
+                    {"$group": {"_id": None, "avg": {"$avg": "$ioc_count"}}}
+                ],
+                "total_iocs_in_campaigns": [
+                    {"$group": {"_id": None, "total": {"$sum": "$ioc_count"}}}
+                ],
+                "largest_campaign": [
+                    {"$sort": {"ioc_count": -1}},
+                    {"$limit": 1},
+                    {"$project": {"label": 1, "ioc_count": 1, "_id": 0}}
+                ],
+            }}
+        ]
+        facet_result = list(collection.aggregate(pipeline))
+        facet = facet_result[0] if facet_result else {}
+
+        avg_ioc = facet.get("avg_ioc_count", [{}])
+        avg_ioc_count = avg_ioc[0].get("avg", 0) if avg_ioc else 0
+
+        total_iocs = facet.get("total_iocs_in_campaigns", [{}])
+        total_iocs_count = total_iocs[0].get("total", 0) if total_iocs else 0
+
+        largest = facet.get("largest_campaign", [None])
+        largest_campaign = largest[0] if largest else None
+
+        return {
+            "total_campaigns": total,
+            "active_campaigns": active,
+            "avg_ioc_count": round(avg_ioc_count, 1),
+            "total_iocs_in_campaigns": total_iocs_count,
+            "largest_campaign": largest_campaign,
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/campaigns/timeline", tags=["Campaigns"])
+@limiter.limit("30/minute")
+def get_campaign_timeline(
+    request: Request,
+    period: str = Query(default="30d", description="Time period: 7d, 30d, 90d"),
+):
+    """
+    Get time-series data of campaign activity for charting.
+    """
+    try:
+        from threat_intel_aggregator.feed_collection.mongo_writer import get_campaign_collection
+        from threat_intel_aggregator.campaign_detector.models import Campaign
+        from threat_intel_aggregator.campaign_detector.temporal import build_campaign_timeline
+
+        period_map = {"7d": 7, "30d": 30, "90d": 90}
+        days = period_map.get(period, 30)
+
+        collection = get_campaign_collection()
+        raw_campaigns = list(collection.find({}, {"_id": 0}))
+
+        # Reconstruct Campaign objects for timeline generation
+        campaigns = []
+        for doc in raw_campaigns:
+            try:
+                campaigns.append(Campaign.from_dict(doc))
+            except Exception:
+                continue
+
+        timeline = build_campaign_timeline(campaigns, period_days=days)
+
+        return {
+            "period": period,
+            "data": timeline,
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/campaigns/{campaign_id}", tags=["Campaigns"])
+@limiter.limit("30/minute")
+def get_campaign_detail(
+    request: Request,
+    campaign_id: str,
+):
+    """
+    Get full details of a single campaign, including IOC member list.
+    """
+    try:
+        from threat_intel_aggregator.feed_collection.mongo_writer import get_campaign_collection
+
+        collection = get_campaign_collection()
+        campaign = collection.find_one({"campaign_id": campaign_id}, {"_id": 0})
+
+        if not campaign:
+            raise HTTPException(status_code=404, detail=f"Campaign '{campaign_id}' not found")
+
+        return campaign
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 # ----------- Run with Uvicorn -----------
 

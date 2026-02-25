@@ -209,3 +209,52 @@ def get_ioc_stats() -> Dict[str, Any]:
     except Exception as e:
         print(f"❌ Failed to get IOC stats: {e}")
         return {"total": 0, "by_type": {}, "by_severity": {}}
+
+
+# ----------- Campaign Persistence -----------
+
+
+def get_campaign_collection():
+    """Get the campaigns collection from MongoDB."""
+    config = get_config()
+    client = get_mongo_client()
+    db = client[config.mongo.database]
+    return db["campaigns"]
+
+
+def write_campaigns_to_mongo(campaigns) -> Dict[str, int]:
+    """
+    Write detected campaigns to MongoDB with upsert.
+
+    Args:
+        campaigns: List of Campaign objects (from campaign_detector.models).
+
+    Returns:
+        Dictionary with upserted/error counts.
+    """
+    from pymongo import UpdateOne
+
+    stats = {"upserted": 0, "errors": 0}
+
+    try:
+        collection = get_campaign_collection()
+
+        operations = []
+        for campaign in campaigns:
+            doc = campaign.to_dict()
+            operations.append(
+                UpdateOne({"_id": doc["_id"]}, {"$set": doc}, upsert=True)
+            )
+
+        if operations:
+            result = collection.bulk_write(operations, ordered=False)
+            stats["upserted"] = result.upserted_count + result.modified_count
+
+        print(f"✅ Campaigns persisted: {stats['upserted']} records")
+        return stats
+
+    except Exception as e:
+        print(f"❌ Campaign write failed: {e}")
+        stats["errors"] += 1
+        return stats
+

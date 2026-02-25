@@ -72,6 +72,28 @@ def job_summarize():
 def job_export():
     safe_run(lambda: export_by_severity("High"), "Export High Severity")
 
+def job_detect_campaigns():
+    """Phase 3: Run Louvain community detection on the Knowledge Graph."""
+    def _detect():
+        from threat_intel_aggregator.knowledge_graph.graph_manager import ThreatKnowledgeGraph
+        from threat_intel_aggregator.campaign_detector import CampaignDetector
+        from threat_intel_aggregator.feed_collection.mongo_writer import write_campaigns_to_mongo
+
+        kg = ThreatKnowledgeGraph(data_dir="data/knowledge_graph", read_only=True)
+        detector = CampaignDetector(min_community_size=3, resolution=1.0)
+        campaigns = detector.detect(kg)
+        kg.close()
+
+        if campaigns:
+            stats = write_campaigns_to_mongo(campaigns)
+            print(f"🔍 Campaign Detection: {len(campaigns)} campaigns → {stats}")
+        else:
+            print("🔍 Campaign Detection: No campaigns detected")
+
+        return campaigns
+
+    safe_run(_detect, "Detect Campaigns")
+
 def log_metrics():
     print(f"📊 [Metrics] IOCs: {metrics['ioc_processed']}, Emails: {metrics['emails_sent']}, Errors: {metrics['errors_logged']}")
     logging.info(f"📊 Metrics — IOCs: {metrics['ioc_processed']}, Emails: {metrics['emails_sent']}, Errors: {metrics['errors_logged']}")
@@ -81,6 +103,7 @@ scheduler = BackgroundScheduler()
 scheduler.add_job(job_collect_feeds, 'interval', minutes=10)
 scheduler.add_job(job_summarize, 'interval', minutes=5)
 scheduler.add_job(job_export, 'interval', minutes=30)
+scheduler.add_job(job_detect_campaigns, 'interval', minutes=30)
 scheduler.add_job(log_metrics, 'interval', minutes=60)
 
 scheduler.start()
@@ -91,6 +114,7 @@ print("⚡ Running all jobs once immediately...\n")
 job_collect_feeds()
 job_summarize()
 job_export()
+job_detect_campaigns()
 log_metrics()
 
 logging.info("🕒 Threat Intelligence Pipeline Scheduler started.")
@@ -102,3 +126,4 @@ except (KeyboardInterrupt, SystemExit):
     scheduler.shutdown()
     logging.info("🔴 Scheduler stopped.")
     print("🔴 Scheduler stopped.")
+
