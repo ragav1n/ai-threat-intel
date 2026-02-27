@@ -258,3 +258,46 @@ def write_campaigns_to_mongo(campaigns) -> Dict[str, int]:
         stats["errors"] += 1
         return stats
 
+
+# ----------- Prediction Persistence (Phase 4) -----------
+
+
+def get_prediction_collection():
+    """Get the predictions collection from MongoDB."""
+    config = get_config()
+    client = get_mongo_client()
+    db = client[config.mongo.database]
+    return db["predictions"]
+
+
+def write_prediction_to_mongo(prediction) -> dict:
+    """
+    Write a TTP prediction to MongoDB.
+
+    Args:
+        prediction: TTPPrediction object (from predictive_graphrag.models).
+
+    Returns:
+        Dictionary with upserted status.
+    """
+    from pymongo import UpdateOne
+
+    try:
+        collection = get_prediction_collection()
+        doc = prediction.to_dict()
+
+        result = collection.update_one(
+            {"_id": doc["_id"]},
+            {"$set": doc},
+            upsert=True,
+        )
+
+        status = "upserted" if result.upserted_id else "updated"
+        print(f"✅ Prediction persisted: {status}")
+        return {"status": status, "id": doc["_id"]}
+
+    except Exception as e:
+        print(f"❌ Prediction write failed: {e}")
+        return {"status": "error", "error": str(e)}
+
+

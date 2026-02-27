@@ -50,15 +50,24 @@ This document tracks the high-level implementation status of the AI Threat Intel
 - **Scheduler Integration**: Campaign detection runs every 30 minutes via `job_detect_campaigns()`.
 - **Test Suite**: 18 tests covering community detection, temporal enrichment, filtering, labeling, timeline generation, and model serialization.
 
+### **Phase 4: Agentic Predictive GraphRAG (Threat Forecasting)**
+
+**Status:** Completed & Deployed  
+**Core Features:**
+
+- **GraphContextRetriever**: Traverses the Knowledge Graph to extract IOC neighborhoods, temporal context, severity distributions, and co-occurrence patterns for each campaign.
+- **MITRE ATT&CK RAG Integration**: Queries ChromaDB-backed MITRE ATT&CK embeddings to retrieve relevant techniques based on campaign IOC types and severity profiles.
+- **3-Step Agentic LLM Pipeline**:
+  1. **Stage Classification**: Classifies the campaign's current MITRE ATT&CK kill chain stage.
+  2. **Graph-Informed Reasoning**: Uses KG neighbors + MITRE context to reason about the attacker's next logical move.
+  3. **Probabilistic TTP Prediction**: Outputs top-3 predicted next MITRE ATT&CK techniques with confidence scores and defensive recommendations.
+- **Graceful Degradation**: Falls back to kill-chain-based predictions when Ollama is unavailable.
+- **Prediction API**: Three new REST endpoints — `POST /api/predict/campaign/{id}`, `GET /api/predict/stats`, `GET /api/predict/history/{id}` — with 2/min rate limiting.
+- **MongoDB Persistence**: Stores predictions in a `predictions` collection with deterministic IDs for deduplication.
+- **Scheduler Integration**: TTP prediction runs every 60 minutes via `job_predict_ttps()` for active campaigns.
+- **Test Suite**: 25 tests covering models, graph traversal, JSON extraction, fallback predictions, and full pipeline integration with mocked LLM.
+
 ## Upcoming Phases (To Be Implemented)
-
-### **Phase 4: GraphRAG-Enhanced Summarization**
-
-**Goal**: Use the Knowledge Graph to provide context-aware summaries.
-
-- **Context Retrieval**: Fetch related graph nodes (e.g., "This IP is linked to Actor X").
-- **RAG Integration**: Inject graph context into LLM prompts for deeper analysis.
-- **Enhanced Reports**: Summaries that explain _why_ an IOC is dangerous, not just _that_ it is.
 
 ### **Phase 5: Evaluation Framework**
 
