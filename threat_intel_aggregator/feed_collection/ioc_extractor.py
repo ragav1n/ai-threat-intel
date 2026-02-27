@@ -23,7 +23,7 @@ IOC_PATTERNS: dict[IOCType, str] = {
     IOCType.IP: r"\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b",
     IOCType.IPV6: r"\b(?:[A-Fa-f0-9]{1,4}:){1,7}[A-Fa-f0-9]{1,4}\b",
     IOCType.DOMAIN: r"\b(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}\b",
-    IOCType.URL: r"https?://[^\s\"'<>]+",
+    IOCType.URL: r"(?:https?|ftp)://[^\s\"'<>]+",
     IOCType.MD5: r"\b[a-fA-F\d]{32}\b",
     IOCType.SHA1: r"\b[a-fA-F\d]{40}\b",
     IOCType.SHA256: r"\b[a-fA-F\d]{64}\b",
@@ -36,6 +36,22 @@ DOMAIN_BLACKLIST = {
     "example.com", "localhost.localdomain", "test.com",
     "gmail.com", "yahoo.com", "hotmail.com",  # Email providers aren't IOCs
     "google.com", "microsoft.com", "github.com",  # Common legitimate domains
+    "outlook.com", "live.com", "icloud.com", "protonmail.com",
+    "linkedin.com", "twitter.com", "facebook.com", "apple.com",
+    "amazon.com", "cloudflare.com", "mozilla.org",
+}
+
+# File extensions that look like domains but aren't IOCs
+FILE_EXTENSION_BLACKLIST = {
+    ".exe", ".dll", ".sys", ".bin", ".dat", ".tmp",
+    ".zip", ".rar", ".7z", ".tar", ".gz", ".bz2",
+    ".js", ".php", ".html", ".htm", ".css", ".asp", ".aspx", ".jsp",
+    ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".csv", ".txt", ".rtf",
+    ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".svg", ".ico",
+    ".mp3", ".mp4", ".avi", ".mov", ".wav",
+    ".py", ".rb", ".java", ".cpp", ".go", ".rs",
+    ".json", ".xml", ".yaml", ".yml", ".ini", ".cfg", ".log",
+    ".iso", ".img", ".dmg", ".apk", ".msi",
 }
 
 # High-value TLDs that increase confidence
@@ -103,10 +119,27 @@ def is_valid_ipv6(ip_str: str) -> bool:
         return False
 
 
+# RFC 5737 documentation ranges — these are NOT private and should be extractable
+_DOCUMENTATION_RANGES = [
+    ipaddress.ip_network("192.0.2.0/24"),     # TEST-NET-1
+    ipaddress.ip_network("198.51.100.0/24"),   # TEST-NET-2
+    ipaddress.ip_network("203.0.113.0/24"),    # TEST-NET-3
+]
+
+
 def is_private_ip(ip_str: str) -> bool:
-    """Check if IP is private/reserved (not a threat indicator)."""
+    """Check if IP is private/reserved (not a threat indicator).
+    
+    Note: RFC 5737 documentation ranges (192.0.2.0/24, 198.51.100.0/24,
+    203.0.113.0/24) are treated as public for IOC extraction purposes,
+    since they are commonly used in threat reports as example IOCs.
+    """
     try:
         addr = ipaddress.ip_address(ip_str)
+        # Allow documentation ranges through (commonly used as example IOCs)
+        for net in _DOCUMENTATION_RANGES:
+            if addr in net:
+                return False
         return addr.is_private or addr.is_loopback or addr.is_reserved
     except ValueError:
         return False
@@ -294,6 +327,11 @@ def extract_iocs_with_confidence(
     if was_deobfuscated:
         logger.info("🔧 Text was deobfuscated before IOC extraction")
     
+    # Phase 2: Extract URLs first so we can dedup domains later
+    extracted_urls: set[str] = set()
+    for match in re.finditer(IOC_PATTERNS[IOCType.URL], text):
+        extracted_urls.add(match.group().lower())
+    
     for ioc_type, pattern in IOC_PATTERNS.items():
         for match in re.finditer(pattern, text):
             item = match.group()
@@ -317,7 +355,19 @@ def extract_iocs_with_confidence(
                     continue
                     
             elif ioc_type == IOCType.DOMAIN:
-                if item.lower() in DOMAIN_BLACKLIST:
+                item_lower = item.lower()
+                # Skip blacklisted domains
+                if item_lower in DOMAIN_BLACKLIST:
+                    continue
+                # Skip file-extension-like matches (payload.exe, script.js, etc.)
+                last_dot = item_lower.rfind('.')
+                if last_dot >= 0:
+                    extension = item_lower[last_dot:]
+                    if extension in FILE_EXTENSION_BLACKLIST:
+                        continue
+                # Skip domains that are substrings of already-extracted URLs
+                # (the URL itself is the more specific indicator)
+                if any(item_lower in url for url in extracted_urls):
                     continue
             
             # Calculate confidence
