@@ -98,12 +98,69 @@ def log_metrics():
     print(f"📊 [Metrics] IOCs: {metrics['ioc_processed']}, Emails: {metrics['emails_sent']}, Errors: {metrics['errors_logged']}")
     logging.info(f"📊 Metrics — IOCs: {metrics['ioc_processed']}, Emails: {metrics['emails_sent']}, Errors: {metrics['errors_logged']}")
 
+def job_predict_ttps():
+    """Phase 4: Run agentic TTP prediction for active campaigns."""
+    def _predict():
+        from threat_intel_aggregator.feed_collection.mongo_writer import (
+            get_campaign_collection,
+            get_prediction_collection,
+            write_prediction_to_mongo,
+        )
+        from threat_intel_aggregator.predictive_graphrag.graph_traversal import GraphContextRetriever
+        from threat_intel_aggregator.predictive_graphrag.ttp_predictor import TTPPredictor
+        from datetime import timedelta
+
+        # Only predict for campaigns active in last 48h
+        cutoff = (datetime.now() - timedelta(hours=48)).isoformat()
+        campaign_coll = get_campaign_collection()
+        prediction_coll = get_prediction_collection()
+
+        active_campaigns = list(campaign_coll.find(
+            {"last_seen": {"$gte": cutoff}},
+            {"_id": 0}
+        ).limit(10))
+
+        if not active_campaigns:
+            print("🔮 No active campaigns to predict for")
+            return []
+
+        # Skip campaigns already predicted today
+        today = datetime.now().strftime("%Y-%m-%d")
+        retriever = GraphContextRetriever()
+        predictor = TTPPredictor()
+        results = []
+
+        for campaign in active_campaigns:
+            cid = campaign.get("campaign_id", "")
+            existing = prediction_coll.find_one({
+                "campaign_id": cid,
+                "generated_at": {"$regex": f"^{today}"}
+            })
+            if existing:
+                continue
+
+            try:
+                context = retriever.retrieve_campaign_context(campaign)
+                prediction = predictor.predict(context)
+                write_prediction_to_mongo(prediction)
+                results.append(prediction)
+                print(f"🔮 Predicted TTPs for {campaign.get('label', cid)}")
+            except Exception as e:
+                logging.error(f"❌ Prediction failed for {cid}: {e}")
+
+        retriever.close()
+        print(f"🔮 TTP Prediction complete: {len(results)} new predictions")
+        return results
+
+    safe_run(_predict, "Predict TTPs")
+
 scheduler = BackgroundScheduler()
 
 scheduler.add_job(job_collect_feeds, 'interval', minutes=10)
 scheduler.add_job(job_summarize, 'interval', minutes=5)
 scheduler.add_job(job_export, 'interval', minutes=30)
 scheduler.add_job(job_detect_campaigns, 'interval', minutes=30)
+scheduler.add_job(job_predict_ttps, 'interval', minutes=60)
 scheduler.add_job(log_metrics, 'interval', minutes=60)
 
 scheduler.start()
@@ -115,6 +172,7 @@ job_collect_feeds()
 job_summarize()
 job_export()
 job_detect_campaigns()
+job_predict_ttps()
 log_metrics()
 
 logging.info("🕒 Threat Intelligence Pipeline Scheduler started.")
@@ -126,4 +184,5 @@ except (KeyboardInterrupt, SystemExit):
     scheduler.shutdown()
     logging.info("🔴 Scheduler stopped.")
     print("🔴 Scheduler stopped.")
+
 

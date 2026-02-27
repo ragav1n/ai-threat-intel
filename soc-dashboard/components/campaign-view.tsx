@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -11,7 +11,6 @@ import {
   Clock,
   TrendingUp,
   ChevronDown,
-  ChevronUp,
   Crosshair,
   Flame,
   Zap,
@@ -253,9 +252,8 @@ export default function CampaignView() {
                 const isExpanded = expandedId === c.campaign_id
 
                 return (
-                  <motion.div
+                  <div
                     key={c.campaign_id}
-                    layout
                     className="rounded-lg border border-border/40 bg-secondary/30 hover:bg-secondary/50 transition-colors overflow-hidden"
                   >
                     {/* Campaign Row */}
@@ -278,73 +276,93 @@ export default function CampaignView() {
                         <span className="text-xs text-muted-foreground">
                           conf: {(c.avg_confidence * 100).toFixed(0)}%
                         </span>
-                        {isExpanded ? (
-                          <ChevronUp className="h-4 w-4 text-muted-foreground" />
-                        ) : (
+                        <motion.div
+                          animate={{ rotate: isExpanded ? 180 : 0 }}
+                          transition={{ duration: 0.2 }}
+                        >
                           <ChevronDown className="h-4 w-4 text-muted-foreground" />
-                        )}
+                        </motion.div>
                       </div>
                     </button>
 
                     {/* Expanded Detail */}
-                    {isExpanded && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        className="px-4 pb-4 border-t border-border/30"
-                      >
-                        {detailLoading ? (
-                          <div className="py-6 text-center text-xs text-muted-foreground animate-pulse">Loading...</div>
-                        ) : campaignDetail ? (
-                          <div className="pt-3 space-y-3">
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
-                              <div>
-                                <span className="text-muted-foreground">First Seen</span>
-                                <p className="text-foreground font-mono mt-0.5">{new Date(campaignDetail.first_seen).toLocaleString()}</p>
-                              </div>
-                              <div>
-                                <span className="text-muted-foreground">Last Seen</span>
-                                <p className="text-foreground font-mono mt-0.5">{new Date(campaignDetail.last_seen).toLocaleString()}</p>
-                              </div>
-                              <div>
-                                <span className="text-muted-foreground">Max Confidence</span>
-                                <p className="text-foreground font-mono mt-0.5">{(campaignDetail.max_confidence * 100).toFixed(1)}%</p>
-                              </div>
-                              <div>
-                                <span className="text-muted-foreground">Severity Breakdown</span>
-                                <div className="flex gap-1 mt-1 flex-wrap">
-                                  {Object.entries(campaignDetail.severity_distribution || {}).map(([sev, count]) => {
-                                    const s = SEVERITY_BADGE[sev] || SEVERITY_BADGE.Unknown
-                                    return (
-                                      <Badge key={sev} className={`${s.bg} ${s.color} border text-[10px] px-1.5 py-0`}>
-                                        {sev}: {count as number}
+                    <AnimatePresence initial={false}>
+                      {isExpanded && (
+                        <motion.div
+                          key="detail"
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{
+                            opacity: 1,
+                            height: 'auto',
+                            transition: {
+                              height: { duration: 0.3, ease: [0.32, 0.725, 0.32, 1] },
+                              opacity: { duration: 0.2, delay: 0.1 },
+                            },
+                          }}
+                          exit={{
+                            opacity: 0,
+                            height: 0,
+                            transition: {
+                              height: { duration: 0.25, ease: [0.32, 0.725, 0.32, 1] },
+                              opacity: { duration: 0.15 },
+                            },
+                          }}
+                          className="overflow-hidden"
+                        >
+                          <div className="px-4 pb-4 border-t border-border/30">
+                            {detailLoading ? (
+                              <div className="py-6 text-center text-xs text-muted-foreground animate-pulse">Loading...</div>
+                            ) : campaignDetail ? (
+                              <div className="pt-3 space-y-3">
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+                                  <div>
+                                    <span className="text-muted-foreground">First Seen</span>
+                                    <p className="text-foreground font-mono mt-0.5">{new Date(campaignDetail.first_seen).toLocaleString()}</p>
+                                  </div>
+                                  <div>
+                                    <span className="text-muted-foreground">Last Seen</span>
+                                    <p className="text-foreground font-mono mt-0.5">{new Date(campaignDetail.last_seen).toLocaleString()}</p>
+                                  </div>
+                                  <div>
+                                    <span className="text-muted-foreground">Max Confidence</span>
+                                    <p className="text-foreground font-mono mt-0.5">{(campaignDetail.max_confidence * 100).toFixed(1)}%</p>
+                                  </div>
+                                  <div>
+                                    <span className="text-muted-foreground">Severity Breakdown</span>
+                                    <div className="flex gap-1 mt-1 flex-wrap">
+                                      {Object.entries(campaignDetail.severity_distribution || {}).map(([sev, count]) => {
+                                        const s = SEVERITY_BADGE[sev] || SEVERITY_BADGE.Unknown
+                                        return (
+                                          <Badge key={sev} className={`${s.bg} ${s.color} border text-[10px] px-1.5 py-0`}>
+                                            {sev}: {count as number}
+                                          </Badge>
+                                        )
+                                      })}
+                                    </div>
+                                  </div>
+                                </div>
+                                <Separator className="bg-border/30" />
+                                <div>
+                                  <span className="text-xs text-muted-foreground">IOC Members ({campaignDetail.ioc_count})</span>
+                                  <div className="mt-1.5 flex flex-wrap gap-1.5 max-h-36 overflow-y-auto">
+                                    {(campaignDetail.ioc_members || []).map((ioc: string) => (
+                                      <Badge
+                                        key={ioc}
+                                        variant="outline"
+                                        className="font-mono text-[10px] text-foreground/80 bg-muted/30 border-border/50"
+                                      >
+                                        {ioc}
                                       </Badge>
-                                    )
-                                  })}
+                                    ))}
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                            <Separator className="bg-border/30" />
-                            <div>
-                              <span className="text-xs text-muted-foreground">IOC Members ({campaignDetail.ioc_count})</span>
-                              <div className="mt-1.5 flex flex-wrap gap-1.5 max-h-36 overflow-y-auto">
-                                {(campaignDetail.ioc_members || []).map((ioc: string) => (
-                                  <Badge
-                                    key={ioc}
-                                    variant="outline"
-                                    className="font-mono text-[10px] text-foreground/80 bg-muted/30 border-border/50"
-                                  >
-                                    {ioc}
-                                  </Badge>
-                                ))}
-                              </div>
-                            </div>
+                            ) : null}
                           </div>
-                        ) : null}
-                      </motion.div>
-                    )}
-                  </motion.div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
                 )
               })
             )}

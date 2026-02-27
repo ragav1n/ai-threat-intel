@@ -1309,6 +1309,165 @@ def get_campaign_detail(
         raise HTTPException(status_code=500, detail=str(e))
 
 
+# ----------- Prediction Routes (Phase 4) -----------
+
+@app.post("/api/predict/campaign/{campaign_id}", tags=["Predictions"])
+@limiter.limit("2/minute")
+def predict_campaign_ttp(
+    request: Request,
+    campaign_id: str,
+    model: str = Query(default="qwen2.5:7b", description="LLM model for prediction"),
+):
+    """
+    Run the agentic TTP prediction pipeline for a campaign.
+
+    Uses a 3-step pipeline:
+      1. Classify current MITRE ATT&CK kill chain stage
+      2. Graph-informed reasoning about attacker's next move
+      3. Probabilistic next-TTP prediction with defensive recommendations
+
+    Rate limited to 2/min due to multiple LLM calls per prediction.
+    """
+    try:
+        from threat_intel_aggregator.feed_collection.mongo_writer import (
+            get_campaign_collection,
+            get_prediction_collection,
+            write_prediction_to_mongo,
+        )
+        from threat_intel_aggregator.predictive_graphrag.graph_traversal import GraphContextRetriever
+        from threat_intel_aggregator.predictive_graphrag.ttp_predictor import TTPPredictor
+
+        # 1. Fetch the campaign
+        collection = get_campaign_collection()
+        campaign = collection.find_one({"campaign_id": campaign_id}, {"_id": 0})
+        if not campaign:
+            raise HTTPException(status_code=404, detail=f"Campaign '{campaign_id}' not found")
+
+        # 2. Retrieve rich context
+        retriever = GraphContextRetriever(kg=get_kg())
+        context = retriever.retrieve_campaign_context(campaign)
+
+        # 3. Run agentic prediction pipeline
+        predictor = TTPPredictor(model=model)
+        prediction = predictor.predict(context)
+
+        # 4. Persist prediction
+        try:
+            write_prediction_to_mongo(prediction)
+        except Exception as e:
+            print(f"⚠️ Prediction persistence failed: {e}")
+
+        return prediction.to_dict()
+
+    except HTTPException:
+        raise
+    except RuntimeError as e:
+        raise HTTPException(status_code=503, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/predict/stats", tags=["Predictions"])
+@limiter.limit("30/minute")
+def get_prediction_stats(request: Request):
+    """
+    Get aggregate prediction statistics.
+    """
+    try:
+        from threat_intel_aggregator.feed_collection.mongo_writer import get_prediction_collection
+
+        collection = get_prediction_collection()
+        total = collection.count_documents({})
+
+        if total == 0:
+            return {
+                "total_predictions": 0,
+                "unique_campaigns_predicted": 0,
+                "most_predicted_tactic": None,
+                "avg_prediction_confidence": 0.0,
+            }
+
+        # Aggregate stats
+        pipeline = [
+            {"$facet": {
+                "unique_campaigns": [
+                    {"$group": {"_id": "$campaign_id"}},
+                    {"$count": "count"},
+                ],
+                "tactic_distribution": [
+                    {"$unwind": "$predictions"},
+                    {"$group": {
+                        "_id": "$predictions.tactic",
+                        "count": {"$sum": 1},
+                        "avg_confidence": {"$avg": "$predictions.confidence"},
+                    }},
+                    {"$sort": {"count": -1}},
+                ],
+                "avg_confidence": [
+                    {"$unwind": "$predictions"},
+                    {"$group": {
+                        "_id": None,
+                        "avg": {"$avg": "$predictions.confidence"},
+                    }},
+                ],
+            }}
+        ]
+
+        facet = list(collection.aggregate(pipeline))
+        facet = facet[0] if facet else {}
+
+        unique = facet.get("unique_campaigns", [{}])
+        unique_count = unique[0].get("count", 0) if unique else 0
+
+        tactics = facet.get("tactic_distribution", [])
+        most_predicted = tactics[0]["_id"] if tactics else None
+
+        avg_conf = facet.get("avg_confidence", [{}])
+        avg_confidence = avg_conf[0].get("avg", 0.0) if avg_conf else 0.0
+
+        return {
+            "total_predictions": total,
+            "unique_campaigns_predicted": unique_count,
+            "most_predicted_tactic": most_predicted,
+            "avg_prediction_confidence": round(avg_confidence, 4),
+            "tactic_distribution": {t["_id"]: t["count"] for t in tactics},
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/predict/history/{campaign_id}", tags=["Predictions"])
+@limiter.limit("30/minute")
+def get_prediction_history(
+    request: Request,
+    campaign_id: str,
+    limit: int = Query(default=10, ge=1, le=50),
+):
+    """
+    Get prediction history for a specific campaign.
+    """
+    try:
+        from threat_intel_aggregator.feed_collection.mongo_writer import get_prediction_collection
+
+        collection = get_prediction_collection()
+        predictions = list(
+            collection.find(
+                {"campaign_id": campaign_id},
+                {"_id": 0},
+            )
+            .sort("generated_at", -1)
+            .limit(limit)
+        )
+
+        return {
+            "campaign_id": campaign_id,
+            "count": len(predictions),
+            "predictions": predictions,
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 # ----------- Run with Uvicorn -----------
 
 if __name__ == "__main__":
