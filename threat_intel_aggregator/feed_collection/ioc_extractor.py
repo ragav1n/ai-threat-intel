@@ -23,7 +23,7 @@ IOC_PATTERNS: dict[IOCType, str] = {
     IOCType.IP: r"\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b",
     IOCType.IPV6: r"\b(?:[A-Fa-f0-9]{1,4}:){1,7}[A-Fa-f0-9]{1,4}\b",
     IOCType.DOMAIN: r"\b(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}\b",
-    IOCType.URL: r"(?:https?|ftp)://[^\s\"'<>]+",
+    IOCType.URL: r"(?:https?|ftp)://[^\s\"'<>]+[^\s\"'<>.,;:!?\)]",
     IOCType.MD5: r"\b[a-fA-F\d]{32}\b",
     IOCType.SHA1: r"\b[a-fA-F\d]{40}\b",
     IOCType.SHA256: r"\b[a-fA-F\d]{64}\b",

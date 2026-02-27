@@ -792,3 +792,296 @@ class TestGroundTruthSampleModel:
         e = ExpectedIOC("evil.com", "domain")
         d = e.to_dict()
         assert d == {"value": "evil.com", "type": "domain"}
+
+
+# ============================================================
+# Test 7: Baseline Comparison
+# ============================================================
+
+from threat_intel_aggregator.evaluation.baseline_comparison import (
+    run_baseline_comparison,
+    format_comparison_table,
+    BaselineResult,
+    _extract_with_iocextract,
+)
+
+
+class TestBaselineComparison:
+    """Tests for the baseline comparison module."""
+
+    def _make_samples(self):
+        return [
+            {
+                "text": "Malware connects to 185.220.101.34 and CVE-2024-21762",
+                "expected_iocs": [
+                    {"value": "185.220.101.34", "type": "ip"},
+                    {"value": "CVE-2024-21762", "type": "cve"},
+                ],
+                "category": "true_positive",
+            },
+            {
+                "text": "Clean text with nothing here.",
+                "expected_iocs": [],
+                "category": "true_negative",
+            },
+        ]
+
+    def test_run_returns_both_extractors(self):
+        """Should return results for both our pipeline and iocextract."""
+        results = run_baseline_comparison(self._make_samples())
+        assert "our_pipeline" in results
+        assert "iocextract" in results
+
+    def test_baseline_result_structure(self):
+        """BaselineResult should have P/R/F1 properties."""
+        results = run_baseline_comparison(self._make_samples())
+        for name, r in results.items():
+            assert isinstance(r, BaselineResult)
+            assert 0.0 <= r.precision <= 1.0
+            assert 0.0 <= r.recall <= 1.0
+            assert 0.0 <= r.f1 <= 1.0
+
+    def test_baseline_to_dict(self):
+        """to_dict should be JSON-serializable."""
+        results = run_baseline_comparison(self._make_samples())
+        for r in results.values():
+            d = r.to_dict()
+            json.dumps(d)  # Should not raise
+            assert "precision" in d
+            assert "per_type" in d
+
+    def test_format_table(self):
+        """format_comparison_table should return a non-empty string."""
+        results = run_baseline_comparison(self._make_samples())
+        table = format_comparison_table(results)
+        assert "BASELINE COMPARISON" in table
+        assert len(table) > 100
+
+    def test_iocextract_finds_ips(self):
+        """iocextract should at least find IP addresses."""
+        extracted = _extract_with_iocextract("Server at 185.220.101.34 is malicious")
+        values = {v for v, _ in extracted}
+        assert "185.220.101.34" in values
+
+
+# ============================================================
+# Test 8: Ablation Study
+# ============================================================
+
+from threat_intel_aggregator.evaluation.ablation_study import (
+    run_ablation_study,
+    format_ablation_table,
+    AblationConfig,
+    AblationResult,
+    ABLATION_CONFIGS,
+)
+
+
+class TestAblationStudy:
+    """Tests for the ablation study module."""
+
+    def _make_samples(self):
+        return [
+            {
+                "text": "The dropper contacts evil-domain[.]xyz for payload delivery.",
+                "expected_iocs": [{"value": "evil-domain.xyz", "type": "domain"}],
+                "category": "obfuscated",
+            },
+            {
+                "text": "Clean text with nothing.",
+                "expected_iocs": [],
+                "category": "true_negative",
+            },
+        ]
+
+    def test_returns_all_configs(self):
+        """Should return one result per config."""
+        results = run_ablation_study(self._make_samples())
+        assert len(results) == len(ABLATION_CONFIGS)
+
+    def test_ablation_result_structure(self):
+        """Each result should have valid P/R/F1."""
+        results = run_ablation_study(self._make_samples())
+        for r in results:
+            assert isinstance(r, AblationResult)
+            assert 0.0 <= r.precision <= 1.0
+            assert 0.0 <= r.recall <= 1.0
+
+    def test_deobfuscation_improves_recall(self):
+        """Config B (with deobfuscation) should have >= recall vs Config A (without)."""
+        results = run_ablation_study(self._make_samples())
+        regex_only = results[0]   # A
+        with_deobf = results[1]   # B
+        assert with_deobf.recall >= regex_only.recall
+
+    def test_format_table(self):
+        """format_ablation_table should return readable output."""
+        results = run_ablation_study(self._make_samples())
+        table = format_ablation_table(results)
+        assert "ABLATION STUDY" in table
+
+    def test_to_dict(self):
+        """AblationResult.to_dict should be JSON-serializable."""
+        results = run_ablation_study(self._make_samples())
+        for r in results:
+            d = r.to_dict()
+            json.dumps(d)
+            assert "config" in d
+            assert "f1" in d
+
+
+# ============================================================
+# Test 9: Bootstrap Confidence Intervals
+# ============================================================
+
+from threat_intel_aggregator.evaluation.bootstrap_ci import (
+    compute_bootstrap_ci,
+    format_bootstrap_table,
+    BootstrapResult,
+    ConfidenceInterval,
+)
+
+
+class TestBootstrapCI:
+    """Tests for the bootstrap confidence interval module."""
+
+    def _make_eval_samples(self):
+        return [
+            {
+                "expected_iocs": [{"value": "1.2.3.4", "type": "ip"}],
+                "extracted_iocs": [{"value": "1.2.3.4", "type": "ip", "confidence": 0.9}],
+            },
+            {
+                "expected_iocs": [{"value": "evil.com", "type": "domain"}],
+                "extracted_iocs": [{"value": "evil.com", "type": "domain", "confidence": 0.8}],
+            },
+            {"expected_iocs": [], "extracted_iocs": []},
+        ]
+
+    def test_returns_bootstrap_result(self):
+        """Should return a BootstrapResult."""
+        result = compute_bootstrap_ci(self._make_eval_samples(), n_iterations=100)
+        assert isinstance(result, BootstrapResult)
+
+    def test_ci_bounds(self):
+        """CI lower <= point estimate <= CI upper."""
+        result = compute_bootstrap_ci(self._make_eval_samples(), n_iterations=100)
+        for ci in [result.precision_ci, result.recall_ci, result.f1_ci]:
+            assert ci.ci_lower <= ci.point_estimate <= ci.ci_upper
+
+    def test_perfect_data_tight_ci(self):
+        """Perfect data should have tight CI (width near 0)."""
+        samples = [
+            {
+                "expected_iocs": [{"value": f"1.2.3.{i}", "type": "ip"}],
+                "extracted_iocs": [{"value": f"1.2.3.{i}", "type": "ip", "confidence": 0.9}],
+            }
+            for i in range(20)
+        ]
+        result = compute_bootstrap_ci(samples, n_iterations=500)
+        assert result.f1_ci.ci_width < 0.05  # Very tight
+
+    def test_reproducible_with_seed(self):
+        """Same seed should produce identical results."""
+        s = self._make_eval_samples()
+        r1 = compute_bootstrap_ci(s, n_iterations=100, seed=42)
+        r2 = compute_bootstrap_ci(s, n_iterations=100, seed=42)
+        assert r1.f1_ci.ci_lower == r2.f1_ci.ci_lower
+        assert r1.f1_ci.ci_upper == r2.f1_ci.ci_upper
+
+    def test_to_dict(self):
+        """to_dict should be JSON-serializable."""
+        result = compute_bootstrap_ci(self._make_eval_samples(), n_iterations=50)
+        d = result.to_dict()
+        json.dumps(d)
+        assert "precision" in d
+        assert "recall" in d
+        assert "f1" in d
+
+    def test_format_table(self):
+        """format_bootstrap_table should produce readable output."""
+        result = compute_bootstrap_ci(self._make_eval_samples(), n_iterations=50)
+        table = format_bootstrap_table(result)
+        assert "BOOTSTRAP" in table
+        assert "95% CI" in table
+
+
+# ============================================================
+# Test 10: Error Analysis
+# ============================================================
+
+from threat_intel_aggregator.evaluation.error_analysis import (
+    run_error_analysis,
+    format_error_analysis,
+    ErrorAnalysisResult,
+    ErrorInstance,
+)
+
+
+class TestErrorAnalysis:
+    """Tests for the error analysis module."""
+
+    def _make_samples(self):
+        return [
+            {
+                "id": "test_fp",
+                "text": "Connect to 185.220.101.34 at evil-phishing.xyz",
+                "expected_iocs": [{"value": "185.220.101.34", "type": "ip"}],
+                "extracted_iocs": [
+                    {"value": "185.220.101.34", "type": "ip", "confidence": 0.9},
+                    {"value": "evil-phishing.xyz", "type": "domain", "confidence": 0.7},
+                ],
+                "category": "true_positive",
+            },
+            {
+                "id": "test_fn",
+                "text": "Hidden IOC",
+                "expected_iocs": [{"value": "hidden-c2.ru", "type": "domain"}],
+                "extracted_iocs": [],
+                "category": "true_positive",
+            },
+        ]
+
+    def test_returns_error_analysis_result(self):
+        """Should return an ErrorAnalysisResult."""
+        result = run_error_analysis(self._make_samples())
+        assert isinstance(result, ErrorAnalysisResult)
+
+    def test_counts_fp_and_fn(self):
+        """Should correctly count FPs and FNs."""
+        result = run_error_analysis(self._make_samples())
+        assert result.total_fp == 1  # evil-phishing.xyz
+        assert result.total_fn == 1  # hidden-c2.ru
+
+    def test_categories_populated(self):
+        """FP and FN categories should be populated."""
+        result = run_error_analysis(self._make_samples())
+        assert len(result.fp_categories) > 0
+        assert len(result.fn_categories) > 0
+
+    def test_error_instances(self):
+        """Individual errors should have all required fields."""
+        result = run_error_analysis(self._make_samples())
+        for err in result.errors:
+            assert isinstance(err, ErrorInstance)
+            assert err.sample_id
+            assert err.value
+            assert err.ioc_type
+            assert err.error_type in ("false_positive", "false_negative")
+            assert err.category
+            assert err.explanation
+
+    def test_to_dict(self):
+        """to_dict should be JSON-serializable."""
+        result = run_error_analysis(self._make_samples())
+        d = result.to_dict()
+        json.dumps(d)
+        assert "fp_categories" in d
+        assert "fn_categories" in d
+
+    def test_format_error_analysis(self):
+        """format_error_analysis should produce readable output."""
+        result = run_error_analysis(self._make_samples())
+        output = format_error_analysis(result)
+        assert "ERROR ANALYSIS" in output
+
