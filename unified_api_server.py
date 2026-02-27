@@ -1468,6 +1468,101 @@ def get_prediction_history(
         raise HTTPException(status_code=500, detail=str(e))
 
 
+# ----------- Evaluation Routes (Phase 5) -----------
+
+@app.post("/api/evaluation/run", tags=["Evaluation"])
+@limiter.limit("1/minute")
+def run_evaluation(request: Request):
+    """
+    Run the evaluation pipeline against the ground-truth dataset.
+
+    Extracts IOCs from all labeled samples, computes Precision/Recall/F1
+    metrics, runs latency benchmarks, and persists the report to MongoDB.
+
+    Rate limited to 1/min due to computational cost.
+    """
+    try:
+        from threat_intel_aggregator.evaluation.evaluator import Evaluator
+
+        evaluator = Evaluator(min_confidence=0.0)
+        report = evaluator.run(run_benchmark=True)
+
+        # Persist to MongoDB
+        try:
+            evaluator.save_report(report)
+        except Exception as e:
+            print(f"⚠️ Evaluation persistence failed: {e}")
+
+        return report.to_dict()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/evaluation/results", tags=["Evaluation"])
+@limiter.limit("30/minute")
+def get_evaluation_results(request: Request):
+    """
+    Get the latest evaluation results.
+    """
+    try:
+        from threat_intel_aggregator.evaluation.evaluator import Evaluator
+
+        report = Evaluator.load_latest_report()
+        if not report:
+            raise HTTPException(status_code=404, detail="No evaluation results found. Run an evaluation first.")
+        return report
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/evaluation/history", tags=["Evaluation"])
+@limiter.limit("30/minute")
+def get_evaluation_history(
+    request: Request,
+    limit: int = Query(default=20, ge=1, le=100),
+):
+    """
+    Get evaluation history with summary metrics for trend analysis.
+    """
+    try:
+        from threat_intel_aggregator.evaluation.evaluator import Evaluator
+
+        history = Evaluator.load_report_history(limit=limit)
+        return {
+            "count": len(history),
+            "evaluations": history,
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/evaluation/benchmark", tags=["Evaluation"])
+@limiter.limit("2/minute")
+def run_benchmark(
+    request: Request,
+    include_llm: bool = Query(default=False, description="Include LLM verification timing"),
+):
+    """
+    Run latency benchmarks on the extraction pipeline.
+
+    Measures deobfuscation, regex extraction, and optionally LLM
+    verification timing across the ground-truth dataset.
+    """
+    try:
+        from threat_intel_aggregator.evaluation.ground_truth import GroundTruthDataset
+        from threat_intel_aggregator.evaluation.latency_benchmark import LatencyBenchmark
+
+        dataset = GroundTruthDataset()
+        texts = [s.text for s in dataset.samples]
+        benchmark = LatencyBenchmark(include_llm=include_llm)
+        result = benchmark.run(texts)
+        return result.to_dict()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 # ----------- Run with Uvicorn -----------
 
 if __name__ == "__main__":

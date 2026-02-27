@@ -154,6 +154,30 @@ def job_predict_ttps():
 
     safe_run(_predict, "Predict TTPs")
 
+def job_run_evaluation():
+    """Phase 5: Run extraction evaluation against ground-truth dataset."""
+    def _evaluate():
+        from threat_intel_aggregator.evaluation.evaluator import Evaluator
+
+        evaluator = Evaluator(min_confidence=0.0)
+        report = evaluator.run(run_benchmark=True)
+
+        try:
+            evaluator.save_report(report)
+        except Exception as e:
+            logging.warning(f"⚠️ Evaluation persistence skipped: {e}")
+
+        print(
+            f"📏 Evaluation: P={report.metrics.precision:.3f} "
+            f"R={report.metrics.recall:.3f} F1={report.metrics.f1:.3f} "
+            f"({report.metrics.true_positives} TP, "
+            f"{report.metrics.false_positives} FP, "
+            f"{report.metrics.false_negatives} FN)"
+        )
+        return report
+
+    safe_run(_evaluate, "Run Evaluation")
+
 scheduler = BackgroundScheduler()
 
 scheduler.add_job(job_collect_feeds, 'interval', minutes=10)
@@ -161,6 +185,7 @@ scheduler.add_job(job_summarize, 'interval', minutes=5)
 scheduler.add_job(job_export, 'interval', minutes=30)
 scheduler.add_job(job_detect_campaigns, 'interval', minutes=30)
 scheduler.add_job(job_predict_ttps, 'interval', minutes=60)
+scheduler.add_job(job_run_evaluation, 'interval', hours=6)
 scheduler.add_job(log_metrics, 'interval', minutes=60)
 
 scheduler.start()
@@ -173,6 +198,7 @@ job_summarize()
 job_export()
 job_detect_campaigns()
 job_predict_ttps()
+job_run_evaluation()
 log_metrics()
 
 logging.info("🕒 Threat Intelligence Pipeline Scheduler started.")
@@ -184,5 +210,4 @@ except (KeyboardInterrupt, SystemExit):
     scheduler.shutdown()
     logging.info("🔴 Scheduler stopped.")
     print("🔴 Scheduler stopped.")
-
 

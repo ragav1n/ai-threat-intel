@@ -67,12 +67,16 @@ This document tracks the high-level implementation status of the AI Threat Intel
 - **Scheduler Integration**: TTP prediction runs every 60 minutes via `job_predict_ttps()` for active campaigns.
 - **Test Suite**: 25 tests covering models, graph traversal, JSON extraction, fallback predictions, and full pipeline integration with mocked LLM.
 
-## Upcoming Phases (To Be Implemented)
-
 ### **Phase 5: Evaluation Framework**
 
-**Goal**: Measure the accuracy and performance of the system.
+**Status:** Completed & Deployed  
+**Core Features:**
 
-- **Labeled Dataset**: Create a ground-truth dataset of 100-200 malware samples.
-- **Metrics Engine**: Calculate Precision, Recall, and F1 scores for extraction.
-- **Latency Benchmarking**: Track extraction speed and LLM overhead.
+- **Ground-Truth Labeled Dataset**: 122 curated samples across all 9 IOC types (IP, IPv6, Domain, URL, MD5, SHA1, SHA256, Email, CVE) with four categories: true positives, true negatives, obfuscated IOCs, and edge cases. JSON persistence with load/save/filter support.
+- **Metrics Engine**: Computes Precision, Recall, and F1 Score at both aggregate and per-IOC-type levels. Includes confusion matrix counts, confidence calibration (avg TP vs FP confidence), and per-category accuracy tracking.
+- **Latency Benchmarking**: Measures per-stage timing (deobfuscation, regex extraction, LLM verification, end-to-end) with min/max/mean/median/p95/p99 percentiles and throughput (samples/sec).
+- **Evaluation Orchestrator**: Runs the full extraction pipeline against ground-truth data, computes metrics, benchmarks, and persists results to MongoDB (`evaluations` collection) with deterministic report IDs.
+- **Evaluation API**: Four new REST endpoints — `POST /api/evaluation/run`, `GET /api/evaluation/results`, `GET /api/evaluation/history`, `POST /api/evaluation/benchmark` — with rate limiting.
+- **Dashboard Component**: SOC-grade evaluation view with F1/Precision/Recall stat cards, confusion-matrix summary, per-type performance table, latency benchmark charts, and evaluation history timeline.
+- **Scheduler Integration**: Evaluation runs every 6 hours via `job_run_evaluation()` using the existing `safe_run()` pattern.
+- **Test Suite**: 54 tests covering ground-truth dataset validation, metrics computation, latency benchmarking, evaluator integration, edge cases, and data model serialization.
