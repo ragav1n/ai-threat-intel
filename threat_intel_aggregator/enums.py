@@ -16,6 +16,26 @@ class IOCType(str, Enum):
     SHA256 = "sha256"
     EMAIL = "email"
     CVE = "cve"
+    MAC_ADDRESS = "mac_address"
+    ASN = "asn"
+    CIDR = "cidr"
+    REGISTRY_KEY = "registry_key"
+    MUTEX = "mutex"
+    CRYPTO_BTC = "crypto_btc"
+    CRYPTO_ETH = "crypto_eth"
+    CRYPTO_XMR = "crypto_xmr"
+    TOR_V3 = "tor_v3"
+    JA3 = "ja3"
+    JA3S = "ja3s"
+    JARM = "jarm"
+    IMPHASH = "imphash"
+    RICH_HEADER = "rich_header"
+    CERT_SHA1 = "cert_sha1"
+    AWS_IAM = "aws_iam"
+    YARA_RULE = "yara_rule"
+    PHONE_NUMBER = "phone_number"
+    EMAIL_HEADER = "email_header"
+    BEHAVIOR = "behavior"
     
     def __str__(self) -> str:
         return self.value
@@ -97,6 +117,26 @@ IOC_DEFAULT_SEVERITY: Dict[IOCType, Severity] = {
     IOCType.SHA256: Severity.HIGH,
     IOCType.EMAIL: Severity.LOW,
     IOCType.CVE: Severity.CRITICAL,
+    IOCType.MAC_ADDRESS: Severity.MEDIUM,
+    IOCType.ASN: Severity.MEDIUM,
+    IOCType.CIDR: Severity.HIGH,
+    IOCType.REGISTRY_KEY: Severity.HIGH,
+    IOCType.MUTEX: Severity.HIGH,
+    IOCType.CRYPTO_BTC: Severity.HIGH,
+    IOCType.CRYPTO_ETH: Severity.HIGH,
+    IOCType.CRYPTO_XMR: Severity.HIGH,
+    IOCType.TOR_V3: Severity.HIGH,
+    IOCType.JA3: Severity.HIGH,
+    IOCType.JA3S: Severity.HIGH,
+    IOCType.JARM: Severity.HIGH,
+    IOCType.IMPHASH: Severity.HIGH,
+    IOCType.RICH_HEADER: Severity.HIGH,
+    IOCType.CERT_SHA1: Severity.HIGH,
+    IOCType.AWS_IAM: Severity.CRITICAL,
+    IOCType.YARA_RULE: Severity.MEDIUM,
+    IOCType.PHONE_NUMBER: Severity.MEDIUM,
+    IOCType.EMAIL_HEADER: Severity.LOW,
+    IOCType.BEHAVIOR: Severity.MEDIUM,
 }
 
 

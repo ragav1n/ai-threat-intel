@@ -29,6 +29,22 @@ IOC_PATTERNS: dict[IOCType, str] = {
     IOCType.SHA256: r"\b[a-fA-F\d]{64}\b",
     IOCType.EMAIL: r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b",
     IOCType.CVE: r"\b(?i:CVE)-\d{4}-\d{4,}(?!\d)",
+    IOCType.MAC_ADDRESS: r"\b(?:[0-9A-Fa-f]{2}[:-]){5}(?:[0-9A-Fa-f]{2})\b",
+    IOCType.ASN: r"(?i)\bAS(?:N\s*|\s+)?\d{4,6}\b",
+    IOCType.CIDR: r"\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}/\d{1,2}\b",
+    IOCType.REGISTRY_KEY: r"(?i)(?:HKEY_LOCAL_MACHINE|HKEY_CURRENT_USER|HKEY_CLASSES_ROOT|HKEY_USERS|HKEY_CURRENT_CONFIG|HKLM|HKCU|HKCR|HKU|HKCC)[\\\:][a-zA-Z0-9_\\\- ]+",
+    IOCType.MUTEX: r"(?i)(?:Global|Local|BaseNamedObjects)\\[a-zA-Z0-9_\-\.\{\}]+",
+    IOCType.CRYPTO_BTC: r"\b(?:1|3|bc1)[a-zA-HJ-NP-Z0-9]{25,39}\b",
+    IOCType.CRYPTO_ETH: r"\b0x[a-fA-F0-9]{40}\b",
+    IOCType.CRYPTO_XMR: r"\b4[0-9AB][1-9A-HJ-NP-Za-km-z]{93}\b",
+    IOCType.TOR_V3: r"\b[a-z2-7]{56}\.onion\b",
+    IOCType.JA3: r"(?i)JA3(?:[:\s]+)?([a-fA-F0-9]{32})\b",
+    IOCType.JA3S: r"(?i)JA3S(?:[:\s]+)?([a-fA-F0-9]{32})\b",
+    IOCType.JARM: r"\b[a-fA-F0-9]{62}\b",
+    IOCType.IMPHASH: r"(?i)imphash(?:[:\s]+)?([a-fA-F0-9]{32})\b",
+    IOCType.RICH_HEADER: r"(?i)rich(?:_|\s+)?header(?:[:\s]+)?([a-fA-F0-9]{32})\b",
+    IOCType.AWS_IAM: r"\b(?:AKIA|ASIA)[0-9A-Z]{16}\b",
+    IOCType.PHONE_NUMBER: r"(?:\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}\b",
 }
 
 # Common false positives to filter out
@@ -94,6 +110,22 @@ IOC_TYPE_BASE_CONFIDENCE: Dict[IOCType, float] = {
     IOCType.DOMAIN: 0.55,   # High false positive potential
     IOCType.CVE: 0.90,      # Structured identifier
     IOCType.EMAIL: 0.50,    # Often benign
+    IOCType.MAC_ADDRESS: 0.60,
+    IOCType.ASN: 0.70,
+    IOCType.CIDR: 0.70,
+    IOCType.REGISTRY_KEY: 0.75,
+    IOCType.MUTEX: 0.80,
+    IOCType.CRYPTO_BTC: 0.85,
+    IOCType.CRYPTO_ETH: 0.85,
+    IOCType.CRYPTO_XMR: 0.85,
+    IOCType.TOR_V3: 0.95,  # High confidence
+    IOCType.JA3: 0.80,
+    IOCType.JA3S: 0.80,
+    IOCType.JARM: 0.85,
+    IOCType.IMPHASH: 0.80,
+    IOCType.RICH_HEADER: 0.80,
+    IOCType.AWS_IAM: 0.95,
+    IOCType.PHONE_NUMBER: 0.40, # High false positive risk
 }
 
 
