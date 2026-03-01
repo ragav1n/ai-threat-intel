@@ -1,0 +1,1220 @@
+{
+  "samples": [
+    {
+      "id": "report_001",
+      "text": "Apache ActiveMQ Exploit Leads to LockBit Ransomware. This intrusion began in mid-February 2024 after a threat actor exploited a vulnerability (CVE-2023-46604) on an exposed Apache ActiveMQ server. The threat actor was able to perform remote code execution (RCE) by using a Java Spring class and a custom Java Spring payload.",
+      "expected_iocs": [
+        {"value": "CVE-2023-46604", "type": "cve"}
+      ],
+      "category": "true_positive",
+      "tags": ["DFIRReport", "2024", "lockbit", "ransomware", "activemq"]
+    },
+    {
+      "id": "report_002",
+      "text": "Cat's Got Your Files: Lynx Ransomware. The intrusion began in early March 2025 with a single successful Remote Desktop Protocol (RDP) logon to an internet-exposed system. Notably, there was no evidence of credential stuffing, brute forcing, or other failed authentication attempts from the source IP, indicating the threat actor likely had valid credentials.",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["DFIRReport", "2025", "ransomware", "rdp", "lynx"]
+    },
+    {
+      "id": "report_003",
+      "text": "From Bing Search to Ransomware: Bumblebee and AdaptixC2 Deliver Akira. Bumblebee malware has been an initial access tool used by threat actors since late 2021. In 2023 the malware was first reported as using SEO poisoning as a delivery mechanism.",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["DFIRReport", "2025", "akira", "ransomware", "bumblebee"]
+    },
+    {
+      "id": "report_004",
+      "text": "From a Single Click: How Lunar Spider Enabled a Near Two-Month Intrusion. The intrusion began with a single click enabling Lunar Spider to deploy Latrodectus, BruteRatel, and Cobalt Strike over a near two-month period.",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["DFIRReport", "2025", "bruteratel", "cobaltstrike", "latrodectus"]
+    },
+    {
+      "id": "report_005",
+      "text": "Blurring the Lines: Intrusion Shows Connection With Three Major Ransomware Gangs. The intrusion began with SectopRAT and showed connections to DragonForce, Play, and RansomHub ransomware groups.",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["DFIRReport", "2025", "dragonforce", "play", "ransomhub", "sectoprat"]
+    },
+    {
+      "id": "report_006",
+      "text": "KongTuke FileFix Leads to New Interlock RAT Variant. Researchers from The DFIR Report, in partnership with Proofpoint, have identified a new and resilient variant of the Interlock ransomware group's remote access trojan (RAT). This new malware uses PHP and is being used in a widespread campaign since May 2025.",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["DFIRReport", "2025", "interlock", "rat"]
+    },
+    {
+      "id": "report_007",
+      "text": "Hide Your RDP: Password Spray Leads to RansomHub Deployment. This intrusion began in November 2024 with a password spray attack targeting an internet-facing RDP server.",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["DFIRReport", "2025", "ransomhub", "ransomware", "rdp"]
+    },
+    {
+      "id": "report_008",
+      "text": "Another Confluence Bites the Dust: Falling to ELPACO-team Ransomware. In late June 2024, an unpatched Confluence server was compromised via CVE-2023-22527, a template injection vulnerability, first from IP address 45.227.254.124, which just ran whoami and exited.",
+      "expected_iocs": [
+        {"value": "CVE-2023-22527", "type": "cve"},
+        {"value": "45.227.254.124", "type": "ip"}
+      ],
+      "category": "true_positive",
+      "tags": ["DFIRReport", "2025", "elpacoteam", "mimic", "ransomware", "confluence"]
+    },
+    {
+      "id": "report_009",
+      "text": "Navigating Through The Fog. An open directory associated with a ransomware affiliate, likely linked to the Fog ransomware group, was discovered in December 2024. It contained tools and scripts for reconnaissance, exploitation, lateral movement, and persistence.",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["DFIRReport", "2025", "ransomware", "sliver", "fog"]
+    },
+    {
+      "id": "report_010",
+      "text": "Fake Zoom Ends in BlackSuit Ransomware. This case from May 2024 started with a malicious download from a website mimicking the teleconferencing application Zoom.",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["DFIRReport", "2025", "blacksuit", "bruteratel", "cobaltstrike", "ransomware", "sectoprat"]
+    },
+    {
+      "id": "report_011",
+      "text": "VShell and SparkRAT Observed in Exploitation of BeyondTrust Critical Vulnerability (CVE-2026-1731). On Feb. 6, 2026, BeyondTrust released a security advisory regarding CVE-2026-1731. This vulnerability involves a pre-authentication remote code execution (RCE) issue within BeyondTrust remote support software. Unit 42 is actively investigating exploitation of this vulnerability and has observed attacker activity. The campaign has affected financial services, legal services, high technology, higher education, wholesale and retail, and healthcare sectors in the US, France, Germany, Australia and Canada.",
+      "expected_iocs": [
+        {"value": "CVE-2026-1731", "type": "cve"},
+        {"value": "CVE-2024-12356", "type": "cve"},
+        {"value": "23.162.40.187", "type": "ip"},
+        {"value": "37.19.221.180", "type": "ip"},
+        {"value": "45.61.150.96", "type": "ip"},
+        {"value": "70.23.0.66", "type": "ip"},
+        {"value": "82.29.53.187", "type": "ip"},
+        {"value": "82.29.72.16", "type": "ip"},
+        {"value": "83.138.53.139", "type": "ip"},
+        {"value": "85.155.186.121", "type": "ip"},
+        {"value": "92.223.44.134", "type": "ip"},
+        {"value": "98.10.233.76", "type": "ip"},
+        {"value": "134.122.13.34", "type": "ip"},
+        {"value": "138.197.14.95", "type": "ip"},
+        {"value": "142.111.152.50", "type": "ip"},
+        {"value": "144.172.103.200", "type": "ip"},
+        {"value": "155.2.215.64", "type": "ip"},
+        {"value": "178.128.212.209", "type": "ip"},
+        {"value": "179.43.146.42", "type": "ip"},
+        {"value": "64.31.28.221", "type": "ip"},
+        {"value": "oastify.com", "type": "domain"},
+        {"value": "aliyundunupdate.xyz", "type": "domain"},
+        {"value": "oast.pro", "type": "domain"},
+        {"value": "oast.fun", "type": "domain"},
+        {"value": "transfer.weepee.io", "type": "domain"},
+        {"value": "temp.sh", "type": "domain"},
+        {"value": "64.95.10.115", "type": "ip"},
+        {"value": "http://64.31.28.221/support", "type": "url"},
+        {"value": "http://134.122.13.34:8979/c", "type": "url"},
+        {"value": "http://82.29.53.187:8778/app_cli", "type": "url"},
+        {"value": "https://transfer.weepee.io/7nZw7/blue.drx", "type": "url"},
+        {"value": "http://85.155.186.121/access", "type": "url"},
+        {"value": "https://temp.sh/tQTSs/storm.exe", "type": "url"},
+        {"value": "https://64.95.10.115:23011/update.sh", "type": "url"},
+        {"value": "https://85.155.186.121/access/Remote%20Access-linux64-offline.tar?language=en&app=76049110434275449312180081368257747094", "type": "url"},
+        {"value": "9f431d5549a03aee92cfd2bdbbe90f1c91e965c99e90a0c9ad5a001f4e80c350", "type": "sha256"},
+        {"value": "98a7b0900a9072bb40af579ec372da7b27af12b15868394df51fefe290ab176b", "type": "sha256"},
+        {"value": "66cceb2c2f1d9988b501832fd3b559775982e2fce4ab38fc4ffe71b74eafc726", "type": "sha256"},
+        {"value": "679ee05d92a858b6fe70aeb6072eb804548f1732e18b6c181af122b833386afb", "type": "sha256"},
+        {"value": "4762e944a0ce1f9aef243e11538f84f16b6f36560ed6e32dfd9a5f99e17e8e50", "type": "sha256"},
+        {"value": "98442387d466f27357d727b3706037a4df12a78602b93df973b063462a677761", "type": "sha256"},
+        {"value": "cc2bc3750cc5125a50466f66ae4f2bedf1cac0e43477a78ed2fd88f3e987a292", "type": "sha256"},
+        {"value": "cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce", "type": "sha256"},
+        {"value": "0ecc867ce916d01640d76ec03de24d1d23585eb582e9c48a0364c62a590548ac", "type": "sha256"}
+      ],
+      "category": "true_positive",
+      "tags": ["Unit42", "2026", "beyondtrust", "CVE-2026-1731", "sparkrat", "vshell", "rce"]
+    },
+    {
+      "id": "report_012",
+      "text": "Critical Vulnerabilities in Ivanti EPMM Exploited. Two critical zero-day vulnerabilities (CVE-2026-1281 and CVE-2026-1340) affecting Ivanti Endpoint Manager Mobile (EPMM) are being actively exploited in the wild. These vulnerabilities allow unauthenticated attackers to remotely execute arbitrary code on target servers.",
+      "expected_iocs": [
+        {"value": "CVE-2026-1281", "type": "cve"},
+        {"value": "CVE-2026-1340", "type": "cve"},
+        {"value": "23.227.199.80", "type": "ip"},
+        {"value": "64.7.199.177", "type": "ip"},
+        {"value": "83.138.53.139", "type": "ip"},
+        {"value": "84.72.235.18", "type": "ip"},
+        {"value": "86.106.143.200", "type": "ip"},
+        {"value": "91.193.19.12", "type": "ip"},
+        {"value": "107.173.231.201", "type": "ip"},
+        {"value": "130.94.41.206", "type": "ip"},
+        {"value": "138.226.247.241", "type": "ip"},
+        {"value": "144.172.106.4", "type": "ip"},
+        {"value": "146.70.41.193", "type": "ip"},
+        {"value": "152.32.173.138", "type": "ip"},
+        {"value": "158.247.199.185", "type": "ip"},
+        {"value": "185.173.235.232", "type": "ip"},
+        {"value": "192.242.184.234", "type": "ip"},
+        {"value": "193.242.184.234", "type": "ip"},
+        {"value": "194.78.67.253", "type": "ip"},
+        {"value": "198.13.158.58", "type": "ip"},
+        {"value": "204.251.198.205", "type": "ip"},
+        {"value": "gobygo.net", "type": "domain"},
+        {"value": "introo.sh", "type": "domain"},
+        {"value": "interacth3.io", "type": "domain"},
+        {"value": "oast.live", "type": "domain"},
+        {"value": "oast.me", "type": "domain"},
+        {"value": "oast.site", "type": "domain"},
+        {"value": "eyes.sh", "type": "domain"},
+        {"value": "requestrepo.com", "type": "domain"},
+        {"value": "ceye.io", "type": "domain"},
+        {"value": "http://152.32.173.138/U26d86f1899513347.5b5b0c1b", "type": "url"},
+        {"value": "http://64.7.199.177:18899", "type": "url"},
+        {"value": "http://152.32.173.138/U5213b63dda61af48.0F3Ab3D3", "type": "url"}
+      ],
+      "category": "true_positive",
+      "tags": ["Unit42", "2026", "ivanti", "epmm", "CVE-2026-1281", "CVE-2026-1340", "rce", "webshell"]
+    },
+    {
+      "id": "report_013",
+      "text": "Phishing on the Edge of the Web and Mobile Using QR Codes. This article explores the misuse of QR codes in today's threat landscape covering QR code shorteners, in-app deep links, and direct APK downloads. Our telemetry reveals an average of over 11,000 detections of malicious QR codes each day.",
+      "expected_iocs": [
+        {"value": "cdnimg.jeayacrai.in.net", "type": "domain"},
+        {"value": "kccomputech.in", "type": "domain"},
+        {"value": "csdh.wangzhan.mobi", "type": "domain"},
+        {"value": "solulu.vip", "type": "domain"},
+        {"value": "fable.tele-tale.cn", "type": "domain"},
+        {"value": "Olb228hoki.live", "type": "domain"},
+        {"value": "radenspinrtp.cloud", "type": "domain"},
+        {"value": "bostonsportsthenandnow.com", "type": "domain"},
+        {"value": "slotolb228.com", "type": "domain"},
+        {"value": "sgnl-web.org-status.nl", "type": "domain"},
+        {"value": "signal-qr.org", "type": "domain"},
+        {"value": "signal.skyriver.ch", "type": "domain"},
+        {"value": "snitch.open-group.site", "type": "domain"},
+        {"value": "snitch-dev.space", "type": "domain"},
+        {"value": "gui-snitch.online", "type": "domain"},
+        {"value": "gui-grafit.online", "type": "domain"},
+        {"value": "kropyva-group.online", "type": "domain"},
+        {"value": "kzeva2010.sbs", "type": "domain"},
+        {"value": "xlq.wpybta.icu", "type": "domain"},
+        {"value": "wswwc.icu", "type": "domain"},
+        {"value": "awawc.icu", "type": "domain"},
+        {"value": "ve1edm.cc", "type": "domain"},
+        {"value": "ve2edm.cc", "type": "domain"},
+        {"value": "weppf.icu", "type": "domain"},
+        {"value": "gricanjolt.com", "type": "domain"},
+        {"value": "pyreneesakbash.com", "type": "domain"},
+        {"value": "f9999.app", "type": "domain"},
+        {"value": "90999.fdjk34sddsf90999.cc", "type": "domain"},
+        {"value": "https://cdnimg.jeayacrai.in.net/qY42h5ei3SBo9ZmvO!/", "type": "url"},
+        {"value": "http://kccomputech.in/babukh1513273", "type": "url"},
+        {"value": "https://20.217.81.20", "type": "url"},
+        {"value": "http://www.sgnl-web.org-status.nl/", "type": "url"},
+        {"value": "https://signal-qr.org/chatZGtqZmpic2l1NDkzdWpka25zamRucDJ1MDllamtmOThyNGltdmZkZw==/ty62i", "type": "url"},
+        {"value": "https://kzeva2010.sbs/MZApUU1aJ3LSYi86IrAZ", "type": "url"},
+        {"value": "https://xlq.wpybta.icu", "type": "url"},
+        {"value": "https://gricanjolt.com?r=aHR0cHM6Ly9mOTk5OS5hcHA=1", "type": "url"},
+        {"value": "https://pyreneesakbash.com/m-nagapoker/android.html", "type": "url"},
+        {"value": "https://resourcepro.tycheint.com/yicai.apk", "type": "url"},
+        {"value": "https://90999.fdjk34sddsf90999.cc/xincai.apk", "type": "url"}
+      ],
+      "category": "true_positive",
+      "tags": ["Unit42", "2026", "phishing", "qr-codes", "social-engineering", "apk", "malware"]
+    },
+    {
+      "id": "report_014",
+      "text": "Nation-State Actors Exploit Notepad++ Supply Chain. Between June and December 2025, the official hosting infrastructure for Notepad++ was compromised by a state-sponsored threat group known as Lotus Blossom. The attackers delivered Cobalt Strike beacon malware and a Chrysalis backdoor via DLL sideloading.",
+      "expected_iocs": [
+        {"value": "skycloudcenter.com", "type": "domain"},
+        {"value": "self-dns.it.com", "type": "domain"},
+        {"value": "safe-dns.it.com", "type": "domain"},
+        {"value": "cdncheck.it.com", "type": "domain"},
+        {"value": "95.179.213.0", "type": "ip"},
+        {"value": "45.76.155.202", "type": "ip"},
+        {"value": "45.77.31.210", "type": "ip"},
+        {"value": "61.4.102.97", "type": "ip"},
+        {"value": "59.110.7.32", "type": "ip"},
+        {"value": "45.32.144.255", "type": "ip"},
+        {"value": "http://95.179.213.0/update/AutoUpdater.exe", "type": "url"},
+        {"value": "http://95.179.213.0/update/Upgrade.exe", "type": "url"},
+        {"value": "http://45.32.144.255/update/update.exe", "type": "url"},
+        {"value": "http://45.76.155.202/update/update.exe", "type": "url"},
+        {"value": "http://59.110.7.32/dpixel", "type": "url"},
+        {"value": "http://self-dns.it.com/help/Get-Start", "type": "url"},
+        {"value": "http://self-dns.it.com/resolve", "type": "url"},
+        {"value": "http://self-dns.it.com/dns-query", "type": "url"},
+        {"value": "http://safe-dns.it.com/help/Get-Start", "type": "url"},
+        {"value": "http://safe-dns.it.com/resolve", "type": "url"},
+        {"value": "http://safe-dns.it.com/dns-query", "type": "url"},
+        {"value": "1f6d28370f4c2b13f3967b38f67f77eee7f5fba9e7743b6c66a8feb18ae8f33e", "type": "sha256"},
+        {"value": "a3cf1c86731703043b3614e085b9c8c224d4125370f420ad031ad63c14d6c3ec", "type": "sha256"},
+        {"value": "a511be5164dc1122fb5a7daa3eef9467e43d8458425b15a640235796006590c9", "type": "sha256"}
+      ],
+      "category": "true_positive",
+      "tags": ["Unit42", "2026", "supply-chain", "notepad++", "cobaltstrike", "chrysalis", "dll-sideloading", "lotus-blossom"]
+    },
+    {
+      "id": "report_015",
+      "text": "Novel Technique to Detect Cloud Threat Actor Operations. Unit 42 analyzed cloud alerting events across 22 industries between June 2024 and June 2025, focusing on Muddled Libra and Silk Typhoon threat actor groups and their MITRE ATT&CK technique fingerprints in cloud environments.",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["Unit42", "2026", "cloud", "muddled-libra", "silk-typhoon", "mitre", "threat-intelligence"]
+    },
+    {
+      "id": "report_016",
+      "text": "The Shadow Campaigns: Uncovering Global Espionage. Unit 42 tracks TGR-STA-1030, a state-aligned group operating out of Asia that has compromised government and critical infrastructure in 37 countries. The group uses phishing, a new Linux kernel rootkit called ShadowGuard, VShell, Cobalt Strike, and various web shells.",
+      "expected_iocs": [
+        {"value": "CVE-2019-11580", "type": "cve"},
+        {"value": "138.197.44.208", "type": "ip"},
+        {"value": "142.91.105.172", "type": "ip"},
+        {"value": "146.190.152.219", "type": "ip"},
+        {"value": "157.230.34.45", "type": "ip"},
+        {"value": "157.245.194.54", "type": "ip"},
+        {"value": "159.65.156.200", "type": "ip"},
+        {"value": "159.203.164.101", "type": "ip"},
+        {"value": "178.128.60.22", "type": "ip"},
+        {"value": "178.128.109.37", "type": "ip"},
+        {"value": "188.127.251.171", "type": "ip"},
+        {"value": "188.166.210.146", "type": "ip"},
+        {"value": "208.85.21.30", "type": "ip"},
+        {"value": "abwxjp5.me", "type": "domain"},
+        {"value": "brackusi0n.live", "type": "domain"},
+        {"value": "dog3rj.tech", "type": "domain"},
+        {"value": "emezonhe.me", "type": "domain"},
+        {"value": "gouvn.me", "type": "domain"},
+        {"value": "msonline.help", "type": "domain"},
+        {"value": "pickupweb.me", "type": "domain"},
+        {"value": "pr0fu5a.me", "type": "domain"},
+        {"value": "q74vn.live", "type": "domain"},
+        {"value": "servgate.me", "type": "domain"},
+        {"value": "zamstats.me", "type": "domain"},
+        {"value": "zrheblirsy.me", "type": "domain"},
+        {"value": "66ec547b97072828534d43022d766e06c17fc1cafe47fbd9d1ffc22e2d52a9c0", "type": "sha256"},
+        {"value": "23ee251df3f9c46661b33061035e9f6291894ebe070497ff9365d6ef2966f7fe", "type": "sha256"},
+        {"value": "5175b1720fe3bc568f7857b72b960260ad3982f41366ce3372c04424396df6fe", "type": "sha256"},
+        {"value": "358ca77ccc4a979ed3337aad3a8ff7228da8246eebc69e64189f930b325daf6a", "type": "sha256"},
+        {"value": "293821e049387d48397454d39233a5a67d0ae06d59b7e5474e8ae557b0fc5b06", "type": "sha256"},
+        {"value": "c876e6c074333d700adf6b4397d9303860de17b01baa27c0fa5135e2692d3d6f", "type": "sha256"},
+        {"value": "b2a6c8382ec37ef15637578c6695cb35138ceab42ce4629b025fa4f04015eaf2", "type": "sha256"},
+        {"value": "5ddeff4028ec407ffdaa6c503dd4f82fa294799d284b986e1f4181f49d18c9f3", "type": "sha256"},
+        {"value": "182a427cc9ec22ed22438126a48f1a6cd84bf90fddb6517973bcb0bac58c4231", "type": "sha256"},
+        {"value": "7808b1e01ea790548b472026ac783c73a033bb90bbe548bf3006abfbcb48c52d", "type": "sha256"},
+        {"value": "9ed487498235f289a960a5cc794fa0ad0f9ef5c074860fea650e88c525da0ab4", "type": "sha256"}
+      ],
+      "category": "true_positive",
+      "tags": ["Unit42", "2026", "espionage", "TGR-STA-1030", "nation-state", "asia", "shadowguard", "vshell", "cobaltstrike"]
+    },
+    {
+      "id": "report_017",
+      "text": "Why Smart People Fall For Phishing Attacks. This article explores the psychology behind phishing attacks, explaining why people fall for them despite strong defenses. CISA reported that phishing emails are associated with more than 90% of successful cyberattacks.",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["Unit42", "2026", "phishing", "social-engineering", "psychology"]
+    },
+    {
+      "id": "report_018",
+      "text": "Privileged File System Vulnerability Present in a SCADA System. This report details CVE-2025-0921, a vulnerability in Iconics Suite (SCADA system) that could create a denial-of-service condition. The vulnerability allows privileged file system operations that attackers can misuse to corrupt critical system binaries.",
+      "expected_iocs": [
+        {"value": "CVE-2025-0921", "type": "cve"},
+        {"value": "CVE-2024-7587", "type": "cve"}
+      ],
+      "category": "true_positive",
+      "tags": ["Unit42", "2026", "scada", "CVE-2025-0921", "privilege-escalation", "ics-ot", "iconics"]
+    },
+    {
+      "id": "report_019",
+      "text": "Understanding the Russian Cyberthreat to the 2026 Winter Olympics. Russia's exclusion from the Olympics may lead to increased cyberthreats targeting the 2026 Winter Games in Milano Cortina. Historical Russian cyber operations against past Olympics include Fighting Ursa's WADA breach in 2016 and Razing Ursa's Olympic Destroyer malware in 2018.",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["Unit42", "2026", "russia", "olympics", "threat-assessment", "disinformation", "iot"]
+    },
+    {
+      "id": "report_020",
+      "text": "The Next Frontier of Runtime Assembly Attacks: Leveraging LLMs to Generate Phishing JavaScript in Real Time - Unit42, Palo Alto Networks",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["Unit42", "2026", "phishing", "LLM", "JavaScript"]
+    },
+    {
+      "id": "report_021",
+      "text": "CrowdStrike FalconID Brings Phishing-Resistant MFA to Falcon Next-Gen Identity Security",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["CrowdStrike", "2026", "identity-security", "MFA"]
+    },
+    {
+      "id": "report_022",
+      "text": "CrowdStrike 2026 Global Threat Report: The Evasive Adversary Wields AI",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["CrowdStrike", "2026", "threat-report", "AI"]
+    },
+    {
+      "id": "report_023",
+      "text": "The Art of Deception: How Threat Actors Master Typosquatting Campaigns to Bypass Detection",
+      "expected_iocs": [
+        {"value": "examp1ecorp.com", "type": "domain"}
+      ],
+      "category": "true_positive",
+      "tags": ["CrowdStrike", "2026", "typosquatting", "phishing"]
+    },
+    {
+      "id": "report_024",
+      "text": "Introducing AI Unlocked: Decoding Prompt Injection, a New Interactive Challenge - CrowdStrike",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["CrowdStrike", "2026", "prompt-injection", "AI"]
+    },
+    {
+      "id": "report_025",
+      "text": "Exposing Insider Threats through Data Protection, Identity, and HR Context - CrowdStrike",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["CrowdStrike", "2026", "insider-threat", "data-protection"]
+    },
+    {
+      "id": "report_026",
+      "text": "CrowdStrike Named a Customers Choice in 2026 Gartner Peer Insights Voice of the Customer for User Authentication",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["CrowdStrike", "2026", "identity-security", "authentication"]
+    },
+    {
+      "id": "report_027",
+      "text": "How to Scale SOC Automation with Falcon Fusion SOAR - CrowdStrike",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["CrowdStrike", "2026", "SOAR", "automation"]
+    },
+    {
+      "id": "report_028",
+      "text": "Inside the Human-AI Feedback Loop Powering CrowdStrike Agentic Security",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["CrowdStrike", "2026", "AI", "agentic-SOC"]
+    },
+    {
+      "id": "report_029",
+      "text": "February 2026 Patch Tuesday: Six Zero-Days Among 59 CVEs Patched - CrowdStrike",
+      "expected_iocs": [
+        {"value": "CVE-2026-21533", "type": "cve"},
+        {"value": "CVE-2026-21513", "type": "cve"},
+        {"value": "CVE-2026-21510", "type": "cve"},
+        {"value": "CVE-2026-21514", "type": "cve"},
+        {"value": "CVE-2026-21519", "type": "cve"},
+        {"value": "CVE-2026-21525", "type": "cve"},
+        {"value": "CVE-2026-24300", "type": "cve"},
+        {"value": "CVE-2026-24302", "type": "cve"},
+        {"value": "CVE-2026-21532", "type": "cve"},
+        {"value": "CVE-2026-21522", "type": "cve"},
+        {"value": "CVE-2026-23655", "type": "cve"}
+      ],
+      "category": "true_positive",
+      "tags": ["CrowdStrike", "2026", "patch-tuesday", "zero-day", "Microsoft"]
+    },
+    {
+      "id": "report_030",
+      "text": "CrowdStrike Is the Only Vendor to Be Named a Customers Choice in 2025 Gartner Voice of the Customer for External Attack Surface Management",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["CrowdStrike", "2026", "EASM", "exposure-management"]
+    },
+    {
+      "id": "report_031",
+      "text": "GTIG AI Threat Tracker: Distillation, Experimentation, and (Continued) Integration of AI for Adversarial Use - Mandiant/Google",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["Mandiant", "Google", "2026", "AI", "threat-intelligence"]
+    },
+    {
+      "id": "report_032",
+      "text": "Exposing the Undercurrent: Disrupting the GRIDTIDE Global Cyber Espionage Campaign - Mandiant/Google Threat Intelligence Group",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["Mandiant", "Google", "2026", "espionage", "GRIDTIDE"]
+    },
+    {
+      "id": "report_033",
+      "text": "From BRICKSTORM to GRIMBOLT: UNC6201 Exploiting a Dell RecoverPoint for Virtual Machines Zero-Day - Mandiant",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["Mandiant", "2026", "UNC6201", "zero-day", "Dell"]
+    },
+    {
+      "id": "report_034",
+      "text": "Beyond the Battlefield: Threats to the Defense Industrial Base - Google Threat Intelligence Group",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["Mandiant", "Google", "2026", "defense-industrial-base", "espionage"]
+    },
+    {
+      "id": "report_035",
+      "text": "UNC1069 Targets Cryptocurrency Sector with New Tooling and AI-Enabled Social Engineering - Mandiant",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["Mandiant", "2026", "UNC1069", "cryptocurrency", "social-engineering", "AI"]
+    },
+    {
+      "id": "report_036",
+      "text": "Vishing for Access: Tracking the Expansion of ShinyHunters-Branded SaaS Data Theft - Mandiant",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["Mandiant", "2026", "ShinyHunters", "SaaS", "vishing", "data-theft"]
+    },
+    {
+      "id": "report_037",
+      "text": "Guidance from the Frontlines: Proactive Defense Against ShinyHunters-Branded Data Theft Targeting SaaS - Mandiant",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["Mandiant", "2026", "ShinyHunters", "SaaS", "defense", "data-theft"]
+    },
+    {
+      "id": "report_038",
+      "text": "No Place Like Home Network: Disrupting the World's Largest Residential Proxy Network - Google Threat Intelligence Group",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["Mandiant", "Google", "2026", "proxy-network", "residential-proxy"]
+    },
+    {
+      "id": "report_039",
+      "text": "Diverse Threat Actors Exploiting Critical WinRAR Vulnerability CVE-2025-8088 - Google Threat Intelligence Group",
+      "expected_iocs": [
+        {"value": "CVE-2025-8088", "type": "cve"}
+      ],
+      "category": "true_positive",
+      "tags": ["Mandiant", "Google", "2026", "WinRAR", "CVE-2025-8088"]
+    },
+    {
+      "id": "report_040",
+      "text": "Closing the Door on Net-NTLMv1: Releasing Rainbow Tables to Accelerate Protocol Deprecation - Mandiant",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["Mandiant", "2026", "Net-NTLMv1", "authentication", "rainbow-tables"]
+    },
+    {
+      "id": "report_041",
+      "text": "AuraInspector: Auditing Salesforce Aura for Data Exposure - Mandiant",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["Mandiant", "2026", "Salesforce", "data-exposure"]
+    },
+    {
+      "id": "report_042",
+      "text": "Inside the LLM | Understanding AI & the Mechanics of Modern Attacks - SentinelOne",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["SentinelOne", "2026", "AI", "LLM"]
+    },
+    {
+      "id": "report_043",
+      "text": "LLMs & Ransomware | An Operational Accelerator, Not a Revolution - SentinelOne",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["SentinelOne", "2025", "AI", "LLM", "ransomware"]
+    },
+    {
+      "id": "report_044",
+      "text": "Malicious Apprentice | How Two Hackers Went From Cisco Academy to Cisco CVEs - SentinelOne",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["SentinelOne", "2025", "China", "Cisco", "Salt-Typhoon", "espionage"]
+    },
+    {
+      "id": "report_045",
+      "text": "Threat Hunting Power Up | Enhance Campaign Discovery With Validin and Synapse - SentinelOne",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["SentinelOne", "2025", "threat-hunting", "tools"]
+    },
+    {
+      "id": "report_046",
+      "text": "LABScon25 Replay | LLM-Enabled Malware In the Wild - SentinelOne",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["SentinelOne", "2025", "AI", "LLM", "malware"]
+    },
+    {
+      "id": "report_047",
+      "text": "A method to assess forgivable vs unforgivable vulnerabilities - NCSC-UK",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["NCSC-UK", "2025", "vulnerability-management"]
+    },
+    {
+      "id": "report_048",
+      "text": "Malware analysis report on SparrowDoor malware - NCSC-UK",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["NCSC-UK", "2022", "malware", "SparrowDoor"]
+    },
+    {
+      "id": "report_049",
+      "text": "Chargemap chargemap.com - CISA ICS Advisory ICSA-26-057-05",
+      "expected_iocs": [
+        {"value": "CVE-2026-25851", "type": "cve"},
+        {"value": "CVE-2026-20792", "type": "cve"},
+        {"value": "CVE-2026-25711", "type": "cve"},
+        {"value": "CVE-2026-20791", "type": "cve"}
+      ],
+      "category": "true_positive",
+      "tags": ["CISA", "2026", "ICS", "EV-charging", "authentication-bypass"]
+    },
+    {
+      "id": "report_050",
+      "text": "Yokogawa CENTUM VP R6, R7 - CISA ICS Advisory ICSA-26-057-09",
+      "expected_iocs": [
+        {"value": "CVE-2025-1924", "type": "cve"},
+        {"value": "CVE-2025-48019", "type": "cve"},
+        {"value": "CVE-2025-48020", "type": "cve"},
+        {"value": "CVE-2025-48021", "type": "cve"},
+        {"value": "CVE-2025-48022", "type": "cve"},
+        {"value": "CVE-2025-48023", "type": "cve"}
+      ],
+      "category": "true_positive",
+      "tags": ["CISA", "2026", "ICS", "Yokogawa", "OT", "DoS", "RCE"]
+    },
+    {
+      "id": "report_051",
+      "text": "Pelco, Inc. Sarix Pro 3 Series IP Cameras - CISA ICS Advisory ICSA-26-057-02",
+      "expected_iocs": [
+        {"value": "CVE-2026-1241", "type": "cve"}
+      ],
+      "category": "true_positive",
+      "tags": ["CISA", "2026", "ICS", "Pelco", "IP-camera", "authentication-bypass"]
+    },
+    {
+      "id": "report_052",
+      "text": "Copeland XWEB and XWEB Pro - CISA ICS Advisory ICSA-26-057-10",
+      "expected_iocs": [
+        {"value": "CVE-2026-25085", "type": "cve"},
+        {"value": "CVE-2026-21718", "type": "cve"},
+        {"value": "CVE-2026-24663", "type": "cve"},
+        {"value": "CVE-2026-21389", "type": "cve"},
+        {"value": "CVE-2026-25111", "type": "cve"},
+        {"value": "CVE-2026-20742", "type": "cve"},
+        {"value": "CVE-2026-24517", "type": "cve"},
+        {"value": "CVE-2026-25195", "type": "cve"},
+        {"value": "CVE-2026-20910", "type": "cve"},
+        {"value": "CVE-2026-24689", "type": "cve"},
+        {"value": "CVE-2026-25109", "type": "cve"},
+        {"value": "CVE-2026-20902", "type": "cve"},
+        {"value": "CVE-2026-24695", "type": "cve"},
+        {"value": "CVE-2026-25105", "type": "cve"},
+        {"value": "CVE-2026-24452", "type": "cve"},
+        {"value": "CVE-2026-23702", "type": "cve"},
+        {"value": "CVE-2026-25721", "type": "cve"},
+        {"value": "CVE-2026-20764", "type": "cve"},
+        {"value": "CVE-2026-25196", "type": "cve"},
+        {"value": "CVE-2026-25037", "type": "cve"},
+        {"value": "CVE-2026-22877", "type": "cve"},
+        {"value": "CVE-2026-20797", "type": "cve"},
+        {"value": "CVE-2026-3037", "type": "cve"}
+      ],
+      "category": "true_positive",
+      "tags": ["CISA", "2026", "ICS", "Copeland", "XWEB", "RCE", "OS-command-injection"]
+    },
+    {
+      "id": "report_053",
+      "text": "EV Energy ev.energy - CISA ICS Advisory ICSA-26-057-07",
+      "expected_iocs": [
+        {"value": "CVE-2026-27772", "type": "cve"},
+        {"value": "CVE-2026-24445", "type": "cve"},
+        {"value": "CVE-2026-26290", "type": "cve"},
+        {"value": "CVE-2026-25774", "type": "cve"}
+      ],
+      "category": "true_positive",
+      "tags": ["CISA", "2026", "ICS", "EV-charging", "authentication-bypass", "DoS"]
+    },
+    {
+      "id": "report_054",
+      "text": "Mobility46 mobility46.se - CISA ICS Advisory ICSA-26-057-08",
+      "expected_iocs": [
+        {"value": "CVE-2026-27028", "type": "cve"},
+        {"value": "CVE-2026-26305", "type": "cve"},
+        {"value": "CVE-2026-27647", "type": "cve"},
+        {"value": "CVE-2026-22878", "type": "cve"}
+      ],
+      "category": "true_positive",
+      "tags": ["CISA", "2026", "ICS", "EV-charging", "authentication-bypass", "DoS"]
+    },
+    {
+      "id": "report_055",
+      "text": "CloudCharge cloudcharge.se - CISA ICS Advisory ICSA-26-057-03",
+      "expected_iocs": [
+        {"value": "CVE-2026-20781", "type": "cve"},
+        {"value": "CVE-2026-25114", "type": "cve"},
+        {"value": "CVE-2026-27652", "type": "cve"},
+        {"value": "CVE-2026-20733", "type": "cve"}
+      ],
+      "category": "true_positive",
+      "tags": ["CISA", "2026", "ICS", "EV-charging", "authentication-bypass", "session-hijacking"]
+    },
+    {
+      "id": "report_056",
+      "text": "EV2GO ev2go.io - CISA ICS Advisory ICSA-26-057-04",
+      "expected_iocs": [
+        {"value": "CVE-2026-24731", "type": "cve"},
+        {"value": "CVE-2026-25945", "type": "cve"},
+        {"value": "CVE-2026-20895", "type": "cve"},
+        {"value": "CVE-2026-22890", "type": "cve"}
+      ],
+      "category": "true_positive",
+      "tags": ["CISA", "2026", "ICS", "EV-charging", "authentication-bypass", "DoS"]
+    },
+    {
+      "id": "report_057",
+      "text": "SWITCH EV swtchenergy.com - CISA ICS Advisory ICSA-26-057-06",
+      "expected_iocs": [
+        {"value": "CVE-2026-27767", "type": "cve"},
+        {"value": "CVE-2026-25113", "type": "cve"},
+        {"value": "CVE-2026-25778", "type": "cve"},
+        {"value": "CVE-2026-27773", "type": "cve"}
+      ],
+      "category": "true_positive",
+      "tags": ["CISA", "2026", "ICS", "EV-charging", "authentication-bypass", "DoS"]
+    },
+    {
+      "id": "report_058",
+      "text": "Johnson Controls, Inc. Frick Controls Quantum HD - CISA ICS Advisory ICSA-26-057-01",
+      "expected_iocs": [
+        {"value": "CVE-2026-21654", "type": "cve"},
+        {"value": "CVE-2026-21656", "type": "cve"},
+        {"value": "CVE-2026-21657", "type": "cve"},
+        {"value": "CVE-2026-21658", "type": "cve"},
+        {"value": "CVE-2026-21659", "type": "cve"},
+        {"value": "CVE-2026-21660", "type": "cve"}
+      ],
+      "category": "true_positive",
+      "tags": ["CISA", "2026", "ICS", "Johnson-Controls", "RCE", "OS-command-injection"]
+    },
+    {
+      "id": "report_059",
+      "text": "CISA and Partners Release Guidance for Ongoing Global Exploitation of Cisco SD-WAN Systems",
+      "expected_iocs": [
+        {"value": "CVE-2026-20127", "type": "cve"},
+        {"value": "CVE-2022-20775", "type": "cve"}
+      ],
+      "category": "true_positive",
+      "tags": ["CISA", "2026", "Cisco", "SD-WAN", "authentication-bypass", "KEV", "active-exploitation"]
+    },
+    {
+      "id": "report_060",
+      "text": "CISA Adds Two Known Exploited Vulnerabilities to Catalog - CVE-2022-20775 and CVE-2026-20127",
+      "expected_iocs": [
+        {"value": "CVE-2022-20775", "type": "cve"},
+        {"value": "CVE-2026-20127", "type": "cve"}
+      ],
+      "category": "true_positive",
+      "tags": ["CISA", "2026", "Cisco", "SD-WAN", "KEV", "active-exploitation"]
+    },
+    {
+      "id": "report_061",
+      "text": "Gardyn Home Kit - CISA ICS Advisory ICSA-26-055-03",
+      "expected_iocs": [
+        {"value": "CVE-2025-29628", "type": "cve"},
+        {"value": "CVE-2025-29629", "type": "cve"},
+        {"value": "CVE-2025-29631", "type": "cve"},
+        {"value": "CVE-2025-1242", "type": "cve"}
+      ],
+      "category": "true_positive",
+      "tags": ["CISA", "2026", "ICS", "IoT", "Gardyn", "OS-command-injection", "hardcoded-credentials"]
+    },
+    {
+      "id": "report_062",
+      "text": "Schneider Electric EcoStruxure Building Operation Workstation - CISA ICS Advisory ICSA-26-055-02",
+      "expected_iocs": [
+        {"value": "CVE-2026-1227", "type": "cve"},
+        {"value": "CVE-2026-1226", "type": "cve"}
+      ],
+      "category": "true_positive",
+      "tags": ["CISA", "2026", "ICS", "Schneider-Electric", "XXE", "code-injection"]
+    },
+    {
+      "id": "report_063",
+      "text": "CISA Adds One Known Exploited Vulnerability to Catalog - CVE-2026-25108 Soliton Systems FileZen",
+      "expected_iocs": [
+        {"value": "CVE-2026-25108", "type": "cve"}
+      ],
+      "category": "true_positive",
+      "tags": ["CISA", "2026", "KEV", "Soliton", "FileZen", "OS-command-injection", "active-exploitation"]
+    },
+    {
+      "id": "report_064",
+      "text": "InSAT MasterSCADA BUK-TS - CISA ICS Advisory ICSA-26-055-01",
+      "expected_iocs": [
+        {"value": "CVE-2026-21410", "type": "cve"},
+        {"value": "CVE-2026-22553", "type": "cve"}
+      ],
+      "category": "true_positive",
+      "tags": ["CISA", "2026", "ICS", "InSAT", "SCADA", "SQL-injection", "OS-command-injection", "RCE"]
+    },
+    {
+      "id": "report_065",
+      "text": "CISA Adds Two Known Exploited Vulnerabilities to Catalog - CVE-2025-49113 and CVE-2025-68461 RoundCube Webmail",
+      "expected_iocs": [
+        {"value": "CVE-2025-49113", "type": "cve"},
+        {"value": "CVE-2025-68461", "type": "cve"}
+      ],
+      "category": "true_positive",
+      "tags": ["CISA", "2026", "KEV", "RoundCube", "deserialization", "XSS", "active-exploitation"]
+    },
+    {
+      "id": "report_066",
+      "text": "Welker OdorEyes EcoSystem Pulse Bypass System with XL4 Controller - CISA ICS Advisory ICSA-26-050-04",
+      "expected_iocs": [
+        {"value": "CVE-2026-24790", "type": "cve"}
+      ],
+      "category": "true_positive",
+      "tags": ["CISA", "2026", "ICS", "Welker", "OT", "missing-authentication"]
+    },
+    {
+      "id": "report_067",
+      "text": "EnOcean SmartServer IoT - CISA ICS Advisory ICSA-26-050-01",
+      "expected_iocs": [
+        {"value": "CVE-2026-20761", "type": "cve"},
+        {"value": "CVE-2026-22885", "type": "cve"}
+      ],
+      "category": "true_positive",
+      "tags": ["CISA", "2026", "ICS", "EnOcean", "IoT", "command-injection", "RCE"]
+    },
+    {
+      "id": "report_068",
+      "text": "Jinan USR IOT Technology Limited (PUSR) USR-W610 - CISA ICS Advisory ICSA-26-050-03",
+      "expected_iocs": [
+        {"value": "CVE-2026-25715", "type": "cve"},
+        {"value": "CVE-2026-24455", "type": "cve"},
+        {"value": "CVE-2026-26049", "type": "cve"},
+        {"value": "CVE-2026-26048", "type": "cve"}
+      ],
+      "category": "true_positive",
+      "tags": ["CISA", "2026", "ICS", "PUSR", "IoT", "weak-credentials", "missing-authentication"]
+    },
+    {
+      "id": "report_069",
+      "text": "Valmet DNA Engineering Web Tools - CISA ICS Advisory ICSA-26-050-02",
+      "expected_iocs": [
+        {"value": "CVE-2025-15577", "type": "cve"}
+      ],
+      "category": "true_positive",
+      "tags": ["CISA", "2026", "ICS", "Valmet", "path-traversal", "arbitrary-file-read"]
+    },
+    {
+      "id": "report_070",
+      "text": "CISA Adds Two Known Exploited Vulnerabilities to Catalog - CVE-2021-22175 GitLab and CVE-2026-22769 Dell RecoverPoint",
+      "expected_iocs": [
+        {"value": "CVE-2021-22175", "type": "cve"},
+        {"value": "CVE-2026-22769", "type": "cve"}
+      ],
+      "category": "true_positive",
+      "tags": ["CISA", "2026", "KEV", "GitLab", "Dell", "SSRF", "hardcoded-credentials", "active-exploitation"]
+    },
+    {
+      "id": "report_071",
+      "text": "CISA Adds Four Known Exploited Vulnerabilities to Catalog - CVE-2008-0015, CVE-2020-7796, CVE-2024-7694, CVE-2026-2441",
+      "expected_iocs": [
+        {"value": "CVE-2008-0015", "type": "cve"},
+        {"value": "CVE-2020-7796", "type": "cve"},
+        {"value": "CVE-2024-7694", "type": "cve"},
+        {"value": "CVE-2026-2441", "type": "cve"}
+      ],
+      "category": "true_positive",
+      "tags": ["CISA", "2026", "KEV", "Microsoft", "Zimbra", "TeamT5", "Google-Chrome", "active-exploitation"]
+    },
+    {
+      "id": "report_072",
+      "text": "Siemens Simcenter Femap and Nastran - CISA ICS Advisory ICSA-26-048-01",
+      "expected_iocs": [
+        {"value": "CVE-2026-23715", "type": "cve"},
+        {"value": "CVE-2026-23716", "type": "cve"},
+        {"value": "CVE-2026-23717", "type": "cve"},
+        {"value": "CVE-2026-23718", "type": "cve"},
+        {"value": "CVE-2026-23719", "type": "cve"},
+        {"value": "CVE-2026-23720", "type": "cve"}
+      ],
+      "category": "true_positive",
+      "tags": ["CISA", "2026", "ICS", "Siemens", "Simcenter", "buffer-overflow", "RCE"]
+    },
+    {
+      "id": "report_073",
+      "text": "GE Vernova Enervista UR Setup - CISA ICS Advisory ICSA-26-048-03",
+      "expected_iocs": [
+        {"value": "CVE-2026-1762", "type": "cve"},
+        {"value": "CVE-2026-1763", "type": "cve"}
+      ],
+      "category": "true_positive",
+      "tags": ["CISA", "2026", "ICS", "GE-Vernova", "DLL-hijacking", "path-traversal"]
+    },
+    {
+      "id": "report_074",
+      "text": "Delta Electronics ASDA-Soft - CISA ICS Advisory ICSA-26-048-02",
+      "expected_iocs": [
+        {"value": "CVE-2026-1361", "type": "cve"}
+      ],
+      "category": "true_positive",
+      "tags": ["CISA", "2026", "ICS", "Delta-Electronics", "buffer-overflow", "RCE"]
+    },
+    {
+      "id": "report_075",
+      "text": "Honeywell HIB2PI and HDZ Series CCTV Cameras (Update A) - CISA ICS Advisory ICSA-26-048-04",
+      "expected_iocs": [
+        {"value": "CVE-2026-1670", "type": "cve"}
+      ],
+      "category": "true_positive",
+      "tags": ["CISA", "2026", "ICS", "Honeywell", "CCTV", "missing-authentication", "account-takeover"]
+    },
+    {
+      "id": "report_076",
+      "text": "CISA Adds One Known Exploited Vulnerability to Catalog - CVE-2026-1731 BeyondTrust Remote Support",
+      "expected_iocs": [
+        {"value": "CVE-2026-1731", "type": "cve"}
+      ],
+      "category": "true_positive",
+      "tags": ["CISA", "2026", "KEV", "BeyondTrust", "OS-command-injection", "active-exploitation"]
+    },
+    {
+      "id": "report_077",
+      "text": "Siemens SINEC OS - CISA ICS Advisory ICSA-26-043-06",
+      "expected_iocs": [
+        {"value": "CVE-2022-48174", "type": "cve"},
+        {"value": "CVE-2023-7256", "type": "cve"},
+        {"value": "CVE-2023-39810", "type": "cve"},
+        {"value": "CVE-2023-42363", "type": "cve"},
+        {"value": "CVE-2023-42364", "type": "cve"},
+        {"value": "CVE-2023-42365", "type": "cve"},
+        {"value": "CVE-2023-42366", "type": "cve"},
+        {"value": "CVE-2024-6197", "type": "cve"},
+        {"value": "CVE-2024-6874", "type": "cve"},
+        {"value": "CVE-2024-7264", "type": "cve"},
+        {"value": "CVE-2024-8006", "type": "cve"},
+        {"value": "CVE-2024-8096", "type": "cve"},
+        {"value": "CVE-2024-9681", "type": "cve"},
+        {"value": "CVE-2024-11053", "type": "cve"},
+        {"value": "CVE-2024-12718", "type": "cve"},
+        {"value": "CVE-2024-41996", "type": "cve"},
+        {"value": "CVE-2024-47619", "type": "cve"},
+        {"value": "CVE-2024-52533", "type": "cve"},
+        {"value": "CVE-2025-0167", "type": "cve"},
+        {"value": "CVE-2025-0665", "type": "cve"},
+        {"value": "CVE-2025-0725", "type": "cve"},
+        {"value": "CVE-2025-1390", "type": "cve"},
+        {"value": "CVE-2025-3360", "type": "cve"},
+        {"value": "CVE-2025-4138", "type": "cve"},
+        {"value": "CVE-2025-4330", "type": "cve"},
+        {"value": "CVE-2025-4373", "type": "cve"},
+        {"value": "CVE-2025-4435", "type": "cve"},
+        {"value": "CVE-2025-4516", "type": "cve"},
+        {"value": "CVE-2025-4517", "type": "cve"},
+        {"value": "CVE-2025-6141", "type": "cve"},
+        {"value": "CVE-2025-9086", "type": "cve"},
+        {"value": "CVE-2025-9230", "type": "cve"},
+        {"value": "CVE-2025-9231", "type": "cve"},
+        {"value": "CVE-2025-9232", "type": "cve"},
+        {"value": "CVE-2025-10148", "type": "cve"},
+        {"value": "CVE-2025-27587", "type": "cve"},
+        {"value": "CVE-2025-32433", "type": "cve"},
+        {"value": "CVE-2025-38084", "type": "cve"},
+        {"value": "CVE-2025-38085", "type": "cve"},
+        {"value": "CVE-2025-38086", "type": "cve"},
+        {"value": "CVE-2025-38345", "type": "cve"},
+        {"value": "CVE-2025-38350", "type": "cve"},
+        {"value": "CVE-2025-38498", "type": "cve"},
+        {"value": "CVE-2025-39839", "type": "cve"},
+        {"value": "CVE-2025-39841", "type": "cve"},
+        {"value": "CVE-2025-39846", "type": "cve"},
+        {"value": "CVE-2025-39853", "type": "cve"},
+        {"value": "CVE-2025-39860", "type": "cve"},
+        {"value": "CVE-2025-39864", "type": "cve"},
+        {"value": "CVE-2025-39865", "type": "cve"},
+        {"value": "CVE-2025-59375", "type": "cve"}
+      ],
+      "category": "true_positive",
+      "tags": ["CISA", "2026", "ICS", "Siemens", "SINEC-OS", "RUGGEDCOM", "SCALANCE", "third-party-components"]
+    },
+    {
+      "id": "report_078",
+      "text": "Siemens Solid Edge - CISA ICS Advisory ICSA-26-043-05",
+      "expected_iocs": [
+        {"value": "CVE-2025-40936", "type": "cve"}
+      ],
+      "category": "true_positive",
+      "tags": ["CISA", "2026", "ICS", "Siemens", "Solid-Edge", "out-of-bounds-read", "RCE"]
+    },
+    {
+      "id": "report_079",
+      "text": "CVE-2022-20775 - Cisco SD-WAN Path Traversal Vulnerability - CISA KEV",
+      "expected_iocs": [
+        {"value": "CVE-2022-20775", "type": "cve"}
+      ],
+      "category": "true_positive",
+      "tags": ["CISA", "KEV", "2026", "Cisco", "SD-WAN", "path-traversal", "active-exploitation"]
+    },
+    {
+      "id": "report_080",
+      "text": "CVE-2026-20127 - Cisco Catalyst SD-WAN Controller and Manager Authentication Bypass Vulnerability - CISA KEV",
+      "expected_iocs": [
+        {"value": "CVE-2026-20127", "type": "cve"}
+      ],
+      "category": "true_positive",
+      "tags": ["CISA", "KEV", "2026", "Cisco", "Catalyst-SD-WAN", "authentication-bypass", "active-exploitation"]
+    },
+    {
+      "id": "report_081",
+      "text": "2025 Cloud Threat Hunting and Defense Landscape - Recorded Future",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["RecordedFuture", "2026", "cloud", "threat-hunting", "ransomware"]
+    },
+    {
+      "id": "report_082",
+      "text": "GrayCharlie Hijacks Law Firm Sites in Suspected Supply-Chain Attack - Recorded Future",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["RecordedFuture", "2026", "GrayCharlie", "supply-chain", "WordPress", "NetSupport-RAT", "Stealc", "SectopRAT"]
+    },
+    {
+      "id": "report_083",
+      "text": "State of Security Report 2026 - Recorded Future",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["RecordedFuture", "2026", "threat-intelligence", "ransomware", "geopolitical"]
+    },
+    {
+      "id": "report_084",
+      "text": "Rublevka Team: Anatomy of a Russian Crypto Drainer Operation - Recorded Future",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["RecordedFuture", "2026", "Russia", "crypto-drainer", "financial-crime"]
+    },
+    {
+      "id": "report_085",
+      "text": "PurpleBravo's Targeting of the IT Software Supply Chain - Recorded Future",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["RecordedFuture", "2026", "North-Korea", "PurpleBravo", "supply-chain", "BeaverTail", "RAT", "infostealer"]
+    },
+    {
+      "id": "report_086",
+      "text": "Threat and Vulnerability Management in 2026 - Recorded Future",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["RecordedFuture", "2026", "vulnerability-management", "threat-intelligence"]
+    },
+    {
+      "id": "report_087",
+      "text": "Best Ransomware Detection Tools - Recorded Future",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["RecordedFuture", "2026", "ransomware", "detection"]
+    },
+    {
+      "id": "report_088",
+      "text": "December 2025 CVE Landscape: 22 Critical Vulnerabilities Mark 120% Surge, React2Shell Dominates Threat Activity - Recorded Future",
+      "expected_iocs": [
+        {"value": "CVE-2025-55182", "type": "cve"}
+      ],
+      "category": "true_positive",
+      "tags": ["RecordedFuture", "2026", "CVE", "React2Shell", "Meta", "React", "active-exploitation"]
+    },
+    {
+      "id": "report_089",
+      "text": "GRU-Linked BlueDelta Evolves Credential Harvesting - Recorded Future",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["RecordedFuture", "2026", "Russia", "GRU", "BlueDelta", "credential-harvesting", "espionage"]
+    },
+    {
+      "id": "report_090",
+      "text": "New ransomware tactics to watch out for in 2026 - Recorded Future",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["RecordedFuture", "2026", "ransomware", "DDoS", "insider-threat"]
+    },
+    {
+      "id": "report_091",
+      "text": "BlueDelta's Persistent Campaign Against UKR.NET - Recorded Future",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["RecordedFuture", "2025", "Russia", "BlueDelta", "phishing", "credential-harvesting", "Ukraine"]
+    },
+    {
+      "id": "report_092",
+      "text": "China's Zero-Day Pipeline: From Discovery to Deployment - Recorded Future",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["RecordedFuture", "2025", "China", "zero-day", "espionage", "state-sponsored"]
+    },
+    {
+      "id": "report_093",
+      "text": "The $0 Transaction That Signaled a Nation-State Cyberattack - Recorded Future",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["RecordedFuture", "2025", "China", "nation-state", "fraud", "card-testing"]
+    },
+    {
+      "id": "report_094",
+      "text": "Implications of Russia-India-China Trilateral Cooperation - Recorded Future",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["RecordedFuture", "2025", "Russia", "China", "India", "geopolitical"]
+    },
+    {
+      "id": "report_095",
+      "text": "GrayBravo's CastleLoader Activity Clusters Target Multiple Industries - Recorded Future",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["RecordedFuture", "2025", "GrayBravo", "CastleLoader", "MaaS", "ClickFix", "Matanbuchus", "phishing", "TAG-160", "TAG-161"]
+    },
+    {
+      "id": "report_096",
+      "text": "November 2025 CVE Landscape: 10 Critical Vulnerabilities Show 69% Drop from October - Recorded Future",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["RecordedFuture", "2025", "CVE", "Fortinet", "Samsung", "vulnerability-management"]
+    },
+    {
+      "id": "report_097",
+      "text": "5 Real-World Third-Party Risk Examples - Recorded Future",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["RecordedFuture", "2025", "third-party-risk", "supply-chain"]
+    },
+    {
+      "id": "report_098",
+      "text": "APT37 hackers use new malware to breach air-gapped networks - BleepingComputer",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["BleepingComputer", "2026", "APT37", "North-Korea", "air-gap", "removable-drive", "malware"]
+    },
+    {
+      "id": "report_099",
+      "text": "CISA warns that RESURGE malware can be dormant on Ivanti devices - BleepingComputer",
+      "expected_iocs": [
+        {"value": "CVE-2025-0282", "type": "cve"}
+      ],
+      "category": "true_positive",
+      "tags": ["BleepingComputer", "2026", "CISA", "RESURGE", "Ivanti", "zero-day", "active-exploitation"]
+    },
+    {
+      "id": "report_100",
+      "text": "Third-Party Patching and the Business Footprint We All Share - BleepingComputer",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["BleepingComputer", "2026", "third-party-patching", "attack-surface", "endpoint-security"]
+    },
+    {
+      "id": "report_101",
+      "text": "Critical Juniper Networks PTX flaw allows full router takeover - BleepingComputer",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["BleepingComputer", "2026", "Juniper", "Junos-OS", "RCE", "unauthenticated", "router"]
+    },
+    {
+      "id": "report_102",
+      "text": "Olympique Marseille confirms attempted cyberattack after data leak - BleepingComputer",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["BleepingComputer", "2026", "data-breach", "cyberattack", "sports"]
+    },
+    {
+      "id": "report_103",
+      "text": "Ransomware payment rate drops to record low as attacks surge - BleepingComputer",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["BleepingComputer", "2026", "ransomware", "payment-rate", "threat-landscape"]
+    },
+    {
+      "id": "report_104",
+      "text": "Who is the Kimwolf Botmaster Dort? - KrebsOnSecurity",
+      "expected_iocs": [
+        {"value": "jacobbutler803@gmail.com", "type": "email"},
+        {"value": "jay.miner232@gmail.com", "type": "email"}
+      ],
+      "category": "true_positive",
+      "tags": ["KrebsOnSecurity", "2026", "Kimwolf", "botnet", "DDoS", "OSINT", "Dort"]
+    },
+    {
+      "id": "report_105",
+      "text": "Starkiller Phishing Service Proxies Real Login Pages, MFA - KrebsOnSecurity",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["KrebsOnSecurity", "2026", "phishing", "MFA-bypass", "phishing-as-a-service", "Starkiller"]
+    },
+    {
+      "id": "report_106",
+      "text": "Kimwolf Botnet Swamps Anonymity Network I2P - KrebsOnSecurity",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["KrebsOnSecurity", "2026", "Kimwolf", "botnet", "DDoS", "I2P", "IoT"]
+    },
+    {
+      "id": "report_107",
+      "text": "Patch Tuesday February 2026 Edition - KrebsOnSecurity",
+      "expected_iocs": [
+        {"value": "CVE-2026-21256", "type": "cve"},
+        {"value": "CVE-2026-21509", "type": "cve"},
+        {"value": "CVE-2026-21510", "type": "cve"},
+        {"value": "CVE-2026-21513", "type": "cve"},
+        {"value": "CVE-2026-21514", "type": "cve"},
+        {"value": "CVE-2026-21516", "type": "cve"},
+        {"value": "CVE-2026-21519", "type": "cve"},
+        {"value": "CVE-2026-21523", "type": "cve"},
+        {"value": "CVE-2026-21525", "type": "cve"},
+        {"value": "CVE-2026-21533", "type": "cve"}
+      ],
+      "category": "true_positive",
+      "tags": ["KrebsOnSecurity", "2026", "Microsoft", "patch-tuesday", "zero-day", "active-exploitation"]
+    },
+    {
+      "id": "report_108",
+      "text": "Please Don't Feed the Scattered Lapsus ShinyHunters - KrebsOnSecurity",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["KrebsOnSecurity", "2026", "Scattered-Lapsus", "ShinyHunters", "ransomware", "extortion", "data-breach"]
+    },
+    {
+      "id": "report_109",
+      "text": "Who Operates the Badbox 2.0 Botnet? - KrebsOnSecurity",
+      "expected_iocs": [
+        {"value": "189308024@qq.com", "type": "email"},
+        {"value": "34557257@qq.com", "type": "email"},
+        {"value": "cathead@gmail.com", "type": "email"},
+        {"value": "daihaic@gmail.com", "type": "email"},
+        {"value": "xavierzhu@gmail.com", "type": "email"},
+        {"value": "xavierzhu@qq.com", "type": "email"}
+      ],
+      "category": "true_positive",
+      "tags": ["KrebsOnSecurity", "2026", "Badbox-2.0", "Kimwolf", "botnet", "China", "Android-TV", "IoT"]
+    },
+    {
+      "id": "report_110",
+      "text": "Kimwolf Botnet Lurking in Corporate, Govt. Networks - KrebsOnSecurity",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["KrebsOnSecurity", "2026", "Kimwolf", "botnet", "DDoS", "IoT", "corporate", "government"]
+    },
+    {
+      "id": "report_111",
+      "text": "Patch Tuesday January 2026 Edition - KrebsOnSecurity",
+      "expected_iocs": [
+        {"value": "CVE-2023-31096", "type": "cve"},
+        {"value": "CVE-2026-0628", "type": "cve"},
+        {"value": "CVE-2026-0891", "type": "cve"},
+        {"value": "CVE-2026-0892", "type": "cve"},
+        {"value": "CVE-2026-20805", "type": "cve"},
+        {"value": "CVE-2026-20952", "type": "cve"},
+        {"value": "CVE-2026-20953", "type": "cve"},
+        {"value": "CVE-2026-21265", "type": "cve"}
+      ],
+      "category": "true_positive",
+      "tags": ["KrebsOnSecurity", "2026", "Microsoft", "patch-tuesday", "zero-day", "active-exploitation"]
+    },
+    {
+      "id": "report_112",
+      "text": "Who Benefited from the Aisuru and Kimwolf Botnets? - KrebsOnSecurity",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["KrebsOnSecurity", "2026", "Kimwolf", "Aisuru", "botnet", "DDoS", "Android-TV", "IoT", "residential-proxies"]
+    },
+    {
+      "id": "report_113",
+      "text": "The Kimwolf Botnet is Stalking Your Local Network - KrebsOnSecurity",
+      "expected_iocs": [],
+      "category": "true_positive",
+      "tags": ["KrebsOnSecurity", "2026", "Kimwolf", "botnet", "IoT", "DDoS", "Android", "Badbox-2.0", "residential-proxies"]
+    }
+  ]
+}

@@ -1,0 +1,136 @@
+{
+  "samples": [
+    {
+      "id": "cisa_001",
+      "text": "CISA Advisory AA24-131A: Threat actors exploited CVE-2023-46805 and CVE-2024-21887 to compromise Ivanti Connect Secure VPN appliances. Following initial access, the actors deployed WIREFIRE and BUSHWALK webshells. C2 communications were established to 185.243.115.25 and 206.189.156.69. Malicious payloads were downloaded from https://sysinternaltool.com/update.exe. Additional domains observed include api.tlfrfrn.com and gpoaccess.com used for DNS tunneling.",
+      "expected_iocs": [
+        {"value": "CVE-2023-46805", "type": "cve"},
+        {"value": "CVE-2024-21887", "type": "cve"},
+        {"value": "185.243.115.25", "type": "ip"},
+        {"value": "206.189.156.69", "type": "ip"},
+        {"value": "https://sysinternaltool.com/update.exe", "type": "url"},
+        {"value": "api.tlfrfrn.com", "type": "domain"},
+        {"value": "gpoaccess.com", "type": "domain"}
+      ],
+      "category": "true_positive",
+      "tags": ["cisa", "apt", "ivanti", "real_world"]
+    },
+
+    {
+      "id": "apt_report_001",
+      "text": "APT29 (Cozy Bear) was observed using spear-phishing emails with a malicious attachment. The attachment drops a DLL loader that contacts 91.234.99.38 over port 443. The loader retrieves a second-stage payload from http://cdn-storage.cloud-svc.site/config.bin (SHA256: 7d93e7e34f87dc0c18a3c0e1e5d93ad5e9f16e1a2b3c4d5e6f7a8b9c0d1e2f3a). The malware also uses mail.proton-secure.xyz for exfiltration. Observed email lure from recruit@job-apply.info.",
+      "expected_iocs": [
+        {"value": "91.234.99.38", "type": "ip"},
+        {"value": "http://cdn-storage.cloud-svc.site/config.bin", "type": "url"},
+        {"value": "7d93e7e34f87dc0c18a3c0e1e5d93ad5e9f16e1a2b3c4d5e6f7a8b9c0d1e2f3a", "type": "sha256"},
+        {"value": "mail.proton-secure.xyz", "type": "domain"},
+        {"value": "recruit@job-apply.info", "type": "email"}
+      ],
+      "category": "true_positive",
+      "tags": ["apt29", "spearphishing", "real_world"]
+    },
+
+    {
+      "id": "ransomware_001",
+      "text": "LockBit 3.0 ransomware incident: Initial access via CVE-2024-1709 (ScreenConnect). The threat actor dropped a Cobalt Strike beacon (MD5: e99a18c428cb38d5f260853678922e03) that beaconed to 45.77.65.211 every 60 seconds. Ransom note directed victims to http://lockbitapt2d73kttymmx2bekem6g7a.onion/payment. The actor was also seen using psexec.exe for lateral movement across the network.",
+      "expected_iocs": [
+        {"value": "CVE-2024-1709", "type": "cve"},
+        {"value": "e99a18c428cb38d5f260853678922e03", "type": "md5"},
+        {"value": "45.77.65.211", "type": "ip"},
+        {"value": "http://lockbitapt2d73kttymmx2bekem6g7a.onion/payment", "type": "url"}
+      ],
+      "category": "true_positive",
+      "tags": ["ransomware", "lockbit", "cobalt_strike"]
+    },
+
+    {
+      "id": "multi_hash_001",
+      "text": "Malware analysis of the dropper revealed the following hashes: MD5: d41d8cd98f00b204e9800998ecf8427e, SHA1: da39a3ee5e6b4b0d3255bfef95601890afd80709, SHA256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855. The sample was submitted from 103.253.41.98.",
+      "expected_iocs": [
+        {"value": "d41d8cd98f00b204e9800998ecf8427e", "type": "md5"},
+        {"value": "da39a3ee5e6b4b0d3255bfef95601890afd80709", "type": "sha1"},
+        {"value": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "type": "sha256"},
+        {"value": "103.253.41.98", "type": "ip"}
+      ],
+      "category": "true_positive",
+      "tags": ["malware_analysis", "hashes"]
+    },
+
+
+    {
+      "id": "tn_blog_001",
+      "text": "In this blog post, we'll discuss the latest trends in cloud computing. AWS and Azure continue to dominate the market, with Google Cloud gaining ground. Many companies are migrating their workloads to containerized environments using Kubernetes and Docker.",
+      "expected_iocs": [],
+      "category": "true_negative",
+      "tags": ["blog", "benign"]
+    },
+
+    {
+      "id": "tn_news_001",
+      "text": "Apple announced the release of iOS 18.2 at their annual developer conference. The update includes improved Siri capabilities and a redesigned Control Center. Users can download the update from the Settings app on their iPhone.",
+      "expected_iocs": [],
+      "category": "true_negative",
+      "tags": ["news", "benign"]
+    },
+
+    {
+      "id": "tn_tech_doc_001",
+      "text": "To configure the server, set the listen address to 0.0.0.0 on port 8080. The default DNS resolver uses 8.8.8.8 (Google) and 1.1.1.1 (Cloudflare). Log files are stored in /var/log/app.log and rotated daily.",
+      "expected_iocs": [],
+      "category": "true_negative",
+      "tags": ["documentation", "benign"]
+    },
+
+
+    {
+      "id": "obf_twitter_001",
+      "text": "New #malware campaign spotted! Dropper calls back to hxxps://evil-update[.]com/payload[.]bin and secondary C2 at 185[.]220[.]101[.]34. Stay safe! #infosec #threatintel",
+      "expected_iocs": [
+        {"value": "https://evil-update.com/payload.bin", "type": "url"},
+        {"value": "185.220.101.34", "type": "ip"}
+      ],
+      "category": "obfuscated",
+      "tags": ["twitter", "defanged"]
+    },
+
+    {
+      "id": "obf_report_001",
+      "text": "The phishing kit was hosted at hxxp://login-secure-verify[.]top/office365/ and sends stolen credentials to attacker@evil-harvest[.]xyz. DNS callbacks observed to c2-beacon[.]ru.",
+      "expected_iocs": [
+        {"value": "http://login-secure-verify.top/office365/", "type": "url"},
+        {"value": "attacker@evil-harvest.xyz", "type": "email"},
+        {"value": "c2-beacon.ru", "type": "domain"}
+      ],
+      "category": "obfuscated",
+      "tags": ["phishing", "defanged"]
+    },
+
+
+    {
+      "id": "edge_version_001",
+      "text": "Please upgrade to Python 3.12.1 as version 2.7.18 is no longer supported. The Node.js runtime should be at least version 20.11.0 for compatibility.",
+      "expected_iocs": [],
+      "category": "edge_case",
+      "tags": ["version_string"]
+    },
+
+    {
+      "id": "edge_filename_001",
+      "text": "The attacker placed malware.exe and config.json in the startup folder. A second payload named loader.dll was found in the temp directory alongside stolen_data.zip.",
+      "expected_iocs": [],
+      "category": "edge_case",
+      "tags": ["file_names"]
+    },
+
+    {
+      "id": "edge_mixed_001",
+      "text": "The attacker used spearphishing to deliver exploit code for CVE-2024-3400. After compromise, internal pivot from 192.168.1.50 to the domain controller reached external C2 at 94.131.99.17.",
+      "expected_iocs": [
+        {"value": "CVE-2024-3400", "type": "cve"},
+        {"value": "94.131.99.17", "type": "ip"}
+      ],
+      "category": "edge_case",
+      "tags": ["mixed_context", "private_ip"]
+    }
+  ]
+}

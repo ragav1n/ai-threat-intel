@@ -1,11 +1,11 @@
 """
 Run the Full Phase 5 Evaluation Pipeline.
 
-Usage: python run_evaluation.py
+Usage: python run_evaluation.py [--dataset path/to/dataset.json]
 
 Includes:
   1. Core P/R/F1 metrics (micro, macro, weighted) + MCC + Cohen's κ
-  2. Baseline comparison (our pipeline vs iocextract)
+  2. Baseline comparison (our pipeline vs iocextract vs ioc-finder)
   3. Ablation study (regex-only → full pipeline)
   4. Bootstrap 95% confidence intervals
   5. Error analysis (FP/FN categorisation)
@@ -13,6 +13,7 @@ Includes:
 """
 
 import json
+import argparse
 from threat_intel_aggregator.evaluation.ground_truth import GroundTruthDataset
 from threat_intel_aggregator.evaluation.metrics_engine import MetricsEngine
 from threat_intel_aggregator.evaluation.latency_benchmark import LatencyBenchmark
@@ -24,12 +25,22 @@ from threat_intel_aggregator.feed_collection.ioc_extractor import extract_iocs_w
 
 
 def main():
+    parser = argparse.ArgumentParser(description="Run IOC extraction evaluation.")
+    parser.add_argument("--dataset", type=str, help="Path to custom ground-truth dataset JSON")
+    args = parser.parse_args()
+
     # ── Load dataset ────────────────────────────────────────
-    dataset = GroundTruthDataset()
+    if args.dataset:
+        dataset = GroundTruthDataset.load(args.dataset)
+        print(f"Loading custom dataset from: {args.dataset}")
+    else:
+        dataset = GroundTruthDataset()
+        print("Using default ground-truth dataset")
+        
     print(f"Dataset: {dataset.total_samples} samples, {dataset.total_expected_iocs} expected IOCs")
     print(f"Categories: {json.dumps(dataset.category_counts())}\n")
 
-    # ── Run extraction ──────────────────────────────────────
+    # Format samples for the metrics engine
     eval_samples = []
     for sample in dataset.samples:
         matches = extract_iocs_with_confidence(sample.text, include_private_ips=False, min_confidence=0.0)
@@ -78,14 +89,24 @@ def main():
         print(f"    {t:8s} {tm.true_positives:4d} {tm.false_positives:4d} {tm.false_negatives:4d} {tm.precision:6.1%} {tm.recall:6.1%} {tm.f1:6.1%}")
     print()
 
+    # Create simplified samples for baseline/ablation modules
+    simple_samples = [
+        {
+            "text": s.text,
+            "expected_iocs": [e.to_dict() for e in s.expected_iocs],
+            "category": s.category,
+        }
+        for s in dataset.samples
+    ]
+
     # ── 2. Baseline Comparison ──────────────────────────────
     print()
-    baseline_results = run_baseline_comparison()
+    baseline_results = run_baseline_comparison(samples=simple_samples)
     print(format_comparison_table(baseline_results))
     print()
 
     # ── 3. Ablation Study ───────────────────────────────────
-    ablation_results = run_ablation_study()
+    ablation_results = run_ablation_study(samples=simple_samples)
     print(format_ablation_table(ablation_results))
     print()
 
@@ -95,6 +116,7 @@ def main():
     print()
 
     # ── 5. Error Analysis ───────────────────────────────────
+    # Pass processed eval_samples to run_error_analysis to avoid re-running extraction
     error_result = run_error_analysis(eval_samples)
     print(format_error_analysis(error_result))
     print()

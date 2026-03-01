@@ -107,8 +107,10 @@ def _classify_fp(value: str, ioc_type: str, sample_text: str, sample_category: s
 def _classify_fn(value: str, ioc_type: str, sample_text: str, sample_category: str) -> Tuple[str, str]:
     """Classify a false negative into a failure category."""
 
+    from threat_intel_aggregator.feed_collection.ioc_deobfuscator import deobfuscate_text
     # Check if the value is even present in the text (post-deobfuscation)
-    if value.lower() not in sample_text.lower():
+    deobfuscated_text, _ = deobfuscate_text(sample_text)
+    if value.lower() not in deobfuscated_text.lower():
         # Might be an obfuscated value that deobfuscation missed
         return "deobfuscation_failure", f"Expected '{value}' not found in text — deobfuscation may have failed"
 

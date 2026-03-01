@@ -24,13 +24,17 @@ def defang_url(text: str) -> str:
     
     Handles:
     - hxxp:// → http://
-    - hxxps:// → https://
     - hXXp:// → http:// (case-insensitive)
     - fxp:// → ftp://
     """
-    # hxxp/hxxps variants (case-insensitive)
-    text = re.sub(r'hxxps?://', lambda m: m.group().replace('hxxp', 'http').replace('hXXp', 'http'), text, flags=re.IGNORECASE)
-    text = re.sub(r'hxxp', 'http', text, flags=re.IGNORECASE)
+    # hxxp/hxxps/hxp/hxps variants (case-insensitive)
+    # Handle both normal :// and URL-encoded %3A%2F%2F (or %3a%2f%2f)
+    text = re.sub(
+        r'h[x]{1,2}ps?(://|%3A%2F%2F|%3a%2f%2f)', 
+        lambda m: ('https' if 's' in m.group().lower() else 'http') + m.group(1), 
+        text, 
+        flags=re.IGNORECASE
+    )
     
     # fxp → ftp
     text = re.sub(r'\bfxp://', 'ftp://', text, flags=re.IGNORECASE)
