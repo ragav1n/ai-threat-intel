@@ -28,30 +28,48 @@ IOC_PATTERNS: dict[IOCType, str] = {
     IOCType.SHA1: r"\b[a-fA-F\d]{40}\b",
     IOCType.SHA256: r"\b[a-fA-F\d]{64}\b",
     IOCType.EMAIL: r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b",
-    IOCType.CVE: r"\bCVE-\d{4}-\d{4,}\b",
+    IOCType.CVE: r"\b(?i:CVE)-\d{4}-\d{4,}(?!\d)",
 }
 
 # Common false positives to filter out
 DOMAIN_BLACKLIST = {
-    "example.com", "localhost.localdomain", "test.com",
-    "gmail.com", "yahoo.com", "hotmail.com",  # Email providers aren't IOCs
-    "google.com", "microsoft.com", "github.com",  # Common legitimate domains
+    "example.com", "localhost.localdomain", "test.com", "schema.org",
+    "gmail.com", "yahoo.com", "hotmail.com", "qq.com",  # Email providers
+    "google.com", "microsoft.com", "github.com", "apple.com",  # Big tech
     "outlook.com", "live.com", "icloud.com", "protonmail.com",
-    "linkedin.com", "twitter.com", "facebook.com", "apple.com",
-    "amazon.com", "cloudflare.com", "mozilla.org",
+    "linkedin.com", "twitter.com", "facebook.com", "instagram.com", "t.me",
+    "amazon.com", "cloudflare.com", "mozilla.org", "w3.org", "mitre.org",
+    "github.io", "virustotal.com", "raw.githubusercontent.com",
+}
+
+# High profile domains that might occasionally be IOCs in specific contexts
+# We penalize their confidence heavily rather than hard filtering them.
+HIGH_PROFILE_DOMAINS = {
+    "cisa.gov", "siemens.com", "honeywell.com", "deltaww.com", 
+    "gevernova.com", "sw.siemens.com", "unit42.paloaltonetworks.com",
+    "mandiant.com", "crowdstrike.com", "proofpoint.com", "dfirreport.com",
+    "thedfirreport.com", "paloaltonetworks.com", "fortinet.com", "kaspersky.com",
+    "googleblog.com",
 }
 
 # File extensions that look like domains but aren't IOCs
 FILE_EXTENSION_BLACKLIST = {
-    ".exe", ".dll", ".sys", ".bin", ".dat", ".tmp",
+    ".exe", ".dll", ".bin", ".dat", ".tmp",
     ".zip", ".rar", ".7z", ".tar", ".gz", ".bz2",
     ".js", ".php", ".html", ".htm", ".css", ".asp", ".aspx", ".jsp",
-    ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".csv", ".txt", ".rtf",
+    ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".csv", ".txt", ".rtf",
     ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".svg", ".ico",
     ".mp3", ".mp4", ".avi", ".mov", ".wav",
     ".py", ".rb", ".java", ".cpp", ".go", ".rs",
-    ".json", ".xml", ".yaml", ".yml", ".ini", ".cfg", ".log",
-    ".iso", ".img", ".dmg", ".apk", ".msi",
+    ".json", ".xml", ".yaml", ".yml", ".cfg", ".log",
+    ".iso", ".img", ".dmg",
+    ".sh", ".bat", ".cmd", ".ps1", ".vbs",
+}
+
+# Domains often used for hosting malicious payloads
+CODE_HOSTING_DOMAINS = {
+    "github.com", "raw.githubusercontent.com", "pastebin.com", "gitlab.com",
+    "bitbucket.org", "ngrok.io", "ngrok-free.app"
 }
 
 # High-value TLDs that increase confidence
@@ -145,6 +163,20 @@ def is_private_ip(ip_str: str) -> bool:
         return False
 
 
+def get_domain_from_url(url: str) -> str:
+    """Extract the domain (netloc) from a URL string."""
+    try:
+        from urllib.parse import urlparse
+        # Handle cases where URL doesn't have a scheme
+        if not url.startswith(('http://', 'https://', 'ftp://')):
+            url = 'http://' + url
+        netloc = urlparse(url).netloc
+        # Remove port if present
+        return netloc.split(':')[0].lower()
+    except Exception:
+        return ""
+
+
 def get_context_window(text: str, match_start: int, match_end: int, window_size: int = 100) -> str:
     """Extract context around a match for confidence scoring."""
     start = max(0, match_start - window_size)
@@ -175,8 +207,8 @@ def calculate_ip_confidence(ip_str: str, context: str) -> float:
     base = IOC_TYPE_BASE_CONFIDENCE[IOCType.IP]
     
     # Penalize common legitimate IPs
-    if ip_str.startswith("8.8.") or ip_str.startswith("1.1.1."):  # Google/Cloudflare DNS
-        base -= 0.30
+    if ip_str.startswith("8.8.") or ip_str.startswith("1.1.1.") or ip_str == "8.8.4.4":  # Google/Cloudflare DNS
+        base -= 0.50
     
     # Boost for private IPs mentioned in threat context (internal compromise)
     if is_private_ip(ip_str):
@@ -195,12 +227,26 @@ def calculate_domain_confidence(domain: str, context: str) -> float:
     """Calculate confidence score for domains."""
     base = IOC_TYPE_BASE_CONFIDENCE[IOCType.DOMAIN]
     
-    # Check TLD risk
+    # High-risk TLDs
     domain_lower = domain.lower()
     for tld in HIGH_RISK_TLDS:
         if domain_lower.endswith(tld):
             base += 0.15
             break
+            
+    # Penalize high profile domains
+    is_high_profile = False
+    if domain_lower in HIGH_PROFILE_DOMAINS:
+        is_high_profile = True
+    else:
+        parts = domain_lower.split('.')
+        for i in range(len(parts) - 1):
+            if '.'.join(parts[i:]) in HIGH_PROFILE_DOMAINS:
+                is_high_profile = True
+                break
+    
+    if is_high_profile:
+        base -= 0.25
     
     # Long random-looking subdomains often malicious
     parts = domain.split('.')
@@ -236,6 +282,21 @@ def calculate_url_confidence(url: str, context: str) -> float:
     base = IOC_TYPE_BASE_CONFIDENCE[IOCType.URL]
     
     url_lower = url.lower()
+    
+    # Subdomain/Domain parsing
+    domain = get_domain_from_url(url_lower)
+    is_high_profile = False
+    if domain in HIGH_PROFILE_DOMAINS:
+        is_high_profile = True
+    else:
+        parts = domain.split('.')
+        for i in range(len(parts) - 1):
+            if '.'.join(parts[i:]) in HIGH_PROFILE_DOMAINS:
+                is_high_profile = True
+                break
+                
+    if is_high_profile:
+        base -= 0.40
     
     # Check for suspicious patterns
     if any(pattern in url_lower for pattern in ["/wp-admin", "/phishing", "/payload", ".exe", ".zip", ".rar"]):
@@ -349,27 +410,56 @@ def extract_iocs_with_confidence(
                     continue
                 if not include_private_ips and is_private_ip(item):
                     continue
+                if item in DOMAIN_BLACKLIST or item in ["1.1.1.1", "8.8.8.8", "8.8.4.4"]:
+                    continue
                     
             elif ioc_type == IOCType.IPV6:
                 if not is_valid_ipv6(item):
                     continue
                     
+            elif ioc_type == IOCType.URL:
+                item_lower = item.lower()
+                domain = get_domain_from_url(item_lower)
+                
+                # Check if exact domain is blacklisted or if base domain is blacklisted
+                is_blacklisted = False
+                if domain not in CODE_HOSTING_DOMAINS:
+                    if domain in DOMAIN_BLACKLIST:
+                        is_blacklisted = True
+                    else:
+                        # Check base domains (e.g., if www.cisa.gov, check cisa.gov)
+                        parts = domain.split('.')
+                        for i in range(len(parts) - 1):
+                            base = '.'.join(parts[i:])
+                            if base in DOMAIN_BLACKLIST and base not in CODE_HOSTING_DOMAINS:
+                                is_blacklisted = True
+                                break
+                                
+                    if is_blacklisted:
+                        continue
+                    
             elif ioc_type == IOCType.DOMAIN:
                 item_lower = item.lower()
-                # Skip blacklisted domains
-                if item_lower in DOMAIN_BLACKLIST:
+                
+                # Check base domains for blacklist
+                is_blacklisted = False
+                parts = item_lower.split('.')
+                for i in range(len(parts) - 1):
+                    base = '.'.join(parts[i:])
+                    if base in DOMAIN_BLACKLIST:
+                        is_blacklisted = True
+                        break
+                        
+                if is_blacklisted:
                     continue
+                    
                 # Skip file-extension-like matches (payload.exe, script.js, etc.)
                 last_dot = item_lower.rfind('.')
                 if last_dot >= 0:
                     extension = item_lower[last_dot:]
                     if extension in FILE_EXTENSION_BLACKLIST:
                         continue
-                # Skip domains that are substrings of already-extracted URLs
-                # (the URL itself is the more specific indicator)
-                if any(item_lower in url for url in extracted_urls):
-                    continue
-            
+                        
             # Calculate confidence
             confidence = calculate_confidence(item, ioc_type, context)
             

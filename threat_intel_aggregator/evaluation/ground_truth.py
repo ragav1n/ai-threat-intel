@@ -799,6 +799,8 @@ class GroundTruthDataset:
         path = Path(path or _DEFAULT_DATASET_PATH)
         with open(path) as f:
             data = json.load(f)
+        if isinstance(data, dict) and "samples" in data:
+            data = data["samples"]
         samples = [GroundTruthSample.from_dict(d) for d in data]
         logger.info(f"Loaded {len(samples)} samples from {path}")
         return cls(samples=samples)
