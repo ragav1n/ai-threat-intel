@@ -107,7 +107,7 @@ class LatencyBenchmark:
         result = benchmark.run(texts)
     """
 
-    def __init__(self, include_llm: bool = False, llm_model: str = "qwen2.5:7b"):
+    def __init__(self, include_llm: bool = False, llm_model: str = "qwen3.5:9b"):
         self.include_llm = include_llm
         self.llm_model = llm_model
 

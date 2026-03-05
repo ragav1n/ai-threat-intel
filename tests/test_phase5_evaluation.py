@@ -828,9 +828,26 @@ class TestBaselineComparison:
 
     def test_run_returns_both_extractors(self):
         """Should return results for both our pipeline and iocextract."""
-        results = run_baseline_comparison(self._make_samples())
-        assert "our_pipeline" in results
-        assert "iocextract" in results
+        # Using exactly what's registered
+        samples = self._make_samples() # Define samples here
+        result = run_baseline_comparison(samples, baselines=["our_pipeline", "regex_only"])
+        assert "our_pipeline" in result
+        assert "regex_only" in result
+        assert len(result) == 2
+
+    def test_run_returns_llm_extractor(self):
+        """Should be able to run with the LLM extractor baseline."""
+        samples = [
+            {
+                "expected_iocs": [{"value": "1.2.3.4", "type": "ip"}],
+                "extracted_iocs": [],
+                "category": "true_positive",
+                "text": "Attacker IP is 1.2.3.4",
+            }
+        ]
+        result = run_baseline_comparison(samples, baselines=["our_pipeline_llm"])
+        assert "our_pipeline_llm" in result
+        assert result["our_pipeline_llm"].true_positives == 1
 
     def test_baseline_result_structure(self):
         """BaselineResult should have P/R/F1 properties."""

@@ -485,6 +485,10 @@ def extract_iocs_with_confidence(
                 if is_blacklisted:
                     continue
                     
+                # Skip if this domain is just part of an already extracted URL
+                if any(item_lower in url for url in extracted_urls):
+                    continue
+                    
                 # Skip file-extension-like matches (payload.exe, script.js, etc.)
                 last_dot = item_lower.rfind('.')
                 if last_dot >= 0:
