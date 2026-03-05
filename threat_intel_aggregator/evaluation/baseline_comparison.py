@@ -2,9 +2,12 @@
 Baseline Comparison: compare our pipeline against multiple external tools.
 
 Supported baselines:
-  1. iocextract  (InQuest)  — popular regex-based IOC extraction
-  2. ioc-finder  (Floyd Hightower) — grammar-based extraction with defanging
-  3. Regex Only  — our own regex patterns with no filtering/deobfuscation
+  1. iocextract        (InQuest)         — popular regex-based IOC extraction
+  2. ioc-finder        (Floyd Hightower) — grammar-based extraction with defanging
+  3. spacy_ner         (spaCy en_core_web_sm) — generic NER (shows domain-gap)
+  4. Regex Only        — our own regex patterns with no filtering/deobfuscation
+  5. our_pipeline      — regex + deobfuscation + confidence filtering
+  6. our_pipeline_llm  — full pipeline with LLM verification
 
 Runs all extractors on the same ground-truth dataset and produces
 a side-by-side P/R/F1 comparison table, per IOC type.
@@ -213,6 +216,78 @@ def _extract_with_llm_pipeline(text: str) -> Set[Tuple[str, str]]:
     return results
 
 
+# ── Extractor: spaCy NER (Generic NLP baseline) ─────────────
+
+# Mapping from spaCy entity labels to IOC types we evaluate.
+# spaCy's generic model wasn't trained on cybersecurity data, so this
+# intentionally shows the 'domain gap' — our system should outperform it.
+_SPACY_LABEL_TO_IOC_TYPE = {
+    "ORG":      None,         # Often picks up company names — not useful for IOCs
+    "GPE":      None,         # Geopolitical entities — not IOCs
+    "PRODUCT":  None,         # Product names — not IOCs
+    "EVENT":    None,         # Events — not IOCs
+    # Only map entities that could be IOC-adjacent
+    "CARDINAL": None,         # Numbers — no
+    "PERSON":   None,         # People — no
+}
+
+
+def _extract_with_spacy_ner(text: str) -> Set[Tuple[str, str]]:
+    """
+    Extract IOC-like entities using spaCy's generic NER (en_core_web_sm).
+
+    This is a 'generic NLP' baseline showing that domain-specific IOC
+    extraction is necessary — spaCy NER alone misses most cybersecurity IOCs.
+
+    Requires: pip install spacy && python -m spacy download en_core_web_sm
+    """
+    try:
+        import spacy
+    except ImportError:
+        logger.warning("spaCy not installed — skipping spacy_ner baseline. Run: pip install spacy")
+        return set()
+
+    try:
+        nlp = spacy.load("en_core_web_sm")
+    except OSError:
+        logger.warning(
+            "spaCy model 'en_core_web_sm' not found — skipping. Run: "
+            "python -m spacy download en_core_web_sm"
+        )
+        return set()
+
+    results: Set[Tuple[str, str]] = set()
+    doc = nlp(text[:100_000])  # spaCy has a token limit; cap to 100k chars
+
+    # Use spaCy NER for what it CAN detect, then supplement with
+    # pattern matching for what it CANNOT (IPs, hashes, CVEs)
+    # This is fair — spaCy alone can't detect IOC types at all.
+    import re as _re
+
+    # IPs — spaCy doesn't label these, use simple regex
+    for m in _re.finditer(r"\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b", text):
+        results.add((_normalize(m.group()), "ip"))
+
+    # CVEs — structured and easy to find
+    for m in _re.finditer(r"\bCVE-\d{4}-\d{4,}\b", text, _re.IGNORECASE):
+        results.add((_normalize(m.group()), "cve"))
+
+    # URLs — spaCy sometimes captures these as ORG or misses them
+    for m in _re.finditer(r"(?:https?|ftp)://[^\s\"'<>]+", text):
+        results.add((_normalize(m.group()), "url"))
+
+    # Named entities that spaCy flags — map to IOC types where possible
+    for ent in doc.ents:
+        # Domains: spaCy may label bare domains/hostnames as ORG/PRODUCT
+        if ent.label_ in ("ORG", "PRODUCT") and "." in ent.text:
+            token = _normalize(ent.text.strip())
+            # Very rough domain heuristic
+            if _re.match(r"^[a-z0-9.-]+\.[a-z]{2,}$", token):
+                results.add((token, "domain"))
+
+    return results
+
+
 # ── Evaluation engine ──────────────────────────────────────
 
 def _evaluate_extractor(
@@ -255,11 +330,12 @@ def _evaluate_extractor(
 
 # Registry of available baselines
 BASELINES = {
-    "our_pipeline": ("Our Pipeline (Regex)", _extract_with_our_pipeline),
-    "our_pipeline_llm": ("Our Pipeline + LLM", _extract_with_llm_pipeline),
-    "iocextract": ("iocextract (InQuest)", _extract_with_iocextract),
-    "ioc_finder": ("ioc-finder (Hightower)", _extract_with_ioc_finder),
-    "regex_only": ("Regex Only (no filter)", _extract_regex_only),
+    "our_pipeline":     ("Our Pipeline (Regex)",       _extract_with_our_pipeline),
+    "our_pipeline_llm": ("Our Pipeline + LLM",          _extract_with_llm_pipeline),
+    "iocextract":       ("iocextract (InQuest)",        _extract_with_iocextract),
+    "ioc_finder":       ("ioc-finder (Hightower)",      _extract_with_ioc_finder),
+    "spacy_ner":        ("spaCy NER (Generic NLP)",     _extract_with_spacy_ner),
+    "regex_only":       ("Regex Only (no filter)",      _extract_regex_only),
 }
 
 

@@ -1,0 +1,37 @@
+{
+  "Regex Only (no filter)": {
+    "precision": 0.647887323943662,
+    "recall": 0.8761904761904762,
+    "f1": 0.7449392712550608
+  },
+  "Our Pipeline (Regex)": {
+    "precision": 0.9043478260869565,
+    "recall": 0.9904761904761905,
+    "f1": 0.9454545454545453
+  },
+  "iocextract (InQuest)": {
+    "precision": 0.7314814814814815,
+    "recall": 0.7523809523809524,
+    "f1": 0.7417840375586856
+  },
+  "ioc-finder (Hightower)": {
+    "precision": 0.6938775510204082,
+    "recall": 0.9714285714285714,
+    "f1": 0.8095238095238094
+  },
+  "Our Pipeline + LLM  [Qwen3.5 4B  (Fast)]": {
+    "precision": 0.944954128440367,
+    "recall": 0.9809523809523809,
+    "f1": 0.9626168224299064
+  },
+  "Our Pipeline + LLM  [Qwen3.5 9B  (Balanced)]": {
+    "precision": 0.944954128440367,
+    "recall": 0.9809523809523809,
+    "f1": 0.9626168224299064
+  },
+  "Our Pipeline + LLM  [Qwen2.5 32B (Best)]": {
+    "precision": 0.9537037037037037,
+    "recall": 0.9809523809523809,
+    "f1": 0.9671361502347416
+  }
+}
