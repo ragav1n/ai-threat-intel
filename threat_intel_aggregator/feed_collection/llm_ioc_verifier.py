@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 # Configuration
 OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11434")
 OLLAMA_TIMEOUT = int(os.getenv("OLLAMA_TIMEOUT", "60"))  # Shorter timeout for verification
-DEFAULT_MODEL = os.getenv("IOC_VERIFIER_MODEL", "qwen2.5:7b")
+DEFAULT_MODEL = os.getenv("IOC_VERIFIER_MODEL", "qwen3.5:9b")
 
 # Allowed IOC types for validation
 ALLOWED_IOC_TYPES = {

@@ -17,7 +17,7 @@ from .models import CampaignContext, PredictedTTP, TTPPrediction
 logger = logging.getLogger(__name__)
 
 # Default LLM settings
-DEFAULT_MODEL = "qwen2.5:7b"
+DEFAULT_MODEL = "qwen3.5:9b"
 OLLAMA_URL = "http://localhost:11434"
 OLLAMA_TIMEOUT = 120
 

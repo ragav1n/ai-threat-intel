@@ -196,12 +196,14 @@ class TestGraphContextRetriever:
             temporal={"first_seen": "2026-01-01", "last_seen": "2026-01-02", "duration_hours": 24.0},
             severity_dist={"High": 2},
             type_dist={"ip": 1, "domain": 1},
-            graph_neighbors={"1.2.3.4": ["evil.com"]},
+            graph_neighbors={"1.2.3.4": {1: ["evil.com"], 2: ["c2-stage2.ru"]}},
         )
         assert "Test Campaign" in profile
         assert "Total IOCs: 2" in profile
         assert "24.0 hours" in profile
         assert "High: 2" in profile
+        assert "Hop-1" in profile
+        assert "Hop-2" in profile
 
     def test_retrieve_campaign_context(self):
         kg = self._make_mock_kg()

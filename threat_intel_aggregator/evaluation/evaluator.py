@@ -34,6 +34,7 @@ class EvaluationReport:
     timestamp: str = ""
     dataset_summary: Dict[str, Any] = field(default_factory=dict)
     metrics: Optional[MetricsResult] = None
+    metrics_llm: Optional[MetricsResult] = None
     benchmark: Optional[BenchmarkResult] = None
     pipeline_version: str = "phase5_v1"
 
@@ -44,6 +45,7 @@ class EvaluationReport:
             "pipeline_version": self.pipeline_version,
             "dataset_summary": self.dataset_summary,
             "metrics": self.metrics.to_dict() if self.metrics else None,
+            "metrics_llm": self.metrics_llm.to_dict() if self.metrics_llm else None,
             "benchmark": self.benchmark.to_dict() if self.benchmark else None,
         }
 
@@ -93,6 +95,38 @@ class Evaluator:
             for m in matches
         ]
 
+    def _extract_for_sample_with_llm(self, text: str) -> List[Dict[str, Any]]:
+        """Run extraction with LLM verification and confidence fusion."""
+        from threat_intel_aggregator.feed_collection.ioc_extractor import extract_iocs_with_confidence
+        from threat_intel_aggregator.feed_collection.llm_ioc_verifier import get_llm_verifier
+        from threat_intel_aggregator.feed_collection.confidence_fusion import fuse_with_penalty
+
+        matches = extract_iocs_with_confidence(
+            text, include_private_ips=False, min_confidence=self.min_confidence
+        )
+        if not matches:
+            return []
+
+        verifier = get_llm_verifier()
+        if not verifier.is_available():
+            return [
+                {
+                    "value": m.value,
+                    "type": str(m.ioc_type),
+                    "confidence": m.confidence,
+                }
+                for m in matches
+            ]
+
+        results = []
+        verified = verifier.batch_verify(matches, max_iocs=50)
+        for v in verified:
+            fused = fuse_with_penalty(
+                v["regex_confidence"], v.get("llm_confidence"), v.get("is_valid_ioc")
+            )
+            results.append({"value": v["ioc"], "type": v["type"], "confidence": fused})
+        return results
+
     # ------------------------------------------------------------------
     # Full evaluation run
     # ------------------------------------------------------------------
@@ -116,6 +150,8 @@ class Evaluator:
 
         # --- Step 1: Run extraction on each sample -----------------------
         eval_samples: List[Dict[str, Any]] = []
+        eval_samples_llm: List[Dict[str, Any]] = []
+        
         for sample in self.dataset.samples:
             extracted = self._extract_for_sample(sample.text)
             eval_samples.append({
@@ -123,10 +159,21 @@ class Evaluator:
                 "extracted_iocs": extracted,
                 "category": sample.category,
             })
+            
+            if self.include_llm_benchmark:
+                extracted_llm = self._extract_for_sample_with_llm(sample.text)
+                eval_samples_llm.append({
+                    "expected_iocs": [e.to_dict() for e in sample.expected_iocs],
+                    "extracted_iocs": extracted_llm,
+                    "category": sample.category,
+                })
 
         # --- Step 2: Compute metrics via MetricsEngine --------------------
         engine = MetricsEngine()
         report.metrics = engine.evaluate(eval_samples)
+        
+        if self.include_llm_benchmark:
+            report.metrics_llm = engine.evaluate(eval_samples_llm)
 
         # --- Step 3: Latency benchmark (optional) -------------------------
         if run_benchmark:
@@ -140,6 +187,13 @@ class Evaluator:
             f"P={report.metrics.precision:.3f}, "
             f"R={report.metrics.recall:.3f}"
         )
+        if self.include_llm_benchmark and report.metrics_llm:
+            logger.info(
+                f"LLM-Pipeline {report.report_id}: "
+                f"F1={report.metrics_llm.f1:.3f}, "
+                f"P={report.metrics_llm.precision:.3f}, "
+                f"R={report.metrics_llm.recall:.3f}"
+            )
 
         return report
 

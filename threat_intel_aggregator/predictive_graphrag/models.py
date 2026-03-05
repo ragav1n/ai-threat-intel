@@ -50,7 +50,7 @@ class TTPPrediction:
     current_stage: str                           # Kill chain stage classification
     predictions: List[PredictedTTP]              # Top-N next likely TTPs
     defensive_recommendations: List[str] = field(default_factory=list)
-    model_used: str = "qwen2.5:7b"
+    model_used: str = "qwen3.5:9b"
     generated_at: str = ""
 
     def __post_init__(self):

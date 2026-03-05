@@ -187,6 +187,32 @@ def _extract_with_our_pipeline(text: str) -> Set[Tuple[str, str]]:
     return {(_normalize(m.value), str(m.ioc_type)) for m in matches}
 
 
+def _extract_with_llm_pipeline(text: str) -> Set[Tuple[str, str]]:
+    """Extract IOCs using full pipeline: regex + LLM verification + confidence fusion."""
+    from threat_intel_aggregator.feed_collection.ioc_extractor import extract_iocs_with_confidence
+    from threat_intel_aggregator.feed_collection.llm_ioc_verifier import get_llm_verifier
+    from threat_intel_aggregator.feed_collection.confidence_fusion import fuse_with_penalty
+
+    matches = extract_iocs_with_confidence(text, include_private_ips=False, min_confidence=0.0)
+    if not matches:
+        return set()
+
+    verifier = get_llm_verifier()
+    if not verifier.is_available():
+        # Graceful fallback: return regex-only results
+        return {(_normalize(m.value), str(m.ioc_type)) for m in matches}
+
+    results = set()
+    verified = verifier.batch_verify(matches, max_iocs=50)
+    for v in verified:
+        fused = fuse_with_penalty(
+            v["regex_confidence"], v.get("llm_confidence"), v.get("is_valid_ioc")
+        )
+        if fused >= 0.3:  # Apply a reasonable threshold derived from tests
+            results.add((_normalize(v["ioc"]), v["type"]))
+    return results
+
+
 # ── Evaluation engine ──────────────────────────────────────
 
 def _evaluate_extractor(
@@ -229,7 +255,8 @@ def _evaluate_extractor(
 
 # Registry of available baselines
 BASELINES = {
-    "our_pipeline": ("Our Pipeline", _extract_with_our_pipeline),
+    "our_pipeline": ("Our Pipeline (Regex)", _extract_with_our_pipeline),
+    "our_pipeline_llm": ("Our Pipeline + LLM", _extract_with_llm_pipeline),
     "iocextract": ("iocextract (InQuest)", _extract_with_iocextract),
     "ioc_finder": ("ioc-finder (Hightower)", _extract_with_ioc_finder),
     "regex_only": ("Regex Only (no filter)", _extract_regex_only),
