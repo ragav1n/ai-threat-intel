@@ -205,32 +205,70 @@ class LLMIOCVerifier:
     )
     def _query_ollama(self, prompt: str) -> str:
         """Send a prompt to Ollama and return the response."""
+        payload = {
+            "model": self.model,
+            "prompt": prompt,
+            "stream": False,
+            "think": False,  # Disable thinking mode for qwen3.5/deepseek-r1 etc.
+            "options": {
+                "temperature": 0.1,  # Low temperature for consistent verification
+                "num_predict": 200,  # Short responses expected
+            },
+        }
         response = requests.post(
             f"{self.ollama_url}/api/generate",
-            json={
-                "model": self.model,
-                "prompt": prompt,
-                "stream": False,
-                "options": {
-                    "temperature": 0.1,  # Low temperature for consistent verification
-                    "num_predict": 200,  # Short responses expected
-                },
-            },
+            json=payload,
             timeout=self.timeout,
         )
         response.raise_for_status()
-        return response.json()["response"].strip()
+        data = response.json()
+
+        # Primary: use the visible response text
+        text = data.get("response", "").strip()
+
+        # Fallback: if response is empty, check the thinking field
+        # (some Ollama builds expose thinking separately)
+        if not text:
+            thinking = data.get("thinking", "")
+            if thinking:
+                # Extract JSON from inside the thinking block as last resort
+                text = thinking.strip()
+
+        return text
     
     def _parse_llm_response(self, raw_response: str) -> LLMVerification:
-        """Parse the LLM JSON response into a structured result."""
+        """Parse the LLM JSON response into a structured result.
+        
+        Handles thinking models (qwen3.5, deepseek-r1, etc.) that output
+        <think>...</think> blocks before the actual JSON response.
+        """
         try:
-            # Try to extract JSON from the response
-            # Handle cases where LLM wraps in markdown code blocks
-            json_match = re.search(r'\{[^{}]*\}', raw_response, re.DOTALL)
-            if not json_match:
+            # Step 1: Strip <think>...</think> blocks (thinking models like qwen3.5)
+            cleaned = re.sub(r'<think>.*?</think>', '', raw_response, flags=re.DOTALL).strip()
+            
+            # Step 2: Strip markdown code fences (```json ... ```)
+            cleaned = re.sub(r'```(?:json)?\s*(.*?)\s*```', r'\1', cleaned, flags=re.DOTALL).strip()
+            
+            # Step 3: Find the outermost JSON object using brace-matching
+            # This handles nested JSON (e.g. {"reasoning": "score: {0.9}"})
+            json_str = None
+            start = cleaned.find('{')
+            if start != -1:
+                depth = 0
+                for i, ch in enumerate(cleaned[start:], start=start):
+                    if ch == '{':
+                        depth += 1
+                    elif ch == '}':
+                        depth -= 1
+                        if depth == 0:
+                            json_str = cleaned[start:i + 1]
+                            break
+            
+            if not json_str:
+                logger.warning(f"No JSON found in LLM response. Raw: {raw_response[:200]}")
                 return LLMVerification.error_result("No JSON found in LLM response")
             
-            data = json.loads(json_match.group())
+            data = json.loads(json_str)
             
             is_valid = bool(data.get("is_valid_ioc", True))
             confidence = float(data.get("confidence", 0.5))
@@ -247,7 +285,7 @@ class LLMIOCVerifier:
             )
             
         except (json.JSONDecodeError, ValueError, KeyError) as e:
-            logger.warning(f"Failed to parse LLM response: {e}")
+            logger.warning(f"Failed to parse LLM response: {e}. Raw: {raw_response[:200]}")
             return LLMVerification.error_result(f"Parse error: {e}")
     
     def verify_ioc(
