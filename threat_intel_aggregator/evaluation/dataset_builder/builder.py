@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 class DatasetBuilder:
     """Orchestrates the creation of a 500+ sample ground-truth dataset."""
     
-    def __init__(self, model: str = "qwen2.5:7b", api_url: Optional[str] = None):
+    def __init__(self, model: str = "gpt-4o", api_url: Optional[str] = None):
         self.labeler = TeacherLabeler(model=model, api_url=api_url)
         self.samples: List[GroundTruthSample] = []
         
@@ -80,7 +80,7 @@ class DatasetBuilder:
             
         logger.info(f"Successfully saved {len(self.samples)} samples to {output_path}")
 
-def build_from_file(input_path: str, output_path: str, model: str = "qwen2.5:7b"):
+def build_from_file(input_path: str, output_path: str, model: str = "gpt-4o"):
     """Convenience function to build a dataset from a raw text/JSON file."""
     builder = DatasetBuilder(model=model)
     

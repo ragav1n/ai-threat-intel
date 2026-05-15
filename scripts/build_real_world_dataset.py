@@ -56,7 +56,12 @@ def main():
     parser = argparse.ArgumentParser(description="Build or validate a real-world CTI dataset.")
     parser.add_argument("--input", type=str, help="Path to raw reports JSON file")
     parser.add_argument("--output", type=str, help="Path to save the labeled dataset")
-    parser.add_argument("--model", type=str, default="qwen2.5:7b", help="LLM model to use for labeling")
+    parser.add_argument(
+        "--model", type=str, default="gpt-4o",
+        help="Teacher model for labeling. Provider is auto-detected: gpt-*/o1-* "
+             "(needs OPENAI_API_KEY), claude-* (needs ANTHROPIC_API_KEY), or any "
+             "other name = local Ollama. A frontier teacher is strongly "
+             "recommended for publication-grade labels.")
     parser.add_argument("--validate", type=str, metavar="DATASET.json",
                         help="Validate text-grounding of an existing dataset and exit (no LLM)")
 
