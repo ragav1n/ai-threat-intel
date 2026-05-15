@@ -32,6 +32,7 @@ by the unicode tiers (T3/T4). This asymmetry is a finding worth reporting.
 from __future__ import annotations
 
 import logging
+import re
 from typing import Dict, List
 
 logger = logging.getLogger(__name__)
@@ -263,12 +264,16 @@ def obfuscate_sample(text: str, expected_iocs: List[dict], tier: str) -> str:
 
     new_text = text
     # Replace longest values first so URLs are obfuscated before any domain/IP
-    # substrings they contain (prevents double transformation).
+    # substrings they contain (prevents double transformation). Matching is
+    # case-insensitive because real reports often differ in case from the
+    # canonical ground-truth value (e.g. CVE-2023-1234 vs cve-2023-1234).
     for e in sorted(expected_iocs, key=lambda x: len(x["value"]), reverse=True):
         value = e["value"]
         obf = obfuscate_value(value, e["type"], tier)
-        if obf != value and value in new_text:
-            new_text = new_text.replace(value, obf)
+        if obf == value:
+            continue
+        pattern = re.compile(re.escape(value), re.IGNORECASE)
+        new_text = pattern.sub(lambda m, _o=obf: _o, new_text)
     return new_text
 
 

@@ -296,17 +296,20 @@ _OBF_WITH_DEOBF = AblationConfig(
 def run_obfuscation_ablation(
     samples: list = None,
     tiers: list = None,
+    dataset: str = "synthetic",
 ) -> Dict[str, Dict[str, AblationResult]]:
     """
     Run the obfuscation-severity ablation.
 
-    For each severity tier, obfuscates the ground-truth samples and evaluates
+    For each severity tier, obfuscates the dataset samples and evaluates
     extraction with deobfuscation OFF and ON.
 
     Args:
-        samples: Ground-truth sample dicts (text, expected_iocs, category).
-                 Loads the default dataset if None.
+        samples: Pre-loaded sample dicts (text, expected_iocs, category).
+                 If None, loads `dataset` via the dataset registry.
         tiers:   Severity tiers to run. Uses all SEVERITY_TIERS if None.
+        dataset: Registered dataset name when `samples` is None
+                 (e.g. "synthetic", "real_world_v2", "benchmark").
 
     Returns:
         Dict mapping tier -> {"no_deobf": AblationResult, "with_deobf": AblationResult}.
@@ -316,16 +319,8 @@ def run_obfuscation_ablation(
     )
 
     if samples is None:
-        from threat_intel_aggregator.evaluation.ground_truth import GroundTruthDataset
-        dataset = GroundTruthDataset()
-        samples = [
-            {
-                "text": s.text,
-                "expected_iocs": [e.to_dict() for e in s.expected_iocs],
-                "category": s.category,
-            }
-            for s in dataset.samples
-        ]
+        from threat_intel_aggregator.evaluation.datasets import load_samples
+        samples = load_samples(dataset)
 
     tiers = tiers or SEVERITY_TIERS
     results: Dict[str, Dict[str, AblationResult]] = {}
