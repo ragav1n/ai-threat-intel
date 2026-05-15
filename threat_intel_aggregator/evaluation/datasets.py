@@ -13,9 +13,10 @@ All loaders return a uniform list of sample dicts:
 
 Registered datasets
 -------------------
-  synthetic     — 122 hand-built control samples (GroundTruthDataset)
-  real_world_v2 — fuller real CTI reports (134 reports, ~63% text-grounded)
-  otx           — AlienVault OTX pulses (400 pulses, 100% text-grounded)
+  synthetic           — 122 hand-built control samples (GroundTruthDataset)
+  real_world_v2       — 134 real CTI reports, labelled by qwen2.5:7b (legacy)
+  real_world_v2_gpt55 — same 134 reports, re-labelled by the gpt-5.5 teacher
+  otx                 — AlienVault OTX pulses (400 pulses, 100% text-grounded)
 
 Deprecated datasets (see DEPRECATED_DATASETS) are kept on disk for provenance
 but refused by load_samples(): their labels were scraped from a separate
@@ -31,8 +32,9 @@ from typing import Any, Dict, List
 logger = logging.getLogger(__name__)
 
 DATASET_PATHS: Dict[str, str] = {
-    "real_world_v2": "data/evaluation/new_real_world_dataset.json",
-    "otx":           "data/evaluation/otx_benchmark.json",
+    "real_world_v2":       "data/evaluation/new_real_world_dataset.json",
+    "real_world_v2_gpt55": "data/evaluation/real_world_v2_gpt55.json",
+    "otx":                 "data/evaluation/otx_benchmark.json",
 }
 
 # Datasets removed from the active registry because their labels are not

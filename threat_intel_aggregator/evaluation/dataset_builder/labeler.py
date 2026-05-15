@@ -80,9 +80,12 @@ def detect_provider(model: str) -> str:
 class TeacherLabeler:
     """Semi-automated labeling using a 'Teacher' LLM."""
 
-    # Context budget. A frontier model ingests the whole report; a local small
-    # model is truncated so it does not choke (and lose trailing IOCs anyway).
-    CLOUD_MAX_CHARS = 16000
+    # Context budget. A frontier model has a ~1M-token window and must ingest
+    # the WHOLE report — CTI reports often park their IOC table in a long
+    # appendix, so any low cap silently drops real labels. 500k chars (~125k
+    # tokens) covers any realistic report well within the model's window. A
+    # local small model is still truncated so it does not choke.
+    CLOUD_MAX_CHARS = 500000
     OLLAMA_MAX_CHARS = 2000
 
     def __init__(self, model: str = "gpt-5.5", api_url: Optional[str] = None):
