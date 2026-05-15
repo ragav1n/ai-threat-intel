@@ -165,6 +165,38 @@ def _extract_with_config(text: str, config: AblationConfig) -> Set[Tuple[str, st
     return results
 
 
+def _evaluate_config_on_samples(config: AblationConfig, samples: list) -> AblationResult:
+    """Run a single ablation configuration over a sample list and tally metrics."""
+    result = AblationResult(config=config)
+
+    for sample in samples:
+        expected_set: Set[Tuple[str, str]] = {
+            (_normalize(e["value"]), e["type"].strip().lower())
+            for e in sample.get("expected_iocs", [])
+        }
+        extracted_set = _extract_with_config(sample["text"], config)
+
+        tp = expected_set & extracted_set
+        fp = extracted_set - expected_set
+        fn = expected_set - extracted_set
+
+        result.true_positives += len(tp)
+        result.false_positives += len(fp)
+        result.false_negatives += len(fn)
+
+        all_types = {k[1] for k in expected_set | extracted_set}
+        for t in all_types:
+            if t not in result.per_type:
+                result.per_type[t] = {"tp": 0, "fp": 0, "fn": 0}
+            t_exp = {k for k in expected_set if k[1] == t}
+            t_ext = {k for k in extracted_set if k[1] == t}
+            result.per_type[t]["tp"] += len(t_exp & t_ext)
+            result.per_type[t]["fp"] += len(t_ext - t_exp)
+            result.per_type[t]["fn"] += len(t_exp - t_ext)
+
+    return result
+
+
 def run_ablation_study(
     samples: list = None,
     configs: list = None,
@@ -193,39 +225,9 @@ def run_ablation_study(
 
     configs = configs or ABLATION_CONFIGS
     results = []
-
     for config in configs:
         logger.info(f"Ablation: {config.name}")
-        result = AblationResult(config=config)
-
-        for sample in samples:
-            expected_set: Set[Tuple[str, str]] = {
-                (_normalize(e["value"]), e["type"].strip().lower())
-                for e in sample.get("expected_iocs", [])
-            }
-            extracted_set = _extract_with_config(sample["text"], config)
-
-            tp = expected_set & extracted_set
-            fp = extracted_set - expected_set
-            fn = expected_set - extracted_set
-
-            result.true_positives += len(tp)
-            result.false_positives += len(fp)
-            result.false_negatives += len(fn)
-
-            # Per-type
-            all_types = {k[1] for k in expected_set | extracted_set}
-            for t in all_types:
-                if t not in result.per_type:
-                    result.per_type[t] = {"tp": 0, "fp": 0, "fn": 0}
-                t_exp = {k for k in expected_set if k[1] == t}
-                t_ext = {k for k in extracted_set if k[1] == t}
-                result.per_type[t]["tp"] += len(t_exp & t_ext)
-                result.per_type[t]["fp"] += len(t_ext - t_exp)
-                result.per_type[t]["fn"] += len(t_exp - t_ext)
-
-        results.append(result)
-
+        results.append(_evaluate_config_on_samples(config, samples))
     return results
 
 
@@ -261,5 +263,114 @@ def format_ablation_table(results: List[AblationResult]) -> str:
                 f"  {r.config.name:<42s} {dp:+6.1%} {dr:+6.1%} {df:+6.1%}  {dfp:+5d} {dfn:+5d}"
             )
 
+    lines.append("=" * 80)
+    return "\n".join(lines)
+
+
+# ── Obfuscation-Severity Ablation ──────────────────────────
+#
+# Measures the contribution of the symbolic deobfuscation layer as obfuscation
+# severity increases. For each severity tier, the same ground-truth samples are
+# obfuscated and extracted twice — with deobfuscation OFF vs ON — so the F1 gap
+# quantifies "deobfuscation as a force multiplier" (research paper contribution C1).
+
+# Two configs identical except for the deobfuscation stage.
+_OBF_NO_DEOBF = AblationConfig(
+    name="Deobfuscation OFF",
+    description="All filters enabled, symbolic deobfuscation disabled",
+    use_deobfuscation=False,
+    use_domain_filter=True,
+    use_file_ext_filter=True,
+    use_url_domain_dedup=True,
+)
+_OBF_WITH_DEOBF = AblationConfig(
+    name="Deobfuscation ON",
+    description="All filters enabled, symbolic deobfuscation enabled",
+    use_deobfuscation=True,
+    use_domain_filter=True,
+    use_file_ext_filter=True,
+    use_url_domain_dedup=True,
+)
+
+
+def run_obfuscation_ablation(
+    samples: list = None,
+    tiers: list = None,
+) -> Dict[str, Dict[str, AblationResult]]:
+    """
+    Run the obfuscation-severity ablation.
+
+    For each severity tier, obfuscates the ground-truth samples and evaluates
+    extraction with deobfuscation OFF and ON.
+
+    Args:
+        samples: Ground-truth sample dicts (text, expected_iocs, category).
+                 Loads the default dataset if None.
+        tiers:   Severity tiers to run. Uses all SEVERITY_TIERS if None.
+
+    Returns:
+        Dict mapping tier -> {"no_deobf": AblationResult, "with_deobf": AblationResult}.
+    """
+    from threat_intel_aggregator.evaluation.obfuscation_generator import (
+        SEVERITY_TIERS, build_obfuscated_samples,
+    )
+
+    if samples is None:
+        from threat_intel_aggregator.evaluation.ground_truth import GroundTruthDataset
+        dataset = GroundTruthDataset()
+        samples = [
+            {
+                "text": s.text,
+                "expected_iocs": [e.to_dict() for e in s.expected_iocs],
+                "category": s.category,
+            }
+            for s in dataset.samples
+        ]
+
+    tiers = tiers or SEVERITY_TIERS
+    results: Dict[str, Dict[str, AblationResult]] = {}
+
+    for tier in tiers:
+        logger.info(f"Obfuscation ablation: tier {tier}")
+        obf_samples = build_obfuscated_samples(samples, tier)
+        results[tier] = {
+            "no_deobf": _evaluate_config_on_samples(_OBF_NO_DEOBF, obf_samples),
+            "with_deobf": _evaluate_config_on_samples(_OBF_WITH_DEOBF, obf_samples),
+        }
+
+    return results
+
+
+def format_obfuscation_table(results: Dict[str, Dict[str, AblationResult]]) -> str:
+    """Format obfuscation-severity ablation results as a readable table."""
+    lines = []
+    lines.append("=" * 80)
+    lines.append("  OBFUSCATION-SEVERITY ABLATION  (deobfuscation as a force multiplier)")
+    lines.append("=" * 80)
+    lines.append(
+        f"  {'Tier':<14s} "
+        f"{'OFF P':>7s} {'OFF R':>7s} {'OFF F1':>7s}   "
+        f"{'ON P':>7s} {'ON R':>7s} {'ON F1':>7s}   {'dF1':>7s}"
+    )
+    lines.append(f"  {'-'*14} {'-'*7} {'-'*7} {'-'*7}   {'-'*7} {'-'*7} {'-'*7}   {'-'*7}")
+
+    from threat_intel_aggregator.evaluation.obfuscation_generator import ADVERSARIAL_TIERS
+
+    for tier, pair in results.items():
+        off = pair["no_deobf"]
+        on = pair["with_deobf"]
+        d_f1 = on.f1 - off.f1
+        marker = " *" if tier in ADVERSARIAL_TIERS else "  "
+        lines.append(
+            f"  {tier:<12s}{marker} "
+            f"{off.precision:6.1%} {off.recall:6.1%} {off.f1:6.1%}   "
+            f"{on.precision:6.1%} {on.recall:6.1%} {on.f1:6.1%}   {d_f1:+6.1%}"
+        )
+
+    lines.append("")
+    lines.append("  OFF = symbolic deobfuscation disabled,  ON = enabled")
+    lines.append("  dF1 = F1 recovered by the deobfuscation layer at that severity tier")
+    lines.append("  *   = held-out ADVERSARIAL tier (transformations outside the ruleset);")
+    lines.append("        a small dF1 here is expected and shows the recovery is not circular.")
     lines.append("=" * 80)
     return "\n".join(lines)

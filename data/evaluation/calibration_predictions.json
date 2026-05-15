@@ -1,0 +1,922 @@
+[
+ {
+  "value": "185.220.101.34",
+  "type": "ip",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": true
+ },
+ {
+  "value": "45.33.32.156",
+  "type": "ip",
+  "regex": 0.7,
+  "llm": 0.85,
+  "fused": 0.79,
+  "correct": true
+ },
+ {
+  "value": "91.121.87.10",
+  "type": "ip",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": true
+ },
+ {
+  "value": "203.0.113.50",
+  "type": "ip",
+  "regex": 0.8,
+  "llm": 1.0,
+  "fused": 0.32,
+  "correct": true
+ },
+ {
+  "value": "94.102.49.190",
+  "type": "ip",
+  "regex": 0.75,
+  "llm": 0.85,
+  "fused": 0.81,
+  "correct": true
+ },
+ {
+  "value": "198.51.100.23",
+  "type": "ip",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.87,
+  "correct": true
+ },
+ {
+  "value": "152.89.196.12",
+  "type": "ip",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": true
+ },
+ {
+  "value": "77.91.68.22",
+  "type": "ip",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": true
+ },
+ {
+  "value": "evil-login.xyz",
+  "type": "domain",
+  "regex": 0.85,
+  "llm": 0.95,
+  "fused": 0.91,
+  "correct": true
+ },
+ {
+  "value": "malware-c2-server.top",
+  "type": "domain",
+  "regex": 0.9,
+  "llm": 0.9,
+  "fused": 0.9,
+  "correct": true
+ },
+ {
+  "value": "payload-delivery.ru",
+  "type": "domain",
+  "regex": 0.85,
+  "llm": 0.85,
+  "fused": 0.85,
+  "correct": true
+ },
+ {
+  "value": "a3f8bx7c2q.tk",
+  "type": "domain",
+  "regex": 0.85,
+  "llm": 0.95,
+  "fused": 0.91,
+  "correct": true
+ },
+ {
+  "value": "update-service-check.pw",
+  "type": "domain",
+  "regex": 0.85,
+  "llm": 0.95,
+  "fused": 0.91,
+  "correct": true
+ },
+ {
+  "value": "exploit-kit-landing.cc",
+  "type": "domain",
+  "regex": 0.85,
+  "llm": 0.95,
+  "fused": 0.91,
+  "correct": true
+ },
+ {
+  "value": "http://malware-dist.ru/payload.exe",
+  "type": "url",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.97,
+  "correct": true
+ },
+ {
+  "value": "https://login-secure.xyz/wp-admin/phishing.php",
+  "type": "url",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.97,
+  "correct": true
+ },
+ {
+  "value": "http://203.0.113.50/exploit/landing.html",
+  "type": "url",
+  "regex": 0.8,
+  "llm": 1.0,
+  "fused": 0.32,
+  "correct": true
+ },
+ {
+  "value": "203.0.113.50",
+  "type": "ip",
+  "regex": 0.7,
+  "llm": 1.0,
+  "fused": 0.28,
+  "correct": true
+ },
+ {
+  "value": "https://cdn-update.top/stage2.zip",
+  "type": "url",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.97,
+  "correct": true
+ },
+ {
+  "value": "http://evil-scripts.pw/obfuscated.js",
+  "type": "url",
+  "regex": 0.9,
+  "llm": 0.95,
+  "fused": 0.93,
+  "correct": true
+ },
+ {
+  "value": "d41d8cd98f00b204e9800998ecf8427e",
+  "type": "md5",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "098f6bcd4621d373cade4e832627b4f6",
+  "type": "md5",
+  "regex": 0.85,
+  "llm": 1.0,
+  "fused": 0.34,
+  "correct": true
+ },
+ {
+  "value": "5d41402abc4b2a76b9719d911017c592",
+  "type": "md5",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d",
+  "type": "sha1",
+  "regex": 0.95,
+  "llm": 1.0,
+  "fused": 0.38,
+  "correct": true
+ },
+ {
+  "value": "7c222fb2927d828af22f592134e8932480637c0d",
+  "type": "sha1",
+  "regex": 0.95,
+  "llm": 0.95,
+  "fused": 0.41,
+  "correct": true
+ },
+ {
+  "value": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "type": "sha256",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": true
+ },
+ {
+  "value": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+  "type": "sha256",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": true
+ },
+ {
+  "value": "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824",
+  "type": "sha256",
+  "regex": 0.95,
+  "llm": 0.95,
+  "fused": 0.41,
+  "correct": true
+ },
+ {
+  "value": "CVE-2024-21762",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 1.0,
+  "correct": true
+ },
+ {
+  "value": "CVE-2023-44228",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 1.0,
+  "correct": true
+ },
+ {
+  "value": "CVE-2024-3094",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.96,
+  "correct": true
+ },
+ {
+  "value": "CVE-2024-1086",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.96,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-0282",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": true
+ },
+ {
+  "value": "evil-phishing.xyz",
+  "type": "domain",
+  "regex": 0.9,
+  "llm": 0.95,
+  "fused": 0.93,
+  "correct": false
+ },
+ {
+  "value": "attacker@evil-phishing.xyz",
+  "type": "email",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.85,
+  "correct": true
+ },
+ {
+  "value": "malware-delivery.top",
+  "type": "domain",
+  "regex": 0.9,
+  "llm": 0.95,
+  "fused": 0.93,
+  "correct": false
+ },
+ {
+  "value": "admin@malware-delivery.top",
+  "type": "email",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.85,
+  "correct": true
+ },
+ {
+  "value": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "type": "sha256",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": true
+ },
+ {
+  "value": "CVE-2024-21762",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.43,
+  "correct": true
+ },
+ {
+  "value": "evil-c2.ru",
+  "type": "domain",
+  "regex": 0.9,
+  "llm": 0.95,
+  "fused": 0.93,
+  "correct": true
+ },
+ {
+  "value": "185.220.101.34",
+  "type": "ip",
+  "regex": 0.8,
+  "llm": 0.95,
+  "fused": 0.35,
+  "correct": true
+ },
+ {
+  "value": "http://exploit-delivery.top/stage1.exe",
+  "type": "url",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.97,
+  "correct": true
+ },
+ {
+  "value": "ftp://data-exfil.cc/stolen.rar",
+  "type": "url",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.97,
+  "correct": true
+ },
+ {
+  "value": "94.102.49.190",
+  "type": "ip",
+  "regex": 0.8,
+  "llm": 0.95,
+  "fused": 0.89,
+  "correct": true
+ },
+ {
+  "value": "CVE-2023-44228",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 1.0,
+  "correct": true
+ },
+ {
+  "value": "098f6bcd4621d373cade4e832627b4f6",
+  "type": "md5",
+  "regex": 0.9,
+  "llm": 0.95,
+  "fused": 0.93,
+  "correct": true
+ },
+ {
+  "value": "malicious-update.pw",
+  "type": "domain",
+  "regex": 0.85,
+  "llm": 0.95,
+  "fused": 0.91,
+  "correct": true
+ },
+ {
+  "value": "77.91.68.22",
+  "type": "ip",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.87,
+  "correct": true
+ },
+ {
+  "value": "help@gmail.com",
+  "type": "email",
+  "regex": 0.5,
+  "llm": 1.0,
+  "fused": 0.2,
+  "correct": false
+ },
+ {
+  "value": "hr@yahoo.com",
+  "type": "email",
+  "regex": 0.5,
+  "llm": 0.95,
+  "fused": 0.23,
+  "correct": false
+ },
+ {
+  "value": "http://malware-c2.ru/beacon",
+  "type": "url",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.97,
+  "correct": true
+ },
+ {
+  "value": "evil-domain.xyz",
+  "type": "domain",
+  "regex": 0.85,
+  "llm": 0.95,
+  "fused": 0.91,
+  "correct": true
+ },
+ {
+  "value": "https://credential-steal.top/login",
+  "type": "url",
+  "regex": 0.95,
+  "llm": 0.95,
+  "fused": 0.95,
+  "correct": true
+ },
+ {
+  "value": "evil-sender.tk",
+  "type": "domain",
+  "regex": 0.85,
+  "llm": 0.95,
+  "fused": 0.91,
+  "correct": false
+ },
+ {
+  "value": "admin@evil-sender.tk",
+  "type": "email",
+  "regex": 0.65,
+  "llm": 0.95,
+  "fused": 0.83,
+  "correct": true
+ },
+ {
+  "value": "malware.delivery.cc",
+  "type": "domain",
+  "regex": 0.9,
+  "llm": 0.95,
+  "fused": 0.93,
+  "correct": true
+ },
+ {
+  "value": "http://payload-server.ru/stage2.exe",
+  "type": "url",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.97,
+  "correct": true
+ },
+ {
+  "value": "https://evil-cdn.ws/loader.zip",
+  "type": "url",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.97,
+  "correct": true
+ },
+ {
+  "value": "data-exfil.pw",
+  "type": "domain",
+  "regex": 0.8,
+  "llm": 0.95,
+  "fused": 0.89,
+  "correct": true
+ },
+ {
+  "value": "0000000000000",
+  "type": "phone_number",
+  "regex": 0.5,
+  "llm": 1.0,
+  "fused": 0.2,
+  "correct": false
+ },
+ {
+  "value": "00000000000000000000000000000000",
+  "type": "md5",
+  "regex": 0.45,
+  "llm": 1.0,
+  "fused": 0.18,
+  "correct": false
+ },
+ {
+  "value": "CVE-2024-21762",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.97,
+  "correct": true
+ },
+ {
+  "value": "http://evil-c2.ru/beacon",
+  "type": "url",
+  "regex": 0.95,
+  "llm": 0.95,
+  "fused": 0.95,
+  "correct": true
+ },
+ {
+  "value": "d41d8cd98f00b204e9800998ecf8427e",
+  "type": "md5",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "185.220.101.34",
+  "type": "ip",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": true
+ },
+ {
+  "value": "152.89.196.12",
+  "type": "ip",
+  "regex": 0.8,
+  "llm": 0.95,
+  "fused": 0.35,
+  "correct": true
+ },
+ {
+  "value": "1.2.3.4",
+  "type": "ip",
+  "regex": 0.6,
+  "llm": 1.0,
+  "fused": 0.24,
+  "correct": false
+ },
+ {
+  "value": "http://evil-payload.top/malware.exe",
+  "type": "url",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.97,
+  "correct": true
+ },
+ {
+  "value": "https://phishing-page.xyz/steal",
+  "type": "url",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.97,
+  "correct": true
+ },
+ {
+  "value": "CVE-2024-1234",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 0.95,
+  "fused": 0.39,
+  "correct": true
+ },
+ {
+  "value": "5.188.86.10",
+  "type": "ip",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": true
+ },
+ {
+  "value": "79.124.62.34",
+  "type": "ip",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": true
+ },
+ {
+  "value": "62.102.148.68",
+  "type": "ip",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": true
+ },
+ {
+  "value": "45.155.205.233",
+  "type": "ip",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": true
+ },
+ {
+  "value": "195.123.246.12",
+  "type": "ip",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": true
+ },
+ {
+  "value": "103.75.201.4",
+  "type": "ip",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": true
+ },
+ {
+  "value": "23.106.215.77",
+  "type": "ip",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": true
+ },
+ {
+  "value": "146.70.87.12",
+  "type": "ip",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": true
+ },
+ {
+  "value": "185.56.83.100",
+  "type": "ip",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": true
+ },
+ {
+  "value": "91.215.85.17",
+  "type": "ip",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": true
+ },
+ {
+  "value": "c2-beacon.ru",
+  "type": "domain",
+  "regex": 0.9,
+  "llm": 0.95,
+  "fused": 0.93,
+  "correct": true
+ },
+ {
+  "value": "trojan-dropper.xyz",
+  "type": "domain",
+  "regex": 0.9,
+  "llm": 0.95,
+  "fused": 0.93,
+  "correct": true
+ },
+ {
+  "value": "phish-kit.top",
+  "type": "domain",
+  "regex": 0.9,
+  "llm": 0.95,
+  "fused": 0.93,
+  "correct": true
+ },
+ {
+  "value": "botnet-control.cc",
+  "type": "domain",
+  "regex": 0.9,
+  "llm": 0.95,
+  "fused": 0.39,
+  "correct": true
+ },
+ {
+  "value": "data-steal.tk",
+  "type": "domain",
+  "regex": 0.9,
+  "llm": 0.95,
+  "fused": 0.93,
+  "correct": true
+ },
+ {
+  "value": "exploit-hub.pw",
+  "type": "domain",
+  "regex": 0.9,
+  "llm": 0.95,
+  "fused": 0.93,
+  "correct": true
+ },
+ {
+  "value": "malspam-relay.ws",
+  "type": "domain",
+  "regex": 0.9,
+  "llm": 0.95,
+  "fused": 0.93,
+  "correct": true
+ },
+ {
+  "value": "rat-controller.cn",
+  "type": "domain",
+  "regex": 0.9,
+  "llm": 0.95,
+  "fused": 0.39,
+  "correct": true
+ },
+ {
+  "value": "http://exploit-server.ru/payload.bin",
+  "type": "url",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.97,
+  "correct": true
+ },
+ {
+  "value": "https://phish-login.xyz/credential-harvest",
+  "type": "url",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.97,
+  "correct": true
+ },
+ {
+  "value": "http://drive-by-download.top/landing.html",
+  "type": "url",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.97,
+  "correct": true
+ },
+ {
+  "value": "https://c2-gateway.pw/beacon.php",
+  "type": "url",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.97,
+  "correct": true
+ },
+ {
+  "value": "http://malvertising.cc/redirect.js",
+  "type": "url",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.97,
+  "correct": true
+ },
+ {
+  "value": "a94a8fe5ccb19ba61c4c0873d391e987982fbbd3",
+  "type": "sha1",
+  "regex": 0.95,
+  "llm": 0.95,
+  "fused": 0.41,
+  "correct": true
+ },
+ {
+  "value": "109f4b3c50d7b0df729d299bc6f8e9ef9066971f",
+  "type": "sha1",
+  "regex": 0.95,
+  "llm": 0.9,
+  "fused": 0.92,
+  "correct": true
+ },
+ {
+  "value": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+  "type": "sha1",
+  "regex": 0.95,
+  "llm": 1.0,
+  "fused": 0.38,
+  "correct": true
+ },
+ {
+  "value": "e99a18c428cb38d5f260853678922e03",
+  "type": "md5",
+  "regex": 0.95,
+  "llm": 0.95,
+  "fused": 0.41,
+  "correct": true
+ },
+ {
+  "value": "25f9e794323b453885f5181f1b624d0b",
+  "type": "md5",
+  "regex": 0.95,
+  "llm": 0.95,
+  "fused": 0.41,
+  "correct": true
+ },
+ {
+  "value": "8277e0910d750195b448797616e091ad",
+  "type": "md5",
+  "regex": 0.95,
+  "llm": 0.95,
+  "fused": 0.41,
+  "correct": true
+ },
+ {
+  "value": "c4ca4238a0b923820dcc509a6f75849b",
+  "type": "md5",
+  "regex": 0.95,
+  "llm": 1.0,
+  "fused": 0.38,
+  "correct": true
+ },
+ {
+  "value": "d7a8fbb307d7809469ca9abcb0082e4f8d5651e46d3cdb762d02d0bf37c9e592",
+  "type": "sha256",
+  "regex": 0.95,
+  "llm": 0.95,
+  "fused": 0.95,
+  "correct": true
+ },
+ {
+  "value": "ef2d127de37b942baad06145e54b0c619a1f22327b2ebbcfbec78f5564afe39d",
+  "type": "sha256",
+  "regex": 0.95,
+  "llm": 0.95,
+  "fused": 0.95,
+  "correct": true
+ },
+ {
+  "value": "4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce",
+  "type": "sha256",
+  "regex": 0.95,
+  "llm": 0.95,
+  "fused": 0.95,
+  "correct": true
+ },
+ {
+  "value": "CVE-2024-5678",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.97,
+  "correct": true
+ },
+ {
+  "value": "CVE-2023-36884",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.97,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-1001",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": true
+ },
+ {
+  "value": "CVE-2024-38077",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.97,
+  "correct": true
+ },
+ {
+  "value": "CVE-2023-20198",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.97,
+  "correct": true
+ },
+ {
+  "value": "http://scanner-relay.cc/gate",
+  "type": "url",
+  "regex": 0.95,
+  "llm": 0.95,
+  "fused": 0.95,
+  "correct": true
+ },
+ {
+  "value": "trojan-beacon.ru",
+  "type": "domain",
+  "regex": 0.85,
+  "llm": 0.95,
+  "fused": 0.91,
+  "correct": true
+ },
+ {
+  "value": "fake-company.xyz",
+  "type": "domain",
+  "regex": 0.8,
+  "llm": 0.95,
+  "fused": 0.89,
+  "correct": false
+ },
+ {
+  "value": "sales@fake-company.xyz",
+  "type": "email",
+  "regex": 0.6,
+  "llm": 0.95,
+  "fused": 0.81,
+  "correct": true
+ },
+ {
+  "value": "https://banking-secure.pw/confirm",
+  "type": "url",
+  "regex": 0.8,
+  "llm": 0.95,
+  "fused": 0.89,
+  "correct": true
+ },
+ {
+  "value": "0000000000000000000000000000000000000000000000000000000000000000",
+  "type": "sha256",
+  "regex": 0.45,
+  "llm": 1.0,
+  "fused": 0.18,
+  "correct": false
+ },
+ {
+  "value": "0000000000000",
+  "type": "phone_number",
+  "regex": 0.4,
+  "llm": 1.0,
+  "fused": 0.16,
+  "correct": false
+ }
+]

@@ -10,6 +10,10 @@ import logging
 from dataclasses import dataclass, field
 from typing import List, Dict, Any, Optional, Set, Tuple
 
+from threat_intel_aggregator.evaluation.calibration import (
+    CalibrationResult, compute_calibration,
+)
+
 logger = logging.getLogger(__name__)
 
 
@@ -70,6 +74,7 @@ class MetricsResult:
     # confidence calibration
     avg_tp_confidence: float = 0.0
     avg_fp_confidence: float = 0.0
+    calibration: Optional[CalibrationResult] = None
     # per-category accuracy
     category_accuracy: Dict[str, float] = field(default_factory=dict)
 
@@ -182,6 +187,7 @@ class MetricsResult:
             # Calibration
             "avg_tp_confidence": round(self.avg_tp_confidence, 4),
             "avg_fp_confidence": round(self.avg_fp_confidence, 4),
+            "calibration": self.calibration.to_dict() if self.calibration else None,
             "category_accuracy": {
                 k: round(v, 4) for k, v in self.category_accuracy.items()
             },
@@ -313,6 +319,14 @@ class MetricsEngine:
             result.avg_tp_confidence = sum(tp_confidences) / len(tp_confidences)
         if fp_confidences:
             result.avg_fp_confidence = sum(fp_confidences) / len(fp_confidences)
+
+        # Confidence calibration: each extracted IOC is a prediction whose
+        # outcome is True (true positive) or False (false positive).
+        calib_predictions = (
+            [(c, True) for c in tp_confidences]
+            + [(c, False) for c in fp_confidences]
+        )
+        result.calibration = compute_calibration(calib_predictions)
 
         # Per-type confidence averages
         for t, tm in result.per_type.items():
