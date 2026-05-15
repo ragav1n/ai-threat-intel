@@ -14,10 +14,13 @@ All loaders return a uniform list of sample dicts:
 Registered datasets
 -------------------
   synthetic     — 122 hand-built control samples (GroundTruthDataset)
-  real_world    — real CTI report excerpts
-  real_world_v2 — fuller real CTI reports (larger, recommended)
-  benchmark     — dense real reports (~70 IOCs/sample)
-  otx           — AlienVault OTX pulses (raw_text / ground_truth schema)
+  real_world_v2 — fuller real CTI reports (134 reports, ~63% text-grounded)
+  otx           — AlienVault OTX pulses (400 pulses, 100% text-grounded)
+
+Deprecated datasets (see DEPRECATED_DATASETS) are kept on disk for provenance
+but refused by load_samples(): their labels were scraped from a separate
+indicator feed rather than extracted from the report text, so almost no IOC
+appears in `text` — an unwinnable extraction evaluation.
 """
 from __future__ import annotations
 
@@ -28,10 +31,24 @@ from typing import Any, Dict, List
 logger = logging.getLogger(__name__)
 
 DATASET_PATHS: Dict[str, str] = {
-    "real_world":    "data/evaluation/real_world_dataset.json",
     "real_world_v2": "data/evaluation/new_real_world_dataset.json",
-    "benchmark":     "data/evaluation/benchmark_dataset.json",
     "otx":           "data/evaluation/otx_benchmark.json",
+}
+
+# Datasets removed from the active registry because their labels are not
+# grounded in the report text (measured with dataset_builder.validation).
+# The files are retained for provenance; load_samples() refuses them by name
+# with the reason below. Pass the explicit file path to override.
+DEPRECATED_DATASETS: Dict[str, str] = {
+    "benchmark": (
+        "data/evaluation/benchmark_dataset.json — only 0.1% of labelled IOCs "
+        "appear in the report text (labels scraped from OTX indicator lists). "
+        "Unusable for extraction evaluation."
+    ),
+    "real_world": (
+        "data/evaluation/real_world_dataset.json — only 5.9% of labelled IOCs "
+        "appear in the report text. Superseded by 'real_world_v2'."
+    ),
 }
 
 
@@ -90,6 +107,12 @@ def load_samples(name: str) -> List[Dict[str, Any]]:
     Returns:
         List of uniform sample dicts (see module docstring).
     """
+    if name in DEPRECATED_DATASETS:
+        raise ValueError(
+            f"Dataset '{name}' is deprecated and removed from the registry: "
+            f"{DEPRECATED_DATASETS[name]}"
+        )
+
     if name == "synthetic":
         from threat_intel_aggregator.evaluation.ground_truth import GroundTruthDataset
         return [

@@ -10,6 +10,9 @@ import logging
 from typing import List, Dict, Any, Optional
 from pathlib import Path
 from threat_intel_aggregator.evaluation.dataset_builder.labeler import TeacherLabeler
+from threat_intel_aggregator.evaluation.dataset_builder.validation import (
+    format_grounding_report, grounding_report,
+)
 from threat_intel_aggregator.evaluation.ground_truth import GroundTruthSample
 
 logger = logging.getLogger(__name__)
@@ -46,6 +49,23 @@ class DatasetBuilder:
             if (i + 1) % 10 == 0:
                 logger.info(f"Processed {i + 1}/{len(raw_data)} samples.")
 
+    def validate(self) -> Dict[str, Any]:
+        """Check that the labelled IOCs are grounded in their report text.
+
+        The TeacherLabeler extracts labels *from* the text, so a healthy build
+        should score near-100%. A low score signals a labelling regression or
+        bad input — the same defect that made benchmark_dataset.json unusable.
+        """
+        report = grounding_report([s.to_dict() for s in self.samples])
+        logger.info("\n%s", format_grounding_report(report))
+        if not report["ok"]:
+            logger.warning(
+                "Dataset grounding is only %.1f%% — labels are not text-grounded; "
+                "this dataset is unsuitable for extraction evaluation.",
+                report["coverage"] * 100,
+            )
+        return report
+
     def save_dataset(self, output_path: str):
         """Save the compiled samples as a GroundTruthDataset JSON."""
         data = {
@@ -72,4 +92,6 @@ def build_from_file(input_path: str, output_path: str, model: str = "qwen2.5:7b"
         raw_data = raw_data["samples"]
         
     builder.add_raw_samples(raw_data)
+    report = builder.validate()
     builder.save_dataset(output_path)
+    return report
