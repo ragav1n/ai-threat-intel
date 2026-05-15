@@ -1,0 +1,5210 @@
+[
+ {
+  "value": "CVE-2023-46604",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 1.0,
+  "correct": true
+ },
+ {
+  "value": "Report.Access",
+  "type": "domain",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": false
+ },
+ {
+  "value": "Report.Access",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 0.95,
+  "fused": 0.29,
+  "correct": false
+ },
+ {
+  "value": "Report.Access",
+  "type": "domain",
+  "regex": 0.75,
+  "llm": 1.0,
+  "fused": 0.3,
+  "correct": false
+ },
+ {
+  "value": "Report.Access",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.25,
+  "correct": false
+ },
+ {
+  "value": "Report.Access",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 1.0,
+  "fused": 0.26,
+  "correct": false
+ },
+ {
+  "value": "Report.Access",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 0.95,
+  "fused": 0.29,
+  "correct": false
+ },
+ {
+  "value": "Report.Access",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 1.0,
+  "fused": 0.22,
+  "correct": false
+ },
+ {
+  "value": "CVE-2023-22527",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 1.0,
+  "correct": true
+ },
+ {
+  "value": "45.227.254.124",
+  "type": "ip",
+  "regex": 0.8,
+  "llm": 0.95,
+  "fused": 0.35,
+  "correct": true
+ },
+ {
+  "value": "Report.Access",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 1.0,
+  "fused": 0.26,
+  "correct": false
+ },
+ {
+  "value": "Report.Access",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 1.0,
+  "fused": 0.22,
+  "correct": false
+ },
+ {
+  "value": "Report.Access",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 0.95,
+  "fused": 0.29,
+  "correct": false
+ },
+ {
+  "value": "9f431d5549a03aee92cfd2bdbbe90f1c91e965c99e90a0c9ad5a001f4e80c350",
+  "type": "sha256",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.43,
+  "correct": true
+ },
+ {
+  "value": "98a7b0900a9072bb40af579ec372da7b27af12b15868394df51fefe290ab176b",
+  "type": "sha256",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.43,
+  "correct": true
+ },
+ {
+  "value": "66cceb2c2f1d9988b501832fd3b559775982e2fce4ab38fc4ffe71b74eafc726",
+  "type": "sha256",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.43,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-1731",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": true
+ },
+ {
+  "value": "CVE-2024-12356",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.97,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-1281",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": false
+ },
+ {
+  "value": "CVE-2026-1340",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": false
+ },
+ {
+  "value": "CVE-2025-0921",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": false
+ },
+ {
+  "value": "CVE-2025-14847",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.43,
+  "correct": false
+ },
+ {
+  "value": "CVE-2025-23304",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": false
+ },
+ {
+  "value": "CVE-2026-22584",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": false
+ },
+ {
+  "value": "CVE-2025-55182",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.43,
+  "correct": false
+ },
+ {
+  "value": "CVE-2025-66478",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": false
+ },
+ {
+  "value": "CVE-2025-21042",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.43,
+  "correct": false
+ },
+ {
+  "value": "CVE-2025-59287",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.43,
+  "correct": false
+ },
+ {
+  "value": "679ee05d92a858b6fe70aeb6072eb804548f1732e18b6c181af122b833386afb",
+  "type": "sha256",
+  "regex": 0.95,
+  "llm": 0.95,
+  "fused": 0.41,
+  "correct": true
+ },
+ {
+  "value": "98442387d466f27357d727b3706037a4df12a78602b93df973b063462a677761",
+  "type": "sha256",
+  "regex": 0.95,
+  "llm": 1.0,
+  "fused": 0.38,
+  "correct": true
+ },
+ {
+  "value": "cc2bc3750cc5125a50466f66ae4f2bedf1cac0e43477a78ed2fd88f3e987a292",
+  "type": "sha256",
+  "regex": 0.95,
+  "llm": 0.95,
+  "fused": 0.41,
+  "correct": true
+ },
+ {
+  "value": "cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce",
+  "type": "sha256",
+  "regex": 0.95,
+  "llm": 1.0,
+  "fused": 0.38,
+  "correct": true
+ },
+ {
+  "value": "https://temp.sh/tQTSs/storm.exe",
+  "type": "url",
+  "regex": 0.85,
+  "llm": 0.95,
+  "fused": 0.91,
+  "correct": true
+ },
+ {
+  "value": "4762e944a0ce1f9aef243e11538f84f16b6f36560ed6e32dfd9a5f99e17e8e50",
+  "type": "sha256",
+  "regex": 0.85,
+  "llm": 0.95,
+  "fused": 0.37,
+  "correct": true
+ },
+ {
+  "value": "0ecc867ce916d01640d76ec03de24d1d23585eb582e9c48a0364c62a590548ac",
+  "type": "sha256",
+  "regex": 0.85,
+  "llm": 1.0,
+  "fused": 0.34,
+  "correct": true
+ },
+ {
+  "value": "39uchxifap4cvgzsuirom0szrrg",
+  "type": "crypto_btc",
+  "regex": 0.85,
+  "llm": 0.95,
+  "fused": 0.37,
+  "correct": false
+ },
+ {
+  "value": "aliyundunupdate.xyz",
+  "type": "domain",
+  "regex": 0.8,
+  "llm": 0.95,
+  "fused": 0.89,
+  "correct": true
+ },
+ {
+  "value": "d65sb7ngveucv5k2nm508abdsjmbn7qmn.oast.pro",
+  "type": "domain",
+  "regex": 0.8,
+  "llm": 0.95,
+  "fused": 0.89,
+  "correct": true
+ },
+ {
+  "value": "q0r2e5q2dzbykcox9qmkptm12s8mwb.oastify.com",
+  "type": "domain",
+  "regex": 0.8,
+  "llm": 0.95,
+  "fused": 0.35,
+  "correct": true
+ },
+ {
+  "value": "http://64.31.28.221/support",
+  "type": "url",
+  "regex": 0.8,
+  "llm": 0.95,
+  "fused": 0.35,
+  "correct": true
+ },
+ {
+  "value": "http://134.122.13.34:8979/c",
+  "type": "url",
+  "regex": 0.8,
+  "llm": 0.95,
+  "fused": 0.35,
+  "correct": true
+ },
+ {
+  "value": "http://82.29.53.187:8778/app_cli",
+  "type": "url",
+  "regex": 0.8,
+  "llm": 0.95,
+  "fused": 0.35,
+  "correct": true
+ },
+ {
+  "value": "https://transfer.weepee.io/7nZw7/blue.drx",
+  "type": "url",
+  "regex": 0.8,
+  "llm": 0.95,
+  "fused": 0.35,
+  "correct": true
+ },
+ {
+  "value": "http://85.155.186.121/access",
+  "type": "url",
+  "regex": 0.8,
+  "llm": 0.95,
+  "fused": 0.35,
+  "correct": true
+ },
+ {
+  "value": "https://github.com/nicocha30/ligolo-ng/releases/download/v0.8.2/ligolo-ng_agent_0.8.2_linux_amd64.tar.gz",
+  "type": "url",
+  "regex": 0.8,
+  "llm": 0.95,
+  "fused": 0.35,
+  "correct": true
+ },
+ {
+  "value": "23.162.40.187",
+  "type": "ip",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": true
+ },
+ {
+  "value": "37.19.221.180",
+  "type": "ip",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": true
+ },
+ {
+  "value": "45.61.150.96",
+  "type": "ip",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": true
+ },
+ {
+  "value": "70.23.0.66",
+  "type": "ip",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": true
+ },
+ {
+  "value": "82.29.53.187",
+  "type": "ip",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": true
+ },
+ {
+  "value": "82.29.72.16",
+  "type": "ip",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": true
+ },
+ {
+  "value": "42.Threat",
+  "type": "domain",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": false
+ },
+ {
+  "value": "aws.php.Attackers",
+  "type": "domain",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": false
+ },
+ {
+  "value": "php-fpm.sock",
+  "type": "domain",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": false
+ },
+ {
+  "value": "DragonSpark.This",
+  "type": "domain",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": false
+ },
+ {
+  "value": "2022.Attackers",
+  "type": "domain",
+  "regex": 0.75,
+  "llm": 1.0,
+  "fused": 0.3,
+  "correct": false
+ },
+ {
+  "value": "oastify.com",
+  "type": "domain",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.87,
+  "correct": false
+ },
+ {
+  "value": "precedent.The",
+  "type": "domain",
+  "regex": 0.75,
+  "llm": 1.0,
+  "fused": 0.3,
+  "correct": false
+ },
+ {
+  "value": "Alliance.Palo",
+  "type": "domain",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": false
+ },
+ {
+  "value": "vjwr.It",
+  "type": "domain",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": false
+ },
+ {
+  "value": "83.138.53.139",
+  "type": "ip",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": true
+ },
+ {
+  "value": "144.172.103.200",
+  "type": "ip",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": true
+ },
+ {
+  "value": "155.2.215.64",
+  "type": "ip",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": true
+ },
+ {
+  "value": "178.128.212.209",
+  "type": "ip",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": true
+ },
+ {
+  "value": "179.43.146.42",
+  "type": "ip",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": true
+ },
+ {
+  "value": "64.31.28.221",
+  "type": "ip",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": true
+ },
+ {
+  "value": "https://64.95.10.115:23011/update.sh",
+  "type": "url",
+  "regex": 0.7,
+  "llm": 0.85,
+  "fused": 0.79,
+  "correct": true
+ },
+ {
+  "value": "https://judiemkqjajsfzpidfjlowgl8nyrtd49x.oast.fun",
+  "type": "url",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.85,
+  "correct": true
+ },
+ {
+  "value": "https://raw.githubusercontent.com/nezhahq/scripts/main/agent/install.ps1",
+  "type": "url",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": true
+ },
+ {
+  "value": "http://39uchxifap4cvgzsuirom0szrrg.d65lre9sfqnlcv49317gcis6pyjsatzho.oast.pro",
+  "type": "url",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.85,
+  "correct": true
+ },
+ {
+  "value": "https://85.155.186.121/access/Remote%20Access-linux64-offline.tar?language=en&app=76049110434275449312180081368257747094",
+  "type": "url",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.85,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-1731.BeyondTrust",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 1.0,
+  "fused": 0.26,
+  "correct": false
+ },
+ {
+  "value": "advisory.The",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 1.0,
+  "fused": 0.26,
+  "correct": false
+ },
+ {
+  "value": "AntSword.These",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 0.95,
+  "fused": 0.29,
+  "correct": false
+ },
+ {
+  "value": "85.155.186.121",
+  "type": "ip",
+  "regex": 0.6,
+  "llm": 0.95,
+  "fused": 0.27,
+  "correct": true
+ },
+ {
+  "value": "92.223.44.134",
+  "type": "ip",
+  "regex": 0.6,
+  "llm": 0.95,
+  "fused": 0.27,
+  "correct": true
+ },
+ {
+  "value": "98.10.233.76",
+  "type": "ip",
+  "regex": 0.6,
+  "llm": 0.95,
+  "fused": 0.27,
+  "correct": true
+ },
+ {
+  "value": "134.122.13.34",
+  "type": "ip",
+  "regex": 0.6,
+  "llm": 0.95,
+  "fused": 0.27,
+  "correct": true
+ },
+ {
+  "value": "138.197.14.95",
+  "type": "ip",
+  "regex": 0.6,
+  "llm": 0.95,
+  "fused": 0.27,
+  "correct": true
+ },
+ {
+  "value": "142.111.152.50",
+  "type": "ip",
+  "regex": 0.6,
+  "llm": 0.95,
+  "fused": 0.27,
+  "correct": true
+ },
+ {
+  "value": "64.95.10.115",
+  "type": "ip",
+  "regex": 0.6,
+  "llm": 0.95,
+  "fused": 0.27,
+  "correct": true
+ },
+ {
+  "value": "thin-scc-wrapper.This",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.25,
+  "correct": false
+ },
+ {
+  "value": "+82.080.467.8774",
+  "type": "phone_number",
+  "regex": 0.5,
+  "llm": 0.95,
+  "fused": 0.23,
+  "correct": false
+ },
+ {
+  "value": "+1 (866) 486-4842",
+  "type": "phone_number",
+  "regex": 0.4,
+  "llm": 0.95,
+  "fused": 0.19,
+  "correct": false
+ },
+ {
+  "value": "1368257747094",
+  "type": "phone_number",
+  "regex": 0.4,
+  "llm": 0.95,
+  "fused": 0.19,
+  "correct": false
+ },
+ {
+  "value": "CVE-2026-1281",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-1340",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-1731",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": false
+ },
+ {
+  "value": "CVE-2025-59287",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.43,
+  "correct": false
+ },
+ {
+  "value": "CVE-2025-0921",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": false
+ },
+ {
+  "value": "CVE-2025-14847",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.43,
+  "correct": false
+ },
+ {
+  "value": "CVE-2025-23304",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": false
+ },
+ {
+  "value": "CVE-2026-22584",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": false
+ },
+ {
+  "value": "CVE-2025-55182",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.43,
+  "correct": false
+ },
+ {
+  "value": "CVE-2025-66478",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": false
+ },
+ {
+  "value": "CVE-2025-21042",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.43,
+  "correct": false
+ },
+ {
+  "value": "CVE-2026-12821",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": false
+ },
+ {
+  "value": "23.227.199.80",
+  "type": "ip",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": true
+ },
+ {
+  "value": "64.7.199.177",
+  "type": "ip",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": true
+ },
+ {
+  "value": "83.138.53.139",
+  "type": "ip",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": true
+ },
+ {
+  "value": "84.72.235.18",
+  "type": "ip",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": true
+ },
+ {
+  "value": "42.Threat",
+  "type": "domain",
+  "regex": 0.75,
+  "llm": 1.0,
+  "fused": 0.3,
+  "correct": false
+ },
+ {
+  "value": "gStartTime.Payload",
+  "type": "domain",
+  "regex": 0.75,
+  "llm": 1.0,
+  "fused": 0.3,
+  "correct": false
+ },
+ {
+  "value": "Alliance.Palo",
+  "type": "domain",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": false
+ },
+ {
+  "value": "96919.Cloud",
+  "type": "domain",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": false
+ },
+ {
+  "value": "zeetcckhtudizieudqyck5o4ez16y973h.oast.fun",
+  "type": "domain",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.85,
+  "correct": true
+ },
+ {
+  "value": "http://152.32.173.138/U26d86f1899513347.5b5b0c1b",
+  "type": "url",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": true
+ },
+ {
+  "value": "http://64.7.199.177:18899",
+  "type": "url",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": true
+ },
+ {
+  "value": "http://152.32.173.138/U5213b63dda61af48.0F3Ab3D3",
+  "type": "url",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": true
+ },
+ {
+  "value": "https://e598292a5fbd.ngrok-free.app/",
+  "type": "url",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.85,
+  "correct": true
+ },
+ {
+  "value": "section.The",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 1.0,
+  "fused": 0.26,
+  "correct": false
+ },
+ {
+  "value": "map-appstore-url.These",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 0.95,
+  "fused": 0.29,
+  "correct": false
+ },
+ {
+  "value": "expansion.The",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 1.0,
+  "fused": 0.26,
+  "correct": false
+ },
+ {
+  "value": "theValue.Inside",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 0.95,
+  "fused": 0.29,
+  "correct": false
+ },
+ {
+  "value": "86.106.143.200",
+  "type": "ip",
+  "regex": 0.6,
+  "llm": 0.95,
+  "fused": 0.27,
+  "correct": true
+ },
+ {
+  "value": "91.193.19.12",
+  "type": "ip",
+  "regex": 0.6,
+  "llm": 0.95,
+  "fused": 0.27,
+  "correct": true
+ },
+ {
+  "value": "107.173.231.201",
+  "type": "ip",
+  "regex": 0.6,
+  "llm": 0.95,
+  "fused": 0.27,
+  "correct": true
+ },
+ {
+  "value": "130.94.41.206",
+  "type": "ip",
+  "regex": 0.6,
+  "llm": 0.95,
+  "fused": 0.27,
+  "correct": true
+ },
+ {
+  "value": "138.226.247.241",
+  "type": "ip",
+  "regex": 0.6,
+  "llm": 0.95,
+  "fused": 0.27,
+  "correct": true
+ },
+ {
+  "value": "144.172.106.4",
+  "type": "ip",
+  "regex": 0.6,
+  "llm": 0.95,
+  "fused": 0.27,
+  "correct": true
+ },
+ {
+  "value": "146.70.41.193",
+  "type": "ip",
+  "regex": 0.6,
+  "llm": 0.95,
+  "fused": 0.27,
+  "correct": true
+ },
+ {
+  "value": "152.32.173.138",
+  "type": "ip",
+  "regex": 0.6,
+  "llm": 0.95,
+  "fused": 0.27,
+  "correct": true
+ },
+ {
+  "value": "158.247.199.185",
+  "type": "ip",
+  "regex": 0.6,
+  "llm": 0.95,
+  "fused": 0.27,
+  "correct": true
+ },
+ {
+  "value": "185.173.235.232",
+  "type": "ip",
+  "regex": 0.6,
+  "llm": 0.95,
+  "fused": 0.27,
+  "correct": true
+ },
+ {
+  "value": "192.242.184.234",
+  "type": "ip",
+  "regex": 0.6,
+  "llm": 0.95,
+  "fused": 0.27,
+  "correct": true
+ },
+ {
+  "value": "193.242.184.234",
+  "type": "ip",
+  "regex": 0.6,
+  "llm": 0.95,
+  "fused": 0.27,
+  "correct": true
+ },
+ {
+  "value": "194.78.67.253",
+  "type": "ip",
+  "regex": 0.6,
+  "llm": 0.95,
+  "fused": 0.27,
+  "correct": true
+ },
+ {
+  "value": "198.13.158.58",
+  "type": "ip",
+  "regex": 0.6,
+  "llm": 0.95,
+  "fused": 0.27,
+  "correct": true
+ },
+ {
+  "value": "204.251.198.205",
+  "type": "ip",
+  "regex": 0.6,
+  "llm": 0.95,
+  "fused": 0.27,
+  "correct": true
+ },
+ {
+  "value": "theValue.Execution",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 1.0,
+  "fused": 0.22,
+  "correct": false
+ },
+ {
+  "value": "gobygo.net",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.79,
+  "correct": true
+ },
+ {
+  "value": "main.interacth3.io",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.25,
+  "correct": true
+ },
+ {
+  "value": "ddns.1433.eu.org",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.79,
+  "correct": true
+ },
+ {
+  "value": "oast.live",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.79,
+  "correct": true
+ },
+ {
+  "value": "oast.me",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.79,
+  "correct": true
+ },
+ {
+  "value": "oast.site",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.79,
+  "correct": true
+ },
+ {
+  "value": "requestrepo.com",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.25,
+  "correct": true
+ },
+ {
+  "value": "ceye.io",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.25,
+  "correct": true
+ },
+ {
+  "value": "gateway.horizon3ai.com",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.25,
+  "correct": false
+ },
+ {
+  "value": "+82.080.467.8774",
+  "type": "phone_number",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.25,
+  "correct": false
+ },
+ {
+  "value": "+1 (866) 486-4842",
+  "type": "phone_number",
+  "regex": 0.4,
+  "llm": 0.95,
+  "fused": 0.19,
+  "correct": false
+ },
+ {
+  "value": "1899513347",
+  "type": "phone_number",
+  "regex": 0.4,
+  "llm": 0.95,
+  "fused": 0.19,
+  "correct": false
+ },
+ {
+  "value": "https://fable.tele-tale.cn",
+  "type": "url",
+  "regex": 0.9,
+  "llm": 0.95,
+  "fused": 0.39,
+  "correct": true
+ },
+ {
+  "value": "http://t.k12.com.cn/k12sns.apk",
+  "type": "url",
+  "regex": 0.9,
+  "llm": 0.95,
+  "fused": 0.39,
+  "correct": true
+ },
+ {
+  "value": "https://www.dropbox.com/scl/fi/7e8xqrcxgzftrk61omgn0/Presentation.pptx?rlkey=xgk24xllhh4qqv1li2ifd3e3s&st=xvtu5b7y&dl=0",
+  "type": "url",
+  "regex": 0.85,
+  "llm": 0.95,
+  "fused": 0.37,
+  "correct": true
+ },
+ {
+  "value": "https://signal-qr.org/chatZGtqZmpic2l1NDkzdWpka25zamRucDJ1MDllamtmOThyNGltdmZkZw==/ty62i",
+  "type": "url",
+  "regex": 0.85,
+  "llm": 0.95,
+  "fused": 0.37,
+  "correct": true
+ },
+ {
+  "value": "12wXzmwak8LJ88e1ejupY3brfQi43xdDhb",
+  "type": "crypto_btc",
+  "regex": 0.85,
+  "llm": 0.95,
+  "fused": 0.37,
+  "correct": false
+ },
+ {
+  "value": "3D0000000000000000000000833677",
+  "type": "crypto_btc",
+  "regex": 0.85,
+  "llm": 0.5,
+  "fused": 0.64,
+  "correct": false
+ },
+ {
+  "value": "1QbxvrXPV4tKg23mqzQeMpPRp3ofr4mePrur",
+  "type": "crypto_btc",
+  "regex": 0.85,
+  "llm": 0.95,
+  "fused": 0.37,
+  "correct": false
+ },
+ {
+  "value": "https://wa.me/settings/linked_devices#",
+  "type": "url",
+  "regex": 0.8,
+  "llm": 1.0,
+  "fused": 0.32,
+  "correct": false
+ },
+ {
+  "value": "http://www.sgnl-web.org-status.nl/",
+  "type": "url",
+  "regex": 0.8,
+  "llm": 0.95,
+  "fused": 0.35,
+  "correct": true
+ },
+ {
+  "value": "https://90999.fdjk34sddsf90999.cc/xincai.apk",
+  "type": "url",
+  "regex": 0.8,
+  "llm": 0.95,
+  "fused": 0.89,
+  "correct": true
+ },
+ {
+  "value": "42.Threat",
+  "type": "domain",
+  "regex": 0.75,
+  "llm": 1.0,
+  "fused": 0.3,
+  "correct": false
+ },
+ {
+  "value": "cdnimg.jeayacrai.in.net.After",
+  "type": "domain",
+  "regex": 0.75,
+  "llm": 0.9,
+  "fused": 0.36,
+  "correct": false
+ },
+ {
+  "value": "snitch.open-group.site",
+  "type": "domain",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.87,
+  "correct": true
+ },
+ {
+  "value": "Alliance.Acknowledgements",
+  "type": "domain",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": false
+ },
+ {
+  "value": "Attack.NET",
+  "type": "domain",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": false
+ },
+ {
+  "value": "https://link.members-ms.jp/view/clickCount?cst_id=000000000003690&msg_id=0000000000000000000000833677&deli_date=1.53.1.149&redirect_uri=https%3A%2F%2Fliff.line.me%2F2007686667-M9geAqrB%3Fid%3D5%3FROUTE_KBN%3D12&msg_type=1&sec_msg=BtBnJY9kxxWnP%2BQt3ycGtVVhajc%3D&sec_date=zVK0EnCA1F8siaD0nf4Nsq1VRlc%3D&sec_uri=P85jU5m9ynEk1wr9ltPW%2Fh%2BJrxE%3D&sec_type=XWWoEGkCR%2BDRAsxfdW4dQHnr%2FbI%3D",
+  "type": "url",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": false
+ },
+ {
+  "value": "https://wa.me/settings/linked_devices#2@vxFKwMU92ToQ60n6gPIw/SLkNcoYVu1XKW+/zMiBEuslO63jfBCCZX/f1mOrkxrAqkp4DaSzq5MX7CcvOJqrNDSJQRLKgXP7K2A=,tZrifOdd4aLBy9nrncQVsa0WqVcYmJnFSs8nEpt3URs=,DfpvHVSe6SmZWxAgVdYXsYz2FsD7DQ3NgmGybCNMHHY=,Ipp5goLgYXXn+7Swuw+pGX77EFECRemAHS5gfOJE7G4=,1",
+  "type": "url",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": true
+ },
+ {
+  "value": "https://wa.me/settings/linked_devices#2@8zRSshgXZVfdYcvUvycaOQJlQBcjUDomiqdxC8uQEowH5TQLr/P+1QbxvrXPV4tKg23mqzQeMpPRp3ofr4mePrur/YN4ztk6fWY=,FaknzsibNU+yi9cvuQKDgI3eBh+KEY2TQHqilwZ+KRs=,Rpz7L5S/72o1Ust4Y6CZ3tC7gf6yQvJdd80IFbZzdiw=,eZyTFPAbZWlFUXjGbrvBCM4ApoYT50kFXQb+/cTMzPw=,1",
+  "type": "url",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": true
+ },
+ {
+  "value": "team.Related",
+  "type": "domain",
+  "regex": 0.7,
+  "llm": 1.0,
+  "fused": 0.28,
+  "correct": false
+ },
+ {
+  "value": "xx.com",
+  "type": "domain",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": false
+ },
+ {
+  "value": "malicious-website.com",
+  "type": "domain",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": false
+ },
+ {
+  "value": "signal.skyriver.ch",
+  "type": "domain",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": true
+ },
+ {
+  "value": "gui.snitch-dev.xyz",
+  "type": "domain",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.85,
+  "correct": true
+ },
+ {
+  "value": "gui.dev-snitch.xyz",
+  "type": "domain",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.85,
+  "correct": true
+ },
+ {
+  "value": "ve1edm.cc",
+  "type": "domain",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": true
+ },
+ {
+  "value": "ve2edm.cc",
+  "type": "domain",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": true
+ },
+ {
+  "value": "https://pyreneesakbash.com/m-nagapoker/android.html.The",
+  "type": "url",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": false
+ },
+ {
+  "value": "https://qrco.de/bgP6vx",
+  "type": "url",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": true
+ },
+ {
+  "value": "https://cdnimg.jeayacrai.in.net/qY42h5ei3SBo9ZmvO!/",
+  "type": "url",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": true
+ },
+ {
+  "value": "http://kccomputech.in/babukh1513273",
+  "type": "url",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": true
+ },
+ {
+  "value": "https://20.217.81.20",
+  "type": "url",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": true
+ },
+ {
+  "value": "https://csdh.wangzhan.mobi",
+  "type": "url",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": true
+ },
+ {
+  "value": "https://kzeva2010.sbs/MZApUU1aJ3LSYi86IrAZ",
+  "type": "url",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": true
+ },
+ {
+  "value": "https://xlq.wpybta.icu",
+  "type": "url",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.85,
+  "correct": true
+ },
+ {
+  "value": "https://gricanjolt.com?r=aHR0cHM6Ly9mOTk5OS5hcHA=1",
+  "type": "url",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.85,
+  "correct": true
+ },
+ {
+  "value": "https://pyreneesakbash.com/m-nagapoker/android.html",
+  "type": "url",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.85,
+  "correct": true
+ },
+ {
+  "value": "https://resourcepro.tycheint.com/yicai.apk",
+  "type": "url",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": true
+ },
+ {
+  "value": "https://gld45a.cqxqlsz.com/fusion2023/android/app-u7cp-release.apk",
+  "type": "url",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.85,
+  "correct": true
+ },
+ {
+  "value": "https://azojwdsj.xinchaoshan.com/fusion2023/android/app-u7cp-release.apk",
+  "type": "url",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.85,
+  "correct": true
+ },
+ {
+  "value": "http://www.ludashi.com/cms/android/special/download.html",
+  "type": "url",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": true
+ },
+ {
+  "value": "mail.com",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 0.95,
+  "fused": 0.29,
+  "correct": false
+ },
+ {
+  "value": "www.malicious-url.com",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 0.95,
+  "fused": 0.29,
+  "correct": false
+ },
+ {
+  "value": "www.phishing-meeting-link-url.com",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 0.95,
+  "fused": 0.83,
+  "correct": false
+ },
+ {
+  "value": "apk.It",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 0.95,
+  "fused": 0.29,
+  "correct": false
+ },
+ {
+  "value": "gui.snitch-dev.site",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 0.95,
+  "fused": 0.83,
+  "correct": true
+ },
+ {
+  "value": "gui.dev-snitch.site",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 0.95,
+  "fused": 0.83,
+  "correct": true
+ },
+ {
+  "value": "attack-email@xx.com",
+  "type": "email",
+  "regex": 0.65,
+  "llm": 0.95,
+  "fused": 0.29,
+  "correct": false
+ },
+ {
+  "value": "k12sns.apk.This",
+  "type": "domain",
+  "regex": 0.6,
+  "llm": 0.95,
+  "fused": 0.27,
+  "correct": false
+ },
+ {
+  "value": "73.150.2.210",
+  "type": "ip",
+  "regex": 0.6,
+  "llm": 0.95,
+  "fused": 0.27,
+  "correct": false
+ },
+ {
+  "value": "20.217.81.20",
+  "type": "ip",
+  "regex": 0.6,
+  "llm": 0.95,
+  "fused": 0.27,
+  "correct": true
+ },
+ {
+  "value": "1.53.1.149",
+  "type": "ip",
+  "regex": 0.6,
+  "llm": 0.95,
+  "fused": 0.27,
+  "correct": false
+ },
+ {
+  "value": "119.170.222.11",
+  "type": "ip",
+  "regex": 0.6,
+  "llm": 0.95,
+  "fused": 0.27,
+  "correct": false
+ },
+ {
+  "value": "receive@mail.com",
+  "type": "email",
+  "regex": 0.6,
+  "llm": 0.95,
+  "fused": 0.27,
+  "correct": false
+ },
+ {
+  "value": "pandemic.QR",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.25,
+  "correct": false
+ },
+ {
+  "value": "app.In",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 1.0,
+  "fused": 0.22,
+  "correct": false
+ },
+ {
+  "value": "qrcc.io",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.25,
+  "correct": false
+ },
+ {
+  "value": "me-qr.com",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.25,
+  "correct": false
+ },
+ {
+  "value": "qr.io",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.25,
+  "correct": false
+ },
+ {
+  "value": "qrfy.com",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.25,
+  "correct": false
+ },
+ {
+  "value": "qrfy.io",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.25,
+  "correct": false
+ },
+ {
+  "value": "get-qr.com",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.25,
+  "correct": false
+ },
+ {
+  "value": "qr.ne",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.25,
+  "correct": false
+ },
+ {
+  "value": "qrs.ly",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.25,
+  "correct": false
+ },
+ {
+  "value": "f9999.app",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.9,
+  "fused": 0.28,
+  "correct": true
+ },
+ {
+  "value": "NagaPocker.apk",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.25,
+  "correct": false
+ },
+ {
+  "value": "solulu.vip",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.9,
+  "fused": 0.28,
+  "correct": true
+ },
+ {
+  "value": "Olb228hoki.live",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.79,
+  "correct": true
+ },
+ {
+  "value": "radenspinrtp.cloud",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.25,
+  "correct": true
+ },
+ {
+  "value": "bostonsportsthenandnow.com",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.25,
+  "correct": true
+ },
+ {
+  "value": "slotolb228.com",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.25,
+  "correct": true
+ },
+ {
+  "value": "gui.snitch-dev.online",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.25,
+  "correct": true
+ },
+ {
+  "value": "gui.dev-snitch.online",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.79,
+  "correct": true
+ },
+ {
+  "value": "gui.dev-snitch.cloud",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.25,
+  "correct": true
+ },
+ {
+  "value": "snitch-dev.space",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.79,
+  "correct": true
+ },
+ {
+  "value": "gui-snitch.online",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.79,
+  "correct": true
+ },
+ {
+  "value": "gui-grafit.online",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.85,
+  "fused": 0.73,
+  "correct": true
+ },
+ {
+  "value": "kropyva-group.online",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.79,
+  "correct": true
+ },
+ {
+  "value": "liff.state",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.25,
+  "correct": false
+ },
+ {
+  "value": "liff.referrer",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.25,
+  "correct": false
+ },
+ {
+  "value": "2Fbing.com",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.25,
+  "correct": false
+ },
+ {
+  "value": "liff.source",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.25,
+  "correct": false
+ },
+ {
+  "value": "wswwc.icu",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.79,
+  "correct": true
+ },
+ {
+  "value": "awawc.icu",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.79,
+  "correct": true
+ },
+ {
+  "value": "weppf.icu",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.79,
+  "correct": true
+ },
+ {
+  "value": "+82.080.467.8774",
+  "type": "phone_number",
+  "regex": 0.5,
+  "llm": 0.95,
+  "fused": 0.23,
+  "correct": false
+ },
+ {
+  "value": "+1 (866) 486-4842",
+  "type": "phone_number",
+  "regex": 0.4,
+  "llm": 0.5,
+  "fused": 0.46,
+  "correct": false
+ },
+ {
+  "value": "0000000003690",
+  "type": "phone_number",
+  "regex": 0.4,
+  "llm": 1.0,
+  "fused": 0.16,
+  "correct": false
+ },
+ {
+  "value": "0000000833677",
+  "type": "phone_number",
+  "regex": 0.4,
+  "llm": 0.95,
+  "fused": 0.19,
+  "correct": false
+ },
+ {
+  "value": "2007686667",
+  "type": "phone_number",
+  "regex": 0.4,
+  "llm": 0.95,
+  "fused": 0.19,
+  "correct": false
+ },
+ {
+  "value": "1f6d28370f4c2b13f3967b38f67f77eee7f5fba9e7743b6c66a8feb18ae8f33e",
+  "type": "sha256",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.43,
+  "correct": true
+ },
+ {
+  "value": "a3cf1c86731703043b3614e085b9c8c224d4125370f420ad031ad63c14d6c3ec",
+  "type": "sha256",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.43,
+  "correct": true
+ },
+ {
+  "value": "2dd5473736ef51e4340cae005e3fc8cdf0e42ec649bc6ed186484a79be409928",
+  "type": "sha256",
+  "regex": 0.95,
+  "llm": 0.95,
+  "fused": 0.41,
+  "correct": false
+ },
+ {
+  "value": "a19aa1cd7ecb9ca3f1fd0e118fffd0d673fba404ced8c39c2e210a63b70f9c15",
+  "type": "sha256",
+  "regex": 0.95,
+  "llm": 1.0,
+  "fused": 0.38,
+  "correct": false
+ },
+ {
+  "value": "e22abc9af328d063e652f0829819124a6a748c224bc8b10f98473f87cda2c0cd",
+  "type": "sha256",
+  "regex": 0.95,
+  "llm": 1.0,
+  "fused": 0.38,
+  "correct": false
+ },
+ {
+  "value": "61c3077b989e272117167c90fc35e7f06bea4f992f3395b40ccee083d7258082",
+  "type": "sha256",
+  "regex": 0.95,
+  "llm": 1.0,
+  "fused": 0.38,
+  "correct": false
+ },
+ {
+  "value": "49d2531893b09cb6a8e3429ca0a734e871a2d96fa2575c0eec3229d383fa233a",
+  "type": "sha256",
+  "regex": 0.95,
+  "llm": 1.0,
+  "fused": 0.38,
+  "correct": false
+ },
+ {
+  "value": "a511be5164dc1122fb5a7daa3eef9467e43d8458425b15a640235796006590c9",
+  "type": "sha256",
+  "regex": 0.95,
+  "llm": 1.0,
+  "fused": 0.38,
+  "correct": true
+ },
+ {
+  "value": "71431fa7b66f8132453e18e3a5f8ef0af3ca079a7793f828df06fdb5d7bd915d",
+  "type": "sha256",
+  "regex": 0.85,
+  "llm": 1.0,
+  "fused": 0.34,
+  "correct": false
+ },
+ {
+  "value": "32aa12d3c9521477a5a1e086e400ec0f77f8a97a8190806a0f1953688b883cfb",
+  "type": "sha256",
+  "regex": 0.85,
+  "llm": 1.0,
+  "fused": 0.34,
+  "correct": false
+ },
+ {
+  "value": "8117c82a3821965d92ee3f9f3ae10efcd602bd4b6e52a2fe957d70aafe479744",
+  "type": "sha256",
+  "regex": 0.85,
+  "llm": 1.0,
+  "fused": 0.34,
+  "correct": false
+ },
+ {
+  "value": "05abc57952974d08feafa399d6fdb37945a3fd0a10f37833dd837a5788e421d5",
+  "type": "sha256",
+  "regex": 0.85,
+  "llm": 1.0,
+  "fused": 0.34,
+  "correct": false
+ },
+ {
+  "value": "c6d1e5aacbf69aa18df4caf1346fd69638491a5ad0085729bae91c662d1c62bb",
+  "type": "sha256",
+  "regex": 0.85,
+  "llm": 1.0,
+  "fused": 0.34,
+  "correct": false
+ },
+ {
+  "value": "e1df78704001bba1a3d343f62a1242a4484ff6ad269170714263c03b802eb0b1",
+  "type": "sha256",
+  "regex": 0.85,
+  "llm": 1.0,
+  "fused": 0.34,
+  "correct": false
+ },
+ {
+  "value": "7094a07167648628e47249a16d9d6db922e5aa1255ac4322a2e4900d233372dd",
+  "type": "sha256",
+  "regex": 0.85,
+  "llm": 0.95,
+  "fused": 0.37,
+  "correct": false
+ },
+ {
+  "value": "https://notepad-plus-plus\\.org/|https://npp-user-manual\\.org/",
+  "type": "url",
+  "regex": 0.8,
+  "llm": 0.95,
+  "fused": 0.35,
+  "correct": false
+ },
+ {
+  "value": "https://notepad-plus-plus\\.org/",
+  "type": "url",
+  "regex": 0.8,
+  "llm": 1.0,
+  "fused": 0.32,
+  "correct": false
+ },
+ {
+  "value": "45.76.155.202",
+  "type": "ip",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": true
+ },
+ {
+  "value": "45.77.31.210",
+  "type": "ip",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": true
+ },
+ {
+  "value": "45.32.144.255",
+  "type": "ip",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.87,
+  "correct": true
+ },
+ {
+  "value": "42.Threat",
+  "type": "domain",
+  "regex": 0.75,
+  "llm": 1.0,
+  "fused": 0.3,
+  "correct": false
+ },
+ {
+  "value": "Blossom.The",
+  "type": "domain",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": false
+ },
+ {
+  "value": "WinGUp.This",
+  "type": "domain",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": false
+ },
+ {
+  "value": "Alliance.Palo",
+  "type": "domain",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": false
+ },
+ {
+  "value": "Attack.NET",
+  "type": "domain",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": false
+ },
+ {
+  "value": "45.76.155.202.After",
+  "type": "domain",
+  "regex": 0.7,
+  "llm": 1.0,
+  "fused": 0.28,
+  "correct": false
+ },
+ {
+  "value": "Engine.This",
+  "type": "domain",
+  "regex": 0.7,
+  "llm": 1.0,
+  "fused": 0.28,
+  "correct": false
+ },
+ {
+  "value": "https://notepad-plus-plus\\.org/update/getdownloadurl\\.php",
+  "type": "url",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": false
+ },
+ {
+  "value": "ENUM.FILE",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 1.0,
+  "fused": 0.26,
+  "correct": false
+ },
+ {
+  "value": "ENUM.PROCESS",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 1.0,
+  "fused": 0.26,
+  "correct": false
+ },
+ {
+  "value": "ENUM.UNSUPPORTED",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 1.0,
+  "fused": 0.26,
+  "correct": false
+ },
+ {
+  "value": "skycloudcenter.com",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 0.95,
+  "fused": 0.29,
+  "correct": true
+ },
+ {
+  "value": "95.179.213.0",
+  "type": "ip",
+  "regex": 0.6,
+  "llm": 0.95,
+  "fused": 0.27,
+  "correct": true
+ },
+ {
+  "value": "61.4.102.97",
+  "type": "ip",
+  "regex": 0.6,
+  "llm": 0.95,
+  "fused": 0.27,
+  "correct": true
+ },
+ {
+  "value": "59.110.7.32",
+  "type": "ip",
+  "regex": 0.6,
+  "llm": 0.95,
+  "fused": 0.27,
+  "correct": true
+ },
+ {
+  "value": "ENUM.SIGNED",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 1.0,
+  "fused": 0.22,
+  "correct": false
+ },
+ {
+  "value": "self-dns.it.com",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.25,
+  "correct": true
+ },
+ {
+  "value": "safe-dns.it.com",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.25,
+  "correct": true
+ },
+ {
+  "value": "cdncheck.it.com",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.25,
+  "correct": true
+ },
+ {
+  "value": "+1 (866) 486-4842",
+  "type": "phone_number",
+  "regex": 0.4,
+  "llm": 0.5,
+  "fused": 0.46,
+  "correct": false
+ },
+ {
+  "value": "+82.080.467.8774",
+  "type": "phone_number",
+  "regex": 0.4,
+  "llm": 0.95,
+  "fused": 0.19,
+  "correct": false
+ },
+ {
+  "value": "42.Threat",
+  "type": "domain",
+  "regex": 0.75,
+  "llm": 1.0,
+  "fused": 0.3,
+  "correct": false
+ },
+ {
+  "value": "Typhoon.Both",
+  "type": "domain",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": false
+ },
+ {
+  "value": "Alliance.Additional",
+  "type": "domain",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": false
+ },
+ {
+  "value": "Assessment.If",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 1.0,
+  "fused": 0.26,
+  "correct": false
+ },
+ {
+  "value": "team.Related",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 0.95,
+  "fused": 0.29,
+  "correct": false
+ },
+ {
+  "value": "bucket.If",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 1.0,
+  "fused": 0.26,
+  "correct": false
+ },
+ {
+  "value": "Credentials.Unique",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 1.0,
+  "fused": 0.22,
+  "correct": false
+ },
+ {
+  "value": "+1 (866) 486-4842",
+  "type": "phone_number",
+  "regex": 0.4,
+  "llm": 0.95,
+  "fused": 0.19,
+  "correct": false
+ },
+ {
+  "value": "66ec547b97072828534d43022d766e06c17fc1cafe47fbd9d1ffc22e2d52a9c0",
+  "type": "sha256",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.43,
+  "correct": true
+ },
+ {
+  "value": "23ee251df3f9c46661b33061035e9f6291894ebe070497ff9365d6ef2966f7fe",
+  "type": "sha256",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.43,
+  "correct": true
+ },
+ {
+  "value": "7808b1e01ea790548b472026ac783c73a033bb90bbe548bf3006abfbcb48c52d",
+  "type": "sha256",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.43,
+  "correct": true
+ },
+ {
+  "value": "CVE-2019-11580",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.97,
+  "correct": true
+ },
+ {
+  "value": "5175b1720fe3bc568f7857b72b960260ad3982f41366ce3372c04424396df6fe",
+  "type": "sha256",
+  "regex": 0.95,
+  "llm": 0.95,
+  "fused": 0.41,
+  "correct": true
+ },
+ {
+  "value": "b2a6c8382ec37ef15637578c6695cb35138ceab42ce4629b025fa4f04015eaf2",
+  "type": "sha256",
+  "regex": 0.95,
+  "llm": 0.95,
+  "fused": 0.41,
+  "correct": true
+ },
+ {
+  "value": "5ddeff4028ec407ffdaa6c503dd4f82fa294799d284b986e1f4181f49d18c9f3",
+  "type": "sha256",
+  "regex": 0.95,
+  "llm": 0.95,
+  "fused": 0.41,
+  "correct": true
+ },
+ {
+  "value": "182a427cc9ec22ed22438126a48f1a6cd84bf90fddb6517973bcb0bac58c4231",
+  "type": "sha256",
+  "regex": 0.95,
+  "llm": 1.0,
+  "fused": 0.38,
+  "correct": true
+ },
+ {
+  "value": "9ed487498235f289a960a5cc794fa0ad0f9ef5c074860fea650e88c525da0ab4",
+  "type": "sha256",
+  "regex": 0.95,
+  "llm": 1.0,
+  "fused": 0.38,
+  "correct": true
+ },
+ {
+  "value": "7808B1E01EA790548B472026AC783C73A033BB90BBE548BF3006ABFBCB48C52D",
+  "type": "sha256",
+  "regex": 0.85,
+  "llm": 0.95,
+  "fused": 0.37,
+  "correct": true
+ },
+ {
+  "value": "358ca77ccc4a979ed3337aad3a8ff7228da8246eebc69e64189f930b325daf6a",
+  "type": "sha256",
+  "regex": 0.85,
+  "llm": 0.95,
+  "fused": 0.37,
+  "correct": true
+ },
+ {
+  "value": "293821e049387d48397454d39233a5a67d0ae06d59b7e5474e8ae557b0fc5b06",
+  "type": "sha256",
+  "regex": 0.85,
+  "llm": 0.95,
+  "fused": 0.37,
+  "correct": true
+ },
+ {
+  "value": "c876e6c074333d700adf6b4397d9303860de17b01baa27c0fa5135e2692d3d6f",
+  "type": "sha256",
+  "regex": 0.85,
+  "llm": 0.95,
+  "fused": 0.37,
+  "correct": true
+ },
+ {
+  "value": "138.197.44.208",
+  "type": "ip",
+  "regex": 0.8,
+  "llm": 0.95,
+  "fused": 0.35,
+  "correct": true
+ },
+ {
+  "value": "142.91.105.172",
+  "type": "ip",
+  "regex": 0.8,
+  "llm": 0.95,
+  "fused": 0.35,
+  "correct": true
+ },
+ {
+  "value": "146.190.152.219",
+  "type": "ip",
+  "regex": 0.8,
+  "llm": 0.95,
+  "fused": 0.35,
+  "correct": true
+ },
+ {
+  "value": "157.230.34.45",
+  "type": "ip",
+  "regex": 0.8,
+  "llm": 0.95,
+  "fused": 0.35,
+  "correct": true
+ },
+ {
+  "value": "https://raw.githubusercontent.com/padeqav/WordPress/refs/heads/master/wp-includes/images/admin-bar-sprite.png",
+  "type": "url",
+  "regex": 0.8,
+  "llm": 0.95,
+  "fused": 0.35,
+  "correct": true
+ },
+ {
+  "value": "https://raw.githubusercontent.com/padeqav/WordPress/refs/heads/master/wp-includes/images/Windows.jpg",
+  "type": "url",
+  "regex": 0.8,
+  "llm": 0.95,
+  "fused": 0.35,
+  "correct": true
+ },
+ {
+  "value": "157.245.194.54",
+  "type": "ip",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": true
+ },
+ {
+  "value": "42.Threat",
+  "type": "domain",
+  "regex": 0.75,
+  "llm": 1.0,
+  "fused": 0.3,
+  "correct": false
+ },
+ {
+  "value": "team.Related",
+  "type": "domain",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": false
+ },
+ {
+  "value": "rce.jar.The",
+  "type": "domain",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": false
+ },
+ {
+  "value": "Alliance.Indicators",
+  "type": "domain",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": false
+ },
+ {
+  "value": "zamstats.me",
+  "type": "domain",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": true
+ },
+ {
+  "value": "zrheblirsy.me",
+  "type": "domain",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": true
+ },
+ {
+  "value": "mega.nz.Figure",
+  "type": "domain",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": false
+ },
+ {
+  "value": "DiaoYu.exe.The",
+  "type": "domain",
+  "regex": 0.7,
+  "llm": 1.0,
+  "fused": 0.28,
+  "correct": false
+ },
+ {
+  "value": "Anquanke.Tooling",
+  "type": "domain",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": false
+ },
+ {
+  "value": "Engine.This",
+  "type": "domain",
+  "regex": 0.7,
+  "llm": 1.0,
+  "fused": 0.28,
+  "correct": false
+ },
+ {
+  "value": "msonline.help",
+  "type": "domain",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": true
+ },
+ {
+  "value": "pickupweb.me",
+  "type": "domain",
+  "regex": 0.7,
+  "llm": 0.9,
+  "fused": 0.34,
+  "correct": true
+ },
+ {
+  "value": "pr0fu5a.me",
+  "type": "domain",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.85,
+  "correct": true
+ },
+ {
+  "value": "q74vn.live",
+  "type": "domain",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": true
+ },
+ {
+  "value": "servgate.me",
+  "type": "domain",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.85,
+  "correct": true
+ },
+ {
+  "value": "159.65.156.200",
+  "type": "ip",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": true
+ },
+ {
+  "value": "https://raw.githubusercontent.com/padeqav/WordPress/refs/heads/master/wp-includes/images/Linux.jpg",
+  "type": "url",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": true
+ },
+ {
+  "value": "as\n2025",
+  "type": "asn",
+  "regex": 0.7,
+  "llm": 1.0,
+  "fused": 0.28,
+  "correct": false
+ },
+ {
+  "value": "win.ini",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 0.95,
+  "fused": 0.29,
+  "correct": false
+ },
+ {
+  "value": "swsecret.Allow",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 0.95,
+  "fused": 0.29,
+  "correct": false
+ },
+ {
+  "value": "dog3rj.tech",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 0.95,
+  "fused": 0.29,
+  "correct": true
+ },
+ {
+  "value": "europa.eu",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 1.0,
+  "fused": 0.26,
+  "correct": false
+ },
+ {
+  "value": "Project.This",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 0.95,
+  "fused": 0.29,
+  "correct": false
+ },
+ {
+  "value": "pic1.png.Reviewing",
+  "type": "domain",
+  "regex": 0.6,
+  "llm": 1.0,
+  "fused": 0.24,
+  "correct": false
+ },
+ {
+  "value": "159.203.164.101",
+  "type": "ip",
+  "regex": 0.6,
+  "llm": 0.95,
+  "fused": 0.27,
+  "correct": true
+ },
+ {
+  "value": "178.128.60.22",
+  "type": "ip",
+  "regex": 0.6,
+  "llm": 0.95,
+  "fused": 0.27,
+  "correct": true
+ },
+ {
+  "value": "178.128.109.37",
+  "type": "ip",
+  "regex": 0.6,
+  "llm": 0.95,
+  "fused": 0.27,
+  "correct": true
+ },
+ {
+  "value": "188.127.251.171",
+  "type": "ip",
+  "regex": 0.6,
+  "llm": 0.95,
+  "fused": 0.27,
+  "correct": true
+ },
+ {
+  "value": "188.166.210.146",
+  "type": "ip",
+  "regex": 0.6,
+  "llm": 0.95,
+  "fused": 0.27,
+  "correct": true
+ },
+ {
+  "value": "208.85.21.30",
+  "type": "ip",
+  "regex": 0.6,
+  "llm": 0.95,
+  "fused": 0.27,
+  "correct": true
+ },
+ {
+  "value": "Baidu.It",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.25,
+  "correct": false
+ },
+ {
+  "value": "swsecret.This",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.25,
+  "correct": false
+ },
+ {
+  "value": "gouvn.me",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.25,
+  "correct": true
+ },
+ {
+  "value": "888910.xyz.zamstats.me",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.9,
+  "fused": 0.28,
+  "correct": false
+ },
+ {
+  "value": "gala.Shortly",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.25,
+  "correct": false
+ },
+ {
+  "value": "abwxjp5.me",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.79,
+  "correct": true
+ },
+ {
+  "value": "brackusi0n.live",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.79,
+  "correct": true
+ },
+ {
+  "value": "emezonhe.me",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.85,
+  "fused": 0.73,
+  "correct": true
+ },
+ {
+  "value": "+82.080.467.8774",
+  "type": "phone_number",
+  "regex": 0.5,
+  "llm": 0.95,
+  "fused": 0.23,
+  "correct": false
+ },
+ {
+  "value": "+1 (866) 486-4842",
+  "type": "phone_number",
+  "regex": 0.4,
+  "llm": 0.95,
+  "fused": 0.19,
+  "correct": false
+ },
+ {
+  "value": "42.Threat",
+  "type": "domain",
+  "regex": 0.75,
+  "llm": 1.0,
+  "fused": 0.3,
+  "correct": false
+ },
+ {
+  "value": "tactics.Unit",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 1.0,
+  "fused": 0.26,
+  "correct": false
+ },
+ {
+  "value": "CVE-2025-0921",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.43,
+  "correct": true
+ },
+ {
+  "value": "CVE-2024-7587",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.97,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-1731",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": false
+ },
+ {
+  "value": "CVE-2026-1281",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": false
+ },
+ {
+  "value": "CVE-2026-1340",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": false
+ },
+ {
+  "value": "CVE-2025-14847",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.43,
+  "correct": false
+ },
+ {
+  "value": "CVE-2025-23304",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": false
+ },
+ {
+  "value": "CVE-2026-22584",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": false
+ },
+ {
+  "value": "CVE-2025-55182",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": false
+ },
+ {
+  "value": "CVE-2025-66478",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": false
+ },
+ {
+  "value": "CVE-2025-21042",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": false
+ },
+ {
+  "value": "CVE-2025-59287",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.43,
+  "correct": false
+ },
+ {
+  "value": "Local\\Temp",
+  "type": "mutex",
+  "regex": 0.8,
+  "llm": 0.95,
+  "fused": 0.35,
+  "correct": false
+ },
+ {
+  "value": "Alliance.Additional",
+  "type": "domain",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": false
+ },
+ {
+  "value": "42.Threat",
+  "type": "domain",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": false
+ },
+ {
+  "value": "team.Related",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 0.95,
+  "fused": 0.29,
+  "correct": false
+ },
+ {
+  "value": "PagerCfg.exe.To",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 0.95,
+  "fused": 0.29,
+  "correct": false
+ },
+ {
+  "value": "IcoSetup64.ini",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 0.95,
+  "fused": 0.29,
+  "correct": false
+ },
+ {
+  "value": "log.tx",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 0.95,
+  "fused": 0.29,
+  "correct": false
+ },
+ {
+  "value": "cng.sys",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 0.95,
+  "fused": 0.29,
+  "correct": false
+ },
+ {
+  "value": "drivers.If",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 1.0,
+  "fused": 0.26,
+  "correct": false
+ },
+ {
+  "value": "cng.sys.However",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 1.0,
+  "fused": 0.26,
+  "correct": false
+ },
+ {
+  "value": "issue.If",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 1.0,
+  "fused": 0.22,
+  "correct": false
+ },
+ {
+  "value": "ICONICS.The",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 1.0,
+  "fused": 0.22,
+  "correct": false
+ },
+ {
+  "value": "+82.080.467.8774",
+  "type": "phone_number",
+  "regex": 0.5,
+  "llm": 0.95,
+  "fused": 0.23,
+  "correct": false
+ },
+ {
+  "value": "866.486.4842",
+  "type": "phone_number",
+  "regex": 0.4,
+  "llm": 0.95,
+  "fused": 0.19,
+  "correct": false
+ },
+ {
+  "value": "legitimacy.This",
+  "type": "domain",
+  "regex": 0.7,
+  "llm": 1.0,
+  "fused": 0.28,
+  "correct": false
+ },
+ {
+  "value": "42.Threat",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 1.0,
+  "fused": 0.26,
+  "correct": false
+ },
+ {
+  "value": "truces.It",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 0.95,
+  "fused": 0.29,
+  "correct": false
+ },
+ {
+  "value": "nations.From",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.25,
+  "correct": false
+ },
+ {
+  "value": "stage.Russia",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.25,
+  "correct": false
+ },
+ {
+  "value": "42.Threat",
+  "type": "domain",
+  "regex": 0.75,
+  "llm": 1.0,
+  "fused": 0.3,
+  "correct": false
+ },
+ {
+  "value": "team.Related",
+  "type": "domain",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": false
+ },
+ {
+  "value": "campaigns.Motivated",
+  "type": "domain",
+  "regex": 0.75,
+  "llm": 1.0,
+  "fused": 0.3,
+  "correct": false
+ },
+ {
+  "value": "LogoKit.The",
+  "type": "domain",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": false
+ },
+ {
+  "value": "EtherHiding.In",
+  "type": "domain",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": false
+ },
+ {
+  "value": "Alliance.Additional",
+  "type": "domain",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": false
+ },
+ {
+  "value": "Attack.NET",
+  "type": "domain",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": false
+ },
+ {
+  "value": "+82.080.467.8774",
+  "type": "phone_number",
+  "regex": 0.5,
+  "llm": 0.95,
+  "fused": 0.23,
+  "correct": false
+ },
+ {
+  "value": "+1 (866) 486-4842",
+  "type": "phone_number",
+  "regex": 0.4,
+  "llm": 0.95,
+  "fused": 0.19,
+  "correct": false
+ },
+ {
+  "value": "1.888.512.8906",
+  "type": "phone_number",
+  "regex": 0.4,
+  "llm": 0.95,
+  "fused": 0.19,
+  "correct": false
+ },
+ {
+  "value": "https://www.crowdstrike.com/en-us/platform/next-gen-identity-security/falcon-id/",
+  "type": "url",
+  "regex": 0.3,
+  "llm": 1.0,
+  "fused": 0.12,
+  "correct": false
+ },
+ {
+  "value": "https://www.ic3.gov/psa/2025/psa250226",
+  "type": "url",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": false
+ },
+ {
+  "value": "https://www.elliptic.co/blog/bybit-hack-largest-in-history",
+  "type": "url",
+  "regex": 0.8,
+  "llm": 1.0,
+  "fused": 0.32,
+  "correct": false
+ },
+ {
+  "value": "1.888.512.8906",
+  "type": "phone_number",
+  "regex": 0.5,
+  "llm": 0.95,
+  "fused": 0.23,
+  "correct": false
+ },
+ {
+  "value": "examplecorp.com",
+  "type": "domain",
+  "regex": 0.75,
+  "llm": 1.0,
+  "fused": 0.3,
+  "correct": false
+ },
+ {
+  "value": "examp1ecorp.com",
+  "type": "domain",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": true
+ },
+ {
+  "value": "example-corp.com",
+  "type": "domain",
+  "regex": 0.7,
+  "llm": 1.0,
+  "fused": 0.28,
+  "correct": true
+ },
+ {
+  "value": "examplecorp-support.com",
+  "type": "domain",
+  "regex": 0.7,
+  "llm": 1.0,
+  "fused": 0.28,
+  "correct": true
+ },
+ {
+  "value": "support@examp1ecorp.com",
+  "type": "email",
+  "regex": 0.6,
+  "llm": 0.95,
+  "fused": 0.27,
+  "correct": true
+ },
+ {
+  "value": "1.888.512.8906",
+  "type": "phone_number",
+  "regex": 0.4,
+  "llm": 0.95,
+  "fused": 0.19,
+  "correct": false
+ },
+ {
+  "value": "AIDR.Check",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.25,
+  "correct": false
+ },
+ {
+  "value": "OpenClaw.Find",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.25,
+  "correct": false
+ },
+ {
+  "value": "Methods.Tweet",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.25,
+  "correct": false
+ },
+ {
+  "value": "1.888.512.8906",
+  "type": "phone_number",
+  "regex": 0.4,
+  "llm": 0.95,
+  "fused": 0.19,
+  "correct": false
+ },
+ {
+  "value": "Explained.Read",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 1.0,
+  "fused": 0.26,
+  "correct": false
+ },
+ {
+  "value": "Applications.Dive",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.25,
+  "correct": false
+ },
+ {
+  "value": "demo.Tweet",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 1.0,
+  "fused": 0.22,
+  "correct": false
+ },
+ {
+  "value": "1.888.512.8906",
+  "type": "phone_number",
+  "regex": 0.4,
+  "llm": 0.95,
+  "fused": 0.19,
+  "correct": false
+ },
+ {
+  "value": "SGNL.This",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 1.0,
+  "fused": 0.22,
+  "correct": false
+ },
+ {
+  "value": "report.Explore",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.25,
+  "correct": false
+ },
+ {
+  "value": "Security.GARTNER",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 1.0,
+  "fused": 0.22,
+  "correct": false
+ },
+ {
+  "value": "1.888.512.8906",
+  "type": "phone_number",
+  "regex": 0.4,
+  "llm": 0.95,
+  "fused": 0.19,
+  "correct": false
+ },
+ {
+  "value": "page.Tweet",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 1.0,
+  "fused": 0.26,
+  "correct": false
+ },
+ {
+  "value": "page.Ready",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 1.0,
+  "fused": 0.22,
+  "correct": false
+ },
+ {
+  "value": "1.888.512.8906",
+  "type": "phone_number",
+  "regex": 0.4,
+  "llm": 0.95,
+  "fused": 0.19,
+  "correct": false
+ },
+ {
+  "value": "1.888.512.8906",
+  "type": "phone_number",
+  "regex": 0.4,
+  "llm": 0.95,
+  "fused": 0.19,
+  "correct": false
+ },
+ {
+  "value": "CVE-2026-21533",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-21513",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-21510",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-21514",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-21519",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-21525",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-24300",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": false
+ },
+ {
+  "value": "CVE-2026-24302",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": false
+ },
+ {
+  "value": "CVE-2026-21532",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": false
+ },
+ {
+  "value": "CVE-2026-21522",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": false
+ },
+ {
+  "value": "CVE-2026-23655",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": false
+ },
+ {
+  "value": "7.8.Microsoft",
+  "type": "domain",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": false
+ },
+ {
+  "value": "CSA-260174.Table",
+  "type": "domain",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": false
+ },
+ {
+  "value": "8.8.Microsoft",
+  "type": "domain",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": false
+ },
+ {
+  "value": "6.2.Microsoft",
+  "type": "domain",
+  "regex": 0.7,
+  "llm": 1.0,
+  "fused": 0.28,
+  "correct": false
+ },
+ {
+  "value": "9.8.The",
+  "type": "domain",
+  "regex": 0.7,
+  "llm": 1.0,
+  "fused": 0.28,
+  "correct": false
+ },
+ {
+  "value": "8.6.The",
+  "type": "domain",
+  "regex": 0.7,
+  "llm": 1.0,
+  "fused": 0.28,
+  "correct": false
+ },
+ {
+  "value": "8.2.The",
+  "type": "domain",
+  "regex": 0.7,
+  "llm": 1.0,
+  "fused": 0.28,
+  "correct": false
+ },
+ {
+  "value": "6.7.This",
+  "type": "domain",
+  "regex": 0.7,
+  "llm": 1.0,
+  "fused": 0.28,
+  "correct": false
+ },
+ {
+  "value": "6.5.This",
+  "type": "domain",
+  "regex": 0.7,
+  "llm": 1.0,
+  "fused": 0.28,
+  "correct": false
+ },
+ {
+  "value": "article.Additional",
+  "type": "domain",
+  "regex": 0.7,
+  "llm": 1.0,
+  "fused": 0.28,
+  "correct": false
+ },
+ {
+  "value": "here.About",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 1.0,
+  "fused": 0.26,
+  "correct": false
+ },
+ {
+  "value": "action.Learn",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 1.0,
+  "fused": 0.22,
+  "correct": false
+ },
+ {
+  "value": "here.Learn",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 1.0,
+  "fused": 0.22,
+  "correct": false
+ },
+ {
+  "value": "PreventTM.Tweet",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.25,
+  "correct": false
+ },
+ {
+  "value": "1.888.512.8906",
+  "type": "phone_number",
+  "regex": 0.5,
+  "llm": 1.0,
+  "fused": 0.2,
+  "correct": false
+ },
+ {
+  "value": "report.Download",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 0.95,
+  "fused": 0.29,
+  "correct": false
+ },
+ {
+  "value": "Hub.Gartner",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 0.95,
+  "fused": 0.29,
+  "correct": false
+ },
+ {
+  "value": "Management.Learn",
+  "type": "domain",
+  "regex": 0.55,
+  "llm": 0.95,
+  "fused": 0.25,
+  "correct": false
+ },
+ {
+  "value": "1.888.512.8906",
+  "type": "phone_number",
+  "regex": 0.4,
+  "llm": 0.95,
+  "fused": 0.19,
+  "correct": false
+ },
+ {
+  "value": "CVE-2025-8088",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-25851",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-20792",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-25711",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-20791",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "https://chargemap.com/en-us/support",
+  "type": "url",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": false
+ },
+ {
+  "value": "CVE-2025-1924",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 0.95,
+  "fused": 0.39,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-48019",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 0.95,
+  "fused": 0.39,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-48020",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 0.95,
+  "fused": 0.39,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-48021",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 0.95,
+  "fused": 0.39,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-48022",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 0.95,
+  "fused": 0.39,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-48023",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 0.95,
+  "fused": 0.39,
+  "correct": true
+ },
+ {
+  "value": "https://contact.yokogawa.com/cs/gw?c-id=000498",
+  "type": "url",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": false
+ },
+ {
+  "value": "https://web-material3.yokogawa.com/1/39281/files/YSAR-26-0002-E.pdf",
+  "type": "url",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": false
+ },
+ {
+  "value": "CVE-2026-1241",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-25085",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-21718",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-24663",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-21389",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-25111",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-20742",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-24517",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-25195",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-20910",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-24689",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-25109",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-20902",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-24695",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-25105",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-24452",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-23702",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-25721",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-20764",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-25196",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-25037",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-22877",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-20797",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-3037",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-27772",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-24445",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-26290",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-25774",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "https://www.ev.energy/en-us",
+  "type": "url",
+  "regex": 0.7,
+  "llm": 1.0,
+  "fused": 0.28,
+  "correct": false
+ },
+ {
+  "value": "CVE-2026-27028",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-26305",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 0.95,
+  "fused": 0.39,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-27647",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-22878",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "https://www.mobility46.se/en/contact-us",
+  "type": "url",
+  "regex": 0.7,
+  "llm": 1.0,
+  "fused": 0.28,
+  "correct": false
+ },
+ {
+  "value": "CVE-2026-20781",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-25114",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-27652",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 0.95,
+  "fused": 0.39,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-20733",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "cloudcharge.se",
+  "type": "domain",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": false
+ },
+ {
+  "value": "https://cloudcharge.tech/support/contact/",
+  "type": "url",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": false
+ },
+ {
+  "value": "CVE-2026-24731",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-25945",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-20895",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-22890",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "https://ev2go.io/",
+  "type": "url",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": false
+ },
+ {
+  "value": "CVE-2026-27767",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-25113",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-25778",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-27773",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "https://swtchenergy.com/contact/",
+  "type": "url",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": false
+ },
+ {
+  "value": "CVE-2026-21654",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-21656",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-21657",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 0.95,
+  "fused": 0.39,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-21658",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-21659",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-21660",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "https://frickcontrolsblob.file.core.windows.net/frickweb1/Quantum-HD-Unity/Quantum_HD_Unity_Software_Update_Procedure.pdf?sv=2018-03-28&si=frickweb1-174C1294FA7&sr=f&sig=us0dhk6IWmCvmDvBs02yJvC%2BjnzbxqZmb4QEpVVDkxY%3D",
+  "type": "url",
+  "regex": 0.75,
+  "llm": 0.95,
+  "fused": 0.33,
+  "correct": false
+ },
+ {
+  "value": "CVE-2026-20127",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": true
+ },
+ {
+  "value": "CVE-2022-20775",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 1.0,
+  "correct": true
+ },
+ {
+  "value": "CVE-2022-20775",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 1.0,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-20127",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-29628",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 0.95,
+  "fused": 0.39,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-29629",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 0.95,
+  "fused": 0.39,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-29631",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-1242",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 0.95,
+  "fused": 0.39,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-1227",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-1226",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-25108",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-21410",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-22553",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "insat.ru",
+  "type": "domain",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": false
+ },
+ {
+  "value": "info@insat.ru",
+  "type": "email",
+  "regex": 0.5,
+  "llm": 0.95,
+  "fused": 0.23,
+  "correct": false
+ },
+ {
+  "value": "scada@insat.ru",
+  "type": "email",
+  "regex": 0.5,
+  "llm": 0.95,
+  "fused": 0.23,
+  "correct": false
+ },
+ {
+  "value": "CVE-2025-49113",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.43,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-68461",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.43,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-24790",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "https://www.cisa.gov/notification",
+  "type": "url",
+  "regex": 0.3,
+  "llm": 1.0,
+  "fused": 0.12,
+  "correct": false
+ },
+ {
+  "value": "https://www.cisa.gov/privacy-policy",
+  "type": "url",
+  "regex": 0.3,
+  "llm": 1.0,
+  "fused": 0.12,
+  "correct": false
+ },
+ {
+  "value": "CVE-2026-20761",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-22885",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "http://https//enoceanwiki.atlassian.net/wiki/spaces/IEC/pages/5275672/SmartServer+Release+Notes#Current-Stable-Release",
+  "type": "url",
+  "regex": 0.7,
+  "llm": 1.0,
+  "fused": 0.28,
+  "correct": false
+ },
+ {
+  "value": "https://enoceanwiki.atlassian.net/wiki/spaces/IEC/pages/17.43.128.41/Enhancing+Security",
+  "type": "url",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": false
+ },
+ {
+  "value": "17.43.128.41",
+  "type": "ip",
+  "regex": 0.6,
+  "llm": 0.95,
+  "fused": 0.27,
+  "correct": false
+ },
+ {
+  "value": "CVE-2026-25715",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-24455",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-26049",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-26048",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "3.1.1.0",
+  "type": "ip",
+  "regex": 0.6,
+  "llm": 1.0,
+  "fused": 0.24,
+  "correct": false
+ },
+ {
+  "value": "CVE-2025-15577",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.43,
+  "correct": true
+ },
+ {
+  "value": "https://www.valmet.com/contact/",
+  "type": "url",
+  "regex": 0.7,
+  "llm": 1.0,
+  "fused": 0.28,
+  "correct": false
+ },
+ {
+  "value": "https://www.valmet.com/company/innovation/advisories/CVE-2025-15577/",
+  "type": "url",
+  "regex": 0.7,
+  "llm": 0.95,
+  "fused": 0.31,
+  "correct": false
+ },
+ {
+  "value": "https://www.cisa.gov/notification",
+  "type": "url",
+  "regex": 0.3,
+  "llm": 1.0,
+  "fused": 0.12,
+  "correct": false
+ },
+ {
+  "value": "https://www.cisa.gov/privacy-policy",
+  "type": "url",
+  "regex": 0.3,
+  "llm": 1.0,
+  "fused": 0.12,
+  "correct": false
+ },
+ {
+  "value": "CVE-2021-22175",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.97,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-22769",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": true
+ },
+ {
+  "value": "CVE-2008-0015",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 1.0,
+  "correct": true
+ },
+ {
+  "value": "CVE-2020-7796",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 1.0,
+  "correct": true
+ },
+ {
+  "value": "CVE-2024-7694",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.97,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-2441",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-23715",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-23716",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-23717",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-23718",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-23719",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-23720",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "16.110.31.11",
+  "type": "ip",
+  "regex": 0.6,
+  "llm": 0.95,
+  "fused": 0.27,
+  "correct": false
+ },
+ {
+  "value": "17.58.157.85",
+  "type": "ip",
+  "regex": 0.6,
+  "llm": 0.95,
+  "fused": 0.27,
+  "correct": false
+ },
+ {
+  "value": "https://support.sw.siemens.com/product/16.110.31.11/",
+  "type": "url",
+  "regex": 0.3,
+  "llm": 0.95,
+  "fused": 0.15,
+  "correct": false
+ },
+ {
+  "value": "https://support.sw.siemens.com/product/17.58.157.85/",
+  "type": "url",
+  "regex": 0.3,
+  "llm": 0.95,
+  "fused": 0.15,
+  "correct": false
+ },
+ {
+  "value": "CVE-2026-1762",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-1763",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "https://www.gevernova.com/grid-solutions/resources?prod=urfamily&type=7",
+  "type": "url",
+  "regex": 0.3,
+  "llm": 0.95,
+  "fused": 0.15,
+  "correct": false
+ },
+ {
+  "value": "CVE-2026-1361",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "7.2.0.0",
+  "type": "ip",
+  "regex": 0.6,
+  "llm": 1.0,
+  "fused": 0.24,
+  "correct": false
+ },
+ {
+  "value": "https://downloadcenter.deltaww.com/en-US/DownloadCenter?v=1&q=asda-soft&sort_expr=cdate&sort_dir=DESC",
+  "type": "url",
+  "regex": 0.4,
+  "llm": 0.95,
+  "fused": 0.19,
+  "correct": false
+ },
+ {
+  "value": "https://www.deltaww.com/en-US/service-support/product-cybersecurity/advisory",
+  "type": "url",
+  "regex": 0.3,
+  "llm": 0.95,
+  "fused": 0.15,
+  "correct": false
+ },
+ {
+  "value": "CVE-2026-1670",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": true
+ },
+ {
+  "value": "https://www.honeywell.com/us/en/contact/support",
+  "type": "url",
+  "regex": 0.3,
+  "llm": 1.0,
+  "fused": 0.12,
+  "correct": false
+ },
+ {
+  "value": "https://www.cisa.gov/notification",
+  "type": "url",
+  "regex": 0.3,
+  "llm": 1.0,
+  "fused": 0.12,
+  "correct": false
+ },
+ {
+  "value": "https://www.cisa.gov/privacy-policy",
+  "type": "url",
+  "regex": 0.3,
+  "llm": 1.0,
+  "fused": 0.12,
+  "correct": false
+ },
+ {
+  "value": "CVE-2026-1731",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-39860",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-39864",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-39865",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-59375",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.43,
+  "correct": true
+ },
+ {
+  "value": "CVE-2022-48174",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.96,
+  "correct": true
+ },
+ {
+  "value": "CVE-2023-7256",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 0.95,
+  "fused": 0.93,
+  "correct": true
+ },
+ {
+  "value": "CVE-2023-39810",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.96,
+  "correct": true
+ },
+ {
+  "value": "CVE-2023-42363",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.96,
+  "correct": true
+ },
+ {
+  "value": "CVE-2023-42364",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.96,
+  "correct": true
+ },
+ {
+  "value": "CVE-2023-42365",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.96,
+  "correct": true
+ },
+ {
+  "value": "CVE-2023-42366",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.96,
+  "correct": true
+ },
+ {
+  "value": "CVE-2024-6197",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.96,
+  "correct": true
+ },
+ {
+  "value": "CVE-2024-6874",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 0.95,
+  "fused": 0.93,
+  "correct": true
+ },
+ {
+  "value": "CVE-2024-7264",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 0.95,
+  "fused": 0.93,
+  "correct": true
+ },
+ {
+  "value": "CVE-2024-8006",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 0.95,
+  "fused": 0.93,
+  "correct": true
+ },
+ {
+  "value": "CVE-2024-8096",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 0.95,
+  "fused": 0.93,
+  "correct": true
+ },
+ {
+  "value": "CVE-2024-9681",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 0.95,
+  "fused": 0.93,
+  "correct": true
+ },
+ {
+  "value": "CVE-2024-11053",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.96,
+  "correct": true
+ },
+ {
+  "value": "CVE-2024-12718",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.96,
+  "correct": true
+ },
+ {
+  "value": "CVE-2024-41996",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.96,
+  "correct": true
+ },
+ {
+  "value": "CVE-2024-47619",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 0.95,
+  "fused": 0.93,
+  "correct": true
+ },
+ {
+  "value": "CVE-2024-52533",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.96,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-0167",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-0665",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-0725",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 0.95,
+  "fused": 0.39,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-1390",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 0.95,
+  "fused": 0.39,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-3360",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 0.95,
+  "fused": 0.39,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-4138",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-4330",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-4373",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 0.95,
+  "fused": 0.39,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-4435",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-4516",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 0.95,
+  "fused": 0.39,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-4517",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 0.95,
+  "fused": 0.39,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-6141",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-9086",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-9230",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-9231",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-9232",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-10148",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-27587",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-32433",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-38084",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-38085",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-38086",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-38345",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-38350",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-38498",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-39839",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-39841",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-39846",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-39853",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-40936",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.43,
+  "correct": true
+ },
+ {
+  "value": "https://www.siemens.com/cert/operational-guidelines-industrial-security",
+  "type": "url",
+  "regex": 0.4,
+  "llm": 1.0,
+  "fused": 0.16,
+  "correct": false
+ },
+ {
+  "value": "CVE-2022-20775",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 1.0,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-20127",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-25108",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-49113",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-68461",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": true
+ },
+ {
+  "value": "CVE-2021-22175",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 1.0,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-22769",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": true
+ },
+ {
+  "value": "CVE-2020-7796",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 1.0,
+  "correct": true
+ },
+ {
+  "value": "CVE-2024-7694",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.97,
+  "correct": true
+ },
+ {
+  "value": "CVE-2008-0015",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 1.0,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-2441",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-1731",
+  "type": "cve",
+  "regex": 0.9,
+  "llm": 1.0,
+  "fused": 0.36,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-20700",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": true
+ },
+ {
+  "value": "CVE-2024-43468",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 1.0,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-15556",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.43,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-40536",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.43,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-21513",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-21525",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-21510",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": true
+ },
+ {
+  "value": "CVE-2026-21533",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": true
+ },
+ {
+  "value": "CVE-2025-55182",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 1.0,
+  "fused": 0.4,
+  "correct": true
+ },
+ {
+  "value": "UKR.NET",
+  "type": "domain",
+  "regex": 0.65,
+  "llm": 0.95,
+  "fused": 0.29,
+  "correct": false
+ },
+ {
+  "value": "Booking.com",
+  "type": "domain",
+  "regex": 0.7,
+  "llm": 1.0,
+  "fused": 0.28,
+  "correct": false
+ },
+ {
+  "value": "CVE-2025-0282",
+  "type": "cve",
+  "regex": 1.0,
+  "llm": 0.95,
+  "fused": 0.43,
+  "correct": true
+ }
+]

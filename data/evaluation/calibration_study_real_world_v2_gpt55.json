@@ -1,0 +1,413 @@
+{
+  "n_predictions": 651,
+  "n_llm_verified": 651,
+  "fused_temperature": 1.5993,
+  "results": {
+    "Regex only": {
+      "n_samples": 651,
+      "brier_score": 0.2408,
+      "ece": 0.1928,
+      "mce": 0.4,
+      "avg_confidence": 0.7581,
+      "accuracy": 0.5653,
+      "overconfidence": 0.1928,
+      "bins": [
+        {
+          "range": "[0.0,0.1)",
+          "count": 0,
+          "mean_confidence": 0.0,
+          "accuracy": 0.0,
+          "gap": 0.0
+        },
+        {
+          "range": "[0.1,0.2)",
+          "count": 0,
+          "mean_confidence": 0.0,
+          "accuracy": 0.0,
+          "gap": 0.0
+        },
+        {
+          "range": "[0.2,0.3)",
+          "count": 0,
+          "mean_confidence": 0.0,
+          "accuracy": 0.0,
+          "gap": 0.0
+        },
+        {
+          "range": "[0.3,0.4)",
+          "count": 12,
+          "mean_confidence": 0.3,
+          "accuracy": 0.0,
+          "gap": 0.3
+        },
+        {
+          "range": "[0.4,0.5)",
+          "count": 24,
+          "mean_confidence": 0.4,
+          "accuracy": 0.0,
+          "gap": 0.4
+        },
+        {
+          "range": "[0.5,0.6)",
+          "count": 85,
+          "mean_confidence": 0.5447,
+          "accuracy": 0.3647,
+          "gap": 0.18
+        },
+        {
+          "range": "[0.6,0.7)",
+          "count": 91,
+          "mean_confidence": 0.6258,
+          "accuracy": 0.4066,
+          "gap": 0.2192
+        },
+        {
+          "range": "[0.7,0.8)",
+          "count": 145,
+          "mean_confidence": 0.7207,
+          "accuracy": 0.4345,
+          "gap": 0.2862
+        },
+        {
+          "range": "[0.8,0.9)",
+          "count": 43,
+          "mean_confidence": 0.8233,
+          "accuracy": 0.6279,
+          "gap": 0.1953
+        },
+        {
+          "range": "[0.9,1.0)",
+          "count": 251,
+          "mean_confidence": 0.9448,
+          "accuracy": 0.8367,
+          "gap": 0.1082
+        }
+      ]
+    },
+    "Raw LLM": {
+      "n_samples": 651,
+      "brier_score": 0.4076,
+      "ece": 0.4044,
+      "mce": 0.5,
+      "avg_confidence": 0.9683,
+      "accuracy": 0.5653,
+      "overconfidence": 0.403,
+      "bins": [
+        {
+          "range": "[0.0,0.1)",
+          "count": 0,
+          "mean_confidence": 0.0,
+          "accuracy": 0.0,
+          "gap": 0.0
+        },
+        {
+          "range": "[0.1,0.2)",
+          "count": 0,
+          "mean_confidence": 0.0,
+          "accuracy": 0.0,
+          "gap": 0.0
+        },
+        {
+          "range": "[0.2,0.3)",
+          "count": 0,
+          "mean_confidence": 0.0,
+          "accuracy": 0.0,
+          "gap": 0.0
+        },
+        {
+          "range": "[0.3,0.4)",
+          "count": 0,
+          "mean_confidence": 0.0,
+          "accuracy": 0.0,
+          "gap": 0.0
+        },
+        {
+          "range": "[0.4,0.5)",
+          "count": 0,
+          "mean_confidence": 0.0,
+          "accuracy": 0.0,
+          "gap": 0.0
+        },
+        {
+          "range": "[0.5,0.6)",
+          "count": 3,
+          "mean_confidence": 0.5,
+          "accuracy": 0.0,
+          "gap": 0.5
+        },
+        {
+          "range": "[0.6,0.7)",
+          "count": 0,
+          "mean_confidence": 0.0,
+          "accuracy": 0.0,
+          "gap": 0.0
+        },
+        {
+          "range": "[0.7,0.8)",
+          "count": 0,
+          "mean_confidence": 0.0,
+          "accuracy": 0.0,
+          "gap": 0.0
+        },
+        {
+          "range": "[0.8,0.9)",
+          "count": 3,
+          "mean_confidence": 0.85,
+          "accuracy": 1.0,
+          "gap": 0.15
+        },
+        {
+          "range": "[0.9,1.0)",
+          "count": 645,
+          "mean_confidence": 0.971,
+          "accuracy": 0.5659,
+          "gap": 0.4051
+        }
+      ]
+    },
+    "Fused (0.4/0.6)": {
+      "n_samples": 651,
+      "brier_score": 0.2343,
+      "ece": 0.1971,
+      "mce": 0.64,
+      "avg_confidence": 0.3876,
+      "accuracy": 0.5653,
+      "overconfidence": -0.1777,
+      "bins": [
+        {
+          "range": "[0.0,0.1)",
+          "count": 0,
+          "mean_confidence": 0.0,
+          "accuracy": 0.0,
+          "gap": 0.0
+        },
+        {
+          "range": "[0.1,0.2)",
+          "count": 34,
+          "mean_confidence": 0.1671,
+          "accuracy": 0.0,
+          "gap": 0.1671
+        },
+        {
+          "range": "[0.2,0.3)",
+          "count": 177,
+          "mean_confidence": 0.2617,
+          "accuracy": 0.2881,
+          "gap": 0.0264
+        },
+        {
+          "range": "[0.3,0.4)",
+          "count": 266,
+          "mean_confidence": 0.3448,
+          "accuracy": 0.688,
+          "gap": 0.3431
+        },
+        {
+          "range": "[0.4,0.5)",
+          "count": 96,
+          "mean_confidence": 0.4103,
+          "accuracy": 0.6146,
+          "gap": 0.2043
+        },
+        {
+          "range": "[0.5,0.6)",
+          "count": 0,
+          "mean_confidence": 0.0,
+          "accuracy": 0.0,
+          "gap": 0.0
+        },
+        {
+          "range": "[0.6,0.7)",
+          "count": 1,
+          "mean_confidence": 0.64,
+          "accuracy": 0.0,
+          "gap": 0.64
+        },
+        {
+          "range": "[0.7,0.8)",
+          "count": 18,
+          "mean_confidence": 0.7833,
+          "accuracy": 1.0,
+          "gap": 0.2167
+        },
+        {
+          "range": "[0.8,0.9)",
+          "count": 23,
+          "mean_confidence": 0.8552,
+          "accuracy": 0.913,
+          "gap": 0.0578
+        },
+        {
+          "range": "[0.9,1.0)",
+          "count": 36,
+          "mean_confidence": 0.9667,
+          "accuracy": 1.0,
+          "gap": 0.0333
+        }
+      ]
+    },
+    "Fused + Temperature*": {
+      "n_samples": 651,
+      "brier_score": 0.2253,
+      "ece": 0.1883,
+      "mce": 0.5896,
+      "avg_confidence": 0.4331,
+      "accuracy": 0.5653,
+      "overconfidence": -0.1322,
+      "bins": [
+        {
+          "range": "[0.0,0.1)",
+          "count": 0,
+          "mean_confidence": 0.0,
+          "accuracy": 0.0,
+          "gap": 0.0
+        },
+        {
+          "range": "[0.1,0.2)",
+          "count": 0,
+          "mean_confidence": 0.0,
+          "accuracy": 0.0,
+          "gap": 0.0
+        },
+        {
+          "range": "[0.2,0.3)",
+          "count": 31,
+          "mean_confidence": 0.2636,
+          "accuracy": 0.0,
+          "gap": 0.2636
+        },
+        {
+          "range": "[0.3,0.4)",
+          "count": 292,
+          "mean_confidence": 0.3579,
+          "accuracy": 0.3253,
+          "gap": 0.0326
+        },
+        {
+          "range": "[0.4,0.5)",
+          "count": 250,
+          "mean_confidence": 0.4252,
+          "accuracy": 0.792,
+          "gap": 0.3668
+        },
+        {
+          "range": "[0.5,0.6)",
+          "count": 1,
+          "mean_confidence": 0.5896,
+          "accuracy": 0.0,
+          "gap": 0.5896
+        },
+        {
+          "range": "[0.6,0.7)",
+          "count": 14,
+          "mean_confidence": 0.686,
+          "accuracy": 1.0,
+          "gap": 0.314
+        },
+        {
+          "range": "[0.7,0.8)",
+          "count": 27,
+          "mean_confidence": 0.7433,
+          "accuracy": 0.9259,
+          "gap": 0.1826
+        },
+        {
+          "range": "[0.8,0.9)",
+          "count": 24,
+          "mean_confidence": 0.8668,
+          "accuracy": 1.0,
+          "gap": 0.1332
+        },
+        {
+          "range": "[0.9,1.0)",
+          "count": 12,
+          "mean_confidence": 0.9919,
+          "accuracy": 1.0,
+          "gap": 0.0081
+        }
+      ]
+    },
+    "Fused + Isotonic*": {
+      "n_samples": 651,
+      "brier_score": 0.1596,
+      "ece": 0.0462,
+      "mce": 0.3512,
+      "avg_confidence": 0.5661,
+      "accuracy": 0.5653,
+      "overconfidence": 0.0008,
+      "bins": [
+        {
+          "range": "[0.0,0.1)",
+          "count": 60,
+          "mean_confidence": 0.0,
+          "accuracy": 0.0,
+          "gap": 0.0
+        },
+        {
+          "range": "[0.1,0.2)",
+          "count": 37,
+          "mean_confidence": 0.1725,
+          "accuracy": 0.2973,
+          "gap": 0.1248
+        },
+        {
+          "range": "[0.2,0.3)",
+          "count": 24,
+          "mean_confidence": 0.226,
+          "accuracy": 0.0417,
+          "gap": 0.1843
+        },
+        {
+          "range": "[0.3,0.4)",
+          "count": 113,
+          "mean_confidence": 0.3777,
+          "accuracy": 0.4071,
+          "gap": 0.0294
+        },
+        {
+          "range": "[0.4,0.5)",
+          "count": 86,
+          "mean_confidence": 0.4465,
+          "accuracy": 0.4302,
+          "gap": 0.0163
+        },
+        {
+          "range": "[0.5,0.6)",
+          "count": 6,
+          "mean_confidence": 0.5179,
+          "accuracy": 0.1667,
+          "gap": 0.3512
+        },
+        {
+          "range": "[0.6,0.7)",
+          "count": 0,
+          "mean_confidence": 0.0,
+          "accuracy": 0.0,
+          "gap": 0.0
+        },
+        {
+          "range": "[0.7,0.8)",
+          "count": 145,
+          "mean_confidence": 0.7872,
+          "accuracy": 0.8345,
+          "gap": 0.0473
+        },
+        {
+          "range": "[0.8,0.9)",
+          "count": 103,
+          "mean_confidence": 0.8078,
+          "accuracy": 0.7379,
+          "gap": 0.07
+        },
+        {
+          "range": "[0.9,1.0)",
+          "count": 77,
+          "mean_confidence": 0.9763,
+          "accuracy": 0.974,
+          "gap": 0.0022
+        }
+      ]
+    }
+  },
+  "dataset": "real_world_v2_gpt55"
+}

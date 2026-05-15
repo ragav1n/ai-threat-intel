@@ -28,12 +28,21 @@ from threat_intel_aggregator.evaluation.calibrators import (
 PRED_GLOB = "data/evaluation/calibration_predictions*.json"
 CALIBRATOR_PATH = "data/evaluation/fitted_calibrator.json"
 
+# real_world_v2 (qwen2.5:7b labels) is superseded by real_world_v2_gpt55 — the
+# SAME 651 extracted predictions re-judged against cleaner gpt-5.5 labels.
+# Pooling both would double-count those points with conflicting `correct`
+# values, so the legacy qwen cache is excluded from the production fit.
+SUPERSEDED = {"data/evaluation/calibration_predictions_real_world_v2.json"}
+
 
 def load_fused_predictions() -> list:
     """Pool fused (confidence, correct) pairs from every cached prediction file."""
     preds = []
     files = sorted(glob.glob(PRED_GLOB))
     for path in files:
+        if path in SUPERSEDED:
+            print(f"  {path}: skipped (superseded)")
+            continue
         with open(path) as f:
             rows = json.load(f)
         n = sum(1 for r in rows if r.get("fused") is not None)
