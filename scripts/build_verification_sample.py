@@ -32,7 +32,7 @@ sys.path.insert(0, REPO_ROOT)
 from threat_intel_aggregator.evaluation.datasets import load_samples
 from threat_intel_aggregator.feed_collection.ioc_deobfuscator import deobfuscate_text
 
-CONTEXT_PAD = 110
+CONTEXT_PAD = 180
 
 
 def _key(e):
