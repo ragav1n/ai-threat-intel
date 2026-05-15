@@ -20,6 +20,8 @@ data — use `kfold_calibration_eval()` for an honest out-of-fold estimate.
 """
 from __future__ import annotations
 
+import json
+import logging
 import math
 import random
 from typing import Callable, List, Sequence, Tuple
@@ -27,6 +29,8 @@ from typing import Callable, List, Sequence, Tuple
 from threat_intel_aggregator.evaluation.calibration import (
     CalibrationResult, Prediction, compute_calibration,
 )
+
+logger = logging.getLogger(__name__)
 
 _EPS = 1e-6
 
@@ -59,6 +63,9 @@ class IdentityCalibrator:
 
     def transform(self, confidences: Sequence[float]) -> List[float]:
         return [_clamp01(c) for c in confidences]
+
+    def to_dict(self) -> dict:
+        return {"name": self.name}
 
 
 # ── Temperature scaling ────────────────────────────────────
@@ -111,6 +118,10 @@ class TemperatureScaler:
     def transform(self, confidences: Sequence[float]) -> List[float]:
         t = self.temperature
         return [_clamp01(_sigmoid(_logit(_clamp01(c)) / t)) for c in confidences]
+
+    def to_dict(self) -> dict:
+        return {"name": self.name, "temperature": self.temperature,
+                "t_min": self.t_min, "t_max": self.t_max}
 
 
 # ── Isotonic regression ────────────────────────────────────
@@ -198,6 +209,9 @@ class IsotonicCalibrator:
                 out.append(_clamp01(y0 + frac * (y1 - y0)))
         return out
 
+    def to_dict(self) -> dict:
+        return {"name": self.name, "x": list(self._x), "y": list(self._y)}
+
 
 # Factory registry — name -> zero-arg constructor.
 CALIBRATORS: dict = {
@@ -205,6 +219,35 @@ CALIBRATORS: dict = {
     "temperature": TemperatureScaler,
     "isotonic": IsotonicCalibrator,
 }
+
+
+# ── persistence ────────────────────────────────────────────
+
+def calibrator_from_dict(d: dict):
+    """Reconstruct a fitted calibrator from its serialised dict."""
+    name = d.get("name", "identity")
+    if name == "temperature":
+        cal = TemperatureScaler(t_min=d.get("t_min", 0.05), t_max=d.get("t_max", 10.0))
+        cal.temperature = float(d.get("temperature", 1.0))
+        return cal
+    if name == "isotonic":
+        cal = IsotonicCalibrator()
+        cal._x = [float(x) for x in d.get("x", [])]
+        cal._y = [float(y) for y in d.get("y", [])]
+        return cal
+    return IdentityCalibrator()
+
+
+def save_calibrator(calibrator, path: str) -> None:
+    """Serialise a fitted calibrator to a JSON file."""
+    with open(path, "w") as f:
+        json.dump(calibrator.to_dict(), f, indent=1)
+
+
+def load_calibrator(path: str):
+    """Load a fitted calibrator from a JSON file."""
+    with open(path) as f:
+        return calibrator_from_dict(json.load(f))
 
 
 # ── Honest out-of-fold evaluation ──────────────────────────

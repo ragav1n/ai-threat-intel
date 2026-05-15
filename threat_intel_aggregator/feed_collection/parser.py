@@ -179,12 +179,15 @@ def normalize_and_store_iocs(
         llm_verified = llm_data.get("llm_verified", False)
         llm_reasoning = llm_data.get("llm_reasoning", "")
         
-        # Fuse confidence scores with penalty for invalid IOCs
+        # Fuse confidence scores with penalty for invalid IOCs, then apply the
+        # fitted post-hoc calibrator (raw fusion is miscalibrated — see
+        # scripts/run_calibration_study.py).
         fused = fuse_with_penalty(
             regex_confidence=match.confidence,
             llm_confidence=llm_confidence,
             llm_is_valid=llm_is_valid,
             source_reliability=source_reliability,
+            apply_calibration=True,
         )
         
         # Use fused confidence for severity calculation

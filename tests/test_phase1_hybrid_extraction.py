@@ -19,7 +19,7 @@ from unittest.mock import patch, MagicMock
 from threat_intel_aggregator.feed_collection.ioc_deobfuscator import (
     defang_url,
     defang_dots,
-    defang_at,
+    defang_email,
     normalize_brackets,
     decode_base64_iocs,
     deobfuscate_text,
@@ -51,11 +51,11 @@ class TestDeobfuscation:
     def test_defang_dots_word(self):
         assert defang_dots("evil[dot]com") == "evil.com"
     
-    def test_defang_at(self):
-        assert defang_at("user[at]evil.com") == "user@evil.com"
+    def test_defang_email(self):
+        assert defang_email("user[at]evil.com") == "user@evil.com"
     
-    def test_defang_at_round(self):
-        assert defang_at("user(at)evil.com") == "user@evil.com"
+    def test_defang_email_round(self):
+        assert defang_email("user(at)evil.com") == "user@evil.com"
     
     def test_normalize_brackets_scheme(self):
         assert normalize_brackets("http[://]evil.com") == "http://evil.com"
@@ -204,10 +204,12 @@ class TestEndToEnd:
     
     def test_normal_extraction_still_works(self):
         """Existing non-defanged IOCs should extract normally."""
-        text = "IP: 8.8.4.4 and CVE-2024-1234 found"
+        # Uses a non-allowlisted IP — the extractor deliberately filters known
+        # legitimate DNS resolvers (8.8.8.8, 8.8.4.4, 1.1.1.1).
+        text = "IP: 45.33.32.156 and CVE-2024-1234 found"
         matches = extract_iocs_with_confidence(text)
         ioc_values = [m.value for m in matches]
-        assert "8.8.4.4" in ioc_values
+        assert "45.33.32.156" in ioc_values
         assert "CVE-2024-1234" in ioc_values
     
     def test_deobfuscated_flag(self):

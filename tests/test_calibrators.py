@@ -10,7 +10,10 @@ from threat_intel_aggregator.evaluation.calibrators import (
     IsotonicCalibrator,
     TemperatureScaler,
     _pava,
+    calibrator_from_dict,
     kfold_calibration_eval,
+    load_calibrator,
+    save_calibrator,
 )
 
 
@@ -132,3 +135,38 @@ def test_kfold_calibration_beats_uncalibrated():
     # Honest out-of-fold calibration should still beat the uncalibrated score.
     assert temp < uncalibrated
     assert iso < uncalibrated
+
+
+# ── serialisation / persistence ─────────────────────────────
+
+_PROBE = [0.0, 0.15, 0.37, 0.5, 0.62, 0.9, 1.0]
+
+
+def test_temperature_roundtrip(tmp_path):
+    ts = TemperatureScaler().fit(_miscalibrated())
+    path = str(tmp_path / "cal.json")
+    save_calibrator(ts, path)
+    loaded = load_calibrator(path)
+    assert isinstance(loaded, TemperatureScaler)
+    assert abs(loaded.temperature - ts.temperature) < 1e-12
+    assert loaded.transform(_PROBE) == ts.transform(_PROBE)
+
+
+def test_isotonic_roundtrip(tmp_path):
+    iso = IsotonicCalibrator().fit(_miscalibrated())
+    path = str(tmp_path / "cal.json")
+    save_calibrator(iso, path)
+    loaded = load_calibrator(path)
+    assert isinstance(loaded, IsotonicCalibrator)
+    assert loaded.transform(_PROBE) == iso.transform(_PROBE)
+
+
+def test_identity_roundtrip(tmp_path):
+    path = str(tmp_path / "cal.json")
+    save_calibrator(IdentityCalibrator(), path)
+    assert isinstance(load_calibrator(path), IdentityCalibrator)
+
+
+def test_calibrator_from_dict_unknown_falls_back_to_identity():
+    assert isinstance(calibrator_from_dict({"name": "bogus"}), IdentityCalibrator)
+    assert isinstance(calibrator_from_dict({}), IdentityCalibrator)

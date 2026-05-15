@@ -738,12 +738,13 @@ def verify_ioc_endpoint(request: Request, body: IOCVerifyRequest):
             context_snippet=body.context,
         )
         
-        # Confidence fusion
+        # Confidence fusion with post-hoc calibration of the fused score
         fused = fuse_with_penalty(
             regex_confidence=regex_confidence,
             llm_confidence=verification.llm_confidence,
             llm_is_valid=verification.is_valid_ioc,
             source_reliability=1.0,  # Manual analysis is self-trusted
+            apply_calibration=True,
         )
         
         return {
