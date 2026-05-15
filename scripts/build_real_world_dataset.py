@@ -27,7 +27,27 @@ import os
 import sys
 
 # Allow running directly from the repo root (python scripts/build_real_world_dataset.py).
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, REPO_ROOT)
+
+
+def _load_dotenv(path: str) -> None:
+    """Minimal KEY=value .env loader (no python-dotenv dependency).
+
+    Populates os.environ for keys not already set, so the teacher labeler can
+    pick up OPENAI_API_KEY / ANTHROPIC_API_KEY from a repo-root .env file.
+    Real environment variables always win over .env.
+    """
+    if not os.path.exists(path):
+        return
+    with open(path) as f:
+        for line in f:
+            line = line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            key, _, val = line.partition("=")
+            os.environ.setdefault(key.strip(), val.strip().strip('"').strip("'"))
+
 
 from threat_intel_aggregator.evaluation.dataset_builder.builder import build_from_file
 from threat_intel_aggregator.evaluation.dataset_builder.validation import (
@@ -66,6 +86,8 @@ def main():
                         help="Validate text-grounding of an existing dataset and exit (no LLM)")
 
     args = parser.parse_args()
+
+    _load_dotenv(os.path.join(REPO_ROOT, ".env"))
 
     if args.validate:
         sys.exit(validate_only(args.validate))

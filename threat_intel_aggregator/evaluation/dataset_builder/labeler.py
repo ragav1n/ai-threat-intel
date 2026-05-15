@@ -118,13 +118,15 @@ class TeacherLabeler:
         return key
 
     def _call_openai(self, prompt: str) -> str:
+        # `temperature` is intentionally omitted: GPT-5-series models reject any
+        # non-default value (400 unsupported_value). The extraction prompt is
+        # tightly structured, so the default sampling is fine for labeling.
         resp = requests.post(
             self.api_url or OPENAI_URL,
             headers={"Authorization": f"Bearer {self._api_key('OPENAI_API_KEY', 'openai')}"},
             json={
                 "model": self.model,
                 "messages": [{"role": "user", "content": prompt}],
-                "temperature": 0.0,
             },
             timeout=120,
         )
