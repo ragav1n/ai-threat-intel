@@ -17,6 +17,8 @@ Registered datasets
   real_world_v2       — 134 real CTI reports, labelled by qwen2.5:7b (legacy)
   real_world_v2_gpt55 — same 134 reports, re-labelled by the gpt-5.5 teacher
   otx                 — AlienVault OTX pulses (400 pulses, 100% text-grounded)
+  prism               — PRISM external GOLD benchmark: 50 reports, 1418
+                        human-validated IOCs (arXiv:2506.11325, GPL-3.0)
 
 Deprecated datasets (see DEPRECATED_DATASETS) are kept on disk for provenance
 but refused by load_samples(): their labels were scraped from a separate
@@ -35,6 +37,7 @@ DATASET_PATHS: Dict[str, str] = {
     "real_world_v2":       "data/evaluation/new_real_world_dataset.json",
     "real_world_v2_gpt55": "data/evaluation/real_world_v2_gpt55.json",
     "otx":                 "data/evaluation/otx_benchmark.json",
+    "prism":               "data/evaluation/prism_benchmark.json",
 }
 
 # Datasets removed from the active registry because their labels are not
@@ -60,6 +63,7 @@ _TYPE_ALIASES: Dict[str, str] = {
     "hash_md5": "md5", "hash_sha1": "sha1", "hash_sha256": "sha256",
     "filehash-md5": "md5", "filehash-sha1": "sha1", "filehash-sha256": "sha256",
     "ipv4": "ip", "ipv4addr": "ip", "ip-dst": "ip", "ip-src": "ip",
+    "ip4": "ip", "fqdn": "domain",
     "ipv6addr": "ipv6", "hostname": "domain", "url-path": "url",
 }
 
