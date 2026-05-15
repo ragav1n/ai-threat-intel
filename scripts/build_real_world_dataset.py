@@ -57,7 +57,7 @@ def main():
     parser.add_argument("--input", type=str, help="Path to raw reports JSON file")
     parser.add_argument("--output", type=str, help="Path to save the labeled dataset")
     parser.add_argument(
-        "--model", type=str, default="gpt-4o",
+        "--model", type=str, default="gpt-5.5",
         help="Teacher model for labeling. Provider is auto-detected: gpt-*/o1-* "
              "(needs OPENAI_API_KEY), claude-* (needs ANTHROPIC_API_KEY), or any "
              "other name = local Ollama. A frontier teacher is strongly "

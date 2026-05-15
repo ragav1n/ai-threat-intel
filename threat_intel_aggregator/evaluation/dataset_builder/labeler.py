@@ -85,7 +85,7 @@ class TeacherLabeler:
     CLOUD_MAX_CHARS = 16000
     OLLAMA_MAX_CHARS = 2000
 
-    def __init__(self, model: str = "gpt-4o", api_url: Optional[str] = None):
+    def __init__(self, model: str = "gpt-5.5", api_url: Optional[str] = None):
         """
         Args:
             model:   teacher model name; the provider is auto-detected from it.

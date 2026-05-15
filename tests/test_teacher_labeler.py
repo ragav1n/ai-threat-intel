@@ -22,8 +22,8 @@ def _resp(payload):
 # ── provider detection ──────────────────────────────────────────
 
 @pytest.mark.parametrize("model,provider", [
-    ("gpt-4o", "openai"),
-    ("gpt-4o-mini", "openai"),
+    ("gpt-5.5", "openai"),
+    ("gpt-5.5-mini", "openai"),
     ("o3-mini", "openai"),
     ("claude-sonnet-4-6", "anthropic"),
     ("claude-3-5-haiku", "anthropic"),
@@ -36,15 +36,15 @@ def test_detect_provider(model, provider):
 
 def test_frontier_model_is_not_downgraded():
     """The old bug: a gpt-* model was silently rewritten to qwen2.5:7b."""
-    labeler = TeacherLabeler(model="gpt-4o")
-    assert labeler.model == "gpt-4o"
+    labeler = TeacherLabeler(model="gpt-5.5")
+    assert labeler.model == "gpt-5.5"
     assert labeler.provider == "openai"
 
 
 # ── context budget ──────────────────────────────────────────────
 
 def test_cloud_teacher_uses_larger_context_budget():
-    assert TeacherLabeler("gpt-4o")._max_chars() > TeacherLabeler("qwen2.5:7b")._max_chars()
+    assert TeacherLabeler("gpt-5.5")._max_chars() > TeacherLabeler("qwen2.5:7b")._max_chars()
 
 
 # ── provider calls (mocked HTTP) ─────────────────────────────────
@@ -54,7 +54,7 @@ def test_openai_labeling(monkeypatch):
     payload = {"choices": [{"message": {"content": IOC_JSON}}]}
     with patch("threat_intel_aggregator.evaluation.dataset_builder.labeler.requests.post",
                return_value=_resp(payload)) as post:
-        sample = TeacherLabeler("gpt-4o").label_text("evil.com hit 1.2.3.4", "s1")
+        sample = TeacherLabeler("gpt-5.5").label_text("evil.com hit 1.2.3.4", "s1")
     assert {e.value for e in sample.expected_iocs} == {"evil.com", "1.2.3.4"}
     assert post.call_args.kwargs["headers"]["Authorization"] == "Bearer sk-test"
 
@@ -82,7 +82,7 @@ def test_ollama_labeling():
 def test_missing_api_key_yields_empty_sample(monkeypatch):
     """A missing key must not abort the batch — the sample comes back empty."""
     monkeypatch.delenv("OPENAI_API_KEY", raising=False)
-    sample = TeacherLabeler("gpt-4o").label_text("evil.com", "s1")
+    sample = TeacherLabeler("gpt-5.5").label_text("evil.com", "s1")
     assert sample.expected_iocs == []
     assert sample.id == "s1"
 
@@ -92,5 +92,5 @@ def test_unparseable_response_yields_empty_sample(monkeypatch):
     payload = {"choices": [{"message": {"content": "sorry, no IOCs here"}}]}
     with patch("threat_intel_aggregator.evaluation.dataset_builder.labeler.requests.post",
                return_value=_resp(payload)):
-        sample = TeacherLabeler("gpt-4o").label_text("benign text", "s1")
+        sample = TeacherLabeler("gpt-5.5").label_text("benign text", "s1")
     assert sample.expected_iocs == []
