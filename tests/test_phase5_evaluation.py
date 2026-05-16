@@ -882,6 +882,48 @@ class TestBaselineComparison:
         values = {v for v, _ in extracted}
         assert "185.220.101.34" in values
 
+    def test_per_sample_default_return_unchanged(self):
+        """Default call returns a plain dict (regression guard)."""
+        result = run_baseline_comparison(self._make_samples(),
+                                         baselines=["our_pipeline", "regex_only"])
+        assert isinstance(result, dict)
+        assert set(result) == {"our_pipeline", "regex_only"}
+
+    def test_collect_per_sample_returns_tuple(self):
+        """collect_per_sample=True returns (results, per_sample) aligned to samples."""
+        samples = self._make_samples()
+        results, per_sample = run_baseline_comparison(
+            samples, baselines=["our_pipeline", "regex_only"], collect_per_sample=True)
+        assert set(results) == set(per_sample)
+        for key in results:
+            assert len(per_sample[key]) == len(samples)
+            for row in per_sample[key]:
+                assert "expected_iocs" in row and "extracted_iocs" in row
+
+    def test_per_sample_aggregates_match(self):
+        """Per-sample sets must micro-sum to the aggregate BaselineResult."""
+        samples = self._make_samples()
+        results, per_sample = run_baseline_comparison(
+            samples, baselines=["our_pipeline"], collect_per_sample=True)
+        r = results["our_pipeline"]
+        tp = fp = fn = 0
+        for row in per_sample["our_pipeline"]:
+            exp = {(e["value"], e["type"]) for e in row["expected_iocs"]}
+            ext = {(e["value"], e["type"]) for e in row["extracted_iocs"]}
+            tp += len(exp & ext)
+            fp += len(ext - exp)
+            fn += len(exp - ext)
+        assert (tp, fp, fn) == (r.true_positives, r.false_positives, r.false_negatives)
+
+    def test_per_sample_feeds_bootstrap(self):
+        """Per-sample output drops straight into compute_bootstrap_ci."""
+        from threat_intel_aggregator.evaluation.bootstrap_ci import compute_bootstrap_ci
+        samples = self._make_samples()
+        results, per_sample = run_baseline_comparison(
+            samples, baselines=["our_pipeline"], collect_per_sample=True)
+        boot = compute_bootstrap_ci(per_sample["our_pipeline"], n_iterations=50)
+        assert abs(boot.f1_ci.point_estimate - results["our_pipeline"].f1) < 1e-9
+
 
 # ============================================================
 # Test 8: Ablation Study

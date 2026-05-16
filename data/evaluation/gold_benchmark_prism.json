@@ -1,0 +1,524 @@
+{
+  "dataset": "prism",
+  "n_samples": 50,
+  "n_gold_iocs": 1418,
+  "n_iterations": 1000,
+  "baselines": {
+    "regex_only": {
+      "name": "Regex Only (no filter)",
+      "precision": 0.3644,
+      "recall": 0.5437,
+      "f1": 0.4363,
+      "true_positives": 771,
+      "false_positives": 1345,
+      "false_negatives": 647,
+      "per_type": {
+        "url": {
+          "precision": 0.1176,
+          "recall": 0.0469,
+          "f1": 0.067,
+          "tp": 12,
+          "fp": 90,
+          "fn": 244
+        },
+        "domain": {
+          "precision": 0.0086,
+          "recall": 0.032,
+          "f1": 0.0136,
+          "tp": 9,
+          "fp": 1033,
+          "fn": 272
+        },
+        "registry_key": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 31,
+          "fn": 0
+        },
+        "crypto_btc": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 46,
+          "fn": 0
+        },
+        "md5": {
+          "precision": 0.9926,
+          "recall": 1.0,
+          "f1": 0.9963,
+          "tp": 269,
+          "fp": 2,
+          "fn": 0
+        },
+        "sha256": {
+          "precision": 0.9896,
+          "recall": 1.0,
+          "f1": 0.9948,
+          "tp": 380,
+          "fp": 4,
+          "fn": 0
+        },
+        "phone_number": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 32,
+          "fn": 0
+        },
+        "ipv6": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 60,
+          "fn": 0
+        },
+        "ip": {
+          "precision": 0.8,
+          "recall": 0.1548,
+          "f1": 0.2595,
+          "tp": 24,
+          "fp": 6,
+          "fn": 131
+        },
+        "cve": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 17,
+          "fp": 0,
+          "fn": 0
+        },
+        "email": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 19,
+          "fn": 0
+        },
+        "asn": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 7,
+          "fn": 0
+        },
+        "mutex": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 13,
+          "fn": 0
+        },
+        "sha1": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 60,
+          "fp": 0,
+          "fn": 0
+        },
+        "mac_address": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 2,
+          "fn": 0
+        }
+      },
+      "bootstrap": {
+        "n_samples": 50,
+        "n_iterations": 1000,
+        "precision": {
+          "metric": "Precision",
+          "point_estimate": 0.3644,
+          "ci_lower": 0.2878,
+          "ci_upper": 0.4478,
+          "ci_width": 0.16,
+          "n_iterations": 1000
+        },
+        "recall": {
+          "metric": "Recall",
+          "point_estimate": 0.5437,
+          "ci_lower": 0.4113,
+          "ci_upper": 0.6661,
+          "ci_width": 0.2548,
+          "n_iterations": 1000
+        },
+        "f1": {
+          "metric": "F1 Score",
+          "point_estimate": 0.4363,
+          "ci_lower": 0.3484,
+          "ci_upper": 0.5287,
+          "ci_width": 0.1803,
+          "n_iterations": 1000
+        }
+      }
+    },
+    "our_pipeline": {
+      "name": "Our Pipeline (Regex)",
+      "precision": 0.6571,
+      "recall": 0.8597,
+      "f1": 0.7449,
+      "true_positives": 1219,
+      "false_positives": 636,
+      "false_negatives": 199,
+      "per_type": {
+        "registry_key": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 31,
+          "fn": 0
+        },
+        "url": {
+          "precision": 0.5165,
+          "recall": 0.5508,
+          "f1": 0.5331,
+          "tp": 141,
+          "fp": 132,
+          "fn": 115
+        },
+        "domain": {
+          "precision": 0.3524,
+          "recall": 0.7011,
+          "f1": 0.469,
+          "tp": 197,
+          "fp": 362,
+          "fn": 84
+        },
+        "md5": {
+          "precision": 0.9439,
+          "recall": 1.0,
+          "f1": 0.9711,
+          "tp": 269,
+          "fp": 16,
+          "fn": 0
+        },
+        "sha256": {
+          "precision": 0.9896,
+          "recall": 1.0,
+          "f1": 0.9948,
+          "tp": 380,
+          "fp": 4,
+          "fn": 0
+        },
+        "phone_number": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 29,
+          "fn": 0
+        },
+        "ip": {
+          "precision": 0.9064,
+          "recall": 1.0,
+          "f1": 0.9509,
+          "tp": 155,
+          "fp": 16,
+          "fn": 0
+        },
+        "email": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 23,
+          "fn": 0
+        },
+        "cve": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 17,
+          "fp": 0,
+          "fn": 0
+        },
+        "asn": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 7,
+          "fn": 0
+        },
+        "mutex": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 13,
+          "fn": 0
+        },
+        "sha1": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 60,
+          "fp": 0,
+          "fn": 0
+        },
+        "mac_address": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 2,
+          "fn": 0
+        },
+        "crypto_btc": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 1,
+          "fn": 0
+        }
+      },
+      "bootstrap": {
+        "n_samples": 50,
+        "n_iterations": 1000,
+        "precision": {
+          "metric": "Precision",
+          "point_estimate": 0.6571,
+          "ci_lower": 0.5784,
+          "ci_upper": 0.7313,
+          "ci_width": 0.1528,
+          "n_iterations": 1000
+        },
+        "recall": {
+          "metric": "Recall",
+          "point_estimate": 0.8597,
+          "ci_lower": 0.7632,
+          "ci_upper": 0.9444,
+          "ci_width": 0.1812,
+          "n_iterations": 1000
+        },
+        "f1": {
+          "metric": "F1 Score",
+          "point_estimate": 0.7449,
+          "ci_lower": 0.683,
+          "ci_upper": 0.8015,
+          "ci_width": 0.1185,
+          "n_iterations": 1000
+        }
+      }
+    },
+    "iocextract": {
+      "name": "iocextract (InQuest)",
+      "precision": 0.5996,
+      "recall": 0.7214,
+      "f1": 0.6549,
+      "true_positives": 1023,
+      "false_positives": 683,
+      "false_negatives": 395,
+      "per_type": {
+        "url": {
+          "precision": 0.1811,
+          "recall": 0.5547,
+          "f1": 0.2731,
+          "tp": 142,
+          "fp": 642,
+          "fn": 114
+        },
+        "domain": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 281
+        },
+        "md5": {
+          "precision": 0.9926,
+          "recall": 1.0,
+          "f1": 0.9963,
+          "tp": 269,
+          "fp": 2,
+          "fn": 0
+        },
+        "sha256": {
+          "precision": 0.9896,
+          "recall": 1.0,
+          "f1": 0.9948,
+          "tp": 380,
+          "fp": 4,
+          "fn": 0
+        },
+        "ip": {
+          "precision": 0.9509,
+          "recall": 1.0,
+          "f1": 0.9748,
+          "tp": 155,
+          "fp": 8,
+          "fn": 0
+        },
+        "email": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 27,
+          "fn": 0
+        },
+        "cve": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 17,
+          "fp": 0,
+          "fn": 0
+        },
+        "sha1": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 60,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "bootstrap": {
+        "n_samples": 50,
+        "n_iterations": 1000,
+        "precision": {
+          "metric": "Precision",
+          "point_estimate": 0.5996,
+          "ci_lower": 0.4823,
+          "ci_upper": 0.7098,
+          "ci_width": 0.2275,
+          "n_iterations": 1000
+        },
+        "recall": {
+          "metric": "Recall",
+          "point_estimate": 0.7214,
+          "ci_lower": 0.5818,
+          "ci_upper": 0.8356,
+          "ci_width": 0.2539,
+          "n_iterations": 1000
+        },
+        "f1": {
+          "metric": "F1 Score",
+          "point_estimate": 0.6549,
+          "ci_lower": 0.5341,
+          "ci_upper": 0.7621,
+          "ci_width": 0.2281,
+          "n_iterations": 1000
+        }
+      }
+    },
+    "ioc_finder": {
+      "name": "ioc-finder (Hightower)",
+      "precision": 0.7282,
+      "recall": 0.9732,
+      "f1": 0.8331,
+      "true_positives": 1380,
+      "false_positives": 515,
+      "false_negatives": 38,
+      "per_type": {
+        "url": {
+          "precision": 0.5117,
+          "recall": 0.8516,
+          "f1": 0.6393,
+          "tp": 218,
+          "fp": 208,
+          "fn": 38
+        },
+        "domain": {
+          "precision": 0.5091,
+          "recall": 1.0,
+          "f1": 0.6747,
+          "tp": 281,
+          "fp": 271,
+          "fn": 0
+        },
+        "md5": {
+          "precision": 0.9926,
+          "recall": 1.0,
+          "f1": 0.9963,
+          "tp": 269,
+          "fp": 2,
+          "fn": 0
+        },
+        "sha256": {
+          "precision": 0.9896,
+          "recall": 1.0,
+          "f1": 0.9948,
+          "tp": 380,
+          "fp": 4,
+          "fn": 0
+        },
+        "ip": {
+          "precision": 0.9568,
+          "recall": 1.0,
+          "f1": 0.9779,
+          "tp": 155,
+          "fp": 7,
+          "fn": 0
+        },
+        "email": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 23,
+          "fn": 0
+        },
+        "cve": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 17,
+          "fp": 0,
+          "fn": 0
+        },
+        "sha1": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "tp": 60,
+          "fp": 0,
+          "fn": 0
+        }
+      },
+      "bootstrap": {
+        "n_samples": 50,
+        "n_iterations": 1000,
+        "precision": {
+          "metric": "Precision",
+          "point_estimate": 0.7282,
+          "ci_lower": 0.6609,
+          "ci_upper": 0.7944,
+          "ci_width": 0.1335,
+          "n_iterations": 1000
+        },
+        "recall": {
+          "metric": "Recall",
+          "point_estimate": 0.9732,
+          "ci_lower": 0.9517,
+          "ci_upper": 0.9896,
+          "ci_width": 0.0379,
+          "n_iterations": 1000
+        },
+        "f1": {
+          "metric": "F1 Score",
+          "point_estimate": 0.8331,
+          "ci_lower": 0.782,
+          "ci_upper": 0.8789,
+          "ci_width": 0.097,
+          "n_iterations": 1000
+        }
+      }
+    }
+  }
+}

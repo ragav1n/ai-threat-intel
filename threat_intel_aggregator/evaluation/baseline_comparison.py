@@ -16,7 +16,7 @@ a side-by-side P/R/F1 comparison table, per IOC type.
 import re
 import logging
 from dataclasses import dataclass, field
-from typing import List, Dict, Any, Set, Tuple
+from typing import List, Dict, Any, Set, Tuple, Union
 
 logger = logging.getLogger(__name__)
 
@@ -294,9 +294,19 @@ def _evaluate_extractor(
     name: str,
     extract_fn,
     samples: list,
-) -> BaselineResult:
-    """Evaluate an extractor against ground-truth samples."""
+    collect_per_sample: bool = False,
+) -> Tuple[BaselineResult, List[dict]]:
+    """Evaluate an extractor against ground-truth samples.
+
+    Returns (BaselineResult, per_sample). `per_sample` is [] unless
+    `collect_per_sample` is True, in which case it is a list aligned with
+    `samples`, each entry ``{"expected_iocs": [...], "extracted_iocs": [...]}``
+    with IOCs as ``{"value", "type"}`` dicts — the schema `compute_bootstrap_ci`
+    expects. Values are already normalised, so bootstrap point estimates equal
+    the aggregate `BaselineResult` metrics exactly.
+    """
     result = BaselineResult(name=name)
+    per_sample: List[dict] = []
 
     for sample in samples:
         expected_set: Set[Tuple[str, str]] = {
@@ -323,7 +333,13 @@ def _evaluate_extractor(
             result.per_type[t]["fp"] += len(t_ext - t_exp)
             result.per_type[t]["fn"] += len(t_exp - t_ext)
 
-    return result
+        if collect_per_sample:
+            per_sample.append({
+                "expected_iocs": [{"value": v, "type": t} for v, t in expected_set],
+                "extracted_iocs": [{"value": v, "type": t} for v, t in extracted_set],
+            })
+
+    return result, per_sample
 
 
 # ── Public API ─────────────────────────────────────────────
@@ -342,7 +358,9 @@ BASELINES = {
 def run_baseline_comparison(
     samples: list = None,
     baselines: list = None,
-) -> Dict[str, BaselineResult]:
+    collect_per_sample: bool = False,
+) -> Union[Dict[str, BaselineResult],
+           Tuple[Dict[str, BaselineResult], Dict[str, List[dict]]]]:
     """
     Run comparison between our pipeline and selected baselines.
 
@@ -350,9 +368,13 @@ def run_baseline_comparison(
         samples: Ground-truth sample dicts. Loads default if None.
         baselines: List of baseline keys (e.g. ["iocextract", "ioc_finder"]).
                    If None, runs all available baselines.
+        collect_per_sample: when True, also return per-sample extractions for
+                   bootstrap CIs (see `_evaluate_extractor`).
 
     Returns:
-        Dict mapping baseline key to BaselineResult.
+        When `collect_per_sample` is False (default): a dict mapping baseline
+        key to BaselineResult. When True: a tuple
+        ``(results, per_sample_by_baseline)``.
     """
     if samples is None:
         from threat_intel_aggregator.evaluation.ground_truth import GroundTruthDataset
@@ -367,7 +389,8 @@ def run_baseline_comparison(
         ]
 
     baselines_to_run = baselines or list(BASELINES.keys())
-    results = {}
+    results: Dict[str, BaselineResult] = {}
+    per_sample_by_baseline: Dict[str, List[dict]] = {}
 
     for key in baselines_to_run:
         if key not in BASELINES:
@@ -375,8 +398,13 @@ def run_baseline_comparison(
             continue
         name, fn = BASELINES[key]
         logger.info(f"Evaluating: {name}")
-        results[key] = _evaluate_extractor(name, fn, samples)
+        result, per_sample = _evaluate_extractor(name, fn, samples, collect_per_sample)
+        results[key] = result
+        if collect_per_sample:
+            per_sample_by_baseline[key] = per_sample
 
+    if collect_per_sample:
+        return results, per_sample_by_baseline
     return results
 
 
