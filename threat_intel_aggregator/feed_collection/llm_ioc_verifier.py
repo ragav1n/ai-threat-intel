@@ -228,7 +228,11 @@ class LLMIOCVerifier:
             "think": False,  # Disable thinking mode for qwen3.5/deepseek-r1 etc.
             "options": {
                 "temperature": 0.1,  # Low temperature for consistent verification
-                "num_predict": 200,  # Short responses expected
+                # 512 tokens — must hold the full JSON verdict including a
+                # verbose `reasoning` field. 200 truncated it mid-string,
+                # breaking the JSON; it also has to match the cloud budget so
+                # the multi-model comparison is fair across providers.
+                "num_predict": 512,
             },
         }
         response = requests.post(
