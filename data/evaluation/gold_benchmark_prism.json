@@ -13,13 +13,13 @@
       "false_positives": 1345,
       "false_negatives": 647,
       "per_type": {
-        "url": {
-          "precision": 0.1176,
-          "recall": 0.0469,
-          "f1": 0.067,
-          "tp": 12,
-          "fp": 90,
-          "fn": 244
+        "crypto_btc": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 46,
+          "fn": 0
         },
         "domain": {
           "precision": 0.0086,
@@ -29,6 +29,14 @@
           "fp": 1033,
           "fn": 272
         },
+        "md5": {
+          "precision": 0.9926,
+          "recall": 1.0,
+          "f1": 0.9963,
+          "tp": 269,
+          "fp": 2,
+          "fn": 0
+        },
         "registry_key": {
           "precision": 0.0,
           "recall": 0.0,
@@ -37,20 +45,20 @@
           "fp": 31,
           "fn": 0
         },
-        "crypto_btc": {
+        "url": {
+          "precision": 0.1176,
+          "recall": 0.0469,
+          "f1": 0.067,
+          "tp": 12,
+          "fp": 90,
+          "fn": 244
+        },
+        "phone_number": {
           "precision": 0.0,
           "recall": 0.0,
           "f1": 0.0,
           "tp": 0,
-          "fp": 46,
-          "fn": 0
-        },
-        "md5": {
-          "precision": 0.9926,
-          "recall": 1.0,
-          "f1": 0.9963,
-          "tp": 269,
-          "fp": 2,
+          "fp": 32,
           "fn": 0
         },
         "sha256": {
@@ -61,13 +69,13 @@
           "fp": 4,
           "fn": 0
         },
-        "phone_number": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0,
-          "tp": 0,
-          "fp": 32,
-          "fn": 0
+        "ip": {
+          "precision": 0.8,
+          "recall": 0.1548,
+          "f1": 0.2595,
+          "tp": 24,
+          "fp": 6,
+          "fn": 131
         },
         "ipv6": {
           "precision": 0.0,
@@ -76,14 +84,6 @@
           "tp": 0,
           "fp": 60,
           "fn": 0
-        },
-        "ip": {
-          "precision": 0.8,
-          "recall": 0.1548,
-          "f1": 0.2595,
-          "tp": 24,
-          "fp": 6,
-          "fn": 131
         },
         "cve": {
           "precision": 1.0,
@@ -172,22 +172,6 @@
       "false_positives": 636,
       "false_negatives": 199,
       "per_type": {
-        "registry_key": {
-          "precision": 0.0,
-          "recall": 0.0,
-          "f1": 0.0,
-          "tp": 0,
-          "fp": 31,
-          "fn": 0
-        },
-        "url": {
-          "precision": 0.5165,
-          "recall": 0.5508,
-          "f1": 0.5331,
-          "tp": 141,
-          "fp": 132,
-          "fn": 115
-        },
         "domain": {
           "precision": 0.3524,
           "recall": 0.7011,
@@ -204,13 +188,21 @@
           "fp": 16,
           "fn": 0
         },
-        "sha256": {
-          "precision": 0.9896,
-          "recall": 1.0,
-          "f1": 0.9948,
-          "tp": 380,
-          "fp": 4,
+        "registry_key": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 31,
           "fn": 0
+        },
+        "url": {
+          "precision": 0.5165,
+          "recall": 0.5508,
+          "f1": 0.5331,
+          "tp": 141,
+          "fp": 132,
+          "fn": 115
         },
         "phone_number": {
           "precision": 0.0,
@@ -220,12 +212,12 @@
           "fp": 29,
           "fn": 0
         },
-        "ip": {
-          "precision": 0.9064,
+        "sha256": {
+          "precision": 0.9896,
           "recall": 1.0,
-          "f1": 0.9509,
-          "tp": 155,
-          "fp": 16,
+          "f1": 0.9948,
+          "tp": 380,
+          "fp": 4,
           "fn": 0
         },
         "email": {
@@ -234,6 +226,14 @@
           "f1": 0.0,
           "tp": 0,
           "fp": 23,
+          "fn": 0
+        },
+        "ip": {
+          "precision": 0.9064,
+          "recall": 1.0,
+          "f1": 0.9509,
+          "tp": 155,
+          "fp": 16,
           "fn": 0
         },
         "cve": {
@@ -323,14 +323,6 @@
       "false_positives": 683,
       "false_negatives": 395,
       "per_type": {
-        "url": {
-          "precision": 0.1811,
-          "recall": 0.5547,
-          "f1": 0.2731,
-          "tp": 142,
-          "fp": 642,
-          "fn": 114
-        },
         "domain": {
           "precision": 0.0,
           "recall": 0.0,
@@ -347,6 +339,14 @@
           "fp": 2,
           "fn": 0
         },
+        "url": {
+          "precision": 0.1811,
+          "recall": 0.5547,
+          "f1": 0.2731,
+          "tp": 142,
+          "fp": 642,
+          "fn": 114
+        },
         "sha256": {
           "precision": 0.9896,
           "recall": 1.0,
@@ -355,20 +355,20 @@
           "fp": 4,
           "fn": 0
         },
-        "ip": {
-          "precision": 0.9509,
-          "recall": 1.0,
-          "f1": 0.9748,
-          "tp": 155,
-          "fp": 8,
-          "fn": 0
-        },
         "email": {
           "precision": 0.0,
           "recall": 0.0,
           "f1": 0.0,
           "tp": 0,
           "fp": 27,
+          "fn": 0
+        },
+        "ip": {
+          "precision": 0.9509,
+          "recall": 1.0,
+          "f1": 0.9748,
+          "tp": 155,
+          "fp": 8,
           "fn": 0
         },
         "cve": {
@@ -426,14 +426,6 @@
       "false_positives": 515,
       "false_negatives": 38,
       "per_type": {
-        "url": {
-          "precision": 0.5117,
-          "recall": 0.8516,
-          "f1": 0.6393,
-          "tp": 218,
-          "fp": 208,
-          "fn": 38
-        },
         "domain": {
           "precision": 0.5091,
           "recall": 1.0,
@@ -450,6 +442,14 @@
           "fp": 2,
           "fn": 0
         },
+        "url": {
+          "precision": 0.5117,
+          "recall": 0.8516,
+          "f1": 0.6393,
+          "tp": 218,
+          "fp": 208,
+          "fn": 38
+        },
         "sha256": {
           "precision": 0.9896,
           "recall": 1.0,
@@ -458,20 +458,20 @@
           "fp": 4,
           "fn": 0
         },
-        "ip": {
-          "precision": 0.9568,
-          "recall": 1.0,
-          "f1": 0.9779,
-          "tp": 155,
-          "fp": 7,
-          "fn": 0
-        },
         "email": {
           "precision": 0.0,
           "recall": 0.0,
           "f1": 0.0,
           "tp": 0,
           "fp": 23,
+          "fn": 0
+        },
+        "ip": {
+          "precision": 0.9568,
+          "recall": 1.0,
+          "f1": 0.9779,
+          "tp": 155,
+          "fp": 7,
           "fn": 0
         },
         "cve": {

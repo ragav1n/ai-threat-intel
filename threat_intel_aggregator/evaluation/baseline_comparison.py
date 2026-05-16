@@ -323,8 +323,10 @@ def _evaluate_extractor(
         result.false_positives += len(fp)
         result.false_negatives += len(fn)
 
+        # sorted() keeps per_type insertion order deterministic across runs
+        # (set iteration order varies with hash randomisation).
         all_types = {k[1] for k in expected_set | extracted_set}
-        for t in all_types:
+        for t in sorted(all_types):
             if t not in result.per_type:
                 result.per_type[t] = {"tp": 0, "fp": 0, "fn": 0}
             t_exp = {k for k in expected_set if k[1] == t}
