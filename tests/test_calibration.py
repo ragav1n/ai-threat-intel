@@ -1,11 +1,14 @@
 """
 Tests for the confidence calibration module (research-paper contribution C2).
 """
+import json
 import math
 
 from threat_intel_aggregator.evaluation.calibration import (
     CalibrationResult,
+    bootstrap_calibration_ci,
     compute_calibration,
+    format_calibration_ci_table,
     format_reliability_diagram,
     format_calibration_comparison,
 )
@@ -136,3 +139,71 @@ def test_metrics_engine_calibration_empty_when_no_extractions():
     result = MetricsEngine().evaluate(samples)
     assert result.calibration is not None
     assert result.calibration.n_samples == 0
+
+
+# ── bootstrap_calibration_ci ───────────────────────────────
+
+def _mixed_preds():
+    """A miscalibrated mix (overconfident in both bins)."""
+    return (
+        [(0.9, True)] * 30 + [(0.9, False)] * 20
+        + [(0.6, True)] * 25 + [(0.6, False)] * 25
+    )
+
+
+def test_bootstrap_ci_returns_populated_result():
+    r = bootstrap_calibration_ci(_mixed_preds(), n_iterations=200)
+    assert r.n_samples == 100
+    assert r.n_iterations == 200
+    assert r.ece_ci is not None and r.brier_ci is not None and r.mce_ci is not None
+
+
+def test_bootstrap_ci_bounds_contain_point():
+    r = bootstrap_calibration_ci(_mixed_preds(), n_iterations=300)
+    for ci in (r.ece_ci, r.brier_ci, r.mce_ci):
+        assert ci.ci_lower <= ci.point_estimate <= ci.ci_upper
+        assert ci.ci_width >= 0.0
+
+
+def test_bootstrap_ci_reproducible_with_seed():
+    a = bootstrap_calibration_ci(_mixed_preds(), n_iterations=200, seed=7)
+    b = bootstrap_calibration_ci(_mixed_preds(), n_iterations=200, seed=7)
+    assert a.ece_ci.ci_lower == b.ece_ci.ci_lower
+    assert a.ece_ci.ci_upper == b.ece_ci.ci_upper
+
+
+def test_bootstrap_ci_point_matches_compute_calibration():
+    preds = _mixed_preds()
+    r = bootstrap_calibration_ci(preds, n_iterations=100)
+    base = compute_calibration(preds)
+    assert r.ece_ci.point_estimate == base.ece
+    assert r.brier_ci.point_estimate == base.brier_score
+
+
+def test_bootstrap_ci_perfect_data_tight():
+    # perfectly calibrated -> ECE ~0 in every resample, so the CI collapses.
+    preds = [(1.0, True)] * 50 + [(0.0, False)] * 50
+    r = bootstrap_calibration_ci(preds, n_iterations=200)
+    assert r.ece_ci.ci_width < 0.05
+    assert r.ece_ci.ci_upper < 0.05
+
+
+def test_bootstrap_ci_empty_input():
+    r = bootstrap_calibration_ci([], n_iterations=100)
+    assert r.n_samples == 0
+    assert r.ece_ci is None and r.brier_ci is None and r.mce_ci is None
+
+
+def test_bootstrap_ci_to_dict_serialisable():
+    r = bootstrap_calibration_ci(_mixed_preds(), n_iterations=50)
+    json.dumps(r.to_dict())  # must not raise
+    assert r.to_dict()["ece"]["metric"] == "ECE"
+
+
+def test_format_calibration_ci_table_renders():
+    table = format_calibration_ci_table({
+        "Fused": bootstrap_calibration_ci(_mixed_preds(), n_iterations=50),
+        "Empty": bootstrap_calibration_ci([]),
+    })
+    assert "ECE" in table and "Fused" in table
+    assert "no predictions" in table

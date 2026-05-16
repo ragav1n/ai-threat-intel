@@ -25,8 +25,9 @@ confidence — enabling direct calibration comparisons.
 from __future__ import annotations
 
 import logging
+import random
 from dataclasses import dataclass, field
-from typing import Dict, List, Sequence, Tuple
+from typing import Dict, List, Optional, Sequence, Tuple
 
 logger = logging.getLogger(__name__)
 
@@ -84,6 +85,49 @@ class CalibrationResult:
             "accuracy": round(self.accuracy, 4),
             "overconfidence": round(self.overconfidence, 4),
             "bins": [b.to_dict() for b in self.bins],
+        }
+
+
+@dataclass
+class CalibrationCI:
+    """A calibration metric with a percentile bootstrap confidence interval."""
+    metric_name: str            # "ECE" | "Brier" | "MCE"
+    point_estimate: float
+    ci_lower: float
+    ci_upper: float
+    n_iterations: int = 0
+
+    @property
+    def ci_width(self) -> float:
+        return self.ci_upper - self.ci_lower
+
+    def to_dict(self) -> Dict[str, object]:
+        return {
+            "metric": self.metric_name,
+            "point_estimate": round(self.point_estimate, 4),
+            "ci_lower": round(self.ci_lower, 4),
+            "ci_upper": round(self.ci_upper, 4),
+            "ci_width": round(self.ci_width, 4),
+            "n_iterations": self.n_iterations,
+        }
+
+
+@dataclass
+class CalibrationBootstrapResult:
+    """ECE / Brier / MCE with bootstrap CIs for one set of predictions."""
+    n_samples: int = 0
+    n_iterations: int = 0
+    ece_ci: Optional[CalibrationCI] = None
+    brier_ci: Optional[CalibrationCI] = None
+    mce_ci: Optional[CalibrationCI] = None
+
+    def to_dict(self) -> Dict[str, object]:
+        return {
+            "n_samples": self.n_samples,
+            "n_iterations": self.n_iterations,
+            "ece": self.ece_ci.to_dict() if self.ece_ci else None,
+            "brier": self.brier_ci.to_dict() if self.brier_ci else None,
+            "mce": self.mce_ci.to_dict() if self.mce_ci else None,
         }
 
 
@@ -182,6 +226,101 @@ def format_reliability_diagram(result: CalibrationResult, title: str = "") -> st
         f"overconfidence={result.overconfidence:+.3f}"
     )
     lines.append("=" * 72)
+    return "\n".join(lines)
+
+
+def bootstrap_calibration_ci(
+    predictions: Sequence[Prediction],
+    n_bins: int = 10,
+    n_iterations: int = 1000,
+    confidence_level: float = 0.95,
+    seed: int = 42,
+) -> CalibrationBootstrapResult:
+    """
+    Percentile bootstrap confidence intervals for ECE / Brier / MCE.
+
+    Resamples the (confidence, correct) pairs with replacement `n_iterations`
+    times, recomputes calibration on each draw, and reports percentile CIs.
+    Point estimates come from `compute_calibration` on the full sample (not the
+    bootstrap mean), so they match the headline numbers exactly.
+
+    Args:
+        predictions: sequence of (confidence, correct) pairs.
+        n_bins: confidence bins passed through to `compute_calibration`.
+        n_iterations: number of bootstrap resamples (default 1000).
+        confidence_level: CI mass (default 0.95).
+        seed: RNG seed for reproducibility (default 42, matching bootstrap_ci).
+
+    Returns:
+        CalibrationBootstrapResult. An empty input yields a result with
+        n_samples=0 and all CIs None.
+    """
+    preds = list(predictions)
+    n = len(preds)
+    result = CalibrationBootstrapResult(n_samples=n, n_iterations=n_iterations)
+    if n == 0:
+        return result
+
+    base = compute_calibration(preds, n_bins)
+    rng = random.Random(seed)
+
+    eces: List[float] = []
+    briers: List[float] = []
+    mces: List[float] = []
+    for _ in range(n_iterations):
+        draw = [rng.choice(preds) for _ in range(n)]
+        r = compute_calibration(draw, n_bins)
+        eces.append(r.ece)
+        briers.append(r.brier_score)
+        mces.append(r.mce)
+
+    alpha = (1.0 - confidence_level) / 2.0
+    lo_idx = int(alpha * n_iterations)
+    hi_idx = min(n_iterations - 1, int((1.0 - alpha) * n_iterations))
+
+    def _ci(name: str, point: float, samples: List[float]) -> CalibrationCI:
+        ordered = sorted(samples)
+        return CalibrationCI(
+            metric_name=name,
+            point_estimate=point,
+            ci_lower=ordered[lo_idx],
+            ci_upper=ordered[hi_idx],
+            n_iterations=n_iterations,
+        )
+
+    result.ece_ci = _ci("ECE", base.ece, eces)
+    result.brier_ci = _ci("Brier", base.brier_score, briers)
+    result.mce_ci = _ci("MCE", base.mce, mces)
+    return result
+
+
+def format_calibration_ci_table(named: Dict[str, CalibrationBootstrapResult]) -> str:
+    """Render ECE / Brier point estimates with bootstrap CIs side by side.
+
+    Intended for the C2 paper table: each confidence source's ECE and Brier
+    with error bars.
+    """
+    lines = []
+    lines.append("=" * 78)
+    lines.append("  CALIBRATION METRICS WITH BOOTSTRAP CONFIDENCE INTERVALS")
+    lines.append("=" * 78)
+    lines.append(
+        f"  {'Confidence source':<24s} {'N':>6s} "
+        f"{'ECE [95% CI]':>23s} {'Brier [95% CI]':>23s}"
+    )
+    lines.append(f"  {'-'*24} {'-'*6} {'-'*23} {'-'*23}")
+    for name, r in named.items():
+        if r.ece_ci is None:
+            lines.append(f"  {name:<24s} {r.n_samples:>6d}   (no predictions)")
+            continue
+        ece = (f"{r.ece_ci.point_estimate:.4f} "
+               f"[{r.ece_ci.ci_lower:.4f},{r.ece_ci.ci_upper:.4f}]")
+        brier = (f"{r.brier_ci.point_estimate:.4f} "
+                 f"[{r.brier_ci.ci_lower:.4f},{r.brier_ci.ci_upper:.4f}]")
+        lines.append(f"  {name:<24s} {r.n_samples:>6d} {ece:>23s} {brier:>23s}")
+    lines.append("")
+    lines.append("  Point estimate followed by [lower, upper] percentile bootstrap CI.")
+    lines.append("=" * 78)
     return "\n".join(lines)
 
 
