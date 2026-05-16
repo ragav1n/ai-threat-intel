@@ -1,0 +1,125 @@
+{
+  "dataset": "prism",
+  "tiers": {
+    "T0_clean": {
+      "deobf_off": {
+        "precision": 0.500326,
+        "recall": 0.541608,
+        "f1": 0.520149,
+        "true_positives": 768,
+        "false_positives": 767,
+        "false_negatives": 650
+      },
+      "deobf_on": {
+        "precision": 0.611529,
+        "recall": 0.860367,
+        "f1": 0.714914,
+        "true_positives": 1220,
+        "false_positives": 775,
+        "false_negatives": 198
+      },
+      "f1_recovered": 0.194765,
+      "adversarial": false
+    },
+    "T1_defang": {
+      "deobf_off": {
+        "precision": 0.480027,
+        "recall": 0.5,
+        "f1": 0.48981,
+        "true_positives": 709,
+        "false_positives": 768,
+        "false_negatives": 709
+      },
+      "deobf_on": {
+        "precision": 0.611529,
+        "recall": 0.860367,
+        "f1": 0.714914,
+        "true_positives": 1220,
+        "false_positives": 775,
+        "false_negatives": 198
+      },
+      "f1_recovered": 0.225104,
+      "adversarial": false
+    },
+    "T2_encode": {
+      "deobf_off": {
+        "precision": 0.47141,
+        "recall": 0.5,
+        "f1": 0.485284,
+        "true_positives": 709,
+        "false_positives": 795,
+        "false_negatives": 709
+      },
+      "deobf_on": {
+        "precision": 0.611529,
+        "recall": 0.860367,
+        "f1": 0.714914,
+        "true_positives": 1220,
+        "false_positives": 775,
+        "false_negatives": 198
+      },
+      "f1_recovered": 0.22963,
+      "adversarial": false
+    },
+    "T3_unicode": {
+      "deobf_off": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "true_positives": 0,
+        "false_positives": 717,
+        "false_negatives": 1418
+      },
+      "deobf_on": {
+        "precision": 0.611529,
+        "recall": 0.860367,
+        "f1": 0.714914,
+        "true_positives": 1220,
+        "false_positives": 775,
+        "false_negatives": 198
+      },
+      "f1_recovered": 0.714914,
+      "adversarial": false
+    },
+    "T4_combined": {
+      "deobf_off": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "true_positives": 0,
+        "false_positives": 717,
+        "false_negatives": 1418
+      },
+      "deobf_on": {
+        "precision": 0.611529,
+        "recall": 0.860367,
+        "f1": 0.714914,
+        "true_positives": 1220,
+        "false_positives": 775,
+        "false_negatives": 198
+      },
+      "f1_recovered": 0.714914,
+      "adversarial": false
+    },
+    "T5_adversarial": {
+      "deobf_off": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "true_positives": 0,
+        "false_positives": 719,
+        "false_negatives": 1418
+      },
+      "deobf_on": {
+        "precision": 0.37011,
+        "recall": 0.333568,
+        "f1": 0.35089,
+        "true_positives": 473,
+        "false_positives": 805,
+        "false_negatives": 945
+      },
+      "f1_recovered": 0.35089,
+      "adversarial": true
+    }
+  }
+}
