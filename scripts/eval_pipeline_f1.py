@@ -60,18 +60,22 @@ def prf(rows: list, key: str, tau: float, gold: int) -> dict:
 def main() -> None:
     ap = argparse.ArgumentParser(description="End-to-end pipeline F1 from cached predictions.")
     ap.add_argument("--dataset", default="prism")
+    ap.add_argument("--calibrator", default=CALIBRATOR_PATH,
+                    help="path to the fitted calibrator JSON (use a dataset-excluded "
+                         "calibrator for an out-of-sample operating point)")
     args = ap.parse_args()
 
     pred_path = f"data/evaluation/calibration_predictions_{args.dataset}.json"
     with open(pred_path) as f:
         rows = json.load(f)
-    calibrator = load_calibrator(CALIBRATOR_PATH)
+    calibrator = load_calibrator(args.calibrator)
     for r in rows:
         r["cal"] = calibrator.transform([r["fused"]])[0]
 
     gold = total_gold(args.dataset)
     extracted_correct = sum(1 for r in rows if r["correct"])
     print(f"=== End-to-end pipeline F1 — dataset: {args.dataset} ===")
+    print(f"  calibrator             : {args.calibrator}")
     print(f"  gold IOC instances     : {gold}")
     print(f"  extracted predictions  : {len(rows)}")
     print(f"  of which match gold    : {extracted_correct}  "
@@ -101,6 +105,7 @@ def main() -> None:
 
     out = {
         "dataset": args.dataset,
+        "calibrator": args.calibrator,
         "gold_ioc_instances": gold,
         "extracted_predictions": len(rows),
         "extraction_recall_ceiling": round(extracted_correct / gold, 4),
