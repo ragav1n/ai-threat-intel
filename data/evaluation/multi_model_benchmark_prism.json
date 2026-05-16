@@ -1,0 +1,109 @@
+{
+  "dataset": "prism",
+  "n_samples": 50,
+  "n_iterations": 1000,
+  "models": [
+    "qwen3.5:9b",
+    "gpt-5.5",
+    "claude-sonnet-4-6",
+    "gemini-2.5-pro"
+  ],
+  "results": {
+    "Regex Only (no filter)": {
+      "precision": 0.3644,
+      "recall": 0.5437,
+      "f1": 0.4363,
+      "f1_ci": [
+        0.3484,
+        0.5287
+      ],
+      "true_positives": 771,
+      "false_positives": 1345,
+      "false_negatives": 647
+    },
+    "Our Pipeline (Regex)": {
+      "precision": 0.6571,
+      "recall": 0.8597,
+      "f1": 0.7449,
+      "f1_ci": [
+        0.683,
+        0.8015
+      ],
+      "true_positives": 1219,
+      "false_positives": 636,
+      "false_negatives": 199
+    },
+    "iocextract (InQuest)": {
+      "precision": 0.5996,
+      "recall": 0.7214,
+      "f1": 0.6549,
+      "f1_ci": [
+        0.5341,
+        0.7621
+      ],
+      "true_positives": 1023,
+      "false_positives": 683,
+      "false_negatives": 395
+    },
+    "ioc-finder (Hightower)": {
+      "precision": 0.7282,
+      "recall": 0.9732,
+      "f1": 0.8331,
+      "f1_ci": [
+        0.782,
+        0.8789
+      ],
+      "true_positives": 1380,
+      "false_positives": 515,
+      "false_negatives": 38
+    },
+    "Our Pipeline + LLM [Qwen3.5 9B (local)]": {
+      "precision": 0.7434,
+      "recall": 0.7764,
+      "f1": 0.7596,
+      "f1_ci": [
+        0.6919,
+        0.8233
+      ],
+      "true_positives": 1101,
+      "false_positives": 380,
+      "false_negatives": 317
+    },
+    "Our Pipeline + LLM [GPT-5.5 (OpenAI)]": {
+      "precision": 0.6905,
+      "recall": 0.859,
+      "f1": 0.7656,
+      "f1_ci": [
+        0.7024,
+        0.8225
+      ],
+      "true_positives": 1218,
+      "false_positives": 546,
+      "false_negatives": 200
+    },
+    "Our Pipeline + LLM [Claude Sonnet 4.6 (Anthropic)]": {
+      "precision": 0.7108,
+      "recall": 0.8597,
+      "f1": 0.7782,
+      "f1_ci": [
+        0.7201,
+        0.8332
+      ],
+      "true_positives": 1219,
+      "false_positives": 496,
+      "false_negatives": 199
+    },
+    "Our Pipeline + LLM [Gemini 2.5 Pro (Google)]": {
+      "precision": 0.6575,
+      "recall": 0.8597,
+      "f1": 0.7451,
+      "f1_ci": [
+        0.6832,
+        0.8015
+      ],
+      "true_positives": 1219,
+      "false_positives": 635,
+      "false_negatives": 199
+    }
+  }
+}
