@@ -1,147 +1,152 @@
 """
-Multi-Model Benchmark Script
+Multi-Model IOC-Extraction Benchmark (research contribution C3).
 
-Runs the full IOC extraction evaluation across multiple LLM models
-and prints a unified comparison table.
+Runs the full pipeline (regex + deobfuscation + LLM verification) with several
+LLM backends and compares them — local Qwen against the frontier cloud models
+GPT-5.5, Claude and Gemini — on a gold dataset (PRISM by default). This is the
+evidence for C3's claim that a small *local* LLM matches cloud-scale LLMs for
+IOC extraction. Every P/R/F1 carries a 95% bootstrap confidence interval.
 
-Usage:
-    source venv/bin/activate
-    python scripts/multi_model_benchmark.py
+    python scripts/multi_model_benchmark.py                       # PRISM, full
+    python scripts/multi_model_benchmark.py --max-samples 10       # quick smoke
+    python scripts/multi_model_benchmark.py --models qwen3.5:9b,gpt-5.5
 
-Models to benchmark (edit MODELS below to add/remove):
-    - qwen3.5:4b   (fast, lightweight)
-    - qwen3.5:9b   (balanced)
-    - qwen2.5:32b  (maximum accuracy)
+Cloud models need OPENAI_API_KEY / ANTHROPIC_API_KEY / GEMINI_API_KEY — the
+script loads them from a repo-root .env file. Results are written to
+data/evaluation/multi_model_benchmark_<dataset>.json.
 """
+import argparse
+import json
+import logging
 import os
 import sys
-import logging
-import json
-from typing import Dict, List
 
-# Ensure the project root is on the path when running this script directly
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, REPO_ROOT)
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s %(levelname)s %(name)s: %(message)s"
-)
+logging.basicConfig(level=logging.WARNING, format="%(message)s")
 logger = logging.getLogger(__name__)
 
-# ── Configuration ─────────────────────────────────────────────────────────────
-
-MODELS: List[Dict] = [
-    {"name": "qwen3.5:4b",  "label": "Qwen3.5 4B  (Fast)"},
-    {"name": "qwen3.5:9b",  "label": "Qwen3.5 9B  (Balanced)"},
-    {"name": "qwen2.5:32b", "label": "Qwen2.5 32B (Best)"},
+# C3 default model set: one representative small local model + three frontier
+# cloud vendors. Override with --models.
+DEFAULT_MODELS = [
+    {"name": "qwen3.5:9b",        "label": "Qwen3.5 9B (local)"},
+    {"name": "gpt-5.5",           "label": "GPT-5.5 (OpenAI)"},
+    {"name": "claude-sonnet-4-6", "label": "Claude Sonnet 4.6 (Anthropic)"},
+    {"name": "gemini-2.5-pro",    "label": "Gemini 2.5 Pro (Google)"},
 ]
-
-# These baselines run once (no LLM, model-independent)
 STATIC_BASELINES = ["regex_only", "our_pipeline", "iocextract", "ioc_finder"]
 
-# Optionally limit to a subset of dataset samples for speed
-MAX_SAMPLES: int = None  # Set to e.g. 50 to run faster
 
-# ── Helpers ───────────────────────────────────────────────────────────────────
-
-def _load_samples(max_samples: int = None):
-    """Load evaluation samples from ground truth dataset."""
-    from threat_intel_aggregator.evaluation.ground_truth import GroundTruthDataset
-    dataset = GroundTruthDataset()
-    samples = [
-        {
-            "text": s.text,
-            "expected_iocs": [e.to_dict() for e in s.expected_iocs],
-            "category": s.category,
-        }
-        for s in dataset.samples
-    ]
-    if max_samples:
-        samples = samples[:max_samples]
-    return samples
+def _load_dotenv(path: str) -> None:
+    """Minimal KEY=value .env loader (cloud API keys); real env vars win."""
+    if not os.path.exists(path):
+        return
+    with open(path) as f:
+        for line in f:
+            line = line.strip()
+            if line and not line.startswith("#") and "=" in line:
+                key, _, val = line.partition("=")
+                os.environ.setdefault(key.strip(), val.strip().strip('"').strip("'"))
 
 
-def _format_table(all_results: Dict[str, Dict]) -> str:
-    """Format a combined results table."""
-    col_w = 36
-    num_w = 10
-    header = f"{'Baseline / Model':<{col_w}} {'Precision':>{num_w}} {'Recall':>{num_w}} {'F1':>{num_w}}"
-    sep = "─" * (col_w + num_w * 3 + 2)
+def _row(result, boot) -> dict:
+    """One results row: point P/R/F1 plus the F1 bootstrap CI."""
+    return {
+        "precision": round(result.precision, 4),
+        "recall": round(result.recall, 4),
+        "f1": round(result.f1, 4),
+        "f1_ci": [round(boot.f1_ci.ci_lower, 4), round(boot.f1_ci.ci_upper, 4)],
+        "true_positives": result.true_positives,
+        "false_positives": result.false_positives,
+        "false_negatives": result.false_negatives,
+    }
 
-    lines = [
-        "",
-        "═" * (col_w + num_w * 3 + 2),
-        "  MULTI-MODEL BENCHMARK — IOC EXTRACTION",
-        "═" * (col_w + num_w * 3 + 2),
-        header,
-        sep,
-    ]
 
-    for label, r in all_results.items():
-        lines.append(
-            f"{label:<{col_w}} {r['precision']:>{num_w}.3f} {r['recall']:>{num_w}.3f} {r['f1']:>{num_w}.3f}"
-        )
-
-    lines.append(sep)
+def _format_table(rows: dict) -> str:
+    lines = ["", "=" * 78,
+             "  MULTI-MODEL BENCHMARK — IOC EXTRACTION (C3)",
+             "=" * 78,
+             f"  {'Baseline / Model':<34s} {'Prec':>7s} {'Recall':>7s} "
+             f"{'F1':>7s} {'F1 95% CI':>16s}",
+             f"  {'-'*34} {'-'*7} {'-'*7} {'-'*7} {'-'*16}"]
+    for label, r in rows.items():
+        ci = f"[{r['f1_ci'][0]:.3f},{r['f1_ci'][1]:.3f}]"
+        lines.append(f"  {label:<34s} {r['precision']:>6.1%} {r['recall']:>6.1%} "
+                     f"{r['f1']:>6.1%} {ci:>16s}")
+    lines.append("=" * 78)
     return "\n".join(lines)
 
 
-# ── Main ──────────────────────────────────────────────────────────────────────
+def main() -> None:
+    ap = argparse.ArgumentParser(description="Multi-model IOC-extraction benchmark.")
+    ap.add_argument("--dataset", default="prism", help="registered dataset name")
+    ap.add_argument("--max-samples", type=int, default=None,
+                    help="cap the number of samples (for a quick smoke run)")
+    ap.add_argument("--n-iterations", type=int, default=1000, help="bootstrap resamples")
+    ap.add_argument("--models", default="",
+                    help="comma-separated model names (default: qwen3.5:9b + 3 cloud)")
+    args = ap.parse_args()
 
-def main():
+    _load_dotenv(os.path.join(REPO_ROOT, ".env"))
+
     from threat_intel_aggregator.evaluation.baseline_comparison import (
-        run_baseline_comparison,
-        BASELINES,
+        BASELINES, run_baseline_comparison,
     )
+    from threat_intel_aggregator.evaluation.bootstrap_ci import compute_bootstrap_ci
+    from threat_intel_aggregator.evaluation.datasets import load_samples
+    from threat_intel_aggregator.feed_collection import llm_ioc_verifier as _v
 
-    samples = _load_samples(MAX_SAMPLES)
-    logger.info(f"Loaded {len(samples)} evaluation samples")
+    if args.models:
+        models = [{"name": m.strip(), "label": m.strip()}
+                  for m in args.models.split(",") if m.strip()]
+    else:
+        models = DEFAULT_MODELS
 
-    all_results: Dict[str, Dict] = {}
+    samples = load_samples(args.dataset)
+    if args.max_samples:
+        samples = samples[:args.max_samples]
+    print(f"=== Multi-model benchmark — dataset: {args.dataset} "
+          f"({len(samples)} samples) ===")
 
-    # Step 1: Run static baselines (regex, iocextract, ioc_finder) once
-    logger.info("Running static baselines (no LLM)...")
-    static_results = run_baseline_comparison(samples, baselines=[
-        b for b in STATIC_BASELINES if b in BASELINES
-    ])
+    rows: dict = {}
+
+    # Static, model-independent baselines — run once, with CIs.
+    print("Running static baselines (no LLM)...")
+    static_results, static_ps = run_baseline_comparison(
+        samples, baselines=STATIC_BASELINES, collect_per_sample=True)
     for key, r in static_results.items():
-        label = BASELINES[key][0]
-        all_results[label] = {"precision": r.precision, "recall": r.recall, "f1": r.f1}
-        logger.info(f"  ✓ {label}: F1={r.f1:.3f}")
+        boot = compute_bootstrap_ci(static_ps[key], n_iterations=args.n_iterations)
+        rows[BASELINES[key][0]] = _row(r, boot)
+        print(f"  ✓ {BASELINES[key][0]}: F1={r.f1:.3f}")
 
-    # Step 2: Run LLM pipeline for each model
-    for model_cfg in MODELS:
-        model_name = model_cfg["name"]
-        model_label = f"Our Pipeline + LLM  [{model_cfg['label']}]"
-        logger.info(f"\nRunning LLM evaluation with model: {model_name}")
+    # Full LLM pipeline, once per model.
+    for m in models:
+        print(f"Running LLM pipeline with: {m['name']} ...")
+        os.environ["IOC_VERIFIER_MODEL"] = m["name"]
+        _v._verifier_instance = None  # force re-instantiation with the new model
+        results, per_sample = run_baseline_comparison(
+            samples, baselines=["our_pipeline_llm"], collect_per_sample=True)
+        r = results["our_pipeline_llm"]
+        boot = compute_bootstrap_ci(per_sample["our_pipeline_llm"],
+                                    n_iterations=args.n_iterations)
+        rows[f"Our Pipeline + LLM [{m['label']}]"] = _row(r, boot)
+        print(f"  ✓ {m['label']}: F1={r.f1:.3f}")
 
-        # Set model via environment variable (picked up by get_llm_verifier)
-        os.environ["IOC_VERIFIER_MODEL"] = model_name
+    print(_format_table(rows))
 
-        # Force re-instantiation of the verifier singleton with the new model
-        try:
-            from threat_intel_aggregator.feed_collection import llm_ioc_verifier as _v
-            _v._verifier_instance = None  # Reset singleton
-        except Exception:
-            pass
-
-        llm_results = run_baseline_comparison(samples, baselines=["our_pipeline_llm"])
-        r = llm_results.get("our_pipeline_llm")
-        if r:
-            all_results[model_label] = {"precision": r.precision, "recall": r.recall, "f1": r.f1}
-            logger.info(f"  ✓ {model_label}: F1={r.f1:.3f}")
-        else:
-            logger.warning(f"  ✗ No results for {model_name}")
-
-    # Step 3: Print table
-    print(_format_table(all_results))
-
-    # Step 4: Save JSON for later use
-    output_path = "data/evaluation/multi_model_benchmark.json"
+    out = {
+        "dataset": args.dataset,
+        "n_samples": len(samples),
+        "n_iterations": args.n_iterations,
+        "models": [m["name"] for m in models],
+        "results": rows,
+    }
+    out_path = f"data/evaluation/multi_model_benchmark_{args.dataset}.json"
     os.makedirs("data/evaluation", exist_ok=True)
-    with open(output_path, "w") as f:
-        json.dump(all_results, f, indent=2)
-    logger.info(f"\nResults saved to {output_path}")
+    with open(out_path, "w") as f:
+        json.dump(out, f, indent=2)
+    print(f"\n💾 Saved to {out_path}")
 
 
 if __name__ == "__main__":

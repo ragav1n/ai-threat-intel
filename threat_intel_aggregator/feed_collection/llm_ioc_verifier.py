@@ -22,6 +22,10 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import requests
 from tenacity import retry, stop_after_attempt, wait_fixed, retry_if_exception_type
 
+from threat_intel_aggregator.feed_collection.llm_providers import (
+    call_cloud, cloud_api_key_present, detect_provider,
+)
+
 logger = logging.getLogger(__name__)
 
 # Configuration
@@ -174,13 +178,25 @@ class LLMIOCVerifier:
         self.ollama_url = ollama_url
         self.timeout = timeout
         self.max_workers = max_workers
+        self.provider = detect_provider(model)
         self._available: Optional[bool] = None
-    
+
     def is_available(self) -> bool:
-        """Check if Ollama is running and the model is available."""
+        """Check that the configured model's backend is reachable.
+
+        For a cloud model that means its API key is set; for a local model it
+        means Ollama is running and the model is pulled.
+        """
         if self._available is not None:
             return self._available
-            
+
+        if self.provider != "ollama":
+            self._available = cloud_api_key_present(self.provider)
+            if not self._available:
+                logger.warning(f"⚠️ LLM IOC Verifier unavailable — no API key "
+                                f"for provider '{self.provider}' (model={self.model})")
+            return self._available
+
         try:
             response = requests.get(
                 f"{self.ollama_url}/api/tags", timeout=5
@@ -235,7 +251,14 @@ class LLMIOCVerifier:
                 text = thinking.strip()
 
         return text
-    
+
+    def _query_llm(self, prompt: str) -> str:
+        """Send a prompt to the configured model's backend (cloud or Ollama)."""
+        if self.provider == "ollama":
+            return self._query_ollama(prompt)
+        # Cloud verification responses are short JSON objects.
+        return call_cloud(self.model, prompt, max_tokens=512, timeout=self.timeout)
+
     def _parse_llm_response(self, raw_response: str) -> LLMVerification:
         """Parse the LLM JSON response into a structured result.
         
@@ -306,7 +329,7 @@ class LLMIOCVerifier:
             LLMVerification result with confidence and validity.
         """
         if not self.is_available():
-            return LLMVerification.error_result("Ollama not available")
+            return LLMVerification.error_result(f"LLM backend unavailable ({self.provider})")
         
         # Sanitize inputs before prompt injection
         safe_ioc = sanitize_for_prompt(ioc_value, max_length=500)
@@ -323,7 +346,7 @@ class LLMIOCVerifier:
         )
         
         try:
-            raw_response = self._query_ollama(prompt)
+            raw_response = self._query_llm(prompt)
             result = self._parse_llm_response(raw_response)
             result.model_used = self.model
             result.reasoning = truncate_reasoning(result.reasoning)
@@ -421,9 +444,17 @@ class LLMIOCVerifier:
 _verifier_instance: Optional[LLMIOCVerifier] = None
 
 
-def get_llm_verifier(model: str = DEFAULT_MODEL) -> LLMIOCVerifier:
-    """Get or create the singleton LLM IOC verifier."""
+def get_llm_verifier(model: Optional[str] = None) -> LLMIOCVerifier:
+    """Get or create the singleton LLM IOC verifier.
+
+    When `model` is None the model is resolved from the IOC_VERIFIER_MODEL
+    environment variable at call time (falling back to DEFAULT_MODEL) — this
+    is what lets the multi-model benchmark switch models by setting the env
+    var and resetting the singleton.
+    """
     global _verifier_instance
+    if model is None:
+        model = os.getenv("IOC_VERIFIER_MODEL", DEFAULT_MODEL)
     if _verifier_instance is None or _verifier_instance.model != model:
         _verifier_instance = LLMIOCVerifier(model=model)
     return _verifier_instance

@@ -52,7 +52,7 @@ def test_cloud_teacher_uses_larger_context_budget():
 def test_openai_labeling(monkeypatch):
     monkeypatch.setenv("OPENAI_API_KEY", "sk-test")
     payload = {"choices": [{"message": {"content": IOC_JSON}}]}
-    with patch("threat_intel_aggregator.evaluation.dataset_builder.labeler.requests.post",
+    with patch("threat_intel_aggregator.feed_collection.llm_providers.requests.post",
                return_value=_resp(payload)) as post:
         sample = TeacherLabeler("gpt-5.5").label_text("evil.com hit 1.2.3.4", "s1")
     assert {e.value for e in sample.expected_iocs} == {"evil.com", "1.2.3.4"}
@@ -62,7 +62,7 @@ def test_openai_labeling(monkeypatch):
 def test_anthropic_labeling(monkeypatch):
     monkeypatch.setenv("ANTHROPIC_API_KEY", "sk-ant-test")
     payload = {"content": [{"text": IOC_JSON}]}
-    with patch("threat_intel_aggregator.evaluation.dataset_builder.labeler.requests.post",
+    with patch("threat_intel_aggregator.feed_collection.llm_providers.requests.post",
                return_value=_resp(payload)) as post:
         sample = TeacherLabeler("claude-sonnet-4-6").label_text("evil.com", "s1")
     assert len(sample.expected_iocs) == 2
@@ -90,7 +90,7 @@ def test_missing_api_key_yields_empty_sample(monkeypatch):
 def test_unparseable_response_yields_empty_sample(monkeypatch):
     monkeypatch.setenv("OPENAI_API_KEY", "sk-test")
     payload = {"choices": [{"message": {"content": "sorry, no IOCs here"}}]}
-    with patch("threat_intel_aggregator.evaluation.dataset_builder.labeler.requests.post",
+    with patch("threat_intel_aggregator.feed_collection.llm_providers.requests.post",
                return_value=_resp(payload)):
         sample = TeacherLabeler("gpt-5.5").label_text("benign text", "s1")
     assert sample.expected_iocs == []
