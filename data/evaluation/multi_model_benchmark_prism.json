@@ -5,8 +5,7 @@
   "models": [
     "qwen3.5:9b",
     "gpt-5.5",
-    "claude-sonnet-4-6",
-    "gemini-2.5-pro"
+    "claude-sonnet-4-6"
   ],
   "results": {
     "Regex Only (no filter)": {
@@ -91,18 +90,6 @@
       ],
       "true_positives": 1219,
       "false_positives": 496,
-      "false_negatives": 199
-    },
-    "Our Pipeline + LLM [Gemini 2.5 Pro (Google)]": {
-      "precision": 0.6575,
-      "recall": 0.8597,
-      "f1": 0.7451,
-      "f1_ci": [
-        0.6832,
-        0.8015
-      ],
-      "true_positives": 1219,
-      "false_positives": 635,
       "false_negatives": 199
     }
   }
