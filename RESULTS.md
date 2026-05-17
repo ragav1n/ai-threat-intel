@@ -39,7 +39,9 @@ Loaded via `threat_intel_aggregator/evaluation/datasets.py` `load_samples()`.
 | C1 | Deobfuscation ON is tier-invariant; OFF collapses to 0% at T3/T4; held-out adversarial T5 is non-circular | `run_obfuscation_ablation.py --dataset prism` | `obfuscation_ablation_prism.json` |
 | C2 | Calibration metrics with bootstrap CIs; raw LLM is badly miscalibrated, isotonic fixes it (ECE → ~0.02 on gold) | `run_calibration_study.py --dataset <name>` | `calibration_study_<name>.json` |
 | C2 | Production calibrator (pooled) and a PRISM-held-out calibrator | `fit_calibrator.py [--exclude-dataset prism]` | `fitted_calibrator[_no_prism].json` |
-| C3 | Local Qwen vs GPT-5.5 / Claude / Gemini on PRISM gold, F1 ± CI | `multi_model_benchmark.py --dataset prism` | `multi_model_benchmark_prism.json` |
+| C3 | Local Qwen vs GPT-5.5 / Claude on PRISM gold, F1 ± CI | `multi_model_benchmark.py --dataset prism` | `multi_model_benchmark_prism.json` |
+| C2 | Selective-prediction triage: risk-coverage curve, AURC per confidence source, target-risk operating points | `selective_prediction.py --dataset prism --calibrator …_no_prism.json` | `selective_prediction_prism.json` |
+| C2 | Calibration transfer: train-by-test ECE matrix across report sources | `calibration_transfer.py` | `calibration_transfer.json` |
 | End-to-end | Full-pipeline P/R/F1 vs threshold on PRISM gold (max F1 + honest τ=0.5 operating point) | `eval_pipeline_f1.py --dataset prism --calibrator …_no_prism.json` | `pipeline_f1_prism.json` |
 | Baselines | Our pipeline vs iocextract / ioc-finder / spaCy / regex on PRISM gold, F1 ± CI | `run_gold_benchmark.py --dataset prism` | `gold_benchmark_prism.json` |
 

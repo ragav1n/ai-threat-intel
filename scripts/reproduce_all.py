@@ -40,6 +40,11 @@ STEPS = [
       "--calibrator", "data/evaluation/fitted_calibrator_no_prism.json"]),
     ("Gold-benchmark baseline comparison — prism",
      ["scripts/run_gold_benchmark.py", "--dataset", "prism"]),
+    ("C2 selective-prediction triage — prism (gold, held-out calibrator)",
+     ["scripts/selective_prediction.py", "--dataset", "prism",
+      "--calibrator", "data/evaluation/fitted_calibrator_no_prism.json"]),
+    ("C2 calibration transfer across report sources",
+     ["scripts/calibration_transfer.py"]),
 ]
 
 

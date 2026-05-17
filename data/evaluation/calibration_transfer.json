@@ -1,0 +1,40 @@
+{
+  "datasets": [
+    "otx",
+    "prism",
+    "real_world_v2_gpt55",
+    "synthetic"
+  ],
+  "uncalibrated_ece": {
+    "otx": 0.4442,
+    "prism": 0.3008,
+    "real_world_v2_gpt55": 0.1971,
+    "synthetic": 0.2451
+  },
+  "transfer_matrix": {
+    "otx": {
+      "otx": 0.0001,
+      "prism": 0.1764,
+      "real_world_v2_gpt55": 0.1497,
+      "synthetic": 0.1609
+    },
+    "prism": {
+      "otx": 0.1505,
+      "prism": 0.0182,
+      "real_world_v2_gpt55": 0.1558,
+      "synthetic": 0.0962
+    },
+    "real_world_v2_gpt55": {
+      "otx": 0.1865,
+      "prism": 0.1514,
+      "real_world_v2_gpt55": 0.0462,
+      "synthetic": 0.1645
+    },
+    "synthetic": {
+      "otx": 0.0623,
+      "prism": 0.187,
+      "real_world_v2_gpt55": 0.237,
+      "synthetic": 0.0056
+    }
+  }
+}
