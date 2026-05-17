@@ -98,7 +98,10 @@ def call_gemini(model: str, prompt: str, max_tokens: int = 4096,
         timeout=timeout,
     )
     resp.raise_for_status()
-    return resp.json()["candidates"][0]["content"]["parts"][0]["text"].strip()
+    parts = resp.json()["candidates"][0].get("content", {}).get("parts", [])
+    # Thinking models (e.g. Gemini 3 Flash) emit thought-only parts next to the
+    # answer; keep only the parts that carry visible text.
+    return "".join(p["text"] for p in parts if "text" in p).strip()
 
 
 def call_cloud(model: str, prompt: str, max_tokens: int = 4096,

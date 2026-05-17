@@ -191,10 +191,25 @@ class LLMIOCVerifier:
             return self._available
 
         if self.provider != "ollama":
-            self._available = cloud_api_key_present(self.provider)
-            if not self._available:
+            if not cloud_api_key_present(self.provider):
+                self._available = False
                 logger.warning(f"⚠️ LLM IOC Verifier unavailable — no API key "
                                 f"for provider '{self.provider}' (model={self.model})")
+                return self._available
+            # A key being set does not mean it works: it may lack quota for
+            # this model, or the model name may be wrong. Probe with one tiny
+            # call so a dead backend fails loudly here instead of silently
+            # turning every verification into a regex-only fallback.
+            try:
+                # 256 tokens: a thinking model spends output budget on hidden
+                # reasoning, so a tiny probe budget can leave no visible text.
+                call_cloud(self.model, "Reply with: OK", max_tokens=256,
+                           timeout=self.timeout)
+                self._available = True
+            except Exception as e:
+                self._available = False
+                logger.warning(f"⚠️ LLM IOC Verifier unavailable — {self.provider} "
+                                f"probe failed for model '{self.model}': {e}")
             return self._available
 
         try:
@@ -260,8 +275,10 @@ class LLMIOCVerifier:
         """Send a prompt to the configured model's backend (cloud or Ollama)."""
         if self.provider == "ollama":
             return self._query_ollama(prompt)
-        # Cloud verification responses are short JSON objects.
-        return call_cloud(self.model, prompt, max_tokens=512, timeout=self.timeout)
+        # The verdict JSON is short, but a thinking model also spends output
+        # tokens on hidden reasoning; 2048 leaves ample room for both so the
+        # response is never truncated before the closing brace.
+        return call_cloud(self.model, prompt, max_tokens=2048, timeout=self.timeout)
 
     def _parse_llm_response(self, raw_response: str) -> LLMVerification:
         """Parse the LLM JSON response into a structured result.

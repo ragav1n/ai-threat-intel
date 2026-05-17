@@ -125,6 +125,15 @@ def main() -> None:
         print(f"Running LLM pipeline with: {m['name']} ...")
         os.environ["IOC_VERIFIER_MODEL"] = m["name"]
         _v._verifier_instance = None  # force re-instantiation with the new model
+
+        # Refuse to record a row for a backend that is not actually reachable.
+        # Otherwise its verification silently falls back to regex-only and the
+        # benchmark reports the regex baseline under the model's name.
+        if not _v.get_llm_verifier().is_available():
+            print(f"  ✗ {m['label']}: SKIPPED — backend unavailable "
+                  f"(no quota, bad key, or unreachable)")
+            continue
+
         results, per_sample = run_baseline_comparison(
             samples, baselines=["our_pipeline_llm"], collect_per_sample=True)
         r = results["our_pipeline_llm"]
