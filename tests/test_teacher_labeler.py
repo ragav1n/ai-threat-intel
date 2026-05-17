@@ -14,6 +14,8 @@ IOC_JSON = '[{"value": "evil.com", "type": "domain"}, {"value": "1.2.3.4", "type
 def _resp(payload):
     """A fake requests.Response with the given .json() payload."""
     r = MagicMock()
+    r.status_code = 200
+    r.headers = {}
     r.json.return_value = payload
     r.raise_for_status.return_value = None
     return r

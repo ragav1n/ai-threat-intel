@@ -8,9 +8,11 @@ from threat_intel_aggregator.feed_collection import llm_providers as lp
 POST = "threat_intel_aggregator.feed_collection.llm_providers.requests.post"
 
 
-def _resp(payload):
+def _resp(payload, status=200):
     """A fake requests.Response with the given .json() payload."""
     r = MagicMock()
+    r.status_code = status
+    r.headers = {}
     r.json.return_value = payload
     r.raise_for_status.return_value = None
     return r
@@ -91,3 +93,17 @@ def test_missing_api_key_raises(monkeypatch):
     monkeypatch.delenv("OPENAI_API_KEY", raising=False)
     with pytest.raises(RuntimeError):
         lp.call_openai("gpt-5.5", "hi")
+
+
+def test_post_retries_on_rate_limit(monkeypatch):
+    """A 429 backs off and retries instead of aborting the call."""
+    monkeypatch.setenv("OPENAI_API_KEY", "sk-test")
+    responses = [
+        _resp({}, status=429),
+        _resp({"choices": [{"message": {"content": "recovered"}}]}, status=200),
+    ]
+    with patch("threat_intel_aggregator.feed_collection.llm_providers.time.sleep"), \
+         patch(POST, side_effect=responses) as post:
+        out = lp.call_openai("gpt-5.5", "hi")
+    assert out == "recovered"
+    assert post.call_count == 2  # first 429, retry succeeds

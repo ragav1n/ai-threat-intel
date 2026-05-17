@@ -15,6 +15,7 @@ Providers are auto-detected from the model name:
   ollama     everything else (local, no key)
 """
 import os
+import time
 
 import requests
 
@@ -51,6 +52,31 @@ def cloud_api_key_present(provider: str) -> bool:
     return any(os.environ.get(v) for v in _PROVIDER_KEYS.get(provider, ()))
 
 
+# HTTP statuses worth retrying: rate limits and transient server errors.
+_RETRY_STATUS = frozenset({429, 500, 502, 503, 504})
+
+
+def _post_with_retry(url: str, *, headers: dict, json: dict, timeout: int,
+                     max_attempts: int = 6) -> requests.Response:
+    """POST with exponential backoff on rate-limit and transient server errors.
+
+    Cloud providers rate-limit sustained workloads; without backoff a 429
+    aborts the call and the verification silently falls back to regex-only.
+    A Retry-After header, when present, overrides the computed delay.
+    """
+    delay = 4.0
+    resp = requests.post(url, headers=headers, json=json, timeout=timeout)
+    for _ in range(max_attempts - 1):
+        if resp.status_code not in _RETRY_STATUS:
+            return resp
+        retry_after = resp.headers.get("Retry-After", "")
+        wait = float(retry_after) if retry_after.isdigit() else delay
+        time.sleep(wait)
+        delay = min(delay * 2, 60.0)
+        resp = requests.post(url, headers=headers, json=json, timeout=timeout)
+    return resp
+
+
 def _api_key(provider: str) -> str:
     for var in _PROVIDER_KEYS.get(provider, ()):
         val = os.environ.get(var)
@@ -63,7 +89,7 @@ def _api_key(provider: str) -> str:
 
 def call_openai(model: str, prompt: str, timeout: int = 120) -> str:
     # `temperature` is omitted — GPT-5-series models reject any non-default value.
-    resp = requests.post(
+    resp = _post_with_retry(
         OPENAI_URL,
         headers={"Authorization": f"Bearer {_api_key('openai')}"},
         json={"model": model, "messages": [{"role": "user", "content": prompt}]},
@@ -75,7 +101,7 @@ def call_openai(model: str, prompt: str, timeout: int = 120) -> str:
 
 def call_anthropic(model: str, prompt: str, max_tokens: int = 4096,
                    timeout: int = 120) -> str:
-    resp = requests.post(
+    resp = _post_with_retry(
         ANTHROPIC_URL,
         headers={"x-api-key": _api_key("anthropic"),
                  "anthropic-version": ANTHROPIC_VERSION},
@@ -89,7 +115,7 @@ def call_anthropic(model: str, prompt: str, max_tokens: int = 4096,
 
 def call_gemini(model: str, prompt: str, max_tokens: int = 4096,
                 timeout: int = 120) -> str:
-    resp = requests.post(
+    resp = _post_with_retry(
         GEMINI_URL.format(model=model),
         headers={"x-goog-api-key": _api_key("gemini")},
         json={"contents": [{"parts": [{"text": prompt}]}],
