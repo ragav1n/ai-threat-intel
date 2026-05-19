@@ -1,0 +1,101 @@
+{
+  "source": "regex",
+  "alpha": 0.1,
+  "delta": 0.1,
+  "datasets": [
+    "otx",
+    "prism",
+    "real_world_v2_gpt55",
+    "synthetic"
+  ],
+  "transfer_matrix": {
+    "otx": {
+      "otx": {
+        "threshold": 0.746,
+        "risk": 0.021,
+        "coverage": 0.8419
+      },
+      "prism": {
+        "threshold": 0.71,
+        "risk": 0.196,
+        "coverage": 0.5623
+      },
+      "real_world_v2_gpt55": {
+        "threshold": 0.71,
+        "risk": 0.2768,
+        "coverage": 0.5438
+      },
+      "synthetic": {
+        "threshold": 0.71,
+        "risk": 0.0444,
+        "coverage": 0.7826
+      }
+    },
+    "prism": {
+      "otx": {
+        "threshold": 0.91,
+        "risk": 0.0,
+        "coverage": 0.8235
+      },
+      "prism": {
+        "threshold": 0.9049,
+        "risk": 0.016,
+        "coverage": 0.0709
+      },
+      "real_world_v2_gpt55": {
+        "threshold": 0.91,
+        "risk": 0.325,
+        "coverage": 0.1843
+      },
+      "synthetic": {
+        "threshold": 0.91,
+        "risk": 0.0,
+        "coverage": 0.3913
+      }
+    },
+    "real_world_v2_gpt55": {
+      "otx": {
+        "threshold": null,
+        "risk": 0.0,
+        "coverage": 0.0
+      },
+      "prism": {
+        "threshold": null,
+        "risk": 0.0,
+        "coverage": 0.0
+      },
+      "real_world_v2_gpt55": {
+        "threshold": null,
+        "risk": 0.0,
+        "coverage": 0.0
+      },
+      "synthetic": {
+        "threshold": null,
+        "risk": 0.0,
+        "coverage": 0.0
+      }
+    },
+    "synthetic": {
+      "otx": {
+        "threshold": null,
+        "risk": 0.0,
+        "coverage": 0.0
+      },
+      "prism": {
+        "threshold": null,
+        "risk": 0.0,
+        "coverage": 0.0
+      },
+      "real_world_v2_gpt55": {
+        "threshold": null,
+        "risk": 0.0,
+        "coverage": 0.0
+      },
+      "synthetic": {
+        "threshold": null,
+        "risk": 0.0,
+        "coverage": 0.0
+      }
+    }
+  }
+}

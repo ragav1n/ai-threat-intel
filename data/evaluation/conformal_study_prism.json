@@ -1,0 +1,337 @@
+{
+  "dataset": "prism",
+  "n_predictions": 1869,
+  "delta": 0.1,
+  "sources": {
+    "regex": {
+      "n": 1869,
+      "aurc": 0.1627,
+      "alphas": {
+        "0.01": {
+          "alpha": 0.01,
+          "delta": 0.1,
+          "n_total": 1869,
+          "n_trials": 100,
+          "calib_frac": 0.5,
+          "risk": {
+            "mean": 0.0,
+            "ci_lower": 0.0,
+            "ci_upper": 0.0
+          },
+          "coverage": {
+            "mean": 0.0,
+            "ci_lower": 0.0,
+            "ci_upper": 0.0
+          },
+          "threshold": null,
+          "guarantee_coverage": 1.0,
+          "abstain_rate": 1.0
+        },
+        "0.02": {
+          "alpha": 0.02,
+          "delta": 0.1,
+          "n_total": 1869,
+          "n_trials": 100,
+          "calib_frac": 0.5,
+          "risk": {
+            "mean": 0.0,
+            "ci_lower": 0.0,
+            "ci_upper": 0.0
+          },
+          "coverage": {
+            "mean": 0.0,
+            "ci_lower": 0.0,
+            "ci_upper": 0.0
+          },
+          "threshold": null,
+          "guarantee_coverage": 1.0,
+          "abstain_rate": 1.0
+        },
+        "0.05": {
+          "alpha": 0.05,
+          "delta": 0.1,
+          "n_total": 1869,
+          "n_trials": 100,
+          "calib_frac": 0.5,
+          "risk": {
+            "mean": 0.0,
+            "ci_lower": 0.0,
+            "ci_upper": 0.0
+          },
+          "coverage": {
+            "mean": 0.0,
+            "ci_lower": 0.0,
+            "ci_upper": 0.0
+          },
+          "threshold": null,
+          "guarantee_coverage": 1.0,
+          "abstain_rate": 1.0
+        },
+        "0.10": {
+          "alpha": 0.1,
+          "delta": 0.1,
+          "n_total": 1869,
+          "n_trials": 100,
+          "calib_frac": 0.5,
+          "risk": {
+            "mean": 0.016033,
+            "ci_lower": 0.0,
+            "ci_upper": 0.082192
+          },
+          "coverage": {
+            "mean": 0.070888,
+            "ci_lower": 0.0,
+            "ci_upper": 0.224599
+          },
+          "threshold": {
+            "mean": 0.904872,
+            "ci_lower": 0.86,
+            "ci_upper": 0.91
+          },
+          "guarantee_coverage": 1.0,
+          "abstain_rate": 0.61
+        },
+        "0.20": {
+          "alpha": 0.2,
+          "delta": 0.1,
+          "n_total": 1869,
+          "n_trials": 100,
+          "calib_frac": 0.5,
+          "risk": {
+            "mean": 0.082637,
+            "ci_lower": 0.064516,
+            "ci_upper": 0.100287
+          },
+          "coverage": {
+            "mean": 0.379594,
+            "ci_lower": 0.358289,
+            "ci_upper": 0.397861
+          },
+          "threshold": {
+            "mean": 0.81,
+            "ci_lower": 0.81,
+            "ci_upper": 0.81
+          },
+          "guarantee_coverage": 1.0,
+          "abstain_rate": 0.0
+        }
+      }
+    },
+    "llm": {
+      "n": 1858,
+      "aurc": 0.4502,
+      "alphas": {
+        "0.01": {
+          "alpha": 0.01,
+          "delta": 0.1,
+          "n_total": 1858,
+          "n_trials": 100,
+          "calib_frac": 0.5,
+          "risk": {
+            "mean": 0.0,
+            "ci_lower": 0.0,
+            "ci_upper": 0.0
+          },
+          "coverage": {
+            "mean": 0.0,
+            "ci_lower": 0.0,
+            "ci_upper": 0.0
+          },
+          "threshold": null,
+          "guarantee_coverage": 1.0,
+          "abstain_rate": 1.0
+        },
+        "0.02": {
+          "alpha": 0.02,
+          "delta": 0.1,
+          "n_total": 1858,
+          "n_trials": 100,
+          "calib_frac": 0.5,
+          "risk": {
+            "mean": 0.0,
+            "ci_lower": 0.0,
+            "ci_upper": 0.0
+          },
+          "coverage": {
+            "mean": 0.0,
+            "ci_lower": 0.0,
+            "ci_upper": 0.0
+          },
+          "threshold": null,
+          "guarantee_coverage": 1.0,
+          "abstain_rate": 1.0
+        },
+        "0.05": {
+          "alpha": 0.05,
+          "delta": 0.1,
+          "n_total": 1858,
+          "n_trials": 100,
+          "calib_frac": 0.5,
+          "risk": {
+            "mean": 0.0,
+            "ci_lower": 0.0,
+            "ci_upper": 0.0
+          },
+          "coverage": {
+            "mean": 0.0,
+            "ci_lower": 0.0,
+            "ci_upper": 0.0
+          },
+          "threshold": null,
+          "guarantee_coverage": 1.0,
+          "abstain_rate": 1.0
+        },
+        "0.10": {
+          "alpha": 0.1,
+          "delta": 0.1,
+          "n_total": 1858,
+          "n_trials": 100,
+          "calib_frac": 0.5,
+          "risk": {
+            "mean": 0.0,
+            "ci_lower": 0.0,
+            "ci_upper": 0.0
+          },
+          "coverage": {
+            "mean": 0.0,
+            "ci_lower": 0.0,
+            "ci_upper": 0.0
+          },
+          "threshold": null,
+          "guarantee_coverage": 1.0,
+          "abstain_rate": 1.0
+        },
+        "0.20": {
+          "alpha": 0.2,
+          "delta": 0.1,
+          "n_total": 1858,
+          "n_trials": 100,
+          "calib_frac": 0.5,
+          "risk": {
+            "mean": 0.0,
+            "ci_lower": 0.0,
+            "ci_upper": 0.0
+          },
+          "coverage": {
+            "mean": 0.0,
+            "ci_lower": 0.0,
+            "ci_upper": 0.0
+          },
+          "threshold": null,
+          "guarantee_coverage": 1.0,
+          "abstain_rate": 1.0
+        }
+      }
+    },
+    "fused": {
+      "n": 1869,
+      "aurc": 0.196,
+      "alphas": {
+        "0.01": {
+          "alpha": 0.01,
+          "delta": 0.1,
+          "n_total": 1869,
+          "n_trials": 100,
+          "calib_frac": 0.5,
+          "risk": {
+            "mean": 0.0,
+            "ci_lower": 0.0,
+            "ci_upper": 0.0
+          },
+          "coverage": {
+            "mean": 0.0,
+            "ci_lower": 0.0,
+            "ci_upper": 0.0
+          },
+          "threshold": null,
+          "guarantee_coverage": 1.0,
+          "abstain_rate": 1.0
+        },
+        "0.02": {
+          "alpha": 0.02,
+          "delta": 0.1,
+          "n_total": 1869,
+          "n_trials": 100,
+          "calib_frac": 0.5,
+          "risk": {
+            "mean": 0.0,
+            "ci_lower": 0.0,
+            "ci_upper": 0.0
+          },
+          "coverage": {
+            "mean": 0.0,
+            "ci_lower": 0.0,
+            "ci_upper": 0.0
+          },
+          "threshold": null,
+          "guarantee_coverage": 1.0,
+          "abstain_rate": 1.0
+        },
+        "0.05": {
+          "alpha": 0.05,
+          "delta": 0.1,
+          "n_total": 1869,
+          "n_trials": 100,
+          "calib_frac": 0.5,
+          "risk": {
+            "mean": 0.0,
+            "ci_lower": 0.0,
+            "ci_upper": 0.0
+          },
+          "coverage": {
+            "mean": 0.0,
+            "ci_lower": 0.0,
+            "ci_upper": 0.0
+          },
+          "threshold": null,
+          "guarantee_coverage": 1.0,
+          "abstain_rate": 1.0
+        },
+        "0.10": {
+          "alpha": 0.1,
+          "delta": 0.1,
+          "n_total": 1869,
+          "n_trials": 100,
+          "calib_frac": 0.5,
+          "risk": {
+            "mean": 0.0,
+            "ci_lower": 0.0,
+            "ci_upper": 0.0
+          },
+          "coverage": {
+            "mean": 0.0,
+            "ci_lower": 0.0,
+            "ci_upper": 0.0
+          },
+          "threshold": null,
+          "guarantee_coverage": 1.0,
+          "abstain_rate": 1.0
+        },
+        "0.20": {
+          "alpha": 0.2,
+          "delta": 0.1,
+          "n_total": 1869,
+          "n_trials": 100,
+          "calib_frac": 0.5,
+          "risk": {
+            "mean": 0.110273,
+            "ci_lower": 0.0,
+            "ci_upper": 0.137662
+          },
+          "coverage": {
+            "mean": 0.39031,
+            "ci_lower": 0.0,
+            "ci_upper": 0.432086
+          },
+          "threshold": {
+            "mean": 0.360316,
+            "ci_lower": 0.36,
+            "ci_upper": 0.37
+          },
+          "guarantee_coverage": 0.99,
+          "abstain_rate": 0.05
+        }
+      }
+    }
+  }
+}
