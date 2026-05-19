@@ -11,6 +11,7 @@ to produce a final fused score.
 Novelty: UTwente (2025) uses LLM to generate regex. LANCE uses cloud APIs.
 This module uses a local LLM for verification with multi-factor confidence fusion.
 """
+import hashlib
 import json
 import re
 import logging
@@ -180,6 +181,58 @@ class LLMIOCVerifier:
         self.max_workers = max_workers
         self.provider = detect_provider(model)
         self._available: Optional[bool] = None
+        # Optional disk-backed verdict cache. When IOC_VERIFY_CACHE points at a
+        # JSONL file, every successful verification is appended to it and reused
+        # on a later run, so a long benchmark interrupted by a rate limit
+        # resumes instead of restarting. Off unless the env var is set.
+        self._cache_path: Optional[str] = os.getenv("IOC_VERIFY_CACHE") or None
+        self._cache: Dict[str, LLMVerification] = self._load_cache()
+        if self._cache:
+            logger.info(f"🗃️  Loaded {len(self._cache)} cached verifications "
+                        f"from {self._cache_path}")
+
+    def _cache_key(self, ioc_value: str, ioc_type: str, context: str) -> str:
+        """Stable key for one verification: model + IOC + context."""
+        raw = f"{self.model}\x00{ioc_type}\x00{ioc_value}\x00{context}"
+        return hashlib.sha256(raw.encode("utf-8", "replace")).hexdigest()
+
+    def _load_cache(self) -> Dict[str, "LLMVerification"]:
+        """Load the JSONL verdict cache; tolerate a partial trailing line."""
+        cache: Dict[str, LLMVerification] = {}
+        if not self._cache_path or not os.path.exists(self._cache_path):
+            return cache
+        with open(self._cache_path) as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    d = json.loads(line)
+                except json.JSONDecodeError:
+                    continue  # truncated last line from an interrupted run
+                cache[d["key"]] = LLMVerification(
+                    is_valid_ioc=d["is_valid_ioc"],
+                    llm_confidence=d["llm_confidence"],
+                    reasoning=d["reasoning"],
+                    model_used=d.get("model_used", self.model),
+                )
+        return cache
+
+    def _store_cache(self, key: str, result: "LLMVerification") -> None:
+        """Append one successful verification to the JSONL cache."""
+        self._cache[key] = result
+        if not self._cache_path:
+            return
+        rec = {
+            "key": key,
+            "is_valid_ioc": result.is_valid_ioc,
+            "llm_confidence": result.llm_confidence,
+            "reasoning": result.reasoning,
+            "model_used": result.model_used,
+        }
+        os.makedirs(os.path.dirname(self._cache_path) or ".", exist_ok=True)
+        with open(self._cache_path, "a") as f:
+            f.write(json.dumps(rec) + "\n")
 
     def is_available(self) -> bool:
         """Check that the configured model's backend is reachable.
@@ -349,9 +402,18 @@ class LLMIOCVerifier:
         Returns:
             LLMVerification result with confidence and validity.
         """
+        # Resume support: a previously cached verdict for this exact
+        # (model, IOC, context) is reused so an interrupted run continues.
+        cache_key = None
+        if self._cache_path is not None:
+            cache_key = self._cache_key(ioc_value, ioc_type, context_snippet)
+            cached = self._cache.get(cache_key)
+            if cached is not None:
+                return cached
+
         if not self.is_available():
             return LLMVerification.error_result(f"LLM backend unavailable ({self.provider})")
-        
+
         # Sanitize inputs before prompt injection
         safe_ioc = sanitize_for_prompt(ioc_value, max_length=500)
         safe_type = ioc_type if ioc_type in ALLOWED_IOC_TYPES else "unknown"
@@ -376,9 +438,14 @@ class LLMIOCVerifier:
                 f"🤖 LLM verified {safe_type}:{safe_ioc[:30]}... → "
                 f"valid={result.is_valid_ioc}, confidence={result.llm_confidence:.2f}"
             )
-            
+
+            # Only successful verdicts are cached; a failed call is left
+            # uncached so a resume retries it instead of freezing the error.
+            if cache_key is not None and result.error is None:
+                self._store_cache(cache_key, result)
+
             return result
-            
+
         except Exception as e:
             logger.error(f"LLM verification error for {ioc_value}: {e}")
             return LLMVerification.error_result(str(e))

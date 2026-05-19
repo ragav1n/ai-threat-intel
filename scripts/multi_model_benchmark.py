@@ -30,10 +30,10 @@ logger = logging.getLogger(__name__)
 # C3 default model set: one representative small local model + three frontier
 # cloud vendors. Override with --models.
 DEFAULT_MODELS = [
-    {"name": "qwen3.5:9b",        "label": "Qwen3.5 9B (local)"},
-    {"name": "gpt-5.5",           "label": "GPT-5.5 (OpenAI)"},
-    {"name": "claude-sonnet-4-6", "label": "Claude Sonnet 4.6 (Anthropic)"},
-    {"name": "gemini-2.5-pro",    "label": "Gemini 2.5 Pro (Google)"},
+    {"name": "qwen3.5:9b",            "label": "Qwen3.5 9B (local)"},
+    {"name": "gpt-5.5",               "label": "GPT-5.5 (OpenAI)"},
+    {"name": "claude-sonnet-4-6",     "label": "Claude Sonnet 4.6 (Anthropic)"},
+    {"name": "gemini-3-flash-preview", "label": "Gemini 3 Flash (Google)"},
 ]
 STATIC_BASELINES = ["regex_only", "our_pipeline", "iocextract", "ioc_finder"]
 
@@ -86,6 +86,9 @@ def main() -> None:
     ap.add_argument("--n-iterations", type=int, default=1000, help="bootstrap resamples")
     ap.add_argument("--models", default="",
                     help="comma-separated model names (default: qwen3.5:9b + 3 cloud)")
+    ap.add_argument("--merge", action="store_true",
+                    help="splice this run's model rows into the existing "
+                         "benchmark file instead of overwriting it")
     args = ap.parse_args()
 
     _load_dotenv(os.path.join(REPO_ROOT, ".env"))
@@ -98,8 +101,10 @@ def main() -> None:
     from threat_intel_aggregator.feed_collection import llm_ioc_verifier as _v
 
     if args.models:
-        models = [{"name": m.strip(), "label": m.strip()}
-                  for m in args.models.split(",") if m.strip()]
+        # Reuse the curated label from DEFAULT_MODELS when the name is known.
+        known = {m["name"]: m["label"] for m in DEFAULT_MODELS}
+        models = [{"name": n, "label": known.get(n, n)}
+                  for n in (m.strip() for m in args.models.split(",")) if n]
     else:
         models = DEFAULT_MODELS
 
@@ -120,10 +125,18 @@ def main() -> None:
         rows[BASELINES[key][0]] = _row(r, boot)
         print(f"  ✓ {BASELINES[key][0]}: F1={r.f1:.3f}")
 
-    # Full LLM pipeline, once per model.
+    # Full LLM pipeline, once per model. Each model writes a JSONL verdict
+    # cache, so a run interrupted by a rate limit resumes where it stopped on
+    # re-invocation. Delete the cache file to force a fresh run.
     for m in models:
         print(f"Running LLM pipeline with: {m['name']} ...")
         os.environ["IOC_VERIFIER_MODEL"] = m["name"]
+        safe_name = "".join(c if c.isalnum() else "_" for c in m["name"])
+        cache_path = (f"data/evaluation/llm_verify_cache_"
+                      f"{args.dataset}_{safe_name}.jsonl")
+        os.environ["IOC_VERIFY_CACHE"] = cache_path
+        if os.path.exists(cache_path):
+            print(f"  ↻ resuming — reusing cached verdicts in {cache_path}")
         _v._verifier_instance = None  # force re-instantiation with the new model
 
         # Refuse to record a row for a backend that is not actually reachable.
@@ -153,6 +166,25 @@ def main() -> None:
     }
     out_path = f"data/evaluation/multi_model_benchmark_{args.dataset}.json"
     os.makedirs("data/evaluation", exist_ok=True)
+
+    if args.merge and os.path.exists(out_path):
+        # Splice only this run's model-pipeline rows into the existing file;
+        # leave its static baselines and other models' rows byte-identical.
+        with open(out_path) as f:
+            merged = json.load(f)
+        new_model_rows = {k: v for k, v in rows.items()
+                          if k.startswith("Our Pipeline + LLM [")}
+        if not new_model_rows:
+            print("\n⚠️  --merge: no model row was produced this run "
+                  "(backend skipped?); leaving the existing file untouched.")
+            return
+        merged["results"].update(new_model_rows)
+        for name in (m["name"] for m in models):
+            if name not in merged["models"]:
+                merged["models"].append(name)
+        out = merged
+        print(f"\n🔀 Merged {len(new_model_rows)} model row(s) into {out_path}")
+
     with open(out_path, "w") as f:
         json.dump(out, f, indent=2)
     print(f"\n💾 Saved to {out_path}")
