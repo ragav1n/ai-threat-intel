@@ -45,6 +45,10 @@ STEPS = [
       "--calibrator", "data/evaluation/fitted_calibrator_no_prism.json"]),
     ("C2 calibration transfer across report sources",
      ["scripts/calibration_transfer.py"]),
+    ("C2+ conformal risk-control study (FDR guarantee + transfer)",
+     ["scripts/run_conformal_study.py"]),
+    ("C4 adversarial threat model — prism (gold)",
+     ["scripts/run_adversarial_study.py", "--dataset", "prism"]),
 ]
 
 
