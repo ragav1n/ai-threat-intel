@@ -1,144 +1,121 @@
-# Threat Intelligence Feed Aggregator
+# Threat Intelligence Aggregator
 
-A fully automated, production-grade threat intelligence feed aggregator that collects, normalizes, and deduplicates Indicators of Compromise (IOCs) from various open sources.
+The ingestion and analytics package. It collects indicators of compromise
+(IOCs) from open sources, deobfuscates and extracts them, verifies them with a
+local LLM, and feeds the downstream knowledge graph, campaign detection,
+prediction, and evaluation modules.
 
-## Key Features
+## Components
 
-*   **Multi-Source Collection**:
-    *   **RSS/Atom Feeds**: Standard threat feed consumption.
-    *   **GitHub Discovery**: Automatically discovers and consumes Atom feeds from security repositories (e.g., `theZoo`, `atomic-red-team`).
-    *   **JSON/CSV/Text**: Flexible parsing for unstructured or semi-structured data.
-*   **Intelligent Processing**:
-    *   **Concurrent Fetching**: Uses thread pools for high-speed parallel data collection.
-    *   **Smart Normalization**: Standardizes IOCs into common formats (IP, Domain, URL, Hash, CVE).
-    *   **Deduplication**: Uses SHA256 hashing (`type::value`) to prevent duplicate entries in the database.
-*   **Robust Architecture**:
-    *   **Fault Tolerance**: Automatic retries with exponential backoff for network failures.
-    *   **Health Monitoring**: Tracks feed uptime, response times, and success rates.
-    *   **Alerting**: Email alerts triggered after 3 consecutive failures, including uptime stats and CSV reports.
-*   **Integration Ready**:
-    *   Exports to MongoDB for persistent storage.
-    *   Generates `input.txt` for downstream AI summarization (e.g., Ollama/LLM pipelines).
+| Module | Responsibility |
+| :--- | :--- |
+| `feed_collection/` | Fetch, parse, deobfuscate, extract, verify, and store IOCs |
+| `knowledge_graph/` | Build and query the IOC / campaign / technique graph |
+| `campaign_detector/` | Group indicators into campaigns via community detection on the graph |
+| `predictive_graphrag/` | Forecast likely next techniques with a graph-informed LLM pipeline |
+| `evaluation/` | Calibration, conformal, adversarial, and baseline studies |
 
 ---
 
-## Architecture
+## Feed collection pipeline
 
-![Architecture Diagram](architecture.png)
+`feed_collection/` is the core ingestion path:
 
-The system follows a standard ETL (Extract, Transform, Load) pipeline:
+1. **Collect** (`collector.py`) — fetches configured sources concurrently with
+   retries and exponential backoff. `github_discovery.py` auto-discovers Atom
+   feeds from security repositories.
+2. **Parse** (`parser.py`) — normalizes RSS/Atom, JSON, CSV, and text into a
+   common record schema.
+3. **Deobfuscate** (`ioc_deobfuscator.py`) — reverses defanging, character
+   encoding, homoglyph, and zero-width disguises before extraction.
+4. **Extract** (`ioc_extractor.py`) — regex extraction of IPs, domains, URLs,
+   hashes, CVEs, and emails with a per-candidate confidence score.
+5. **Verify** (`llm_ioc_verifier.py`, `llm_providers.py`) — a local Ollama
+   model judges each candidate; `confidence_fusion.py` combines the regex and
+   LLM scores into one fused confidence.
+6. **Store** (`mongo_writer.py`) — writes deduplicated IOCs to MongoDB
+   (`type::value` SHA-256 key) and exports `data/normalized_iocs.{json,csv}`.
 
-1.  **Scheduler**: Triggers collection every 10 minutes (configurable).
-2.  **Collector**: Fetches data from configured sources in parallel.
-3.  **Parser/Extractor**: Identifies IOCs using regex and normalizes them.
-4.  **Writer**:
-    *   **MongoDB**: Stores structured, deduplicated IOCs.
-    *   **Filesystem**: export `input.txt` for external tools.
+`health.py` and `status.py` track per-feed uptime, response time, and success
+rate, and trigger an email alert after three consecutive failures.
 
 ---
 
-## Project Structure
+## Layout
 
 ```plaintext
 threat_intel_aggregator/
-├── main.py                  # Entry point & Scheduler
+├── main.py                      # Collection entry point / scheduler
+├── enums.py                     # IOC type and severity definitions
 ├── feed_collection/
-│   ├── collector.py         # Concurrent fetcher & retry logic
-│   ├── github_discovery.py  # GitHub feed auto-discovery
-│   ├── parser.py            # Data normalization & cleanup
-│   ├── ioc_extractor.py     # Regex-backed IOC extraction
-│   ├── mongo_writer.py      # Database interaction & Deduplication
-│   ├── config.py            # Configuration loader
-│   ├── feeds.yaml           # STATIC Feed definitions
-│   └── health.py            # Health tracking logic
-├── data/                    # Local data storage
-│   ├── normalized_iocs.json # Latest processed IOCs
-│   ├── normalized_iocs.csv  # CSV export for reports
-│   ├── feed_health.json     # Feed status tracking
-│   ├── feed_collector.log   # Application logs
-│   └── raw_feeds.json       # Intermediate raw data
-├── enums.py                 # IOC Types & Severity definitions
-└── requirements.txt         # Dependencies
+│   ├── collector.py             # Concurrent fetch + retry
+│   ├── github_discovery.py      # GitHub feed auto-discovery
+│   ├── parser.py                # Normalization
+│   ├── ioc_deobfuscator.py      # Defang / homoglyph / encoding reversal
+│   ├── ioc_extractor.py         # Regex extraction + scoring
+│   ├── llm_ioc_verifier.py      # Local LLM verification
+│   ├── llm_providers.py         # Ollama / cloud verifier backends
+│   ├── confidence_fusion.py     # Regex + LLM score fusion
+│   ├── mongo_writer.py          # Storage + deduplication
+│   ├── health.py / status.py    # Feed health tracking
+│   ├── config.py                # Configuration loader
+│   └── feeds.yaml               # Feed definitions (102 sources)
+├── knowledge_graph/             # graph_manager.py
+├── campaign_detector/           # detector.py, temporal.py, models.py
+├── predictive_graphrag/         # graph_traversal.py, ttp_predictor.py
+├── evaluation/                  # Research evaluation harness
+└── data/                        # Local outputs and feed health state
 ```
 
 ---
 
-## Installation & Setup
-
-### 1. Prerequisites
-
-*   Python 3.8+
-*   MongoDB (Local or Atlas)
-
-### 2. Install Dependencies
+## Setup
 
 ```bash
 cd threat_intel_aggregator
 pip install -r requirements.txt
 ```
 
-### 3. Configuration
+Requires Python 3.11+, a running MongoDB, and Ollama for verification.
 
-#### Feeds (`feed_collection/feeds.yaml`)
-Define your static feed sources here. The aggregator also auto-discovers GitHub feeds.
+Configuration is read from the repository-root `.env` (see the main README);
+the relevant keys here are `MONGO_URI`, `MONGO_DB`, `OLLAMA_URL`, and
+`IOC_VERIFIER_MODEL` (default `qwen3.5:9b`). Feed sources are edited in
+`feed_collection/feeds.yaml`:
 
 ```yaml
 feeds:
-  - name: "Hybrid Analysis"
-    url: "https://www.hybrid-analysis.com/feed?json"
-    source_type: "json"
-    category: "general"
-  
   - name: "CISA US-CERT"
     url: "https://www.us-cert.gov/ncas/alerts.xml"
     source_type: "rss"
     category: "government"
 ```
 
-#### Environment Variables
-Create a `.env` file for sensitive config (optional, defaults provided):
-
-```env
-MONGO_URI=mongodb://localhost:27017/
-MONGO_DB=threat_intel
-MONGO_IOC_COLLECTION=iocs
-```
-
-*(Note: Email alerts are currently configured in `main.py`. Update credentials there if needed.)*
-
 ---
 
 ## Usage
 
-Start the aggregator:
-
 ```bash
-python main.py
+python main.py          # run once on startup, then every SCHEDULER_INTERVAL minutes
 ```
 
-*   **First Run**: Runs immediately upon startup.
-*   **Loop**: Runs every 10 minutes thereafter.
-*   **Logs**: storage in `data/feed_collector.log`.
+Press `Ctrl+C` to stop. Logs are written to `data/feed_collector.log`.
 
-### Stopping
-Press `Ctrl+C` to gracefully stop the scheduler.
-
----
-
-## Output Files
+### Outputs
 
 | File | Description |
 | :--- | :--- |
-| **`data/normalized_iocs.json`** | JSON list of all extracted IOCs from the last run. |
-| **`data/normalized_iocs.csv`** | CSV version of the IOCs, used for email attachments. |
-| **`../threat_model/input.txt`** | Simplified bullet-list of IOCs for AI Summarizers. |
-| **`data/feed_health.json`** | Tracks last success/failure and response time for each feed. |
+| `data/normalized_iocs.json` | All IOCs from the last run |
+| `data/normalized_iocs.csv` | CSV export (used for email attachments) |
+| `data/feed_health.json` | Per-feed last success/failure and response time |
+| `../threat_model/input.txt` | IOC list handed to the summarizer |
 
 ---
 
-## Monitoring & Alerts
+## Evaluation
 
-The system includes a built-in "Dead Man's Switch":
-*   **Trigger**: If the collection job fails 3 times in a row.
-*   **Action**: Sends an email to the configured administrator.
-*   **Content**: Includes failure reason, system uptime, and a CSV report of the last known IOCs.
+`evaluation/` holds the research code behind the project's IOC-extraction
+study: obfuscation generation and ablation, calibration and conformal risk
+control, adversarial attack/defense generators, baseline comparison against
+off-the-shelf extractors, and bootstrap confidence intervals. The reproducible
+runs and recorded numbers live in `../scripts/` and `../RESULTS.md`.

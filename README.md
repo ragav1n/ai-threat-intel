@@ -1,101 +1,131 @@
 # AI-Powered Threat Intelligence Platform
 
-A Threat Intelligence Platform that aggregates, correlates, and analyzes threat data using Local LLMs (Ollama), RAG, and autonomous Hunter Agents.
+A threat intelligence platform that aggregates indicators of compromise (IOCs)
+from open sources, verifies and summarizes them with local LLMs, links them
+into a knowledge graph, groups them into campaigns, and serves the results
+through a REST API and a SOC dashboard. The LLM stages run locally through
+Ollama, so report data does not need to leave the host.
 
 ![Python](https://img.shields.io/badge/Python-3.11%2B-blue?style=for-the-badge&logo=python)
 ![MongoDB](https://img.shields.io/badge/MongoDB-7.0-green?style=for-the-badge&logo=mongodb)
-![Ollama](https://img.shields.io/badge/Ollama-LLM-orange?style=for-the-badge&logo=openai)
+![Ollama](https://img.shields.io/badge/Ollama-local%20LLM-orange?style=for-the-badge&logo=ollama)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.109-teal?style=for-the-badge&logo=fastapi)
 ![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)
-![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker)
+![Docker](https://img.shields.io/badge/Docker-ready-2496ED?style=for-the-badge&logo=docker)
 
 ---
 
-## Key Capabilities
+## What it does
 
-- **Scalable Aggregation**: Collects IOCs from 100+ sources including RSS feeds, GitHub repos, CISA alerts, Cisco Talos, Kaspersky, and more.
-- **Cognitive Analysis**: Uses Local LLMs (Qwen2.5/LLaMA3) for automated verification and human-readable threat summaries.
-- **Knowledge Graph Intelligence**: Maps relationships between threats using a high-fidelity star topology with real-time graph visualization.
-- **Autonomous Hunter**: Enriches IOCs with Geolocation, WHOIS, ASN, and DNS resolution.
-- **RAG Integration**: Maps threats to MITRE ATT&CK techniques using semantic search.
-- **Smart Alerting**: Batches high-severity threats into HTML email reports with PDF and CSV attachments.
-- **Interactive SOC Dashboard**: Real-time 2D force-directed graph with physics manipulation, connectivity filtering, and live threat feed monitoring.
+- **Feed aggregation** — collects IOCs from 102 configured sources (RSS/Atom
+  feeds, auto-discovered GitHub security repositories, and JSON/CSV/text
+  endpoints), normalizes them to a common schema, and deduplicates by
+  `type::value` SHA-256.
+- **LLM verification and summarization** — a local Ollama model filters regex
+  candidates and writes human-readable threat summaries with a severity score.
+- **MITRE ATT&CK mapping** — retrieval-augmented lookup maps observed behavior
+  to ATT&CK techniques with confidence scores.
+- **IOC enrichment** — the Hunter agent adds geolocation, WHOIS, ASN, and DNS
+  data for IPs and domains.
+- **Knowledge graph** — relates indicators, campaigns, and techniques and
+  exposes the graph for querying and visualization.
+- **Campaign detection** — groups related indicators into campaigns using
+  community detection on the knowledge graph, with temporal and severity
+  metadata.
+- **Predictive GraphRAG** — a multi-step LLM pipeline that uses the knowledge
+  graph to forecast an attacker's likely next ATT&CK techniques.
+- **Alerting** — batches high- and critical-severity threats into HTML email
+  reports with PDF and CSV attachments.
+- **SOC dashboard** — a Next.js interface with a force-directed graph view and
+  live feed monitoring.
 
 ---
 
 ## Architecture
 
-![High Level Architecture](architecture.png)
+![High-level architecture](architecture.png)
 
-The platform is composed of four main microservices:
+The platform has four parts:
 
-1.  **[Threat Intel Aggregator](./threat_intel_aggregator)**: The ingestion engine. Fetches, normalizes, and deduplicates IOCs.
-2.  **[Threat Model](./threat_model)**: The brain. Uses LLMs and RAG to analyze threats and component for email alerts.
-3.  **[Unified API Server](./unified_api_server.py)**: The gateway. Exposes data via REST API (FastAPI) with rate limiting.
-4.  **[SOC Dashboard](./soc-dashboard)**: The frontend. A Next.js interface for analysts.
+1. **[`threat_intel_aggregator/`](./threat_intel_aggregator)** — ingestion and
+   analytics. Feed collection, IOC extraction, the knowledge graph, campaign
+   detection, predictive GraphRAG, and the evaluation harness.
+2. **[`threat_model/`](./threat_model)** — analysis. The Hunter enrichment
+   agent, the LLM + RAG summarizer, and the email/report generators.
+3. **[`unified_api_server.py`](./unified_api_server.py)** — a FastAPI gateway
+   exposing IOCs, feeds, summaries, the knowledge graph, campaigns,
+   predictions, and evaluation runs.
+4. **[`soc-dashboard/`](./soc-dashboard)** — the Next.js analyst frontend.
+
+MongoDB is the shared store; Ollama serves the local LLMs.
 
 ---
 
-## Quick Start
+## Repository layout
 
-### Option A: Docker (Recommended)
-
-Run the entire stack with a single command:
-
-```bash
-# Start all services (API, Mongo, Scheduler, Dashboard)
-make docker-up
-
-# Access Dashboard: http://localhost:3000
-# Access API Docs: http://localhost:8000/docs
+```
+ai-threat-intel/
+├── unified_api_server.py        # FastAPI gateway
+├── final_scheduler.py           # Periodic collection + analysis scheduler
+├── run_evaluation.py            # Research/evaluation entry point
+├── Makefile                     # install / run / docker / lint targets
+├── docker-compose.yml           # API, MongoDB, scheduler, dashboard
+├── threat_intel_aggregator/     # Ingestion and analytics (see its README)
+│   ├── feed_collection/         # Fetchers, parsers, IOC extraction
+│   ├── knowledge_graph/         # Graph construction and queries
+│   ├── campaign_detector/       # Temporal clustering into campaigns
+│   ├── predictive_graphrag/     # TTP prediction over the graph
+│   └── evaluation/              # Calibration, conformal, adversarial studies
+├── threat_model/                # Enrichment + LLM analysis (see its README)
+├── soc-dashboard/               # Next.js frontend
+├── scripts/                     # Reproducibility harness for the evaluation
+└── RESULTS.md                   # Recorded evaluation results
 ```
 
-### Option B: Manual Setup
+---
 
-**1. Prerequisites**
+## Quick start
 
-- Python 3.11+
-- Node.js 18+
-- MongoDB running locally
-- Ollama running (`ollama serve`)
-
-**2. Backend Setup**
+### Option A — Docker
 
 ```bash
-# Install dependencies
-make install
-
-# Start API Server
-make run-api
-
-# Start Scheduler (in new terminal)
-make run-scheduler
+make docker-up        # API, MongoDB, scheduler, dashboard
+# Dashboard: http://localhost:3000
+# API docs:  http://localhost:8000/docs
+make docker-down      # stop
 ```
 
-**3. Frontend Setup**
+### Option B — manual
+
+**Prerequisites:** Python 3.11+, Node.js 18+, MongoDB, and Ollama (`ollama serve`).
 
 ```bash
-cd soc-dashboard
-npm install
-npm run dev
+# Backend
+make install          # install Python dependencies
+make run-api          # start the FastAPI server
+make run-scheduler    # start the collection scheduler (separate terminal)
+
+# Frontend
+cd soc-dashboard && npm install && npm run dev
 ```
 
 ---
 
 ## Configuration
 
-Create a `.env` file in the root directory:
+Create a `.env` file in the repository root:
 
 ```env
 # Database
 MONGO_URI=mongodb://localhost:27017/
 MONGO_DB=threat_intel
 
-# AI Engine
+# Local LLMs (Ollama)
 OLLAMA_URL=http://localhost:11434
-OLLAMA_MODEL=qwen2.5:7b
+OLLAMA_MODEL=qwen2.5:7b          # summarizer
+IOC_VERIFIER_MODEL=qwen3.5:9b    # IOC verifier
 
-# Email Alerts
+# Email alerts
 EMAIL_HOST=smtp.gmail.com
 EMAIL_PORT=587
 EMAIL_USER=your-email@gmail.com
@@ -105,60 +135,47 @@ EMAIL_USE_TLS=true
 
 # System
 LOG_LEVEL=INFO
-SCHEDULER_INTERVAL=10
+SCHEDULER_INTERVAL=10            # minutes
 ```
 
-To configure feeds, edit `threat_intel_aggregator/feed_collection/feeds.yaml`.
+Feed sources are defined in
+`threat_intel_aggregator/feed_collection/feeds.yaml`.
 
 ---
 
-## Email Alerts
+## API reference
 
-The system includes a robust email alerting module located in `threat_model/threat_summarizer/emailer.py`.
+The gateway exposes roughly thirty endpoints; the full, interactive list is at
+`/docs`. The main groups:
 
-- **Triggers**:
-  - High/Critical severity threats detected by the AI.
-  - Batch processing (every 10 minutes or 10 high-severity items).
-- **Content**:
-  - **HTML Body**: Summary of threats, severity counts, and MITRE TTPs.
-  - **Attachments**:
-    - `threat_summary_report.pdf`: Detailed investigation report.
-    - `threat_summaries.csv`: Raw data for import.
-
----
-
-## API Reference
-
-| Method | Endpoint                | Description                             |
-| :----- | :---------------------- | :-------------------------------------- |
-| `GET`  | `/api/iocs`             | List enriched IOCs with filters.        |
-| `POST` | `/api/summarize`        | Generate AI summary for a specific IOC. |
-| `GET`  | `/api/feeds`            | Get feed health status.                 |
-| `POST` | `/api/reports/generate` | Create PDF reports.                     |
-| `POST` | `/api/email/send`       | Trigger manual email report.            |
+| Group           | Examples                                                                 |
+| :-------------- | :----------------------------------------------------------------------- |
+| IOCs            | `GET /api/iocs`, `GET /api/iocs/stats`, `POST /api/iocs/verify`          |
+| Feeds           | `GET /api/feeds`, `GET /api/feeds/stats`, `POST /api/feeds/collect`      |
+| Summaries       | `POST /api/summarize`, `GET /api/summaries`                              |
+| Reports & email | `POST /api/reports/generate`, `POST /api/email/send`                     |
+| Knowledge graph | `GET /api/knowledge-graph`, `GET /api/knowledge-graph/query`             |
+| Campaigns       | `GET /api/campaigns`, `GET /api/campaigns/timeline`                      |
+| Prediction      | `POST /api/predict/campaign/{id}`, `GET /api/predict/history/{id}`       |
+| Evaluation      | `POST /api/evaluation/run`, `GET /api/evaluation/results`                |
 
 ---
 
-## Project Structure
+## Research and evaluation
 
-```
-ai-threat-intel/
-├── unified_api_server.py        # Main API Gateway
-├── threat_intel_aggregator/     # Ingestion Module
-│   ├── main.py                  # Scheduler
-│   └── feed_collection/         # Fetchers & Parsers
-├── threat_model/                # AI Analysis Module
-│   ├── hunter.py                # Enrichment Agent
-│   └── threat_summarizer/       # LLM & RAG Logic
-│       └── emailer.py           # Email Alert System
-├── soc-dashboard/               # Frontend UI (Next.js)
-├── docker-compose.yml           # Container Orchestration
-└── Makefile                     # Automation Scripts
+The IOC extraction pipeline is evaluated under graded text obfuscation, with
+post-hoc confidence calibration, a distribution-free conformal auto-apply
+guarantee, and an adversarial threat model. The study code lives in
+`threat_intel_aggregator/evaluation/`, the reproducibility harness in
+`scripts/`, and recorded numbers in [`RESULTS.md`](./RESULTS.md).
+
+```bash
+python run_evaluation.py        # run the evaluation suite
 ```
 
 ---
 
 ## Contributors
 
-- **Saara Unnathi R** — Feed Collection · IOC Parsing
-- **N Ragavenderan** — AI Architecture · API · Dashboard
+- **Saara Unnathi R** — feed collection, IOC parsing
+- **N. Ragavenderan** — pipeline architecture, API, dashboard, evaluation

@@ -1,104 +1,100 @@
-# AI Threat Summarizer & Hunter Agent
+# Threat Model — Summarizer and Hunter Agent
 
-A cognitive threat analysis engine that combines Local LLMs (Ollama) with a dedicated "Hunter" agent to enrich, analyze, and summarize threat indicators.
+The analysis package. It enriches IOCs, retrieves relevant MITRE ATT&CK
+context, and uses a local LLM to produce a structured summary, a severity
+score, and a technique mapping. It runs either interactively or as a watchdog
+that processes new IOCs from the aggregator.
 
-## Key Features
+## What it does
 
-*   **Local LLM Intelligence**:
-    *   Powered by **Ollama** (Default: `qwen2.5:7b`).
-    *   Offline-first privacy and low latency.
-*   **Hunter Agent**:
-    *   Automatically detects IOCs (IPs, Domains).
-    *   Performs real-time enrichment (Geolocation, WHOIS, DNS resolution).
-*   **RAG Integration**:
-    *   Retrieves relevant **MITRE ATT&CK** techniques.
-    *   Maps observed behaviors to TTPs using semantic search.
-*   **Automated TTP Mapping**:
-    *   Extracts Tactics, Techniques, and Procedures from unstructured data.
-    *   Assigns confidence scores to each mapping.
-*   **Dual Operation Modes**:
-    *   **CLI**: Interactive manual analysis.
-    *   **Watchdog**: Automated pipeline monitoring `input.txt` from the aggregator.
+- **Local LLM analysis** — uses Ollama (default `qwen2.5:7b`), so data stays on
+  the host.
+- **Hunter agent** (`hunter.py`) — enriches IPs and domains with geolocation,
+  WHOIS, ASN, and DNS resolution.
+- **MITRE ATT&CK RAG** (`threat_summarizer/mitre_rag.py`) — retrieves relevant
+  techniques by semantic search and maps observed behavior to TTPs with
+  confidence scores.
+- **Reporting** — generates PDF reports (`pdf_generator.py`), CSV exports
+  (`exporter.py`), and batched HTML email alerts (`emailer.py`) for high- and
+  critical-severity threats.
 
 ---
 
-## Architecture
+## Pipeline
 
-![Architecture Diagram](architecture.png)
-
-1.  **Input**: Receives IOCs from the CLI or the Aggregator (`input.txt`).
-2.  **Hunter**: Enriches the IOC with network data (GeoIP, ASN, WHOIS).
-3.  **RAG**: Queries the MITRE ATT&CK knowledge base for context.
-4.  **LLM**: Synthesizes the enrichment + RAG context + prompt templates.
-5.  **Output**: Generates a structured summary, severity score, and TTP map.
+1. **Input** — an IOC or free-text description from the CLI, or a line from
+   `input.txt` (written by `threat_intel_aggregator`).
+2. **Enrich** — the Hunter adds network context (GeoIP, ASN, WHOIS, DNS).
+3. **Retrieve** — the RAG layer pulls matching MITRE ATT&CK techniques.
+4. **Summarize** — the LLM combines enrichment, retrieved context, and the
+   prompt templates into a structured result.
+5. **Validate and store** — `validator.py` checks the output; results go to
+   MongoDB and, for severe threats, into a batched email report.
 
 ---
 
-## Project Structure
+## Layout
 
 ```plaintext
 threat_model/
-├── main.py                     # Interactive CLI entry point
-├── hunter.py                   # Hunter Agent (Enrichment)
+├── main.py                      # Interactive CLI
+├── main_export.py               # Batch export entry point
+├── hunter.py                    # Enrichment agent
 ├── threat_summarizer/
-│   ├── summarizer.py           # Core LLM & RAG logic
-│   ├── watch_and_run.py        # Automated Watchdog loop
-│   ├── mitre_rag.py            # MITRE Knowledge Base retrieval
-│   ├── model_client.py         # Ollama API client
-│   ├── prompt_template.txt     # Jinja2 prompt templates
-│   └── ttp_template.txt        # TTP extraction prompts
-├── logs/                       # Execution logs
-└── requirements.txt            # Dependencies
+│   ├── summarizer.py            # Core LLM + RAG logic
+│   ├── watch_and_run.py         # Watchdog over input.txt
+│   ├── mitre_rag.py             # MITRE ATT&CK retrieval
+│   ├── model_client.py          # Ollama client
+│   ├── mongo_client.py          # MongoDB access
+│   ├── validator.py             # Output validation
+│   ├── emailer.py               # Batched email alerts
+│   ├── pdf_generator.py         # PDF reports
+│   ├── exporter.py              # CSV export
+│   ├── logger.py                # Logging setup
+│   ├── prompt_template.txt      # Summary prompt
+│   ├── severity_template.txt    # Severity-scoring prompt
+│   └── ttp_template.txt         # TTP-extraction prompt
+└── logs/
 ```
 
 ---
 
-## Setup & Configuration
-
-### 1. Prerequisites
-
-*   **Ollama** installed and running.
-*   Pull the default model:
-    ```bash
-    ollama pull qwen2.5:7b
-    ```
-
-### 2. Install Dependencies
+## Setup
 
 ```bash
+ollama pull qwen2.5:7b
 cd threat_model
 pip install -r requirements.txt
 ```
+
+Requires Ollama running and a reachable MongoDB. Configuration is read from the
+repository-root `.env` (see the main README).
 
 ---
 
 ## Usage
 
-### Interactive CLI (Manual Analysis)
-Run the manual analysis tool to query specific IOCs or threat descriptions.
+### Interactive CLI
 
 ```bash
 python main.py
 ```
-*   **Input**: `192.168.1.5` or "Phishing email with malicious attachment".
-*   **Output**: Real-time summary on console.
 
-### Automated Watchdog (Pipeline Mode)
-Monitors the `input.txt` file (populated by `threat_intel_aggregator`) and processes new IOCs automatically.
+Enter an IOC (`103.15.5.21`) or a description ("phishing email with a
+malicious attachment"); the summary prints to the console.
+
+### Watchdog (pipeline mode)
 
 ```bash
 python -m threat_summarizer.watch_and_run
 ```
 
-*   **Monitors**: `../threat_model/input.txt`
-*   **Action**: Summarizes new lines as they appear.
-*   **Alerts**: Sends batch emails for High/Critical threats.
+Monitors `input.txt`, summarizes new entries as they appear, and sends batched
+email reports for high- and critical-severity threats.
 
 ---
 
-## Output Examples
-
-The module produces structured JSON output used for reporting:
+## Output
 
 ```json
 {
