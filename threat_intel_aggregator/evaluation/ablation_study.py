@@ -369,3 +369,99 @@ def format_obfuscation_table(results: Dict[str, Dict[str, AblationResult]]) -> s
     lines.append("        a small dF1 here is expected and shows the recovery is not circular.")
     lines.append("=" * 80)
     return "\n".join(lines)
+
+
+# Offline-only baselines: no LLM, no extra optional deps (spaCy/Ollama).
+DEFAULT_OBF_BASELINES = ["regex_only", "our_pipeline", "iocextract", "ioc_finder"]
+
+
+def run_obfuscation_baseline_comparison(
+    samples: list = None,
+    tiers: list = None,
+    baselines: list = None,
+    dataset: str = "prism",
+    n_iterations: int = 1000,
+) -> Dict[str, Dict[str, dict]]:
+    """
+    Run off-the-shelf baseline extractors through the obfuscation-severity tiers.
+
+    Companion to `run_obfuscation_ablation`: instead of comparing our pipeline
+    with deobfuscation OFF vs ON, this compares *other tools* (ioc-finder,
+    iocextract, regex_only) and our pipeline against each other at each tier,
+    with bootstrap CIs. The question this answers: tools that are competitive
+    on clean text (T0) -- do they stay competitive once the text is disguised
+    (T2+), or do they collapse the way an unaided regex does?
+
+    Args:
+        samples: Pre-loaded sample dicts (text, expected_iocs, category).
+                 If None, loads `dataset` via the dataset registry.
+        tiers:   Severity tiers to run. Uses all SEVERITY_TIERS if None.
+        baselines: Baseline keys from `baseline_comparison.BASELINES`.
+                 Defaults to DEFAULT_OBF_BASELINES (fully offline).
+        dataset: Registered dataset name when `samples` is None.
+        n_iterations: Bootstrap resamples per tier per baseline.
+
+    Returns:
+        Dict mapping tier -> {baseline_key: {**BaselineResult.to_dict(),
+        "bootstrap": BootstrapResult.to_dict()}}.
+    """
+    from threat_intel_aggregator.evaluation.baseline_comparison import run_baseline_comparison
+    from threat_intel_aggregator.evaluation.bootstrap_ci import compute_bootstrap_ci
+    from threat_intel_aggregator.evaluation.obfuscation_generator import (
+        SEVERITY_TIERS, build_obfuscated_samples,
+    )
+
+    if samples is None:
+        from threat_intel_aggregator.evaluation.datasets import load_samples
+        samples = load_samples(dataset)
+
+    tiers = tiers or SEVERITY_TIERS
+    baselines = baselines or DEFAULT_OBF_BASELINES
+
+    results: Dict[str, Dict[str, dict]] = {}
+    for tier in tiers:
+        logger.info(f"Obfuscation baseline comparison: tier {tier}")
+        obf_samples = build_obfuscated_samples(samples, tier)
+        tier_results, per_sample = run_baseline_comparison(
+            obf_samples, baselines=baselines, collect_per_sample=True)
+        results[tier] = {
+            key: {
+                **tier_results[key].to_dict(),
+                "bootstrap": compute_bootstrap_ci(
+                    per_sample[key], n_iterations=n_iterations).to_dict(),
+            }
+            for key in tier_results
+        }
+
+    return results
+
+
+def format_obfuscation_baselines_table(results: Dict[str, Dict[str, dict]], baselines: list) -> str:
+    """Format the tier x baseline F1 matrix from `run_obfuscation_baseline_comparison`."""
+    from threat_intel_aggregator.evaluation.baseline_comparison import BASELINES
+    from threat_intel_aggregator.evaluation.obfuscation_generator import ADVERSARIAL_TIERS
+
+    lines = []
+    lines.append("=" * 78)
+    lines.append("  OBFUSCATION-SEVERITY BASELINE COMPARISON  (F1 per tier)")
+    lines.append("=" * 78)
+
+    names = {key: BASELINES[key][0] for key in baselines}
+    header = f"  {'Tier':<14s}"
+    for key in baselines:
+        header += f" {names[key]:>22s}"
+    lines.append(header)
+    lines.append(f"  {'-'*14}" + f" {'-'*22}" * len(baselines))
+
+    for tier, tier_results in results.items():
+        marker = " *" if tier in ADVERSARIAL_TIERS else "  "
+        row = f"  {tier:<12s}{marker}"
+        for key in baselines:
+            f1 = tier_results.get(key, {}).get("f1", 0.0)
+            row += f" {f1:21.1%}"
+        lines.append(row)
+
+    lines.append("")
+    lines.append("  *   = held-out ADVERSARIAL tier (transformations outside our deobfuscation ruleset)")
+    lines.append("=" * 78)
+    return "\n".join(lines)

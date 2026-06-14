@@ -42,6 +42,7 @@ Loaded via `threat_intel_aggregator/evaluation/datasets.py` `load_samples()`.
 | Contribution | Number | Script | Output artifact |
 |---|---|---|---|
 | C1 | Deobfuscation ON is tier-invariant; OFF collapses to 0% at T3/T4; held-out adversarial T5 is non-circular | `run_obfuscation_ablation.py --dataset prism` | `obfuscation_ablation_prism.json` |
+| C1 | Off-the-shelf baselines (ioc-finder, iocextract, regex) vs our pipeline across the same obfuscation tiers — do tools that win on clean text (T0) collapse under obfuscation (T2+) the same way ours does without deobfuscation? | `run_obfuscation_baselines.py --dataset prism` | `obfuscation_baselines_prism.json` |
 | C2 | Calibration metrics with bootstrap CIs; raw LLM is badly miscalibrated, isotonic fixes it (ECE → ~0.02 on gold) | `run_calibration_study.py --dataset <name>` | `calibration_study_<name>.json` |
 | C2 | Production calibrator (pooled) and a PRISM-held-out calibrator | `fit_calibrator.py [--exclude-dataset prism]` | `fitted_calibrator[_no_prism].json` |
 | C3 | Local Qwen vs GPT-5.5 / Claude / Gemini 3 Flash on PRISM gold, F1 ± CI | `multi_model_benchmark.py --dataset prism` | `multi_model_benchmark_prism.json` |
