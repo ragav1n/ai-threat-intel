@@ -145,7 +145,7 @@ def fig_adversarial_asr():
     def mean(xs):
         return sum(xs) / len(xs)
 
-    groups = ["A1 flood\n(report-borne)", "A2 inject\n(report-borne)", "A3 prompt\n(verifier IPI)"]
+    groups = ["A1 flood\n(report-borne)", "A2 inject\n(report-borne)", "A3 prompt\n(verifier injection)"]
     before = [mean(a1["asr_no_mitigation"]), mean(a2["asr_no_mitigation"]), a3["asr_baseline_sanitizer"]]
     after = [mean(a1["asr_with_c2"]), mean(a2["asr_with_c2"]), a3["asr_hardened_defense"]]
 
@@ -155,7 +155,7 @@ def fig_adversarial_asr():
     bars_before = ax.bar([i - width / 2 for i in x], before, width=width, color="tab:red",
                           label="no mitigation", alpha=0.8)
     bars_after = ax.bar([i + width / 2 for i in x], after, width=width, color="tab:blue",
-                         label="with defense (C2 threshold /\nhardened verifier)", alpha=0.8)
+                         label="with defense (C2+ threshold /\nhardened verifier)", alpha=0.8)
     for b, v in zip(bars_before, before):
         ax.text(b.get_x() + b.get_width() / 2, v + 0.03, f"{v:.2f}",
                 ha="center", va="bottom", fontsize=6.5)

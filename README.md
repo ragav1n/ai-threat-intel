@@ -10,7 +10,7 @@ Ollama, so report data does not need to leave the host.
 ![MongoDB](https://img.shields.io/badge/MongoDB-7.0-green?style=for-the-badge&logo=mongodb)
 ![Ollama](https://img.shields.io/badge/Ollama-local%20LLM-orange?style=for-the-badge&logo=ollama)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.109-teal?style=for-the-badge&logo=fastapi)
-![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)
+![Next.js](https://img.shields.io/badge/Next.js-16-black?style=for-the-badge&logo=next.js)
 ![Docker](https://img.shields.io/badge/Docker-ready-2496ED?style=for-the-badge&logo=docker)
 
 ---
@@ -171,11 +171,51 @@ guarantee, and an adversarial threat model. The study code lives in
 
 ```bash
 python run_evaluation.py        # run the evaluation suite
+python scripts/reproduce_all.py # recompute every reported number offline
 ```
+
+### Obtaining PRISM
+
+The headline results are computed on PRISM, a third-party benchmark released
+under GPL-3.0. It is **not redistributed here**, so
+`data/evaluation/prism_benchmark.json` is absent from a fresh clone and is
+gitignored. Regenerate it before running the PRISM evaluations:
+
+```bash
+git clone https://github.com/EvanFr/LANCE /tmp/lance
+python scripts/build_prism_dataset.py --prism-dir /tmp/lance/PRISM
+```
+
+`scripts/reproduce_all.py` runs offline against the cached predictions in
+`data/evaluation/`, so it does not need PRISM itself; only re-deriving the
+cache from scratch does.
+
+---
+
+## Citing this work
+
+If you use this software or its evaluation artifacts, please cite the paper and
+the archived release:
+
+```bibtex
+@article{ragavenderan2026ioc,
+  author  = {Ragavenderan, N. and Unnathi R, Saara and Suma B and
+             Ramakanth Kumar P.},
+  title   = {Obfuscation-Resistant and Calibrated Extraction of Indicators of
+             Compromise from Threat Reports},
+  year    = {2026},
+  note    = {Under review}
+}
+```
+
+The software archive carries its own DOI: `10.5281/zenodo.XXXXXXX`
+(replace once the Zenodo deposit is minted).
 
 ---
 
 ## Contributors
 
-- **Saara Unnathi R** — feed collection, IOC parsing
 - **N. Ragavenderan** — pipeline architecture, API, dashboard, evaluation
+- **Saara Unnathi R** — feed collection, IOC parsing
+- **Suma B** — supervision, experimental design
+- **Ramakanth Kumar P.** — supervision, threat model

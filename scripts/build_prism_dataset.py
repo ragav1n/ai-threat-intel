@@ -1,7 +1,7 @@
 """
 Convert the PRISM IOC-extraction benchmark into the project's dataset schema.
 
-PRISM (Feraudo et al., arXiv 2506.11325, "Revealing the True Indicators:
+PRISM (Froudakis et al., arXiv 2506.11325, "Revealing the True Indicators:
 Understanding and Improving IoC Extraction From Threat Reports", 2025) is an
 open, fully human-validated benchmark: 1,791 indicators across 50 real-world
 threat reports, each tagged IoC or nonIoC. It is the external GOLD benchmark

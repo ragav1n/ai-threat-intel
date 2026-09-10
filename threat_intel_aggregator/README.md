@@ -85,10 +85,10 @@ the relevant keys here are `MONGO_URI`, `MONGO_DB`, `OLLAMA_URL`, and
 
 ```yaml
 feeds:
-  - name: "CISA US-CERT"
-    url: "https://www.us-cert.gov/ncas/alerts.xml"
-    source_type: "rss"
-    category: "government"
+  - name: Cisco Talos
+    url: https://blog.talosintelligence.com/rss/
+    category: malware analysis
+    source_type: blog
 ```
 
 ---
