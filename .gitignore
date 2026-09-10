@@ -38,3 +38,12 @@ soc-dashboard/.next/
 
 # Duplicate lock files
 soc-dashboard/pnpm-lock.yaml
+
+# PRISM benchmark is GPL-3.0 and is NOT redistributed; regenerate with
+# scripts/build_prism_dataset.py from a LANCE clone (see RESULTS.md).
+data/evaluation/prism_benchmark.json
+
+# Manuscript working tree: contains the under-review submission, Springer's
+# svjour3 distribution, and author photographs. Not part of the software
+# artifact and must not be published with it.
+paper/
