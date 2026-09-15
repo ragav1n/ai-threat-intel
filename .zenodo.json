@@ -1,0 +1,21 @@
+{
+  "title": "Obfuscation-Resistant and Calibrated Extraction of Indicators of Compromise: evaluation code and cached predictions",
+  "description": "<p>Pipeline and evaluation harness for the paper <em>Obfuscation-Resistant and Calibrated Extraction of Indicators of Compromise</em>. Includes the rule-based deobfuscation layer, confidence fusion and post-hoc isotonic calibration, the split-conformal risk-control procedure, the adversarial study, and the cached LLM predictions needed to reproduce every headline number offline via <code>scripts/reproduce_all.py</code>.</p><p>The PRISM gold benchmark itself is <strong>not</strong> redistributed here; see README.md for acquisition instructions.</p>",
+  "upload_type": "software",
+  "access_right": "open",
+  "license": "cc-by-4.0",
+  "creators": [
+    {"name": "Ragavenderan, N.", "affiliation": "Department of Computer Science and Engineering, RV College of Engineering, Bengaluru, India"},
+    {"name": "Unnathi R, Saara", "affiliation": "Department of Computer Science and Engineering, RV College of Engineering, Bengaluru, India"},
+    {"name": "B, Suma", "affiliation": "Department of Computer Science and Engineering, RV College of Engineering, Bengaluru, India"},
+    {"name": "Kumar P., Ramakanth", "affiliation": "Department of Computer Science and Engineering, RV College of Engineering, Bengaluru, India"}
+  ],
+  "keywords": [
+    "indicators of compromise",
+    "cyber threat intelligence",
+    "confidence calibration",
+    "conformal prediction",
+    "text deobfuscation",
+    "large language models"
+  ]
+}
