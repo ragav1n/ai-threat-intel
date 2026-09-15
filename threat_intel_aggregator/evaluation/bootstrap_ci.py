@@ -78,6 +78,26 @@ def _normalize(v: str) -> str:
     return v.strip().lower()
 
 
+def _sample_scores(eval_samples: list) -> List[Tuple[int, int, int]]:
+    """Per-sample (tp, fp, fn) for a list of {'expected_iocs', 'extracted_iocs'}."""
+    scores: List[Tuple[int, int, int]] = []
+    for sample in eval_samples:
+        expected_set: Set[Tuple[str, str]] = {
+            (_normalize(e["value"]), e["type"].strip().lower())
+            for e in sample.get("expected_iocs", [])
+        }
+        extracted_set: Set[Tuple[str, str]] = {
+            (_normalize(e["value"]), e["type"].strip().lower())
+            for e in sample.get("extracted_iocs", [])
+        }
+        scores.append((
+            len(expected_set & extracted_set),
+            len(extracted_set - expected_set),
+            len(expected_set - extracted_set),
+        ))
+    return scores
+
+
 def compute_bootstrap_ci(
     eval_samples: list,
     n_iterations: int = 1000,
@@ -99,20 +119,7 @@ def compute_bootstrap_ci(
     rng = random.Random(seed)
 
     # Pre-compute per-sample TP/FP/FN
-    sample_scores = []
-    for sample in eval_samples:
-        expected_set: Set[Tuple[str, str]] = {
-            (_normalize(e["value"]), e["type"].strip().lower())
-            for e in sample.get("expected_iocs", [])
-        }
-        extracted_set: Set[Tuple[str, str]] = {
-            (_normalize(e["value"]), e["type"].strip().lower())
-            for e in sample.get("extracted_iocs", [])
-        }
-        tp = len(expected_set & extracted_set)
-        fp = len(extracted_set - expected_set)
-        fn = len(expected_set - extracted_set)
-        sample_scores.append((tp, fp, fn))
+    sample_scores = _sample_scores(eval_samples)
 
     # Point estimates
     point_p, point_r, point_f = _compute_prf(sample_scores)
@@ -172,6 +179,118 @@ def compute_bootstrap_ci(
     )
 
     return result
+
+
+@dataclass
+class PairedDelta:
+    """Paired bootstrap comparison of one metric between two extractors."""
+    metric: str
+    reference: float
+    system: float
+    delta: float
+    ci_lower: float
+    ci_upper: float
+    p_value: float
+    n_samples: int
+    n_iterations: int
+
+    @property
+    def significant(self) -> bool:
+        """True when the 95% interval for the difference excludes zero."""
+        return self.ci_lower > 0.0 or self.ci_upper < 0.0
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "metric": self.metric,
+            "reference": round(self.reference, 4),
+            "system": round(self.system, 4),
+            "delta": round(self.delta, 4),
+            "ci_lower": round(self.ci_lower, 4),
+            "ci_upper": round(self.ci_upper, 4),
+            "p_value": round(self.p_value, 4),
+            "significant": self.significant,
+            "n_samples": self.n_samples,
+            "n_iterations": self.n_iterations,
+        }
+
+
+def compute_paired_bootstrap_delta(
+    reference_samples: list,
+    system_samples: list,
+    n_iterations: int = 1000,
+    confidence_level: float = 0.95,
+    seed: int = 42,
+) -> Dict[str, PairedDelta]:
+    """
+    Paired bootstrap comparison of two extractors on the same reports.
+
+    `compute_bootstrap_ci` gives each extractor a marginal interval, and two
+    marginal intervals can overlap even when one extractor beats the other on
+    every report. This resamples *report indices once* and scores both
+    extractors on the same resample, so the report-to-report variance that
+    both share cancels and what is left is the difference.
+
+    Args:
+        reference_samples: Per-sample extractions for the baseline being
+            compared against, in the schema `compute_bootstrap_ci` expects.
+        system_samples: Per-sample extractions for the candidate system,
+            aligned index-for-index with `reference_samples`.
+        n_iterations: Bootstrap resamples.
+        confidence_level: Interval width (default 95%).
+        seed: Random seed for reproducibility.
+
+    Returns:
+        Dict keyed "precision"/"recall"/"f1" mapping to a `PairedDelta`, where
+        `delta` is system minus reference and `p_value` is the two-sided
+        bootstrap probability of a difference at least this large in magnitude
+        under a null of no difference.
+
+    Raises:
+        ValueError: if the two sample lists are not the same length.
+    """
+    if len(reference_samples) != len(system_samples):
+        raise ValueError(
+            f"paired comparison needs aligned samples: got "
+            f"{len(reference_samples)} reference vs {len(system_samples)} system")
+
+    rng = random.Random(seed)
+    ref_scores = _sample_scores(reference_samples)
+    sys_scores = _sample_scores(system_samples)
+    n = len(ref_scores)
+
+    ref_point = _compute_prf(ref_scores)
+    sys_point = _compute_prf(sys_scores)
+
+    boot_deltas: Dict[int, List[float]] = {0: [], 1: [], 2: []}
+    for _ in range(n_iterations):
+        idx = [rng.randrange(n) for _ in range(n)] if n else []
+        ref_boot = _compute_prf([ref_scores[i] for i in idx])
+        sys_boot = _compute_prf([sys_scores[i] for i in idx])
+        for m in (0, 1, 2):
+            boot_deltas[m].append(sys_boot[m] - ref_boot[m])
+
+    alpha = (1 - confidence_level) / 2
+    lower_idx = int(alpha * n_iterations)
+    upper_idx = min(int((1 - alpha) * n_iterations), n_iterations - 1)
+
+    out: Dict[str, PairedDelta] = {}
+    for m, name in enumerate(("precision", "recall", "f1")):
+        deltas = sorted(boot_deltas[m])
+        n_le = sum(1 for d in deltas if d <= 0.0)
+        n_ge = sum(1 for d in deltas if d >= 0.0)
+        p = min(1.0, 2.0 * min(n_le, n_ge) / n_iterations) if n_iterations else 1.0
+        out[name] = PairedDelta(
+            metric=name,
+            reference=ref_point[m],
+            system=sys_point[m],
+            delta=sys_point[m] - ref_point[m],
+            ci_lower=deltas[lower_idx] if deltas else 0.0,
+            ci_upper=deltas[upper_idx] if deltas else 0.0,
+            p_value=p,
+            n_samples=n,
+            n_iterations=n_iterations,
+        )
+    return out
 
 
 def format_bootstrap_table(result: BootstrapResult) -> str:

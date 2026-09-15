@@ -37,6 +37,8 @@ STEPS = [
      ["scripts/run_obfuscation_ablation.py", "--dataset", "prism"]),
     ("C1 baseline collapse under obfuscation — prism (gold)",
      ["scripts/run_obfuscation_baselines.py", "--dataset", "prism"]),
+    ("C1 pipeline/ioc-finder hybrid study — prism (gold)",
+     ["scripts/run_hybrid_study.py", "--dataset", "prism"]),
     ("End-to-end pipeline F1 — prism (gold, held-out calibrator)",
      ["scripts/eval_pipeline_f1.py", "--dataset", "prism",
       "--calibrator", "data/evaluation/fitted_calibrator_no_prism.json"]),

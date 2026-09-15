@@ -427,19 +427,19 @@
         },
         "ioc_finder": {
           "name": "ioc-finder (Hightower)",
-          "precision": 0.7282,
+          "precision": 0.7229,
           "recall": 0.9732,
-          "f1": 0.8331,
+          "f1": 0.8296,
           "true_positives": 1380,
-          "false_positives": 515,
+          "false_positives": 529,
           "false_negatives": 38,
           "per_type": {
             "domain": {
-              "precision": 0.5091,
+              "precision": 0.4982,
               "recall": 1.0,
-              "f1": 0.6747,
+              "f1": 0.6651,
               "tp": 281,
-              "fp": 271,
+              "fp": 283,
               "fn": 0
             },
             "md5": {
@@ -475,11 +475,11 @@
               "fn": 0
             },
             "ip": {
-              "precision": 0.9568,
+              "precision": 0.9509,
               "recall": 1.0,
-              "f1": 0.9779,
+              "f1": 0.9748,
               "tp": 155,
-              "fp": 7,
+              "fp": 8,
               "fn": 0
             },
             "cve": {
@@ -488,6 +488,14 @@
               "f1": 1.0,
               "tp": 17,
               "fp": 0,
+              "fn": 0
+            },
+            "ipv6": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "tp": 0,
+              "fp": 1,
               "fn": 0
             },
             "sha1": {
@@ -504,10 +512,10 @@
             "n_iterations": 1000,
             "precision": {
               "metric": "Precision",
-              "point_estimate": 0.7282,
-              "ci_lower": 0.6609,
-              "ci_upper": 0.7944,
-              "ci_width": 0.1335,
+              "point_estimate": 0.7229,
+              "ci_lower": 0.6544,
+              "ci_upper": 0.7896,
+              "ci_width": 0.1352,
               "n_iterations": 1000
             },
             "recall": {
@@ -520,10 +528,10 @@
             },
             "f1": {
               "metric": "F1 Score",
-              "point_estimate": 0.8331,
-              "ci_lower": 0.782,
-              "ci_upper": 0.8789,
-              "ci_width": 0.097,
+              "point_estimate": 0.8296,
+              "ci_lower": 0.7774,
+              "ci_upper": 0.8762,
+              "ci_width": 0.0988,
               "n_iterations": 1000
             }
           }
@@ -948,19 +956,19 @@
         },
         "ioc_finder": {
           "name": "ioc-finder (Hightower)",
-          "precision": 0.7258,
+          "precision": 0.7204,
           "recall": 0.9612,
-          "f1": 0.8271,
+          "f1": 0.8236,
           "true_positives": 1363,
-          "false_positives": 515,
+          "false_positives": 529,
           "false_negatives": 55,
           "per_type": {
             "domain": {
-              "precision": 0.5091,
+              "precision": 0.4982,
               "recall": 1.0,
-              "f1": 0.6747,
+              "f1": 0.6651,
               "tp": 281,
-              "fp": 271,
+              "fp": 283,
               "fn": 0
             },
             "md5": {
@@ -996,11 +1004,11 @@
               "fn": 0
             },
             "ip": {
-              "precision": 0.9568,
+              "precision": 0.9509,
               "recall": 1.0,
-              "f1": 0.9779,
+              "f1": 0.9748,
               "tp": 155,
-              "fp": 7,
+              "fp": 8,
               "fn": 0
             },
             "cve": {
@@ -1010,6 +1018,14 @@
               "tp": 0,
               "fp": 0,
               "fn": 17
+            },
+            "ipv6": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "tp": 0,
+              "fp": 1,
+              "fn": 0
             },
             "sha1": {
               "precision": 1.0,
@@ -1025,10 +1041,10 @@
             "n_iterations": 1000,
             "precision": {
               "metric": "Precision",
-              "point_estimate": 0.7258,
-              "ci_lower": 0.6566,
-              "ci_upper": 0.7924,
-              "ci_width": 0.1358,
+              "point_estimate": 0.7204,
+              "ci_lower": 0.6511,
+              "ci_upper": 0.7873,
+              "ci_width": 0.1362,
               "n_iterations": 1000
             },
             "recall": {
@@ -1041,10 +1057,10 @@
             },
             "f1": {
               "metric": "F1 Score",
-              "point_estimate": 0.8271,
-              "ci_lower": 0.7743,
-              "ci_upper": 0.8733,
-              "ci_width": 0.0989,
+              "point_estimate": 0.8236,
+              "ci_lower": 0.7684,
+              "ci_upper": 0.8701,
+              "ci_width": 0.1017,
               "n_iterations": 1000
             }
           }
@@ -1469,19 +1485,19 @@
         },
         "ioc_finder": {
           "name": "ioc-finder (Hightower)",
-          "precision": 0.7234,
+          "precision": 0.718,
           "recall": 0.9443,
-          "f1": 0.8192,
+          "f1": 0.8157,
           "true_positives": 1339,
-          "false_positives": 512,
+          "false_positives": 526,
           "false_negatives": 79,
           "per_type": {
             "domain": {
-              "precision": 0.5037,
+              "precision": 0.4928,
               "recall": 0.9786,
-              "f1": 0.6651,
+              "f1": 0.6555,
               "tp": 275,
-              "fp": 271,
+              "fp": 283,
               "fn": 6
             },
             "md5": {
@@ -1517,11 +1533,11 @@
               "fn": 0
             },
             "ip": {
-              "precision": 0.9551,
+              "precision": 0.949,
               "recall": 0.9613,
-              "f1": 0.9582,
+              "f1": 0.9551,
               "tp": 149,
-              "fp": 7,
+              "fp": 8,
               "fn": 6
             },
             "cve": {
@@ -1531,6 +1547,14 @@
               "tp": 0,
               "fp": 0,
               "fn": 17
+            },
+            "ipv6": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "tp": 0,
+              "fp": 1,
+              "fn": 0
             },
             "sha1": {
               "precision": 1.0,
@@ -1546,10 +1570,10 @@
             "n_iterations": 1000,
             "precision": {
               "metric": "Precision",
-              "point_estimate": 0.7234,
-              "ci_lower": 0.6562,
-              "ci_upper": 0.7901,
-              "ci_width": 0.1339,
+              "point_estimate": 0.718,
+              "ci_lower": 0.6491,
+              "ci_upper": 0.7845,
+              "ci_width": 0.1354,
               "n_iterations": 1000
             },
             "recall": {
@@ -1562,10 +1586,10 @@
             },
             "f1": {
               "metric": "F1 Score",
-              "point_estimate": 0.8192,
-              "ci_lower": 0.7661,
-              "ci_upper": 0.8659,
-              "ci_width": 0.0998,
+              "point_estimate": 0.8157,
+              "ci_lower": 0.7603,
+              "ci_upper": 0.8627,
+              "ci_width": 0.1023,
               "n_iterations": 1000
             }
           }
@@ -1990,19 +2014,19 @@
         },
         "ioc_finder": {
           "name": "ioc-finder (Hightower)",
-          "precision": 0.5517,
+          "precision": 0.545,
           "recall": 0.4443,
-          "f1": 0.4922,
+          "f1": 0.4895,
           "true_positives": 630,
-          "false_positives": 512,
+          "false_positives": 526,
           "false_negatives": 788,
           "per_type": {
             "domain": {
-              "precision": 0.5037,
+              "precision": 0.4928,
               "recall": 0.9786,
-              "f1": 0.6651,
+              "f1": 0.6555,
               "tp": 275,
-              "fp": 271,
+              "fp": 283,
               "fn": 6
             },
             "md5": {
@@ -2038,11 +2062,11 @@
               "fn": 0
             },
             "ip": {
-              "precision": 0.9551,
+              "precision": 0.949,
               "recall": 0.9613,
-              "f1": 0.9582,
+              "f1": 0.9551,
               "tp": 149,
-              "fp": 7,
+              "fp": 8,
               "fn": 6
             },
             "cve": {
@@ -2052,6 +2076,14 @@
               "tp": 0,
               "fp": 0,
               "fn": 17
+            },
+            "ipv6": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "tp": 0,
+              "fp": 1,
+              "fn": 0
             },
             "sha1": {
               "precision": 0.0,
@@ -2067,10 +2099,10 @@
             "n_iterations": 1000,
             "precision": {
               "metric": "Precision",
-              "point_estimate": 0.5517,
-              "ci_lower": 0.446,
-              "ci_upper": 0.6513,
-              "ci_width": 0.2053,
+              "point_estimate": 0.545,
+              "ci_lower": 0.4381,
+              "ci_upper": 0.6489,
+              "ci_width": 0.2108,
               "n_iterations": 1000
             },
             "recall": {
@@ -2083,10 +2115,10 @@
             },
             "f1": {
               "metric": "F1 Score",
-              "point_estimate": 0.4922,
-              "ci_lower": 0.3826,
-              "ci_upper": 0.5974,
-              "ci_width": 0.2149,
+              "point_estimate": 0.4895,
+              "ci_lower": 0.3799,
+              "ci_upper": 0.5953,
+              "ci_width": 0.2155,
               "n_iterations": 1000
             }
           }
@@ -2511,19 +2543,19 @@
         },
         "ioc_finder": {
           "name": "ioc-finder (Hightower)",
-          "precision": 0.5517,
+          "precision": 0.545,
           "recall": 0.4443,
-          "f1": 0.4922,
+          "f1": 0.4895,
           "true_positives": 630,
-          "false_positives": 512,
+          "false_positives": 526,
           "false_negatives": 788,
           "per_type": {
             "domain": {
-              "precision": 0.5037,
+              "precision": 0.4928,
               "recall": 0.9786,
-              "f1": 0.6651,
+              "f1": 0.6555,
               "tp": 275,
-              "fp": 271,
+              "fp": 283,
               "fn": 6
             },
             "md5": {
@@ -2559,11 +2591,11 @@
               "fn": 0
             },
             "ip": {
-              "precision": 0.9551,
+              "precision": 0.949,
               "recall": 0.9613,
-              "f1": 0.9582,
+              "f1": 0.9551,
               "tp": 149,
-              "fp": 7,
+              "fp": 8,
               "fn": 6
             },
             "cve": {
@@ -2573,6 +2605,14 @@
               "tp": 0,
               "fp": 0,
               "fn": 17
+            },
+            "ipv6": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "tp": 0,
+              "fp": 1,
+              "fn": 0
             },
             "sha1": {
               "precision": 0.0,
@@ -2588,10 +2628,10 @@
             "n_iterations": 1000,
             "precision": {
               "metric": "Precision",
-              "point_estimate": 0.5517,
-              "ci_lower": 0.446,
-              "ci_upper": 0.6513,
-              "ci_width": 0.2053,
+              "point_estimate": 0.545,
+              "ci_lower": 0.4381,
+              "ci_upper": 0.6489,
+              "ci_width": 0.2108,
               "n_iterations": 1000
             },
             "recall": {
@@ -2604,10 +2644,10 @@
             },
             "f1": {
               "metric": "F1 Score",
-              "point_estimate": 0.4922,
-              "ci_lower": 0.3826,
-              "ci_upper": 0.5974,
-              "ci_width": 0.2149,
+              "point_estimate": 0.4895,
+              "ci_lower": 0.3799,
+              "ci_upper": 0.5953,
+              "ci_width": 0.2155,
               "n_iterations": 1000
             }
           }
@@ -3032,19 +3072,19 @@
         },
         "ioc_finder": {
           "name": "ioc-finder (Hightower)",
-          "precision": 0.5512,
+          "precision": 0.5445,
           "recall": 0.4443,
-          "f1": 0.492,
+          "f1": 0.4893,
           "true_positives": 630,
-          "false_positives": 513,
+          "false_positives": 527,
           "false_negatives": 788,
           "per_type": {
             "domain": {
-              "precision": 0.5027,
+              "precision": 0.4919,
               "recall": 0.9786,
-              "f1": 0.6643,
+              "f1": 0.6548,
               "tp": 275,
-              "fp": 272,
+              "fp": 284,
               "fn": 6
             },
             "md5": {
@@ -3080,11 +3120,11 @@
               "fn": 0
             },
             "ip": {
-              "precision": 0.9551,
+              "precision": 0.949,
               "recall": 0.9613,
-              "f1": 0.9582,
+              "f1": 0.9551,
               "tp": 149,
-              "fp": 7,
+              "fp": 8,
               "fn": 6
             },
             "cve": {
@@ -3094,6 +3134,14 @@
               "tp": 0,
               "fp": 0,
               "fn": 17
+            },
+            "ipv6": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "tp": 0,
+              "fp": 1,
+              "fn": 0
             },
             "sha1": {
               "precision": 0.0,
@@ -3109,10 +3157,10 @@
             "n_iterations": 1000,
             "precision": {
               "metric": "Precision",
-              "point_estimate": 0.5512,
-              "ci_lower": 0.4455,
-              "ci_upper": 0.6509,
-              "ci_width": 0.2054,
+              "point_estimate": 0.5445,
+              "ci_lower": 0.438,
+              "ci_upper": 0.6486,
+              "ci_width": 0.2106,
               "n_iterations": 1000
             },
             "recall": {
@@ -3125,10 +3173,10 @@
             },
             "f1": {
               "metric": "F1 Score",
-              "point_estimate": 0.492,
-              "ci_lower": 0.3824,
-              "ci_upper": 0.597,
-              "ci_width": 0.2146,
+              "point_estimate": 0.4893,
+              "ci_lower": 0.3797,
+              "ci_upper": 0.5953,
+              "ci_width": 0.2156,
               "n_iterations": 1000
             }
           }

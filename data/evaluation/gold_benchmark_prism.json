@@ -419,19 +419,19 @@
     },
     "ioc_finder": {
       "name": "ioc-finder (Hightower)",
-      "precision": 0.7282,
+      "precision": 0.7229,
       "recall": 0.9732,
-      "f1": 0.8331,
+      "f1": 0.8296,
       "true_positives": 1380,
-      "false_positives": 515,
+      "false_positives": 529,
       "false_negatives": 38,
       "per_type": {
         "domain": {
-          "precision": 0.5091,
+          "precision": 0.4982,
           "recall": 1.0,
-          "f1": 0.6747,
+          "f1": 0.6651,
           "tp": 281,
-          "fp": 271,
+          "fp": 283,
           "fn": 0
         },
         "md5": {
@@ -467,11 +467,11 @@
           "fn": 0
         },
         "ip": {
-          "precision": 0.9568,
+          "precision": 0.9509,
           "recall": 1.0,
-          "f1": 0.9779,
+          "f1": 0.9748,
           "tp": 155,
-          "fp": 7,
+          "fp": 8,
           "fn": 0
         },
         "cve": {
@@ -480,6 +480,14 @@
           "f1": 1.0,
           "tp": 17,
           "fp": 0,
+          "fn": 0
+        },
+        "ipv6": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "tp": 0,
+          "fp": 1,
           "fn": 0
         },
         "sha1": {
@@ -496,10 +504,10 @@
         "n_iterations": 1000,
         "precision": {
           "metric": "Precision",
-          "point_estimate": 0.7282,
-          "ci_lower": 0.6609,
-          "ci_upper": 0.7944,
-          "ci_width": 0.1335,
+          "point_estimate": 0.7229,
+          "ci_lower": 0.6544,
+          "ci_upper": 0.7896,
+          "ci_width": 0.1352,
           "n_iterations": 1000
         },
         "recall": {
@@ -512,10 +520,10 @@
         },
         "f1": {
           "metric": "F1 Score",
-          "point_estimate": 0.8331,
-          "ci_lower": 0.782,
-          "ci_upper": 0.8789,
-          "ci_width": 0.097,
+          "point_estimate": 0.8296,
+          "ci_lower": 0.7774,
+          "ci_upper": 0.8762,
+          "ci_width": 0.0988,
           "n_iterations": 1000
         }
       }

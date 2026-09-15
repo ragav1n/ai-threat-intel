@@ -16,6 +16,7 @@ a side-by-side P/R/F1 comparison table, per IOC type.
 import re
 import logging
 from dataclasses import dataclass, field
+from functools import lru_cache
 from typing import List, Dict, Any, Set, Tuple, Union
 
 logger = logging.getLogger(__name__)
@@ -216,6 +217,148 @@ def _extract_with_llm_pipeline(text: str) -> Set[Tuple[str, str]]:
     return results
 
 
+# ── Extractor: deobfuscation + ioc-finder, and pipeline/ioc-finder hybrids ──
+#
+# C1 asks whether our deobfuscation layer is a *force multiplier*: ioc-finder
+# beats our regex extractor on clean prose but collapses at T3+ (unicode), so
+# the interesting configurations are the ones that give ioc-finder our
+# deobfuscated text, and the ones that pool both candidate sets. Extraction is
+# deterministic, so results are memoised per text -- the hybrids call the same
+# two extractors repeatedly and ioc-finder is the slow step (~1 min per tier).
+
+@lru_cache(maxsize=512)
+def _cached_ioc_finder(text: str) -> frozenset:
+    return frozenset(_extract_with_ioc_finder(text))
+
+
+@lru_cache(maxsize=512)
+def _cached_our_pipeline(text: str) -> frozenset:
+    return frozenset(_extract_with_our_pipeline(text))
+
+
+@lru_cache(maxsize=512)
+def _cached_deobfuscate(text: str) -> str:
+    from threat_intel_aggregator.feed_collection.ioc_deobfuscator import deobfuscate_text
+
+    return deobfuscate_text(text)[0]
+
+
+def _domain_is_blocked(domain: str, allow_code_hosting: bool = False) -> bool:
+    """Blocklist test for a domain, matching `extract_iocs_with_confidence`.
+
+    Checks the domain and every base suffix of it (so `www.cisa.gov` is caught
+    by a `cisa.gov` entry), with the same code-hosting exemption the pipeline
+    applies to URLs.
+    """
+    from threat_intel_aggregator.feed_collection.ioc_extractor import (
+        CODE_HOSTING_DOMAINS, DOMAIN_BLACKLIST,
+    )
+
+    if allow_code_hosting and domain in CODE_HOSTING_DOMAINS:
+        return False
+    parts = domain.split(".")
+    for i in range(max(1, len(parts) - 1)):
+        base = ".".join(parts[i:])
+        if base in DOMAIN_BLACKLIST and not (allow_code_hosting and base in CODE_HOSTING_DOMAINS):
+            return True
+    return domain in DOMAIN_BLACKLIST
+
+
+def _apply_pipeline_filters(
+    candidates: Set[Tuple[str, str]],
+    include_private_ips: bool = False,
+    dedup_url_domains: bool = True,
+) -> Set[Tuple[str, str]]:
+    """Apply our pipeline's validity/blocklist filters to any extractor's output.
+
+    `extract_iocs_with_confidence` interleaves these checks with regex matching,
+    so they cannot be reused directly on a third-party candidate set. This is
+    the same ladder, lifted to operate on ``(value, type)`` pairs: IP validity
+    and private/reserved-range rejection, domain and URL-domain blocklisting,
+    URL-domain deduplication, and the file-extension guard that stops
+    `payload.exe` being scored as a domain.
+
+    The filters are keyed on IOC type only -- no gold label is consulted -- so
+    this is a fair, non-leaking precision layer.
+    """
+    from threat_intel_aggregator.feed_collection.ioc_extractor import (
+        FILE_EXTENSION_BLACKLIST, get_domain_from_url, is_private_ip, is_valid_ip,
+        is_valid_ipv6,
+    )
+
+    urls = {v for v, t in candidates if t == "url"}
+    kept: Set[Tuple[str, str]] = set()
+
+    for value, ioc_type in candidates:
+        if ioc_type == "ip":
+            if not is_valid_ip(value):
+                continue
+            if not include_private_ips and is_private_ip(value):
+                continue
+            if _domain_is_blocked(value) or value in ("1.1.1.1", "8.8.8.8", "8.8.4.4"):
+                continue
+
+        elif ioc_type == "ipv6":
+            if not is_valid_ipv6(value):
+                continue
+
+        elif ioc_type == "url":
+            if _domain_is_blocked(get_domain_from_url(value), allow_code_hosting=True):
+                continue
+
+        elif ioc_type == "domain":
+            if _domain_is_blocked(value):
+                continue
+            # Drop a bare domain that is already covered by an extracted URL.
+            # PRISM scores such a domain as an indicator in its own right, so
+            # this rule is a schema mismatch there rather than a precision
+            # gain; `dedup_url_domains=False` measures its cost separately.
+            if dedup_url_domains and any(value in url for url in urls):
+                continue
+            last_dot = value.rfind(".")
+            if last_dot >= 0 and value[last_dot:] in FILE_EXTENSION_BLACKLIST:
+                continue
+
+        kept.add((value, ioc_type))
+
+    return kept
+
+
+def _extract_with_ioc_finder_deobf(text: str) -> Set[Tuple[str, str]]:
+    """ioc-finder run on text our deobfuscation layer has already normalised."""
+    return set(_cached_ioc_finder(_cached_deobfuscate(text)))
+
+
+def _extract_hybrid_union(text: str) -> Set[Tuple[str, str]]:
+    """Pooled candidates: our pipeline OR deobfuscation-fed ioc-finder."""
+    return set(_cached_our_pipeline(text)) | _extract_with_ioc_finder_deobf(text)
+
+
+def _extract_hybrid_intersection(text: str) -> Set[Tuple[str, str]]:
+    """Agreement only: candidates both extractors return (precision-first)."""
+    return set(_cached_our_pipeline(text)) & _extract_with_ioc_finder_deobf(text)
+
+
+def _extract_hybrid_filtered(text: str) -> Set[Tuple[str, str]]:
+    """The pooled candidate set, then our pipeline's precision filters."""
+    return _apply_pipeline_filters(_extract_hybrid_union(text))
+
+
+def _extract_ioc_finder_deobf_filtered(text: str) -> Set[Tuple[str, str]]:
+    """ioc-finder on deobfuscated text, then our precision filters.
+
+    Isolates the two things our pipeline contributes -- text normalisation and
+    candidate filtering -- from its own regex candidate generation.
+    """
+    return _apply_pipeline_filters(_extract_with_ioc_finder_deobf(text))
+
+
+def _extract_ioc_finder_deobf_filtered_nodedup(text: str) -> Set[Tuple[str, str]]:
+    """As above, minus the rule that drops a domain appearing inside a URL."""
+    return _apply_pipeline_filters(
+        _extract_with_ioc_finder_deobf(text), dedup_url_domains=False)
+
+
 # ── Extractor: spaCy NER (Generic NLP baseline) ─────────────
 
 # Mapping from spaCy entity labels to IOC types we evaluate.
@@ -354,6 +497,14 @@ BASELINES = {
     "ioc_finder":       ("ioc-finder (Hightower)",      _extract_with_ioc_finder),
     "spacy_ner":        ("spaCy NER (Generic NLP)",     _extract_with_spacy_ner),
     "regex_only":       ("Regex Only (no filter)",      _extract_regex_only),
+    # Deobfuscation-fed and pooled configurations (see C1 hybrid study).
+    "ioc_finder_deobf":     ("ioc-finder + our deobf",      _extract_with_ioc_finder_deobf),
+    "ioc_finder_deobf_flt": ("ioc-finder + deobf + filters", _extract_ioc_finder_deobf_filtered),
+    "ioc_finder_deobf_flt_nd": ("ioc-finder + deobf + filters, no URL-domain dedup",
+                                _extract_ioc_finder_deobf_filtered_nodedup),
+    "hybrid_union":         ("Hybrid (union)",              _extract_hybrid_union),
+    "hybrid_filtered":      ("Hybrid (union + filters)",    _extract_hybrid_filtered),
+    "hybrid_intersect":     ("Hybrid (intersection)",       _extract_hybrid_intersection),
 }
 
 

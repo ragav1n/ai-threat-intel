@@ -47,3 +47,6 @@ data/evaluation/prism_benchmark.json
 # svjour3 distribution, and author photographs. Not part of the software
 # artifact and must not be published with it.
 paper/
+
+# Playwright MCP session artifacts
+.playwright-mcp/
